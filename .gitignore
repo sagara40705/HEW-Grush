@@ -34,6 +34,12 @@ bld/
 [Ll]og/
 [Ll]ogs/
 
+# ただし DirectXTex の .lib は許可
+!DirectXTex/**/DirectXTex.lib
+# DX22_Project 内の DebugScene だけ無視（開発用）
+DX22_Project/DebugScene.h
+DX22_Project/DebugScene.cpp
+
 # Build results on 'Bin' directories
 **/[Bb]in/*
 # Uncomment if you have tasks that rely on *.refresh files to move binaries
