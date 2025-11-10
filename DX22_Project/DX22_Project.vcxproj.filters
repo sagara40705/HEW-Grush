@@ -49,6 +49,9 @@
     <Filter Include="コンポーネント\Model">
       <UniqueIdentifier>{2a269caf-c968-4f64-bf41-dfcf4a7d4ced}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{4252e1bb-3296-4fe9-bc04-0988a2cff185}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Startup.cpp">
@@ -152,6 +155,9 @@
     </ClCompile>
     <ClCompile Include="PlanetMove.cpp">
       <Filter>コンポーネント\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="DubugScene.cpp">
+      <Filter>Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -280,6 +286,12 @@
     </ClInclude>
     <ClInclude Include="PlanetMove.h">
       <Filter>コンポーネント\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="TitleScene.h">
+      <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="DebugScene.h">
+      <Filter>Scene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
