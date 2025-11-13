@@ -11,6 +11,7 @@ public:
 
 public:
     //BoxCollider() = default;
+    void Start() override;
     BoxCollider(bool st = true, Vector3 c = { 0, 0, 0 }, Vector3 s = { 1, 1, 1 }) : center(c), size(s){ isStatic = st; }
 
     ColliderType GetType() const override { return ColliderType::Box; }

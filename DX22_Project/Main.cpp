@@ -7,6 +7,7 @@
 #include "SceneGame.h"
 #include "Defines.h"
 #include "ShaderList.h"
+#include "LineManager.h"
 
 //--- ƒOƒ[ƒoƒ‹•Ï”
 Scene* g_pScene;
@@ -38,6 +39,7 @@ void Uninit()
 	UninitInput();
 	Sprite::Uninit();
 	Geometory::Uninit();
+	LineManager::Term();
 	UninitDirectX();
 
 }

@@ -1,3 +1,4 @@
+//#include "LineManager.h"
 #include "BoxCollider.h"
 #include "Transform.h"
 #include <cassert>
@@ -5,8 +6,14 @@
 #include <cmath>
 using namespace DirectX;
 
+
 static inline XMVECTOR LoadF3(const XMFLOAT3& v) { return XMLoadFloat3(&v); }
 static inline XMVECTOR LoadV3(const Vector3& v) { return XMVectorSet(v.x, v.y, v.z, 1.0f); }
+
+void BoxCollider::Start()
+{
+
+}
 
 BoxCollider::AABB BoxCollider::GetWorldAABB()
 {

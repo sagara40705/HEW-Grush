@@ -50,7 +50,7 @@
       <UniqueIdentifier>{2a269caf-c968-4f64-bf41-dfcf4a7d4ced}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scene">
-      <UniqueIdentifier>{4252e1bb-3296-4fe9-bc04-0988a2cff185}</UniqueIdentifier>
+      <UniqueIdentifier>{17353e5d-0501-410a-817b-20279eccff06}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -156,8 +156,11 @@
     <ClCompile Include="PlanetMove.cpp">
       <Filter>コンポーネント\Script</Filter>
     </ClCompile>
-    <ClCompile Include="DubugScene.cpp">
-      <Filter>Scene</Filter>
+    <ClCompile Include="LineManager.cpp">
+      <Filter>システム</Filter>
+    </ClCompile>
+    <ClCompile Include="CanvasUI.cpp">
+      <Filter>コンポーネント</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -287,11 +290,17 @@
     <ClInclude Include="PlanetMove.h">
       <Filter>コンポーネント\Script</Filter>
     </ClInclude>
-    <ClInclude Include="TitleScene.h">
-      <Filter>Scene</Filter>
-    </ClInclude>
     <ClInclude Include="DebugScene.h">
       <Filter>Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="LineManager.h">
+      <Filter>システム</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>システム</Filter>
+    </ClInclude>
+    <ClInclude Include="CanvasUI.h">
+      <Filter>コンポーネント</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

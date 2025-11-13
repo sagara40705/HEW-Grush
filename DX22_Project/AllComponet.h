@@ -14,3 +14,4 @@
 #include "ModelRenderer.h"
 #include "HummerScript.h"
 #include "PlanetMove.h"
+#include "CanvasUI.h"

@@ -6,6 +6,8 @@
 #include "PhysicsSystem.h"
 #include "SampleMapData.h"
 #include "Model.h"
+#include "LineManager.h"
+#include "RenderSystem.h"
 
 World W;
 
@@ -56,6 +58,7 @@ namespace
 SceneGame::SceneGame()
 {
 	Debug::Init();
+    LineManager::Init();
 
 	GameObject& camera = W.CreateGameObject();	
 	camera.AddComponent<Transform>(Camera::initPos(), Camera::initRotate(), Vector3::zero());
@@ -65,44 +68,50 @@ SceneGame::SceneGame()
 	player.AddComponent<Transform>(Vector3(0, 2, 0), Vector3::zero(), Vector3(0.5, 0.5, 0.5));
 	player.AddComponent<MeshFilter>(MeshFilter::Type::Cylinder);
 	player.AddComponent<MeshRender>(1);
-    //player.AddComponent<SphereCollider>(0.5f, false);
-    player.AddComponent<CapsuleCollider>(0.01f, 0.5f, false);
+    player.AddComponent<BoxCollider>(true, Vector3(0, 0, 0), Vector3(1,1,1));
+   // player.AddComponent<SphereCollider>(0.5f, false);
+   // player.AddComponent<CapsuleCollider>(0.01f, 0.5f, false);
 	player.AddComponent<Rigidbody>();
 	player.AddComponent<PlayerControll>();
 	camera.AddComponent<CameraFollow>(&player.GetComponent<Transform>());
     player.SetTag(Tag::Player);
+   // LineManager::AddBoxCollider(&player);
 
-    GameObject& hammer = W.CreateGameObject();
-    hammer.AddComponent<Transform>(Vector3(1, 0, 0), Vector3::zero(), Vector3(0.8, 0.4, 0.4));
-    hammer.TryGetComponent<Transform>()->SetParent(&player.GetComponent<Transform>());
-    hammer.AddComponent<MeshFilter>(MeshFilter::Type::Cube);
-    hammer.AddComponent<MeshRender>(1);
-    auto& hbc = hammer.AddComponent<BoxCollider>(false); hbc.isTrigger = true;
-    //hammer.AddComponent<Rigidbody>();
-    hammer.AddComponent<HummerScript>(player.TryGetComponent<Transform>());
-    hammer.SetTag(Tag::Weapon);
-
-
-
-    GameObject& floor = W.CreateGameObject();
-    floor.AddComponent<Transform>(Vector3(0, -30, 0), Vector3::zero(), Vector3(50, 50, 50));
-    floor.AddComponent<MeshFilter>(MeshFilter::Type::Sphere);
-    floor.AddComponent<MeshRender>();
-    floor.AddComponent<SphereCollider>();
-    //floor.AddComponent<PlanetMove>();
-    floor.SetTag(Tag::Ground);
-
+    //GameObject& hammer = W.CreateGameObject();
+    //hammer.AddComponent<Transform>(Vector3(1, 0, 0), Vector3::zero(), Vector3(0.8, 0.4, 0.4));
+    //hammer.TryGetComponent<Transform>()->SetParent(&player.GetComponent<Transform>());
+    //hammer.AddComponent<MeshFilter>(MeshFilter::Type::Cube);
+    //hammer.AddComponent<MeshRender>(1);
+    //auto& hbc = hammer.AddComponent<BoxCollider>(false); hbc.isTrigger = true;
+    //hammer.AddComponent<HummerScript>(player.TryGetComponent<Transform>());
+    //hammer.SetTag(Tag::Weapon);
+    
+    //GameObject& floor = W.CreateGameObject();
+    //floor.AddComponent<Transform>(Vector3(0, -30, 0), Vector3::zero(), Vector3(50, 50, 50));
+    //floor.AddComponent<MeshFilter>(MeshFilter::Type::Sphere);
+    //floor.AddComponent<MeshRender>();
+    //floor.AddComponent<SphereCollider>();
+    ////floor.AddComponent<PlanetMove>();
+    //floor.SetTag(Tag::Ground);
 
     BuildBlocksFromMap(map, /*unit=*/kUnit, /*scale=*/blockScale, /*isStaticCollider=*/true);
 
-    //GameObject& karubi = W.CreateGameObject();
-    //karubi.AddComponent<Transform>(DirectX::XMFLOAT3{ 2,0.5,2 }, Vec3Zero, Vec3One);
-    //karubi.AddComponent<ModelComponent>("Assets/Ç‹ÇØÇÒéÆê‘å©Ç©ÇÈÇ—ïPàﬂëïMMD/Ç‹ÇØÇÒéÆê‘å©Ç©ÇÈÇ—ïPàﬂëïver1.0.pmx", 0.08f, Model::ZFlip);
-    //karubi.AddComponent<ModelRenderer>();
-    //karubi.AddComponent<BoxCollider>(false, DirectX::XMFLOAT3{ 0, 0.5f,0 }, DirectX::XMFLOAT3{ 1, 2, 1 });
+    GameObject& karubi = W.CreateGameObject();
+    karubi.AddComponent<Transform>(DirectX::XMFLOAT3{ 2,0.5,2 }, Vec3Zero, Vec3One);
+    karubi.AddComponent<ModelComponent>("Assets/Ç‹ÇØÇÒéÆê‘å©Ç©ÇÈÇ—ïPàﬂëïMMD/Ç‹ÇØÇÒéÆê‘å©Ç©ÇÈÇ—ïPàﬂëïver1.0.pmx", 0.08f, Model::ZFlip);
+    karubi.AddComponent<ModelRenderer>();
+    karubi.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0,0.75f,0 }, DirectX::XMFLOAT3{ 1, 1.5, 1 });
+    LineManager::AddBoxCollider(&karubi);
+
+    GameObject& SampleUi = W.CreateGameObject();
+    auto& ui = SampleUi.AddComponent<CanvasUI>("Assets/Texture/Star.png", Vector2(0, 0));
+    ui.SetColor({ 0.5f ,0.5f ,0.5f , 1.f});
 
 	W.Start();
-
+    ui.SetOffset(Vector2(0, 60));
+    ui.SetSize(Vector2(1, 0.7f));
+    ui.SetUVPos(Vector2(0, 0.3f));
+    ui.SetUVScale(Vector2(1, 0.7f));
 }
 SceneGame::~SceneGame()
 {
@@ -116,6 +125,7 @@ void SceneGame::Update()
 void SceneGame::Draw()
 {
 	W.Draw();
+
 
 }
 

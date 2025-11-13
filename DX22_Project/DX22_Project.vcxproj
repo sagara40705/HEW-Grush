@@ -148,15 +148,16 @@
     <ClCompile Include="BoxCollider.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraFollow.cpp" />
+    <ClCompile Include="CanvasUI.cpp" />
     <ClCompile Include="CapsuleCollider.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="DirectX.cpp" />
-    <ClCompile Include="DubugScene.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Geometory.cpp" />
     <ClCompile Include="HummerScript.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="LineManager.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MeshBuffer.cpp" />
     <ClCompile Include="MeshFilter.cpp" />
@@ -186,6 +187,7 @@
     <ClInclude Include="BoxCollider.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraFollow.h" />
+    <ClInclude Include="CanvasUI.h" />
     <ClInclude Include="CapsuleCollider.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Collision.h" />
@@ -195,6 +197,7 @@
     <ClInclude Include="DebugScene.h" />
     <ClInclude Include="HummerScript.h" />
     <ClInclude Include="Layer.h" />
+    <ClInclude Include="LineManager.h" />
     <ClInclude Include="MeshFilter.h" />
     <ClInclude Include="MeshRender.h" />
     <ClInclude Include="ModelComponent.h" />
@@ -221,7 +224,7 @@
     <ClInclude Include="SphereCollider.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Texture.h" />
-    <ClInclude Include="TitleScene.h" />
+    <ClInclude Include="Timer.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vector3.h" />
