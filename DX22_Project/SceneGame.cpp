@@ -8,7 +8,6 @@
 #include "Model.h"
 #include "LineManager.h"
 #include "RenderSystem.h"
-
 World W;
 
 namespace
@@ -23,6 +22,7 @@ namespace
         o.AddComponent<MeshFilter>(MeshFilter::Type::Cube);
         o.AddComponent<MeshRender>();
         o.AddComponent<BoxCollider>();
+        o.AddComponent<GlassScript>();
         o.SetTag(Tag::Glass);
         return o;
     }
@@ -77,14 +77,14 @@ SceneGame::SceneGame()
     player.SetTag(Tag::Player);
    // LineManager::AddBoxCollider(&player);
 
-    //GameObject& hammer = W.CreateGameObject();
-    //hammer.AddComponent<Transform>(Vector3(1, 0, 0), Vector3::zero(), Vector3(0.8, 0.4, 0.4));
-    //hammer.TryGetComponent<Transform>()->SetParent(&player.GetComponent<Transform>());
-    //hammer.AddComponent<MeshFilter>(MeshFilter::Type::Cube);
-    //hammer.AddComponent<MeshRender>(1);
-    //auto& hbc = hammer.AddComponent<BoxCollider>(false); hbc.isTrigger = true;
-    //hammer.AddComponent<HummerScript>(player.TryGetComponent<Transform>());
-    //hammer.SetTag(Tag::Weapon);
+    GameObject& hammer = W.CreateGameObject();
+    hammer.AddComponent<Transform>(Vector3(1, 0, 0), Vector3::zero(), Vector3(0.8, 0.4, 0.4));
+    hammer.TryGetComponent<Transform>()->SetParent(&player.GetComponent<Transform>());
+    hammer.AddComponent<MeshFilter>(MeshFilter::Type::Cube);
+    hammer.AddComponent<MeshRender>(1);
+    auto& hbc = hammer.AddComponent<BoxCollider>(false); hbc.isTrigger = true;
+    hammer.AddComponent<HummerScript>(player.TryGetComponent<Transform>());
+    hammer.SetTag(Tag::Weapon);
     
     //GameObject& floor = W.CreateGameObject();
     //floor.AddComponent<Transform>(Vector3(0, -30, 0), Vector3::zero(), Vector3(50, 50, 50));
@@ -100,18 +100,21 @@ SceneGame::SceneGame()
     karubi.AddComponent<Transform>(DirectX::XMFLOAT3{ 2,0.5,2 }, Vec3Zero, Vec3One);
     karubi.AddComponent<ModelComponent>("Assets/Ç‹ÇØÇÒéÆê‘å©Ç©ÇÈÇ—ïPàﬂëïMMD/Ç‹ÇØÇÒéÆê‘å©Ç©ÇÈÇ—ïPàﬂëïver1.0.pmx", 0.08f, Model::ZFlip);
     karubi.AddComponent<ModelRenderer>();
-    karubi.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0,0.75f,0 }, DirectX::XMFLOAT3{ 1, 1.5, 1 });
+    karubi.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{0,0.75f,0}, DirectX::XMFLOAT3{1, 1.5, 1});
     LineManager::AddBoxCollider(&karubi);
 
     GameObject& SampleUi = W.CreateGameObject();
-    auto& ui = SampleUi.AddComponent<CanvasUI>("Assets/Texture/Star.png", Vector2(0, 0));
-    ui.SetColor({ 0.5f ,0.5f ,0.5f , 1.f});
+    auto& ui = SampleUi.AddComponent<CanvasUI>("Assets/Texture/Star.png");
+    SampleUi.AddComponent<GlassGauge>(hammer.TryGetComponent<HummerScript>());
+
+    ui.SetColor({ 1 ,1 ,1 , 1.f});
 
 	W.Start();
-    ui.SetOffset(Vector2(0, 60));
-    ui.SetSize(Vector2(1, 0.7f));
-    ui.SetUVPos(Vector2(0, 0.3f));
-    ui.SetUVScale(Vector2(1, 0.7f));
+    float p = 0.8f;
+    ui.SetOffset(Vector2(0, 200 * (1 - p)));
+    ui.SetSize(Vector2(1, p));
+    ui.SetUVPos(Vector2(0, (1 - p)));
+    ui.SetUVScale(Vector2(1, p));
 }
 SceneGame::~SceneGame()
 {

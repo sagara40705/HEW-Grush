@@ -155,6 +155,8 @@
     <ClCompile Include="DirectX.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Geometory.cpp" />
+    <ClCompile Include="GlassGauge.cpp" />
+    <ClCompile Include="GlassScript.cpp" />
     <ClCompile Include="HummerScript.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="LineManager.cpp" />
@@ -195,6 +197,8 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="DebugLog.h" />
     <ClInclude Include="DebugScene.h" />
+    <ClInclude Include="GlassGauge.h" />
+    <ClInclude Include="GlassScript.h" />
     <ClInclude Include="HummerScript.h" />
     <ClInclude Include="Layer.h" />
     <ClInclude Include="LineManager.h" />

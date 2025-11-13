@@ -27,6 +27,8 @@ public:
 	Data m_data;
 public:
 	void SetOffset(Vector2 offset);
+	void SetPosX(float x);
+	void SetPosY(float y);
 	void SetSize(Vector2  size);
 	void SetUVPos(Vector2  pos);
 	void SetUVScale(Vector2  scale);
