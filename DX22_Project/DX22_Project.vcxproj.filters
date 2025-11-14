@@ -171,6 +171,9 @@
     <ClCompile Include="Timer.cpp">
       <Filter>システム</Filter>
     </ClCompile>
+    <ClCompile Include="TimerUIManager.cpp">
+      <Filter>コンポーネント\Script</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Defines.h">
@@ -315,6 +318,9 @@
       <Filter>コンポーネント\Script</Filter>
     </ClInclude>
     <ClInclude Include="GlassGauge.h">
+      <Filter>コンポーネント\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="TimerUIManager.h">
       <Filter>コンポーネント\Script</Filter>
     </ClInclude>
   </ItemGroup>

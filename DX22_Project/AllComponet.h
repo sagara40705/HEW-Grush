@@ -17,3 +17,4 @@
 #include "CanvasUI.h"
 #include "GlassScript.h"
 #include "GlassGauge.h"
+#include "TimerUIManager.h"

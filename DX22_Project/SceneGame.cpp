@@ -132,4 +132,28 @@ void SceneGame::Draw()
 
 }
 
+void SceneGame::CreateTimerUi()
+{
+    auto pNumberTex = std::make_unique<Texture>();
+    pNumberTex->Create("Assets/Texture/Number.png");
+
+    GameObject& tm = W.CreateGameObject();
+    CanvasUI& tmUI = tm.AddComponent<CanvasUI>(pNumberTex.get());
+
+    GameObject& om = W.CreateGameObject();
+    CanvasUI& omUI = om.AddComponent<CanvasUI>(pNumberTex.get());
+
+    GameObject& TimerUi_colon   = W.CreateGameObject();
+
+    GameObject& ts = W.CreateGameObject();
+    CanvasUI& tsUI = ts.AddComponent<CanvasUI>(pNumberTex.get());
+
+    GameObject& os = W.CreateGameObject();
+    CanvasUI& osUI = ts.AddComponent<CanvasUI>(pNumberTex.get());
+
+    GameObject& TimerUi_manager = W.CreateGameObject();
+    TimerUi_manager.AddComponent<TimerUIManager>(&tmUI, &omUI, &tsUI, &osUI);
+
+}
+
 

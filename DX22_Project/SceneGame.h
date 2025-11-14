@@ -12,7 +12,7 @@ public:
 	void Draw() final;
 
 private:
-
+	void CreateTimerUi();
 };
 
 #endif // __SCENE_GAME_H__
