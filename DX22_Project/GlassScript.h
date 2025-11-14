@@ -1,18 +1,22 @@
 #pragma once
 #include "Component.h"
 
-enum GlassLevel
+enum class GlassGrade : int
 {
-	Level_1,
-	Level_2,
-	Level_3,
-	Level_Count,
+	Grade_1 = 0,
+	Grade_2 = 1,
+	Grade_3 = 2,
+	Count = 3
 };
+constexpr int ToInt(GlassGrade g) { return static_cast<int>(g); }
+
+// グレードごとのゲージの上がり値
+constexpr float kGaugeUpValue[ToInt(GlassGrade::Count)] = { 1.f, 3.f, 5.f };
 
 class GlassScript : public Component
 {
 public:
 	void Start() override;
 	void OnDestroy() override;
-	int level = 1;
+	GlassGrade grade = GlassGrade::Grade_1;
 };

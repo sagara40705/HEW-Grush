@@ -37,42 +37,52 @@ void HummerScript::OnTriggerEnter(const TriggerInfo& c)
 	{
 		if (!c.other->CompareTag(Tag::Glass)) return;
 
-		if (CheckLevel(c.other))
+		if (CheckGrade(c.other))
 		{
 			c.other->Destroy();
 			//Debug::LogValue(" HummerScript::Destroy id", c.other->id);
 			GaugeUp(c.other);
-			LevelUp();
 		}
 	}
 }
 
-bool HummerScript::CheckLevel(GameObject* glass)
+bool HummerScript::CheckGrade(GameObject* glass)
 {
 	GlassScript* gs = glass->TryGetComponent<GlassScript>();
 	if (!gs) return false;
 
-	return (gs->level <= level);
+	return (ToInt(gs->grade) <= ToInt(grade));
 }
 
 void HummerScript::GaugeUp(GameObject* glass)
 {
+	// 破壊したガラスオブジェクトのGlassScriptを取得
 	GlassScript* gs = glass->TryGetComponent<GlassScript>();
 	if (!gs) return;
 
-	gauge += kGaugeUpValue[gs->level - 1];
-	Debug::LogValue(" HummerScript::gauge", gauge);
+	// ゲージを上昇
+	gauge += kGaugeUpValue[ToInt(gs->grade)];
+	Debug::LogValue(" HummerScript::gaugeratio", GetGaugeRatio());
+
+	// ゲージの最大値を超えたら
+	if (gauge >= kMaxGaugeValue[ToInt(grade)])
+	{
+		// 1・2 → グレードUP , 3 → 最大値の正規化
+		if (grade == HummerGrade::Grade_3) gauge = kMaxGaugeValue[ToInt(HummerGrade::Grade_3)];
+		else GradeUp();
+	}
 }
 
-void HummerScript::LevelUp()
+void HummerScript::GradeUp()
 {
-	if (gauge >= kMaxGaugeValue[level - 1] && level < 3)
-	{
-		level++;
-		gauge = 0;
-		Debug::LogValue(" HummerScript::levelup", level);
+	grade = static_cast<HummerGrade>(ToInt(grade) + 1);
+	gauge = 0.f;
+	Debug::LogValue(" HummerScript::gradelup", ToInt(grade) + 1);
+}
 
-	}
+float HummerScript::GetGaugeRatio()
+{
+	return (gauge / kMaxGaugeValue[ToInt(grade)]);
 }
 
 
