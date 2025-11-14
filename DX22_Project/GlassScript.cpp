@@ -2,6 +2,7 @@
 
 void GlassScript::Start()
 {
+
 }
 
 void GlassScript::OnDestroy()

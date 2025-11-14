@@ -14,16 +14,26 @@ void HummerScript::Start()
 	assert(t && "HummerScript requires Transform");
 }
 
-//void HummerScript::Update()
-//{
-//	//if (!t) return;
-//
-//	//rotate += 0.1;
-//	//Vector3 pos = owner->GetPosition() + Vector3(owner->GetScale().x * sinf(rotate), 0, owner->GetScale().x * cosf(rotate));
-//
-//	//t->SetPosition(pos);
-//	////t->SetRotation(Vector3(0, rotate * 31, 0));
-//}
+void HummerScript::Update()
+{
+	if (isGaugeDecaying)
+	{
+		GaugeDecay();
+	}
+	else 
+	{
+		// タイマー更新
+		// ** 仮実装 **
+		timerGaugeDecayDelay += 1.f / 60.f;
+
+		if (timerGaugeDecayDelay >= kGaugeDecayDelay)
+		{
+			isGaugeDecaying = true;
+			timerGaugeDecayDelay = 0.f;
+			Debug::Log(" HummerScript::Update - StartGaugeDecay");
+		}
+	}
+}
 
 void HummerScript::OnDestroy()
 {
@@ -42,6 +52,13 @@ void HummerScript::OnTriggerEnter(const TriggerInfo& c)
 			c.other->Destroy();
 			//Debug::LogValue(" HummerScript::Destroy id", c.other->id);
 			GaugeUp(c.other);
+			
+			// ゲージ減衰中なら止める & Delayタイマーを初期化
+			if (isGaugeDecaying)
+			{
+				isGaugeDecaying = false;
+				timerGaugeDecayDelay = 0.f;
+			}
 		}
 	}
 }
@@ -78,6 +95,34 @@ void HummerScript::GradeUp()
 	grade = static_cast<HummerGrade>(ToInt(grade) + 1);
 	gauge = 0.f;
 	Debug::LogValue(" HummerScript::gradelup", ToInt(grade) + 1);
+	ScaleByGrade();
+}
+
+void HummerScript::GaugeDecay()
+{
+	// ゲージをマイナス
+	// ** 未実装 **
+
+	// ゲージのマイナスを超えたら
+	if (gauge < 0.f)
+	{
+		// 1→ 0に正規化 , 3・2  → グレードDOWN
+		if (grade == HummerGrade::Grade_1) gauge = 0.f;
+		else GradeDown();
+	}
+}
+
+void HummerScript::GradeDown()
+{
+	grade = static_cast<HummerGrade>(ToInt(grade) - 1);
+	gauge = kMaxGaugeValue[ToInt(grade)];
+	Debug::LogValue(" HummerScript::gradelup", ToInt(grade) + 1);
+	ScaleByGrade();
+}
+
+void HummerScript::ScaleByGrade()
+{
+	t->SetScale(kDefaultHummerScale * kHummerScaleRatio[ToInt(grade)]);
 }
 
 float HummerScript::GetGaugeRatio()

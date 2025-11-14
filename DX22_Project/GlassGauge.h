@@ -5,12 +5,13 @@ class HummerScript; class CanvasUI;
 
 class GlassGauge : public MonoBehaviour
 {
-public:
+private:
 	HummerScript* hs = nullptr;
 	CanvasUI* gauge = nullptr;
-
+public:
 	GlassGauge(HummerScript* _hs): hs(_hs){}
 	void Start() override;
 	void OnDestroy() override;
 	void Update() override;
+
 };
