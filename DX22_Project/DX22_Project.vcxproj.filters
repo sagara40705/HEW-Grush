@@ -162,12 +162,6 @@
     <ClCompile Include="CanvasUI.cpp">
       <Filter>コンポーネント</Filter>
     </ClCompile>
-    <ClCompile Include="PlayerAction.cpp">
-      <Filter>コンポーネント\Script</Filter>
-    </ClCompile>
-    <ClCompile Include="CameraControll.cpp">
-      <Filter>コンポーネント\Script</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Defines.h">
@@ -307,12 +301,6 @@
     </ClInclude>
     <ClInclude Include="CanvasUI.h">
       <Filter>コンポーネント</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerAction.h">
-      <Filter>コンポーネント\Script</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraControll.h">
-      <Filter>コンポーネント\Script</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
