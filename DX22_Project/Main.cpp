@@ -10,9 +10,9 @@
 #include "ShaderList.h"
 #include "LineManager.h"
 #include "Timer.h"
+#include "Game.h"
 
 //--- グローバル変数
-Scene* g_pScene;
 
 HRESULT Init(HWND hWnd, UINT width, UINT height)
 {
@@ -28,16 +28,15 @@ HRESULT Init(HWND hWnd, UINT width, UINT height)
 	ShaderList::Init();
 	Timer::Init();
 
+
 	// シーン
-	g_pScene = new SceneGame();
+	Game::Init(new SceneGame());
 
 	return hr;
 }
 
 void Uninit()
 {
-	if (g_pScene) delete g_pScene;
-
 	ShaderList::Uninit();
 	UninitInput();
 	Sprite::Uninit();
@@ -52,7 +51,7 @@ void Update()
 {
 	Timer::Update();
 	UpdateInput();
-	g_pScene->RootUpdate();
+	Game::Update();
 }
 
 void Draw()
@@ -128,7 +127,7 @@ void Draw()
 	Geometory::SetProjection(mat[1]);
 #endif
 	*/
-	g_pScene->RootDraw();
+	Game::Draw();
 	EndDrawDirectX();
 }
 
