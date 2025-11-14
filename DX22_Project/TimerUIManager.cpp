@@ -1,5 +1,6 @@
 #include "TimerUIManager.h"
 #include "GameObject.h"
+#include "Timer.h"
 
 TimerUIManager::TimerUIManager(CanvasUI* tm, CanvasUI* om, CanvasUI* ts, CanvasUI* os)
 {
@@ -25,4 +26,5 @@ void TimerUIManager::OnDestroy()
 
 void TimerUIManager::Update()
 {
+
 }
