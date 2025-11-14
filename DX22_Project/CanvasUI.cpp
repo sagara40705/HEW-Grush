@@ -10,6 +10,19 @@ CanvasUI::CanvasUI(const char* texPass, Vector2 pos, Vector2 size, Vector2 uvPos
 {
 	m_data.texture = new Texture();
 	m_data.texture->Create(texPass);
+	texOwner = true;
+	SetOffset(pos);
+	SetSize(size);
+	SetParam();
+	SetUVPos(uvPos);
+	SetUVScale(uvSize);
+	m_data.param[2] = { 1, 1, 1, 1 };
+}
+
+CanvasUI::CanvasUI(Texture* texture, Vector2 pos, Vector2 size, Vector2 uvPos, Vector2 uvSize)
+{
+	m_data.texture = texture;
+	texOwner = false;
 	SetOffset(pos);
 	SetSize(size);
 	SetParam();
@@ -30,7 +43,8 @@ void CanvasUI::Start()
 
 void CanvasUI::OnDestroy()
 {
-	delete m_data.texture; m_data.texture = nullptr;
+	if(texOwner) delete m_data.texture;
+	m_data.texture = nullptr;
 	m_data.vs = nullptr;
 	m_data.ps = nullptr;
 }
@@ -38,7 +52,6 @@ void CanvasUI::OnDestroy()
 void CanvasUI::Draw()
 {
 	if (!m_data.mesh || !m_data.vs || !m_data.ps || !m_data.texture) return;
-
 
 	SetMatrix();
 	m_data.vs->WriteBuffer(0, m_data.matrix);
@@ -87,10 +100,6 @@ void CanvasUI::SetUVScale(Vector2 scale)
 void CanvasUI::SetColor(DirectX::XMFLOAT4 color)
 {
 	m_data.param[2] = color;
-}
-
-void CanvasUI::SetTexture(Texture* tex)
-{
 }
 
 void CanvasUI::SetVertexShader(Shader* vs)
