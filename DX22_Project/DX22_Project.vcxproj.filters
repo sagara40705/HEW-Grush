@@ -162,6 +162,12 @@
     <ClCompile Include="CanvasUI.cpp">
       <Filter>コンポーネント</Filter>
     </ClCompile>
+    <ClCompile Include="GlassScript.cpp">
+      <Filter>コンポーネント\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="GlassGauge.cpp">
+      <Filter>コンポーネント\Script</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Defines.h">
@@ -301,6 +307,12 @@
     </ClInclude>
     <ClInclude Include="CanvasUI.h">
       <Filter>コンポーネント</Filter>
+    </ClInclude>
+    <ClInclude Include="GlassScript.h">
+      <Filter>コンポーネント\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="GlassGauge.h">
+      <Filter>コンポーネント\Script</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

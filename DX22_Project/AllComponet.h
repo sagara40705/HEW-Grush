@@ -15,3 +15,5 @@
 #include "HummerScript.h"
 #include "PlanetMove.h"
 #include "CanvasUI.h"
+#include "GlassScript.h"
+#include "GlassGauge.h"

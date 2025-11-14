@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <cmath>
 #include "DebugLog.h"
+#include "GlassScript.h"
 
 void HummerScript::Start()
 {
@@ -35,7 +36,43 @@ void HummerScript::OnTriggerEnter(const TriggerInfo& c)
 	if (c.other)
 	{
 		if (!c.other->CompareTag(Tag::Glass)) return;
-		Debug::LogValue(" HummerScript::Destroy id", c.other->id);
-		c.other->Destroy();
+
+		if (CheckLevel(c.other))
+		{
+			c.other->Destroy();
+			//Debug::LogValue(" HummerScript::Destroy id", c.other->id);
+			GaugeUp(c.other);
+			LevelUp();
+		}
 	}
 }
+
+bool HummerScript::CheckLevel(GameObject* glass)
+{
+	GlassScript* gs = glass->TryGetComponent<GlassScript>();
+	if (!gs) return false;
+
+	return (gs->level <= level);
+}
+
+void HummerScript::GaugeUp(GameObject* glass)
+{
+	GlassScript* gs = glass->TryGetComponent<GlassScript>();
+	if (!gs) return;
+
+	gauge += kGaugeUpValue[gs->level - 1];
+	Debug::LogValue(" HummerScript::gauge", gauge);
+}
+
+void HummerScript::LevelUp()
+{
+	if (gauge >= kMaxGaugeValue[level - 1] && level < 3)
+	{
+		level++;
+		gauge = 0;
+		Debug::LogValue(" HummerScript::levelup", level);
+
+	}
+}
+
+

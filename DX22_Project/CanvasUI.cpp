@@ -12,6 +12,7 @@ CanvasUI::CanvasUI(const char* texPass, Vector2 pos, Vector2 size, Vector2 uvPos
 	m_data.texture->Create(texPass);
 	SetOffset(pos);
 	SetSize(size);
+	SetParam();
 	SetUVPos(uvPos);
 	SetUVScale(uvSize);
 	m_data.param[2] = { 1, 1, 1, 1 };
@@ -21,7 +22,7 @@ void CanvasUI::Start()
 {
 	CreateMesh();
 	ensureDefaultShaders();
-	SetParam();
+
 
 	m_data.vs = s_defVS.get();
 	m_data.ps = s_defPS.get();
@@ -52,6 +53,16 @@ void CanvasUI::SetOffset(Vector2  offset)
 {
 	m_data.param[0].x = offset.x;
 	m_data.param[0].y = offset.y;
+}
+
+void CanvasUI::SetPosX(float x)
+{
+	m_data.param[0].x = x;
+}
+
+void CanvasUI::SetPosY(float y)
+{
+	m_data.param[0].y = y;
 }
 
 void CanvasUI::SetSize(Vector2 size)
