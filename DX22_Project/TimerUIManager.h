@@ -14,15 +14,16 @@ public:
 	};
 private:
 	CanvasUI* uiNumbers[TimerDigit::Count]{}; // •ª•ª •b•b‚Ìl‚Â
-	float currenTime = 0.f;
+	float currentTimer = 0.f;
+	static constexpr int MAX_SECONDS = 99 * 60 + 59; // 99:59 ‚Å‘Å‚¿~‚ß
 public:
 	TimerUIManager(CanvasUI* tm, CanvasUI* om, CanvasUI* ts, CanvasUI* os);
 	void Start() override;
 	void OnDestroy() override;
 	void Update() override;
 private:
-	const Vector2 kNumberPos[TimerDigit::Count] = { {0, 0},{0, 0}, {0, 0}, {0, 0} };	//ˆÊ’u(l‚Â•ª)
-	const Vector2 kNumberSize = { 1.f, 1.f };											//k¬—¦
+	const Vector2 kNumberPos[TimerDigit::Count] = { {1020.f, 20.f},{1070.f, 20.f}, {1150.f, 20.f}, {1200.f, 20.f} };	//ˆÊ’u(l‚Â•ª)
+	const Vector2 kNumberSize = { 0.5f, 0.5f };											//k¬—¦
 	Vector2 GetNumberUVPos(int n) { return { n * 0.1f, 1.f }; }							//UVPos
 	const Vector2 kNumberUVSize = { 0.1f, 1.f };										//UVSize
 

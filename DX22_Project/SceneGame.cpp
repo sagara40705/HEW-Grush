@@ -107,6 +107,8 @@ SceneGame::SceneGame()
     karubi.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{0,0.75f,0}, DirectX::XMFLOAT3{1, 1.5, 1});
     LineManager::AddBoxCollider(&karubi);
 
+    CreateTimerUi();
+
     GameObject& SampleUi = W->CreateGameObject();
     auto& ui = SampleUi.AddComponent<CanvasUI>("Assets/Texture/Star.png");
     SampleUi.AddComponent<GlassGauge>(hammer.TryGetComponent<HummerScript>());
@@ -143,26 +145,22 @@ void SceneGame::SetPlayerAndHummer()
 
 void SceneGame::CreateTimerUi()
 {
-    auto pNumberTex = std::make_unique<Texture>();
-    pNumberTex->Create("Assets/Texture/Number.png");
-
     GameObject& tm = W->CreateGameObject();
-    CanvasUI& tmUI = tm.AddComponent<CanvasUI>(pNumberTex.get());
+    CanvasUI& tmUI = tm.AddComponent<CanvasUI>("Assets/Texture/Number.png");
 
     GameObject& om = W->CreateGameObject();
-    CanvasUI& omUI = om.AddComponent<CanvasUI>(pNumberTex.get());
+    CanvasUI& omUI = om.AddComponent<CanvasUI>("Assets/Texture/Number.png");
 
     GameObject& TimerUi_colon   = W->CreateGameObject();
 
     GameObject& ts = W->CreateGameObject();
-    CanvasUI& tsUI = ts.AddComponent<CanvasUI>(pNumberTex.get());
+    CanvasUI& tsUI = ts.AddComponent<CanvasUI>("Assets/Texture/Number.png");
 
     GameObject& os = W->CreateGameObject();
-    CanvasUI& osUI = ts.AddComponent<CanvasUI>(pNumberTex.get());
+    CanvasUI& osUI = os.AddComponent<CanvasUI>("Assets/Texture/Number.png");
 
     GameObject& TimerUi_manager = W->CreateGameObject();
     TimerUi_manager.AddComponent<TimerUIManager>(&tmUI, &omUI, &tsUI, &osUI);
-
 }
 
 
