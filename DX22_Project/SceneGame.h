@@ -14,6 +14,7 @@ public:
 private:
 	void SetPlayerAndHummer();
 	void CreateTimerUi();
+	void CreateScoreUi();
 };
 
 #endif // __SCENE_GAME_H__

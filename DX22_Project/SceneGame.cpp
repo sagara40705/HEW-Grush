@@ -108,6 +108,7 @@ SceneGame::SceneGame()
     LineManager::AddBoxCollider(&karubi);
 
     CreateTimerUi();
+    CreateScoreUi();
 
     GameObject& SampleUi = W->CreateGameObject();
     auto& ui = SampleUi.AddComponent<CanvasUI>("Assets/Texture/Star.png");
@@ -161,6 +162,31 @@ void SceneGame::CreateTimerUi()
 
     GameObject& TimerUi_manager = W->CreateGameObject();
     TimerUi_manager.AddComponent<TimerUIManager>(&tmUI, &omUI, &tsUI, &osUI);
+}
+
+void SceneGame::CreateScoreUi()
+{
+    // 千の位
+    GameObject& th = W->CreateGameObject();
+    CanvasUI& thUI = th.AddComponent<CanvasUI>("Assets/Texture/Number.png");
+
+    // 百の位
+    GameObject& h = W->CreateGameObject();
+    CanvasUI& hUI = h.AddComponent<CanvasUI>("Assets/Texture/Number.png");
+
+    // 十の位
+    GameObject& t = W->CreateGameObject();
+    CanvasUI& tUI = t.AddComponent<CanvasUI>("Assets/Texture/Number.png");
+
+    // 一の位
+    GameObject& o = W->CreateGameObject();
+    CanvasUI& oUI = o.AddComponent<CanvasUI>("Assets/Texture/Number.png");
+
+    GameObject& scoreUiManagerObj = W->CreateGameObject();
+    auto& scoreMgr = scoreUiManagerObj.AddComponent<ScoreUIManager>(&thUI, &hUI, &tUI, &oUI);
+
+    // 初期値（例：目標 5000kg に対して、まだ何も壊していない）
+    scoreMgr.SetValue(5000);
 }
 
 

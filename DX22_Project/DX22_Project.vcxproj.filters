@@ -177,6 +177,9 @@
     <ClCompile Include="Game.cpp">
       <Filter>システム</Filter>
     </ClCompile>
+    <ClCompile Include="ScoreUIManager.cpp">
+      <Filter>コンポーネント\Script</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Defines.h">
@@ -328,6 +331,9 @@
     </ClInclude>
     <ClInclude Include="Game.h">
       <Filter>システム</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreUIManager.h">
+      <Filter>コンポーネント\Script</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
