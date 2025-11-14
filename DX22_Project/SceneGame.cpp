@@ -166,6 +166,9 @@ void SceneGame::CreateTimerUi()
 
 void SceneGame::CreateScoreUi()
 {
+    // スコアの初期化
+    ScoreManager::Instance().Reset(500);
+
     // 千の位
     GameObject& th = W->CreateGameObject();
     CanvasUI& thUI = th.AddComponent<CanvasUI>("Assets/Texture/Number.png");
@@ -183,10 +186,7 @@ void SceneGame::CreateScoreUi()
     CanvasUI& oUI = o.AddComponent<CanvasUI>("Assets/Texture/Number.png");
 
     GameObject& scoreUiManagerObj = W->CreateGameObject();
-    auto& scoreMgr = scoreUiManagerObj.AddComponent<ScoreUIManager>(&thUI, &hUI, &tUI, &oUI);
-
-    // 初期値（例：目標 5000kg に対して、まだ何も壊していない）
-    scoreMgr.SetValue(5000);
+    scoreUiManagerObj.AddComponent<ScoreUIManager>(&thUI, &hUI, &tUI, &oUI);
 }
 
 

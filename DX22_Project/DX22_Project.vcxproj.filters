@@ -335,6 +335,9 @@
     <ClInclude Include="ScoreUIManager.h">
       <Filter>コンポーネント\Script</Filter>
     </ClInclude>
+    <ClInclude Include="ScoreManager.h">
+      <Filter>システム</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="debug_log.txt">

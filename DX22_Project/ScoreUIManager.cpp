@@ -1,4 +1,5 @@
 ﻿#include "ScoreUIManager.h"
+#include "ScoreManager.h"
 #include "GameObject.h"
 
 ScoreUIManager::ScoreUIManager(CanvasUI* th, CanvasUI* h, CanvasUI* t, CanvasUI* o)
@@ -48,7 +49,7 @@ void ScoreUIManager::SetValue(int v)
 void ScoreUIManager::Update()
 {
     // currentValue (0〜9999) を各桁に分解
-    int value = 1234;
+    int value = ScoreManager::Instance().GetRemainingKg();
 
     int digits[ScoreDigit::Count];
     digits[Thousands] = (value / 1000) % 10;

@@ -141,6 +141,7 @@ void World::ProcessDestroyQueue()
         }
     }
 
+
     toDestroy.clear();
 }
 
