@@ -5,6 +5,7 @@
 class Transform;
 class Rigidbody;
 class Collider;
+class HummerScript;
 
 class PlayerControll final : public MonoBehaviour, public CollisionListener
 {
@@ -27,6 +28,9 @@ public:
 	float spinCooldown = 2.0f;   // クールタイム「3」秒
 	float spinRotSpeed = 1440.0f; // deg/s（最小実装）
 
+	// ====== 通常攻撃（E） ======
+	float normalMotionTime = 0.3f; // クールタイム＝モーション時間
+
 	// === 移動方向へ“向かせる”ためのヨー角トラッキング ===
 	float facingYawDeg = 0.0f; // 自身がいま向いているとみなすY回転角（度）
 
@@ -41,7 +45,7 @@ private:
 	Transform* camera_ = nullptr;
 	Rigidbody* rb_ = nullptr;
 	Collider* col_ = nullptr;
-	Collider* hummer_ = nullptr;
+	HummerScript* hummer_ = nullptr; 
 
 	bool IsGrounded() const;
 	void ApplyHorizontal(float dt, bool grounded);
@@ -50,11 +54,12 @@ private:
 	void Spinning(float dt);   // ← クールタイム対応
 	void DashTryStart(bool grounded);
 	void DashUpdate(float dt);
-	void SetHummerActive(bool activ);
+	void NormalAttackTryStart();
+	void SetHummerActionMask();
 
 private:
 	// --- アクション状態 ---
-	bool isAttack = false;
+	//bool isAttack = false;
 
 	// ダッシュ中フラグ（仕様要件）
 	bool isDash = false;
@@ -69,8 +74,11 @@ private:
 	// --- クールタイム管理 ---
 	float dashCooldownTimer = 0.0f;
 	float spinCooldownTimer = 0.0f;
+	float normalCooldownTimer = 0.0f;
 
 	// --- 回転攻撃内部 ---
 	bool  spinning = false;
 	float spinAccumDeg = 0.0f;
+
+	// --- 通常攻撃内部 ---
 };

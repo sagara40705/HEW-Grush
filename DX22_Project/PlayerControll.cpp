@@ -12,6 +12,7 @@
 #include <cmath>
 #include "DebugLog.h"
 #include "Game.h"
+#include "HummerScript.h"
 
 using namespace DirectX;
 
@@ -50,7 +51,15 @@ void PlayerControll::Start()
     assert(rb_ && "PlayerControll requires Rigidbody");
     assert(col_ && "PlayerControll requires Collider (Box/Sphere/...)");
 
-
+    // === ハンマー(HummerScript)の取得 ===
+    for (auto& o : Game::GetWorld().objects)
+    {
+        if (!o->active) continue;
+        if (!o->CompareTag(Tag::Weapon)) continue;
+        HummerScript* hs = o->TryGetComponent<HummerScript>();
+        Transform* ht = o->TryGetComponent<Transform>();
+        if (hs && ht && ht->GetParent() == t) { hummer_ = hs; break; }
+    }
 }
 
 void PlayerControll::Update()
@@ -60,26 +69,30 @@ void PlayerControll::Update()
     // クールタイム減算
     if (dashCooldownTimer > 0.0f) dashCooldownTimer = std::max(0.0f, dashCooldownTimer - DT);
     if (spinCooldownTimer > 0.0f) spinCooldownTimer = std::max(0.0f, spinCooldownTimer - DT);
+    if (normalCooldownTimer > 0.0f) normalCooldownTimer = std::max(0.0f, normalCooldownTimer - DT);
 
     const bool grounded = IsGrounded();
 
-    if (isDash) {
+    if (isDash) 
+    {
         DashUpdate(DT);
     }
-    else {
+    else
+    {
         ApplyHorizontal(DT, grounded);
         ApplyJump(grounded);
-        DashTryStart(grounded); // ← ここで発動判定
-        Spinning(DT);           // ← クールタイム管理版
+        DashTryStart(grounded);
+        Spinning(DT);  
+        NormalAttackTryStart();
     }
+
+    SetHummerActionMask();
 
     if (t->GetPosition().y < ResetPosY)
     {
         t->SetPosition(RespawnPos);
         Debug::Log(" PlayerControll::RespawnPos");
     }
-
-
 }
 
 bool PlayerControll::IsGrounded() const
@@ -254,6 +267,29 @@ void PlayerControll::DashUpdate(float dt)
 
 }
 
+void PlayerControll::NormalAttackTryStart()
+{
+    if (!hummer_) return;
+    if (!IsKeyTrigger('E')) return;
+    if (normalCooldownTimer > 0.0f) return;
+
+    // ハンマーに通常攻撃を依頼（移動は HummerScript が担当）
+    hummer_->motionTime = normalMotionTime; // 指定値を反映（0.5s）
+    hummer_->StartNormalAttack();
+
+    // クールタイム＝モーション時間
+    normalCooldownTimer = normalMotionTime;
+}
+
+void PlayerControll::SetHummerActionMask()
+{
+    if (!hummer_) return;
+
+    // “通常攻撃 or 回転攻撃 or ダッシュ”のいずれかでON
+    const bool actionOn = (hummer_->IsNormalAttacking() || spinning || isDash);
+    hummer_->SetActionHitEnable(actionOn);
+}
+
 // --- 回転攻撃：クールタイム「3」秒、CD中は起動不可 ---
 void PlayerControll::Spinning(float dt)
 {
@@ -263,7 +299,7 @@ void PlayerControll::Spinning(float dt)
         {
             spinning = true;
             spinAccumDeg = 0.0f;
-            isAttack = true;
+            //isAttack = true;
         }
     }
 
@@ -276,16 +312,11 @@ void PlayerControll::Spinning(float dt)
         if (spinAccumDeg >= 360.0f)
         {
             spinning = false;
-            isAttack = false;
+            //isAttack = false;
             spinAccumDeg = 0.0f;
             spinCooldownTimer = spinCooldown; // クールタイム開始
         }
     }
 
 
-}
-
-void PlayerControll::SetHummerActive(bool)
-{
-    // TODO: 必要であれば武器ON/OFFを管理
 }
