@@ -9,7 +9,6 @@ Scene* Game::s_nextScene = nullptr;
 void Game::Init(Scene* firstScene)
 {
     // World は一旦クリーンな状態にしておく
-    world.ClearAll();
 
     // 現在シーンをセット
     s_currentScene = firstScene;

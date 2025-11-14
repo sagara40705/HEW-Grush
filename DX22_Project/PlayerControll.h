@@ -5,7 +5,7 @@ class Transform;
 class Rigidbody;
 class Collider;   // š BoxCollider ŒÅ’è‚©‚çŠî”ÕCollider‚Ö
 
-class PlayerControll final : public MonoBehaviour, public CollisionListener, public TriggerListener
+class PlayerControll final : public MonoBehaviour, public CollisionListener
 {
 public:
     // ====== ’è” ======
@@ -21,13 +21,13 @@ public:
     void OnDestroy() override;
     void OnCollisionEnter(const CollisionInfo& c) override;
     //void OnCollisionStay(const CollisionInfo& c) override;
-    void OnTriggerEnter(const TriggerInfo& info) override;
 
 private:
     Transform* t = nullptr;
     Transform* camera_ = nullptr;
     Rigidbody* rb_ = nullptr;
     Collider* col_ = nullptr; // š Šî”ÕColliderƒ|ƒCƒ“ƒ^
+    Collider* hummer_ = nullptr;
 
     bool IsGrounded() const;
     void ApplyHorizontal(float dt, bool grounded);
@@ -36,7 +36,9 @@ private:
     void OnScale();
     void Spinning();
     void Dash();
+    void SetHummerActive(bool activ);
 private:
+    bool isAttack = false;
     bool isDash = false;
     Vector3 moveDir = Vector3::zero();
 };

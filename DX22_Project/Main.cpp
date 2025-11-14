@@ -11,6 +11,8 @@
 #include "LineManager.h"
 #include "Timer.h"
 #include "Game.h"
+#include "Camera.h"
+#include "DebugLog.h"
 
 //--- グローバル変数
 
@@ -28,15 +30,17 @@ HRESULT Init(HWND hWnd, UINT width, UINT height)
 	ShaderList::Init();
 	Timer::Init();
 
-
 	// シーン
 	Game::Init(new SceneGame());
+
+	Debug::LogValue("GameInit camera", (Camera::Main() == nullptr));
 
 	return hr;
 }
 
 void Uninit()
 {
+	Game::Uninit();
 	ShaderList::Uninit();
 	UninitInput();
 	Sprite::Uninit();
@@ -49,9 +53,11 @@ void Uninit()
 
 void Update()
 {
+	Debug::LogValue("GameUpdate0 camera", (Camera::Main() == nullptr));
 	Timer::Update();
 	UpdateInput();
 	Game::Update();
+	Debug::LogValue("GameUpdate1 camera", (Camera::Main() == nullptr));
 }
 
 void Draw()
@@ -127,6 +133,7 @@ void Draw()
 	Geometory::SetProjection(mat[1]);
 #endif
 	*/
+	Debug::LogValue("GameDraw camera", (Camera::Main() == nullptr));
 	Game::Draw();
 	EndDrawDirectX();
 }

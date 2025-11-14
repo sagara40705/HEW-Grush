@@ -12,6 +12,7 @@ public:
 	void Draw() final;
 
 private:
+	void SetPlayerAndHummer();
 	void CreateTimerUi();
 };
 

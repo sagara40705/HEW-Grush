@@ -10,9 +10,9 @@
 #include <algorithm>
 #include <cmath>
 #include "DebugLog.h"
+#include "Game.h"
 
 // Scene 内の World は既存と同様に外部参照
-extern World W;
 
 // 便利用
 static inline float Clamp01(float v) { return std::clamp(v, 0.0f, 1.0f); }
@@ -57,7 +57,7 @@ bool PlayerControll::IsGrounded() const
     const auto me = col_->GetWorldAABB();
     
     // すべての静的 Collider と照合（XZ重なり かつ 足元が近接）
-    for (auto& o : W.objects)
+    for (auto& o : Game::GetWorld().objects)
     {
         if (!o->active) continue;
         if (o.get() == Parent) continue;
@@ -192,22 +192,12 @@ void PlayerControll::OnDestroy()
     t = nullptr;
     rb_ = nullptr;
     col_ = nullptr;
+    hummer_ = nullptr;
 }
 
 void PlayerControll::OnCollisionEnter(const CollisionInfo& c)
 {
 }
-
-void PlayerControll::OnTriggerEnter(const TriggerInfo& t)
-{
-    if (!t.other) return;
-
-    if (!t.other->CompareTag(Tag::Glass)) return;
-    Debug::LogValue(" PlayerControll::Destroy id", t.other->id);
-    t.other->Destroy();
-    OnScale();
-}
-
 void PlayerControll::Spinning()
 {
     constexpr float DT = 1.0f / 60.0f;
@@ -245,5 +235,17 @@ void PlayerControll::Dash()
     {
         isDash = false;
         dashTimer = 0.0f;
+    }
+}
+
+void PlayerControll::SetHummerActive(bool activ)
+{
+    if (activ)
+    {
+
+    }
+    else
+    {
+
     }
 }
