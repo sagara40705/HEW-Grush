@@ -2,6 +2,7 @@
 #include "Transform.h"
 #include "Rigidbody.h"
 #include "Collider.h"   // ★ 追加
+#include "Camera.h"
 #include "SphereCollider.h"
 #include "GameObject.h"
 #include "World.h"
@@ -31,6 +32,7 @@ static inline bool OverlapXZ(const Collider::AABB& a, const Collider::AABB& b)
 void PlayerControll::Start()
 {
     t = Parent->TryGetComponent<Transform>();
+    camera_ = Camera::Main()->Parent->TryGetComponent<Transform>();
     rb_ = Parent->TryGetComponent<Rigidbody>();
 
     // ★ 自分の GameObject から「最初に見つかった Collider」を拾う
@@ -81,16 +83,46 @@ bool PlayerControll::IsGrounded() const
 void PlayerControll::ApplyHorizontal(float dt, bool grounded)
 {
     using namespace DirectX;
-    // 入力（WASD）: +Z=前(W), -Z=後(S), +X=右(D), -X=左(A)
-    const float ix = Sign(IsKeyPress('D'), IsKeyPress('A'));
-    const float iz = Sign(IsKeyPress('W'), IsKeyPress('S'));
 
-    // 目標速度
-    const float scale = grounded ? 1.0f : AIR_CONTROL; // 空中は制御弱め
-    const float targetVx = ix * MOVE_SPEED * scale;
-    const float targetVz = iz * MOVE_SPEED * scale;
+    // 入力取得
+    const float ix = Sign(IsKeyPress('D'), IsKeyPress('A')); // 右(+1)/左(-1)
+    const float iz = Sign(IsKeyPress('W'), IsKeyPress('S')); // 前(+1)/後(-1)
 
-    // 現在速度との差を加速で追従（ほんの少しだけ滑らかに）
+    // デフォルトは XZ ワールド基底（カメラ未設定時の後方互換）
+    XMVECTOR fwdXZ = XMVectorSet(0.f, 0.f, 1.f, 0.f);  // +Z
+    XMVECTOR rightXZ = XMVectorSet(1.f, 0.f, 0.f, 0.f); // +X
+
+    // ★ カメラがあれば「カメラ前方（XZ投影）」を前進方向に採用
+    if (camera_)
+    {
+        const XMFLOAT3 p = t->GetPosition();
+        const XMFLOAT3 c = camera_->GetPosition();
+
+        // カメラの視線は「カメラ→プレイヤー」方向と一致（TPS前提）
+        XMVECTOR camFwd = XMVectorSet(p.x - c.x, p.y - c.y, p.z - c.z, 0.f);
+
+        // 地面（XZ）へ投影して正規化
+        camFwd = XMVectorSet(XMVectorGetX(camFwd), 0.f, XMVectorGetZ(camFwd), 0.f);
+        const float len2 = XMVectorGetX(XMVector3LengthSq(camFwd));
+        if (len2 > 1e-6f)
+        {
+            fwdXZ = XMVector3Normalize(camFwd);
+            // 右ベクトル = up(0,1,0) × fwd
+            rightXZ = XMVector3Cross(XMVectorSet(0.f, 1.f, 0.f, 0.f), fwdXZ);
+            rightXZ = XMVector3Normalize(rightXZ);
+        }
+    }
+
+    // 入力を基底に合成（W/S は fwd、A/D は right）
+    XMVECTOR wish = XMVectorAdd(XMVectorScale(rightXZ, ix), XMVectorScale(fwdXZ, iz));
+    const float wishLen2 = XMVectorGetX(XMVector3LengthSq(wish));
+    if (wishLen2 > 1e-6f) wish = XMVector3Normalize(wish);
+
+    const float scale = grounded ? 1.0f : AIR_CONTROL;
+    const float targetVx = XMVectorGetX(wish) * MOVE_SPEED * scale;
+    const float targetVz = XMVectorGetZ(wish) * MOVE_SPEED * scale;
+
+    // 既存の加速度追従ロジックを流用
     Vector3& v = rb_->velocity;
     const float ax = (targetVx - v.x) * std::clamp(SMOOTH_ACC * dt, 0.0f, 1.0f);
     const float az = (targetVz - v.z) * std::clamp(SMOOTH_ACC * dt, 0.0f, 1.0f);
@@ -107,15 +139,15 @@ void PlayerControll::ApplyHorizontal(float dt, bool grounded)
     v.x += ax;
     v.z += az;
 
-    // 斜めで速くなりすぎないようにクリップ（水平成分のみ）
-    const float len2 = v.x * v.x + v.z * v.z;
+    // 斜めクリップ
+    const float vlen2 = v.x * v.x + v.z * v.z;
     const float maxH = MOVE_SPEED * (grounded ? 1.0f : AIR_CONTROL);
     const float max2 = maxH * maxH;
-    if (len2 > max2 && (ix != 0.0f || iz != 0.0f))
+    if (vlen2 > max2 && (ix != 0.0f || iz != 0.0f))
     {
-        const float len = std::sqrt(len2);
-        v.x = v.x / len * maxH;
-        v.z = v.z / len * maxH;
+        const float l = std::sqrt(vlen2);
+        v.x = v.x / l * maxH;
+        v.z = v.z / l * maxH;
     }
 }
 

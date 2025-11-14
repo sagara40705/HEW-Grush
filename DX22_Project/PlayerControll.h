@@ -25,6 +25,7 @@ public:
 
 private:
     Transform* t = nullptr;
+    Transform* camera_ = nullptr;
     Rigidbody* rb_ = nullptr;
     Collider* col_ = nullptr; // š Šî”ÕColliderƒ|ƒCƒ“ƒ^
 
