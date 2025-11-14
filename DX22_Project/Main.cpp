@@ -9,6 +9,7 @@
 #include "Defines.h"
 #include "ShaderList.h"
 #include "LineManager.h"
+#include "Timer.h"
 
 //--- グローバル変数
 Scene* g_pScene;
@@ -25,6 +26,7 @@ HRESULT Init(HWND hWnd, UINT width, UINT height)
 	Sprite::Init();
 	InitInput();
 	ShaderList::Init();
+	Timer::Init();
 
 	// シーン
 	g_pScene = new SceneGame();
@@ -41,12 +43,14 @@ void Uninit()
 	Sprite::Uninit();
 	Geometory::Uninit();
 	LineManager::Term();
+	Timer::Uninit();
 	UninitDirectX();
 
 }
 
 void Update()
 {
+	Timer::Update();
 	UpdateInput();
 	g_pScene->RootUpdate();
 }

@@ -5,6 +5,8 @@
 class Timer
 {
 public:
+	static void Init();
+	static void Uninit();
 	static void Update();
-	static float DeltaTime();
+	static float GetDeltaTime();
 };

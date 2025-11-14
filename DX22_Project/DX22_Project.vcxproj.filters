@@ -168,6 +168,9 @@
     <ClCompile Include="GlassGauge.cpp">
       <Filter>コンポーネント\Script</Filter>
     </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>システム</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Defines.h">
