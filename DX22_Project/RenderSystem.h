@@ -5,8 +5,6 @@
 #include "ModelRenderer.h"
 #include "LineManager.h"
 #include "CanvasUI.h"
-#include "Camera.h"
-#include "DebugLog.h"
 
 enum RenderMode
 {
@@ -49,8 +47,6 @@ namespace RenderSystem
                 }
             }
         }
-
-        Debug::LogValue("RednderSystem camera", (Camera::Main() == nullptr));
        
         LineManager::Draw();
 
