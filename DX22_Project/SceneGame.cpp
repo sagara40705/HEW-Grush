@@ -141,7 +141,6 @@ void SceneGame::Draw()
 
 void SceneGame::SetPlayerAndHummer()
 {
-
 }
 
 void SceneGame::CreateTimerUi()
