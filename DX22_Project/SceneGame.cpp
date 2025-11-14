@@ -82,7 +82,7 @@ SceneGame::SceneGame()
    // LineManager::AddBoxCollider(&player);
 
     GameObject& hammer = W->CreateGameObject();
-    hammer.AddComponent<Transform>(Vector3(1, 0, 0), Vector3::zero(), kDefaultHummerScale);
+    hammer.AddComponent<Transform>(Vector3(0, 0, 1), Vector3::zero(), kDefaultHummerScale);
     hammer.TryGetComponent<Transform>()->SetParent(&player.GetComponent<Transform>());
     hammer.AddComponent<MeshFilter>(MeshFilter::Type::Cube);
     hammer.AddComponent<MeshRender>(1);

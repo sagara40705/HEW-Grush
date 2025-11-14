@@ -27,6 +27,8 @@ public:
 	float spinCooldown = 2.0f;   // クールタイム「3」秒
 	float spinRotSpeed = 1440.0f; // deg/s（最小実装）
 
+	// === 移動方向へ“向かせる”ためのヨー角トラッキング ===
+	float facingYawDeg = 0.0f; // 自身がいま向いているとみなすY回転角（度）
 
 public:
 	void Start() override;

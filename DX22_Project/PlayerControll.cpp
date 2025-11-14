@@ -17,6 +17,7 @@ using namespace DirectX;
 
 static inline float Clamp01(float v) { return std::clamp(v, 0.0f, 1.0f); }
 static inline float Sign(bool pos, bool neg) { return (pos ? 1.0f : 0.0f) - (neg ? 1.0f : 0.0f); }
+static inline float Rad2Deg(float r) { return r * (180.0f / 3.14159265358979323846f); }
 
 constexpr XMFLOAT3 RespawnPos = { 0.0f, 1.0f, 0.0f };
 constexpr float ResetPosY = -20.0f;
@@ -117,6 +118,7 @@ void PlayerControll::ApplyHorizontal(float dt, bool grounded)
     // カメラ基底（XZ）
     XMVECTOR fwdXZ = XMVectorSet(0.f, 0.f, 1.f, 0.f);
     XMVECTOR rightXZ = XMVectorSet(1.f, 0.f, 0.f, 0.f);
+
     if (camera_)
     {
         const auto p = t->GetPosition();
@@ -133,7 +135,27 @@ void PlayerControll::ApplyHorizontal(float dt, bool grounded)
 
     // 入力方向ベクトル（正規化）
     XMVECTOR wish = XMVectorAdd(XMVectorScale(rightXZ, ix), XMVectorScale(fwdXZ, iz));
-    if (XMVectorGetX(XMVector3LengthSq(wish)) > 1e-6f) wish = XMVector3Normalize(wish);
+    const float wishLen2 = XMVectorGetX(XMVector3LengthSq(wish));
+    if (wishLen2 > 1e-6f) wish = XMVector3Normalize(wish);
+
+    // ===== 追加：移動時は“移動方向に向ける”（即時スナップ。回転攻撃中は無効） =====
+    if (!spinning && wishLen2 > 1e-6f)
+    {
+        // atan2(x, z) で Yaw[deg] を算出（+Z 前方想定）
+        const float targetYaw = Rad2Deg(std::atan2(XMVectorGetX(wish), XMVectorGetZ(wish)));
+
+        // 最短差分に正規化して AddRotate で反映（Transform に絶対回転APIがない想定）
+        float delta = targetYaw - facingYawDeg;
+        // [-180,180] に正規化
+        while (delta > 180.0f)  delta -= 360.0f;
+        while (delta < -180.0f) delta += 360.0f;
+
+        if (std::fabs(delta) > 0.001f) 
+        {
+            t->AddRotate(Vector3(0.0f, delta, 0.0f));
+            facingYawDeg += delta;
+        }
+    }
 
     // 通常の歩行加速
     const float scale = grounded ? 1.0f : AIR_CONTROL;
@@ -146,8 +168,6 @@ void PlayerControll::ApplyHorizontal(float dt, bool grounded)
 
     v.x += ax;
     v.z += az;
-
-
 }
 
 void PlayerControll::ApplyJump(bool grounded)
