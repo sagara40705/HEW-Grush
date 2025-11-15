@@ -187,3 +187,8 @@ void SceneGame::CreateScoreUi()
     GameObject& scoreUiManagerObj = W->CreateGameObject();
     scoreUiManagerObj.AddComponent<ScoreUIManager>(&thUI, &hUI, &tUI, &oUI);
 }
+
+void SceneGame::CreateActionUi()
+{
+
+}

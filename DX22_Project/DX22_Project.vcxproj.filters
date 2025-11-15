@@ -52,6 +52,9 @@
     <Filter Include="Scene">
       <UniqueIdentifier>{17353e5d-0501-410a-817b-20279eccff06}</UniqueIdentifier>
     </Filter>
+    <Filter Include="コンポーネント\Script\UI">
+      <UniqueIdentifier>{38b9c3b3-2351-430b-ad22-5d38eb2c41c3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Startup.cpp">
@@ -165,20 +168,23 @@
     <ClCompile Include="GlassScript.cpp">
       <Filter>コンポーネント\Script</Filter>
     </ClCompile>
-    <ClCompile Include="GlassGauge.cpp">
-      <Filter>コンポーネント\Script</Filter>
-    </ClCompile>
     <ClCompile Include="Timer.cpp">
       <Filter>システム</Filter>
-    </ClCompile>
-    <ClCompile Include="TimerUIManager.cpp">
-      <Filter>コンポーネント\Script</Filter>
     </ClCompile>
     <ClCompile Include="Game.cpp">
       <Filter>システム</Filter>
     </ClCompile>
     <ClCompile Include="ScoreUIManager.cpp">
-      <Filter>コンポーネント\Script</Filter>
+      <Filter>コンポーネント\Script\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="TimerUIManager.cpp">
+      <Filter>コンポーネント\Script\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="GlassGauge.cpp">
+      <Filter>コンポーネント\Script\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionUIManager.cpp">
+      <Filter>コンポーネント\Script\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -323,20 +329,23 @@
     <ClInclude Include="GlassScript.h">
       <Filter>コンポーネント\Script</Filter>
     </ClInclude>
-    <ClInclude Include="GlassGauge.h">
-      <Filter>コンポーネント\Script</Filter>
-    </ClInclude>
-    <ClInclude Include="TimerUIManager.h">
-      <Filter>コンポーネント\Script</Filter>
-    </ClInclude>
     <ClInclude Include="Game.h">
       <Filter>システム</Filter>
     </ClInclude>
-    <ClInclude Include="ScoreUIManager.h">
-      <Filter>コンポーネント\Script</Filter>
-    </ClInclude>
     <ClInclude Include="ScoreManager.h">
       <Filter>システム</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreUIManager.h">
+      <Filter>コンポーネント\Script\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="TimerUIManager.h">
+      <Filter>コンポーネント\Script\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="GlassGauge.h">
+      <Filter>コンポーネント\Script\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionUIManager.h">
+      <Filter>コンポーネント\Script\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

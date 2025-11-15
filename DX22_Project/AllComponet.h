@@ -20,3 +20,4 @@
 #include "TimerUIManager.h"
 #include "ScoreManager.h"
 #include "ScoreUIManager.h"
+#include "ActionUIManager.h"
