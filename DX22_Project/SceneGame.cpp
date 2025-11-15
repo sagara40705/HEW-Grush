@@ -111,10 +111,10 @@ SceneGame::SceneGame()
 
 	W.Start();
     float p = 1.0f;
-    ui.SetOffset(Vector2(0, 200 * (1 - p)));
-    ui.SetSize(Vector2(1, p));
-    ui.SetUVPos(Vector2(0, (1 - p)));
-    ui.SetUVScale(Vector2(1, p));
+    //ui.SetOffset(Vector2(0, 200 * (1 - p)));
+    //ui.SetSize(Vector2(1, p));
+    //ui.SetUVPos(Vector2(0, (1 - p)));
+    //ui.SetUVScale(Vector2(1, p));
 }
 SceneGame::~SceneGame()
 {
