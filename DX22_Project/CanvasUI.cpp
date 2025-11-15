@@ -202,5 +202,5 @@ void CanvasUI::SetParam()
 
 	// param[0] = (offsetX, offsetY, width, height)
 	m_data.param[0].z = texW * m_data.param[0].z;
-	m_data.param[0].w = texW * m_data.param[0].w;
+	m_data.param[0].w = texH * m_data.param[0].w;
 }

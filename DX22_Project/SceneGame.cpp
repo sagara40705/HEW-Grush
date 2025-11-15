@@ -104,13 +104,13 @@ SceneGame::SceneGame()
     LineManager::AddBoxCollider(&karubi);
 
     GameObject& SampleUi = W.CreateGameObject();
-    auto& ui = SampleUi.AddComponent<CanvasUI>("Assets/Texture/Star.png");
+    auto& ui = SampleUi.AddComponent<CanvasUI>("Assets/Texture/GaugeMAX_Level1.png");
     SampleUi.AddComponent<GlassGauge>(hammer.TryGetComponent<HummerScript>());
 
     ui.SetColor({ 1 ,1 ,1 , 1.f});
 
 	W.Start();
-    float p = 0.8f;
+    float p = 1.0f;
     ui.SetOffset(Vector2(0, 200 * (1 - p)));
     ui.SetSize(Vector2(1, p));
     ui.SetUVPos(Vector2(0, (1 - p)));
