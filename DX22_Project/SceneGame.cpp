@@ -8,7 +8,9 @@
 #include "Model.h"
 #include "LineManager.h"
 #include "RenderSystem.h"
-World W;
+#include "Game.h"
+
+World* W = nullptr;
 
 namespace
 {
@@ -17,7 +19,7 @@ namespace
         const DirectX::XMFLOAT3& scale = Vec3One,
         bool isStaticCollider = true)
     {
-        GameObject& o = W.CreateGameObject();
+        GameObject& o = W->CreateGameObject();
         o.AddComponent<Transform>(pos, Vec3Zero, scale);
         o.AddComponent<MeshFilter>(MeshFilter::Type::Cube);
         o.AddComponent<MeshRender>();
@@ -57,36 +59,38 @@ namespace
 
 SceneGame::SceneGame()
 {
-	Debug::Init();
+    W = &Game::GetWorld();
+
+    Debug::Init();
+
+    GameObject& camera = W->CreateGameObject();
+    camera.AddComponent<Transform>(Camera::initPos(), Camera::initRotate(), Vector3::zero());
+    camera.AddComponent<Camera>();
     LineManager::Init();
 
-	GameObject& camera = W.CreateGameObject();	
-	camera.AddComponent<Transform>(Camera::initPos(), Camera::initRotate(), Vector3::zero());
-	camera.AddComponent<Camera>();	
-
-	GameObject& player = W.CreateGameObject();
-	player.AddComponent<Transform>(Vector3(0, 2, 0), Vector3::zero(), Vector3(0.5, 0.5, 0.5));
-	player.AddComponent<MeshFilter>(MeshFilter::Type::Cylinder);
-	player.AddComponent<MeshRender>(1);
-    player.AddComponent<BoxCollider>(true, Vector3(0, 0, 0), Vector3(1,1,1));
-   // player.AddComponent<SphereCollider>(0.5f, false);
-   // player.AddComponent<CapsuleCollider>(0.01f, 0.5f, false);
-	player.AddComponent<Rigidbody>();
-	player.AddComponent<PlayerControll>();
-	camera.AddComponent<CameraFollow>(&player.GetComponent<Transform>());
+    GameObject& player = W->CreateGameObject();
+    player.AddComponent<Transform>(Vector3(0, 2, 0), Vector3::zero(), Vector3(0.5, 0.5, 0.5));
+    player.AddComponent<MeshFilter>(MeshFilter::Type::Cylinder);
+    player.AddComponent<MeshRender>(1);
+    player.AddComponent<BoxCollider>(true, Vector3(0, 0, 0), Vector3(1, 1, 1));
+    // player.AddComponent<SphereCollider>(0.5f, false);
+    // player.AddComponent<CapsuleCollider>(0.01f, 0.5f, false);
+    player.AddComponent<Rigidbody>();
+    player.AddComponent<PlayerControll>();
+    camera.AddComponent<CameraFollow>(&player.GetComponent<Transform>());
     player.SetTag(Tag::Player);
-   // LineManager::AddBoxCollider(&player);
+    // LineManager::AddBoxCollider(&player);
 
-    GameObject& hammer = W.CreateGameObject();
-    hammer.AddComponent<Transform>(Vector3(1, 0, 0), Vector3::zero(), Vector3(0.8, 0.4, 0.4));
+    GameObject& hammer = W->CreateGameObject();
+    hammer.AddComponent<Transform>(Vector3(0, 0, 1), Vector3::zero(), kDefaultHummerScale);
     hammer.TryGetComponent<Transform>()->SetParent(&player.GetComponent<Transform>());
     hammer.AddComponent<MeshFilter>(MeshFilter::Type::Cube);
     hammer.AddComponent<MeshRender>(1);
     auto& hbc = hammer.AddComponent<BoxCollider>(false); hbc.isTrigger = true;
     hammer.AddComponent<HummerScript>(player.TryGetComponent<Transform>());
     hammer.SetTag(Tag::Weapon);
-    
-    //GameObject& floor = W.CreateGameObject();
+
+    //GameObject& floor = W->CreateGameObject();
     //floor.AddComponent<Transform>(Vector3(0, -30, 0), Vector3::zero(), Vector3(50, 50, 50));
     //floor.AddComponent<MeshFilter>(MeshFilter::Type::Sphere);
     //floor.AddComponent<MeshRender>();
@@ -96,40 +100,90 @@ SceneGame::SceneGame()
 
     BuildBlocksFromMap(map, /*unit=*/kUnit, /*scale=*/blockScale, /*isStaticCollider=*/true);
 
-    GameObject& karubi = W.CreateGameObject();
+    GameObject& karubi = W->CreateGameObject();
     karubi.AddComponent<Transform>(DirectX::XMFLOAT3{ 2,0.5,2 }, Vec3Zero, Vec3One);
     karubi.AddComponent<ModelComponent>("Assets/Ç‹ÇØÇÒéÆê‘å©Ç©ÇÈÇ—ïPàﬂëïMMD/Ç‹ÇØÇÒéÆê‘å©Ç©ÇÈÇ—ïPàﬂëïver1.0.pmx", 0.08f, Model::ZFlip);
     karubi.AddComponent<ModelRenderer>();
-    karubi.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{0,0.75f,0}, DirectX::XMFLOAT3{1, 1.5, 1});
+    karubi.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0,0.75f,0 }, DirectX::XMFLOAT3{ 1, 1.5, 1 });
     LineManager::AddBoxCollider(&karubi);
 
-    GameObject& SampleUi = W.CreateGameObject();
+    CreateTimerUi();
+    CreateScoreUi();
+
+    GameObject& SampleUi = W->CreateGameObject();
     auto& ui = SampleUi.AddComponent<CanvasUI>("Assets/Texture/GaugeMAX_Level1.png");
     SampleUi.AddComponent<GlassGauge>(hammer.TryGetComponent<HummerScript>());
 
-    ui.SetColor({ 1 ,1 ,1 , 1.f});
+    ui.SetColor({ 1 ,1 ,1 , 1.f });
 
-	W.Start();
-    float p = 1.0f;
-    //ui.SetOffset(Vector2(0, 200 * (1 - p)));
-    //ui.SetSize(Vector2(1, p));
-    //ui.SetUVPos(Vector2(0, (1 - p)));
-    //ui.SetUVScale(Vector2(1, p));
+    W->Start();
+    float p = 0.8f;
+    ui.SetOffset(Vector2(0, 200 * (1 - p)));
+    ui.SetSize(Vector2(1, p));
+    ui.SetUVPos(Vector2(0, (1 - p)));
+    ui.SetUVScale(Vector2(1, p));
 }
 SceneGame::~SceneGame()
 {
-	W.ClearAll();
-
+    W->ClearAll();
+    W = nullptr;
 }
 void SceneGame::Update()
 {
-	W.Update();
+    W->Update();
 }
 void SceneGame::Draw()
 {
-	W.Draw();
+    W->Draw();
 
 
 }
 
+void SceneGame::SetPlayerAndHummer()
+{
+}
 
+void SceneGame::CreateTimerUi()
+{
+    GameObject& tm = W->CreateGameObject();
+    CanvasUI& tmUI = tm.AddComponent<CanvasUI>("Assets/Texture/Number.png");
+
+    GameObject& om = W->CreateGameObject();
+    CanvasUI& omUI = om.AddComponent<CanvasUI>("Assets/Texture/Number.png");
+
+    GameObject& TimerUi_colon = W->CreateGameObject();
+
+    GameObject& ts = W->CreateGameObject();
+    CanvasUI& tsUI = ts.AddComponent<CanvasUI>("Assets/Texture/Number.png");
+
+    GameObject& os = W->CreateGameObject();
+    CanvasUI& osUI = os.AddComponent<CanvasUI>("Assets/Texture/Number.png");
+
+    GameObject& TimerUi_manager = W->CreateGameObject();
+    TimerUi_manager.AddComponent<TimerUIManager>(&tmUI, &omUI, &tsUI, &osUI);
+}
+
+void SceneGame::CreateScoreUi()
+{
+    // ÉXÉRÉAÇÃèâä˙âª
+    ScoreManager::Instance().Reset(500);
+
+    // êÁÇÃà 
+    GameObject& th = W->CreateGameObject();
+    CanvasUI& thUI = th.AddComponent<CanvasUI>("Assets/Texture/Number.png");
+
+    // ïSÇÃà 
+    GameObject& h = W->CreateGameObject();
+    CanvasUI& hUI = h.AddComponent<CanvasUI>("Assets/Texture/Number.png");
+
+    // è\ÇÃà 
+    GameObject& t = W->CreateGameObject();
+    CanvasUI& tUI = t.AddComponent<CanvasUI>("Assets/Texture/Number.png");
+
+    // àÍÇÃà 
+    GameObject& o = W->CreateGameObject();
+    CanvasUI& oUI = o.AddComponent<CanvasUI>("Assets/Texture/Number.png");
+
+    GameObject& scoreUiManagerObj = W->CreateGameObject();
+    scoreUiManagerObj.AddComponent<ScoreUIManager>(&thUI, &hUI, &tUI, &oUI);
+}

@@ -36,10 +36,10 @@ private:
 	Transform* t = nullptr;
 	Transform* owner = nullptr;
 	Collider* col = nullptr;
-
+public:
 	HummerGrade grade = HummerGrade::Grade_1;
 	float gauge = 0.f;
-
+private:
 	bool  isGaugeDecaying = false;
 	static constexpr float kGaugeDecayDelay = 5.f;
 	float timerGaugeDecayDelay = 0.f;
