@@ -45,3 +45,8 @@ void GlassGauge::Update()
     gauge->SetColor(col);
 
 }
+
+void GlassGauge::GaugeEffect()
+{
+
+}

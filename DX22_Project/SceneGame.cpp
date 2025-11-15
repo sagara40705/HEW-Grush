@@ -115,6 +115,10 @@ SceneGame::SceneGame()
     ui.SetSize(Vector2(1, p));
     ui.SetUVPos(Vector2(0, (1 - p)));
     ui.SetUVScale(Vector2(1, p));
+
+
+
+
 }
 SceneGame::~SceneGame()
 {
