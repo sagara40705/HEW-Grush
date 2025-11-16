@@ -7,6 +7,8 @@ class Rigidbody;
 class Collider;
 class HummerScript;
 
+
+
 class PlayerControll final : public MonoBehaviour, public CollisionListener
 {
 public:
@@ -81,4 +83,7 @@ private:
 	float spinAccumDeg = 0.0f;
 
 	// --- í èÌçUåÇì‡ïî ---
+public:
+	float GetDashCtRatio() { return (dashCooldownTimer / dashCooldown); }
+	float GetSpinCtRatio() { return (spinCooldownTimer / spinCooldown); }
 };

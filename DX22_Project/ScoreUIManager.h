@@ -39,7 +39,7 @@ private:
         { 1120.f, 80.f },   // 十の位
         { 1170.f, 80.f },   // 一の位
     };
-    const Vector2 kNumberSize = { 0.5f, 0.5f }; // 縮小率
+    const Vector2 kNumberSize = { 0.5f, 5.0f }; // 縮小率
 
     // Number.png を TimerUI と同じ仕様で使う前提（0〜9 が横並び）
     Vector2 GetNumberUVPos(int n) { return { n * 0.1f, 1.f }; }
