@@ -147,6 +147,8 @@ void SceneGame::RegisterTexture()
 {
     TextureManager::RegisterAuto(TextureTag::Number);
     TextureManager::RegisterAuto(TextureTag::GaugeMaxLv1);
+    TextureManager::RegisterAuto(TextureTag::SpinUI);
+    TextureManager::RegisterAuto(TextureTag::DashUI);
 }
 
 void SceneGame::SetPlayerAndHummer()
@@ -202,11 +204,11 @@ void SceneGame::CreateActionUi()
 {
     //
     GameObject& spin = W->CreateGameObject();
-    CanvasUI& spinUI = spin.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::GaugeMaxLv1));
+    CanvasUI& spinUI = spin.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::SpinUI));
 
     // 
     GameObject& dash = W->CreateGameObject();
-    CanvasUI& dashUI = dash.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::GaugeMaxLv1));
+    CanvasUI& dashUI = dash.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::DashUI));
 
     GameObject& actionUiManagerObj = W->CreateGameObject();
     actionUiManagerObj.AddComponent<ActionUIManager>(&spinUI, &dashUI);
