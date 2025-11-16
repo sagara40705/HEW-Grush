@@ -6,23 +6,23 @@ using namespace DirectX;
 std::shared_ptr<VertexShader> CanvasUI::s_defVS;
 std::shared_ptr<PixelShader>  CanvasUI::s_defPS;
 
-CanvasUI::CanvasUI(const char* texPass, Vector2 pos, Vector2 size, Vector2 uvPos, Vector2 uvSize)
-{
-	m_data.texture = new Texture();
-	m_data.texture->Create(texPass);
-	texOwner = true;
-	SetOffset(pos);
-	SetSize(size);
-	SetParam();
-	SetUVPos(uvPos);
-	SetUVScale(uvSize);
-	m_data.param[2] = { 1, 1, 1, 1 };
-}
+//CanvasUI::CanvasUI(const char* texPass, Vector2 pos, Vector2 size, Vector2 uvPos, Vector2 uvSize)
+//{
+//	m_data.texture = new Texture();
+//	m_data.texture->Create(texPass);
+//	texOwner = true;
+//	SetOffset(pos);
+//	SetSize(size);
+//	SetParam();
+//	SetUVPos(uvPos);
+//	SetUVScale(uvSize);
+//	m_data.param[2] = { 1, 1, 1, 1 };
+//}
 
 CanvasUI::CanvasUI(Texture* texture, Vector2 pos, Vector2 size, Vector2 uvPos, Vector2 uvSize)
 {
 	m_data.texture = texture;
-	texOwner = false;
+	//texOwner = false;
 	SetOffset(pos);
 	SetSize(size);
 	SetParam();
@@ -43,7 +43,7 @@ void CanvasUI::Start()
 
 void CanvasUI::OnDestroy()
 {
-	if(texOwner) delete m_data.texture;
+	//if(texOwner) delete m_data.texture;
 	m_data.texture = nullptr;
 	m_data.vs = nullptr;
 	m_data.ps = nullptr;
