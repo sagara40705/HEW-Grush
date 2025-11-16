@@ -23,7 +23,7 @@ public:
 	void Update() override;
 private:
 	const Vector2 kNumberPos[TimerDigit::Count] = { {1020.f, 20.f},{1070.f, 20.f}, {1150.f, 20.f}, {1200.f, 20.f} };	//à íu(élÇ¬ï™)
-	const Vector2 kNumberSize = { 0.05f, 0.5f };											//èkè¨ó¶
+	const Vector2 kNumberSize = { 0.5f, 5.0f };											//èkè¨ó¶
 	Vector2 GetNumberUVPos(int n) { return { n * 0.1f, 1.f }; }							//UVPos
 	const Vector2 kNumberUVSize = { 0.1f, 1.f };										//UVSize
 
