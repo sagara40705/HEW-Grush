@@ -1,4 +1,5 @@
 #pragma once
+#include "CanvasUI.h"
 
 // ‘O•ûéŒ¾
 class PlayerControll; class CanvasUI;

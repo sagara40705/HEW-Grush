@@ -111,6 +111,7 @@ SceneGame::SceneGame()
 
     CreateTimerUi();
     CreateScoreUi();
+    CreateActionUi();
 
     GameObject& SampleUi = W->CreateGameObject();
     auto& ui = SampleUi.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::GaugeMaxLv1));
@@ -199,5 +200,14 @@ void SceneGame::CreateScoreUi()
 
 void SceneGame::CreateActionUi()
 {
+    //
+    GameObject& spin = W->CreateGameObject();
+    CanvasUI& spinUI = spin.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::GaugeMaxLv1));
 
+    // 
+    GameObject& dash = W->CreateGameObject();
+    CanvasUI& dashUI = dash.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::GaugeMaxLv1));
+
+    GameObject& actionUiManagerObj = W->CreateGameObject();
+    actionUiManagerObj.AddComponent<ActionUIManager>(&spinUI, &dashUI);
 }
