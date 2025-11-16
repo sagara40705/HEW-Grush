@@ -186,6 +186,9 @@
     <ClCompile Include="ActionUIManager.cpp">
       <Filter>コンポーネント\Script\UI</Filter>
     </ClCompile>
+    <ClCompile Include="TextureManager.cpp">
+      <Filter>システム</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Defines.h">
@@ -346,6 +349,9 @@
     </ClInclude>
     <ClInclude Include="ActionUIManager.h">
       <Filter>コンポーネント\Script\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureManager.h">
+      <Filter>システム</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
