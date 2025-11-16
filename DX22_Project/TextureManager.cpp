@@ -3,6 +3,11 @@
 
 std::array<std::unique_ptr<Texture>, static_cast<int>(TextureTag::Count)> TextureManager::s_textures;
 
+const char* TextureManager::kTexturePath[static_cast<int>(TextureTag::Count)] =
+{
+    "Assets/Texture/Number.png",
+    "Assets/Texture/GaugeMAX_Level1.png",
+};
 
 bool TextureManager::Register(TextureTag tag, const char* filePath)
 {

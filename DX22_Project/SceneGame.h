@@ -12,6 +12,7 @@ public:
 	void Draw() final;
 
 private:
+	void RegisterTexture();
 	void SetPlayerAndHummer();
 	void CreateTimerUi();
 	void CreateScoreUi();

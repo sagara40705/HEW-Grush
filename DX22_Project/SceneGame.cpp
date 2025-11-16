@@ -9,6 +9,7 @@
 #include "LineManager.h"
 #include "RenderSystem.h"
 #include "Game.h"
+#include "TextureManager.h"
 
 World* W = nullptr;
 
@@ -62,6 +63,7 @@ SceneGame::SceneGame()
     W = &Game::GetWorld();
 
     Debug::Init();
+    RegisterTexture();
 
     GameObject& camera = W->CreateGameObject();
     camera.AddComponent<Transform>(Camera::initPos(), Camera::initRotate(), Vector3::zero());
@@ -111,7 +113,7 @@ SceneGame::SceneGame()
     CreateScoreUi();
 
     GameObject& SampleUi = W->CreateGameObject();
-    auto& ui = SampleUi.AddComponent<CanvasUI>("Assets/Texture/GaugeMAX_Level1.png");
+    auto& ui = SampleUi.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::GaugeMaxLv1));
     SampleUi.AddComponent<GlassGauge>(hammer.TryGetComponent<HummerScript>());
 
     ui.SetColor({ 1 ,1 ,1 , 1.f });
@@ -127,6 +129,7 @@ SceneGame::~SceneGame()
 {
     W->ClearAll();
     W = nullptr;
+    TextureManager::Clear();
 }
 void SceneGame::Update()
 {
@@ -139,6 +142,12 @@ void SceneGame::Draw()
 
 }
 
+void SceneGame::RegisterTexture()
+{
+    TextureManager::RegisterAuto(TextureTag::Number);
+    TextureManager::RegisterAuto(TextureTag::GaugeMaxLv1);
+}
+
 void SceneGame::SetPlayerAndHummer()
 {
 }
@@ -146,18 +155,18 @@ void SceneGame::SetPlayerAndHummer()
 void SceneGame::CreateTimerUi()
 {
     GameObject& tm = W->CreateGameObject();
-    CanvasUI& tmUI = tm.AddComponent<CanvasUI>("Assets/Texture/Number.png");
+    CanvasUI& tmUI = tm.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Number));
 
     GameObject& om = W->CreateGameObject();
-    CanvasUI& omUI = om.AddComponent<CanvasUI>("Assets/Texture/Number.png");
+    CanvasUI& omUI = om.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Number));
 
     GameObject& TimerUi_colon = W->CreateGameObject();
 
     GameObject& ts = W->CreateGameObject();
-    CanvasUI& tsUI = ts.AddComponent<CanvasUI>("Assets/Texture/Number.png");
+    CanvasUI& tsUI = ts.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Number));
 
     GameObject& os = W->CreateGameObject();
-    CanvasUI& osUI = os.AddComponent<CanvasUI>("Assets/Texture/Number.png");
+    CanvasUI& osUI = os.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Number));
 
     GameObject& TimerUi_manager = W->CreateGameObject();
     TimerUi_manager.AddComponent<TimerUIManager>(&tmUI, &omUI, &tsUI, &osUI);
@@ -170,19 +179,19 @@ void SceneGame::CreateScoreUi()
 
     // ç‚ÌˆÊ
     GameObject& th = W->CreateGameObject();
-    CanvasUI& thUI = th.AddComponent<CanvasUI>("Assets/Texture/Number.png");
+    CanvasUI& thUI = th.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Number));
 
     // •S‚ÌˆÊ
     GameObject& h = W->CreateGameObject();
-    CanvasUI& hUI = h.AddComponent<CanvasUI>("Assets/Texture/Number.png");
+    CanvasUI& hUI = h.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Number));
 
     // \‚ÌˆÊ
     GameObject& t = W->CreateGameObject();
-    CanvasUI& tUI = t.AddComponent<CanvasUI>("Assets/Texture/Number.png");
+    CanvasUI& tUI = t.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Number));
 
     // ˆê‚ÌˆÊ
     GameObject& o = W->CreateGameObject();
-    CanvasUI& oUI = o.AddComponent<CanvasUI>("Assets/Texture/Number.png");
+    CanvasUI& oUI = o.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Number));
 
     GameObject& scoreUiManagerObj = W->CreateGameObject();
     scoreUiManagerObj.AddComponent<ScoreUIManager>(&thUI, &hUI, &tUI, &oUI);
