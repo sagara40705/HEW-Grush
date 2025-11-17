@@ -14,4 +14,6 @@ public:
 	void OnDestroy() override;
 	void Update() override;
 
+	void GaugeEffect();
+
 };
