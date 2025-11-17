@@ -32,6 +32,8 @@ public:
 	Vector3 attackEndLocal = Vector3(1, 0, 1); // 「攻撃終了地点」
 	Vector3 idleLocal = Vector3(0, 0, 1); // 待機位置（子として前方1）
 	float motionTime = 0.3f; // 「モーション時間(0.5)」
+	// ===== ゲージ減衰 =====
+	const float kGaugeDecayValue = 0.0f;
 private:
 	Transform* t = nullptr;
 	Transform* owner = nullptr;

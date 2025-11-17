@@ -23,7 +23,7 @@ public:
 	void Update() override;
 private:
 	const Vector2 kNumberPos[Action::Count] = { {900.f, 520.f},{1050.f, 520.f} };	//à íu(élÇ¬ï™)
-	const Vector2 kNumberSize = { 0.25f, 0.25f };											//èkè¨ó¶
+	const Vector2 kNumberSize = { 0.25f, 0.25f };									//èkè¨ó¶
 	const Vector2 kNumberUvPos = {0.f, 0.f};	
 	const Vector2 kNumberUVSize = { 1.f, 1.f };										//UVSize
 };
