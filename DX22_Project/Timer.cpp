@@ -1,6 +1,6 @@
 #include "Timer.h"
 
-static float deltaTime = 0.f;
+float Timer::deltaTime = 0.f;
 
 void Timer::Init()
 {
