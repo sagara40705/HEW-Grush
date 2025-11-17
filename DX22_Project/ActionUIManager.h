@@ -2,7 +2,7 @@
 #include "CanvasUI.h"
 
 // ‘O•ûéŒ¾
-class PlayerControll; class CanvasUI;
+class PlayerAction; class CanvasUI;
 
 class ActionUIManager : public MonoBehaviour
 {
@@ -15,7 +15,7 @@ private:
 	};
 private:
 	CanvasUI* ui[Action::Count]{};
-	PlayerControll* pc = nullptr;
+	PlayerAction* pa = nullptr;
 public:
 	ActionUIManager(CanvasUI* spin, CanvasUI* dash);
 	void Start() override;

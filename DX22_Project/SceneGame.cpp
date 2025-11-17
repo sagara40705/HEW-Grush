@@ -78,7 +78,8 @@ SceneGame::SceneGame()
     // player.AddComponent<SphereCollider>(0.5f, false);
     // player.AddComponent<CapsuleCollider>(0.01f, 0.5f, false);
     player.AddComponent<Rigidbody>();
-    player.AddComponent<PlayerControll>();
+    player.AddComponent<PlayerMove>();
+    player.AddComponent<PlayerAction>();
     camera.AddComponent<CameraFollow>(&player.GetComponent<Transform>());
     player.SetTag(Tag::Player);
     // LineManager::AddBoxCollider(&player);

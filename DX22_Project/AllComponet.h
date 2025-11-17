@@ -9,6 +9,8 @@
 #include "CapsuleCollider.h"
 #include "Rigidbody.h"
 #include "PlayerControll.h"
+#include "PlayerMove.h"
+#include "PlayerAction.h"
 #include "CameraFollow.h"
 #include "ModelComponent.h"
 #include "ModelRenderer.h"
