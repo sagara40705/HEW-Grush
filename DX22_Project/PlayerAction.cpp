@@ -9,10 +9,43 @@
 #include "Input.h"
 #include <algorithm>
 #include <cmath>
-
+// --- XInput（ボタンでアクション。コントローラ入力が“あれば”キーボードを無視）---
+#include <Xinput.h>
+#pragma comment(lib, "Xinput.lib")
 using namespace DirectX;
-
 static inline float Clamp01(float v) { return std::clamp(v, 0.0f, 1.0f); }
+
+// ボタン割り当て（必要なら変更）
+namespace PadMap 
+{
+    constexpr WORD Dash = XINPUT_GAMEPAD_RIGHT_SHOULDER; // R1相当
+    constexpr WORD Spin = XINPUT_GAMEPAD_LEFT_SHOULDER;  // L1相当
+    constexpr WORD Normal = XINPUT_GAMEPAD_X; // □相当
+    constexpr SHORT STICK_DEAD = XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE;
+}
+// 簡易エッジ判定をこの翻訳単位で保持（他所の XInput 呼び出しと独立）
+namespace 
+{
+    struct PadState { XINPUT_STATE prev{}, curr{}; bool connected = false; } gPad;
+    void PollPad()
+    {
+        gPad.prev = gPad.curr;
+        gPad.connected = (XInputGetState(0, &gPad.curr) == ERROR_SUCCESS);
+    }
+    bool Press(WORD m) { return gPad.connected && (gPad.curr.Gamepad.wButtons & m); }
+    bool Trigger(WORD m) { return gPad.connected && (gPad.curr.Gamepad.wButtons & m) && !(gPad.prev.Gamepad.wButtons & m); }
+    bool AnyStickActive()
+    {
+        const auto& gp = gPad.curr.Gamepad;
+        return (std::abs(gp.sThumbLX) > PadMap::STICK_DEAD) || (std::abs(gp.sThumbLY) > PadMap::STICK_DEAD);
+    }
+    bool ControllerActiveThisFrame()
+    {
+        if (!gPad.connected) return false;
+        const bool anyBtn = (gPad.curr.Gamepad.wButtons != 0);
+        return anyBtn || AnyStickActive();
+    }
+}
 
 void PlayerAction::Start()
 {
@@ -22,13 +55,13 @@ void PlayerAction::Start()
     assert(t_ && rb_ && move_ && "PlayerAction requires Transform/Rigidbody/PlayerMove");
 
     AcquireHummer();
-
-
 }
 
 void PlayerAction::Update()
 {
     constexpr float DT = 1.0f / 60.0f;
+
+    PollPad();
 
     // クールタイム
     if (dashCooldownTimer_ > 0.0f) dashCooldownTimer_ = std::max(0.0f, dashCooldownTimer_ - DT);
@@ -70,9 +103,14 @@ void PlayerAction::AcquireHummer()
 void PlayerAction::DashTryStart()
 {
     if (!move_->IsGrounded()) return;
-    if (!IsKeyTrigger('F')) return;
     if (isDash_) return;
     if (dashCooldownTimer_ > 0.0f) return;
+
+    // “入力デバイスの選択”：このフレームにパッド入力があればキーボードは無視
+    const bool usePad = ControllerActiveThisFrame();
+    const bool dashKey = (!usePad) && IsKeyTrigger('F');
+    const bool dashPad = usePad && Trigger(PadMap::Dash);
+    if (!(dashKey || dashPad)) return;
 
     // 移動中のみ
     if (move_->HorizontalSpeedSq() <= (minDashMoveEps * minDashMoveEps)) return;
@@ -117,15 +155,17 @@ void PlayerAction::DashUpdate(float dt)
         rb_->velocity.z = dashDir_.z * dashEndSpeed;
         move_->SetMoveOverride(false);
     }
-
-
 }
 
 void PlayerAction::SpinningUpdate(float dt)
 {
+    const bool usePad = ControllerActiveThisFrame();
+    const bool spinKey = (!usePad) && IsKeyTrigger('R');
+    const bool spinPad = usePad && Trigger(PadMap::Spin);
+
     // 起動
     if (!spinning_) {
-        if (IsKeyTrigger('R') && spinCooldownTimer_ <= 0.0f) {
+        if ((spinKey || spinPad) && spinCooldownTimer_ <= 0.0f) {
             spinning_ = true;
             spinAccumDeg_ = 0.0f;
             move_->SetRotateLock(true);
@@ -146,23 +186,23 @@ void PlayerAction::SpinningUpdate(float dt)
             spinCooldownTimer_ = spinCooldown;
         }
     }
-
-
 }
 
 void PlayerAction::NormalAttackTryStart()
 {
     if (!hummer_) return;
-    if (!IsKeyTrigger('E')) return;
     if (normalCooldownTimer_ > 0.0f) return;
+
+    const bool usePad = ControllerActiveThisFrame();
+    const bool atkKey = (!usePad) && IsKeyTrigger('E');
+    const bool atkPad = usePad && Trigger(PadMap::Normal);
+    if (!(atkKey || atkPad)) return;
 
     hummer_->motionTime = normalMotionTime;
     hummer_->StartNormalAttack();
 
     // 実質連続で撃てる＝モーション時間をCTに
     normalCooldownTimer_ = normalMotionTime;
-
-
 }
 
 void PlayerAction::UpdateHummerMask()

@@ -8,17 +8,42 @@
 #include "Input.h"
 #include <algorithm>
 #include <cmath>
-
+// --- XInput（スティックで移動、接続時は“原則”コントローラ優先）---
+#include <Xinput.h>
+#pragma comment(lib, "Xinput.lib")
 using namespace DirectX;
 
 static inline float Sign(bool pos, bool neg) { return (pos ? 1.0f : 0.0f) - (neg ? 1.0f : 0.0f); }
 static inline float Rad2Deg(float r) { return r * (180.0f / 3.14159265358979323846f); }
-
 static inline bool OverlapXZ(const Collider::AABB& a, const Collider::AABB& b)
 {
     const bool ox = (a.min.x <= b.max.x) && (b.min.x <= a.max.x);
     const bool oz = (a.min.z <= b.max.z) && (b.min.z <= a.max.z);
     return ox && oz;
+}
+
+// XInput ヘルパ（最小）
+namespace
+{
+    constexpr SHORT STICK_DEAD = XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE; // 7849
+    // 左スティックの入力を -1..1 で返却。戻り値は「コントローラが“実際に入力された”か」
+    bool GetControllerAxes(float& outX, float& outZ)
+    {
+        XINPUT_STATE st{};
+        if (XInputGetState(0, &st) != ERROR_SUCCESS) return false; // 未接続
+        const SHORT sx = st.Gamepad.sThumbLX;
+        const SHORT sy = st.Gamepad.sThumbLY;
+        bool active = false;
+        if (std::abs(sx) > STICK_DEAD) { outX = static_cast<float>(sx) / 32767.0f; active = true; }
+        else outX = 0.0f;
+        if (std::abs(sy) > STICK_DEAD) { outZ = static_cast<float>(sy) / 32767.0f; active = true; }
+        else outZ = 0.0f;
+        if (active) {
+            const float len = std::sqrt(outX * outX + outZ * outZ);
+            if (len > 1.0f) { outX /= len; outZ /= len; }
+        }
+        return active;
+    }
 }
 
 constexpr XMFLOAT3 RespawnPos = { 0.0f, 1.0f, 0.0f };
@@ -36,8 +61,6 @@ void PlayerMove::Start()
 
     assert(t_ && rb_ && col_ && "PlayerMove requires Transform/Rigidbody/Collider");
     facingYawDeg_ = 0.0f; // 初期yaw（最初の入力で正対）
-
-
 }
 
 void PlayerMove::Update()
@@ -99,9 +122,14 @@ void PlayerMove::AddExternalYaw(float deg)
 
 void PlayerMove::ApplyHorizontal(float dt, bool grounded)
 {
-    // 入力
-    const float ix = Sign(IsKeyPress('D'), IsKeyPress('A'));
-    const float iz = Sign(IsKeyPress('W'), IsKeyPress('S'));
+    // --- 入力（コントローラ優先：接続かつ入力があるときに採用。なければWASD） ---
+    float ix = 0.0f, iz = 0.0f;
+    const bool controllerActive = GetControllerAxes(ix, iz);
+    if (!controllerActive) 
+    {
+        ix = Sign(IsKeyPress('D'), IsKeyPress('A'));
+        iz = Sign(IsKeyPress('W'), IsKeyPress('S'));
+    }
 
     // カメラ基底（XZ）
     XMVECTOR fwdXZ = XMVectorSet(0.f, 0.f, 1.f, 0.f);
