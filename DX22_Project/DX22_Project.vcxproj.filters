@@ -52,6 +52,12 @@
     <Filter Include="Scene">
       <UniqueIdentifier>{17353e5d-0501-410a-817b-20279eccff06}</UniqueIdentifier>
     </Filter>
+    <Filter Include="コンポーネント\Script\UI">
+      <UniqueIdentifier>{38b9c3b3-2351-430b-ad22-5d38eb2c41c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="コンポーネント\Utillity">
+      <UniqueIdentifier>{929851fe-ed32-485e-a43d-9f86b2ae69af}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Startup.cpp">
@@ -96,23 +102,8 @@
     <ClCompile Include="Texture.cpp">
       <Filter>ソース ファイル\System\DirectX</Filter>
     </ClCompile>
-    <ClCompile Include="Transform.cpp">
-      <Filter>コンポーネント</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>コンポーネント</Filter>
-    </ClCompile>
-    <ClCompile Include="MeshFilter.cpp">
-      <Filter>コンポーネント</Filter>
-    </ClCompile>
-    <ClCompile Include="MeshRender.cpp">
-      <Filter>コンポーネント</Filter>
-    </ClCompile>
     <ClCompile Include="BoxCollider.cpp">
       <Filter>コンポーネント\Collider</Filter>
-    </ClCompile>
-    <ClCompile Include="Rigidbody.cpp">
-      <Filter>コンポーネント</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
       <Filter>リソース ファイル</Filter>
@@ -159,14 +150,47 @@
     <ClCompile Include="LineManager.cpp">
       <Filter>システム</Filter>
     </ClCompile>
-    <ClCompile Include="CanvasUI.cpp">
-      <Filter>コンポーネント</Filter>
-    </ClCompile>
     <ClCompile Include="GlassScript.cpp">
       <Filter>コンポーネント\Script</Filter>
     </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>システム</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>システム</Filter>
+    </ClCompile>
+    <ClCompile Include="ScoreUIManager.cpp">
+      <Filter>コンポーネント\Script\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="TimerUIManager.cpp">
+      <Filter>コンポーネント\Script\UI</Filter>
+    </ClCompile>
     <ClCompile Include="GlassGauge.cpp">
-      <Filter>コンポーネント\Script</Filter>
+      <Filter>コンポーネント\Script\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionUIManager.cpp">
+      <Filter>コンポーネント\Script\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureManager.cpp">
+      <Filter>システム</Filter>
+    </ClCompile>
+    <ClCompile Include="Camera.cpp">
+      <Filter>コンポーネント\Utillity</Filter>
+    </ClCompile>
+    <ClCompile Include="CanvasUI.cpp">
+      <Filter>コンポーネント\Utillity</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshFilter.cpp">
+      <Filter>コンポーネント\Utillity</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshRender.cpp">
+      <Filter>コンポーネント\Utillity</Filter>
+    </ClCompile>
+    <ClCompile Include="Rigidbody.cpp">
+      <Filter>コンポーネント\Utillity</Filter>
+    </ClCompile>
+    <ClCompile Include="Transform.cpp">
+      <Filter>コンポーネント\Utillity</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -215,29 +239,11 @@
     <ClInclude Include="DebugLog.h">
       <Filter>リソース ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>コンポーネント</Filter>
-    </ClInclude>
-    <ClInclude Include="Component.h">
-      <Filter>コンポーネント</Filter>
-    </ClInclude>
-    <ClInclude Include="Transform.h">
-      <Filter>コンポーネント</Filter>
-    </ClInclude>
     <ClInclude Include="SampleScript.h">
       <Filter>コンポーネント\Script</Filter>
     </ClInclude>
-    <ClInclude Include="MeshFilter.h">
-      <Filter>コンポーネント</Filter>
-    </ClInclude>
-    <ClInclude Include="MeshRender.h">
-      <Filter>コンポーネント</Filter>
-    </ClInclude>
     <ClInclude Include="BoxCollider.h">
       <Filter>コンポーネント\Collider</Filter>
-    </ClInclude>
-    <ClInclude Include="Rigidbody.h">
-      <Filter>コンポーネント</Filter>
     </ClInclude>
     <ClInclude Include="PlayerControll.h">
       <Filter>コンポーネント\Script</Filter>
@@ -281,9 +287,6 @@
     <ClInclude Include="Layer.h">
       <Filter>システム</Filter>
     </ClInclude>
-    <ClInclude Include="CollisionListener.h">
-      <Filter>コンポーネント</Filter>
-    </ClInclude>
     <ClInclude Include="Vector2.h">
       <Filter>リソース ファイル</Filter>
     </ClInclude>
@@ -305,14 +308,53 @@
     <ClInclude Include="Timer.h">
       <Filter>システム</Filter>
     </ClInclude>
-    <ClInclude Include="CanvasUI.h">
-      <Filter>コンポーネント</Filter>
-    </ClInclude>
     <ClInclude Include="GlassScript.h">
       <Filter>コンポーネント\Script</Filter>
     </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>システム</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreManager.h">
+      <Filter>システム</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreUIManager.h">
+      <Filter>コンポーネント\Script\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="TimerUIManager.h">
+      <Filter>コンポーネント\Script\UI</Filter>
+    </ClInclude>
     <ClInclude Include="GlassGauge.h">
-      <Filter>コンポーネント\Script</Filter>
+      <Filter>コンポーネント\Script\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionUIManager.h">
+      <Filter>コンポーネント\Script\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureManager.h">
+      <Filter>システム</Filter>
+    </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>コンポーネント\Utillity</Filter>
+    </ClInclude>
+    <ClInclude Include="CanvasUI.h">
+      <Filter>コンポーネント\Utillity</Filter>
+    </ClInclude>
+    <ClInclude Include="CollisionListener.h">
+      <Filter>コンポーネント\Utillity</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>コンポーネント\Utillity</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshFilter.h">
+      <Filter>コンポーネント\Utillity</Filter>
+    </ClInclude>
+    <ClInclude Include="MeshRender.h">
+      <Filter>コンポーネント\Utillity</Filter>
+    </ClInclude>
+    <ClInclude Include="Rigidbody.h">
+      <Filter>コンポーネント\Utillity</Filter>
+    </ClInclude>
+    <ClInclude Include="Transform.h">
+      <Filter>コンポーネント\Utillity</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

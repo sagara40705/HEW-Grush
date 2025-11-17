@@ -1,29 +1,95 @@
+#// === File: CameraFollow.cpp ===
 #include "CameraFollow.h"
 #include "GameObject.h"
 #include "Transform.h"
 #include <DirectXMath.h>
+#include <cassert>
+
+#ifdef _WIN32
+#include <Windows.h>
+static inline bool KeyHeld(int vk) { return (GetAsyncKeyState(vk) & 0x8000) != 0; }
+#else
+static inline bool KeyHeld(int) { return false; }
+#endif
+
 using namespace DirectX;
 
 void CameraFollow::Start()
 {
     self_ = Parent->TryGetComponent<Transform>();
-    assert(self_ && "CameraFollow requires a Transform component");
+    assert(self_ && "CameraFollow requires Transform");
     assert(target_ && "CameraFollow target Transform is null");
+
+    WrapAngle_();
+    RecomputeTransform_(); // 初期反映
+
+
 }
 
 void CameraFollow::Update()
 {
     if (!self_ || !target_) return;
 
-    // プレイヤーの位置を取得
-    const XMFLOAT3 targetPos = target_->GetPosition();
+    ApplyKeyboardInput_();
+    RecomputeTransform_();
 
-    // 追従位置 = プレイヤー位置 + オフセット
-    self_->SetPosition({ targetPos.x + OFFSET.x, targetPos.y + OFFSET.y, targetPos.z + OFFSET.z });
+
 }
 
 void CameraFollow::OnDestroy()
 {
     self_ = nullptr;
     target_ = nullptr;
+}
+
+void CameraFollow::ApplyKeyboardInput_()
+{
+    // あなたのTime管理があるなら置換（例：Time::deltaTime）
+    constexpr float DT = 1.f / 60.f;
+
+    float d = 0.f;
+
+
+#ifdef WIN32
+    // 右＝時計回り、左＝反時計回り（上から見下ろしたとき）
+    if (KeyHeld(VK_RIGHT)) d += cfg_.yawSpeedDeg * DT;
+    if (KeyHeld(VK_LEFT)) d -= cfg_.yawSpeedDeg * DT;
+#endif
+    if (d != 0.f) AddAngleDegrees(d);
+}
+
+void CameraFollow::RecomputeTransform_()
+{
+    // --- 原点 = プレイヤー位置 + (0, height, 0) ---
+    const XMFLOAT3 tp = target_->GetPosition();
+    const XMVECTOR targetPos = XMLoadFloat3(&tp);
+    const XMVECTOR origin = XMVectorAdd(targetPos, XMVectorSet(0.f, cfg_.height, 0.f, 0.f));
+
+    // --- 原点中心の水平円（半径=distance）を angleDeg で回転（右＝時計回り） ---
+    const float r = cfg_.distance;
+    const float th = XMConvertToRadians(cfg_.angleDeg);
+    const float x = r * std::cos(th);
+    const float z = -r * std::sin(th); // 時計回り
+
+    const XMVECTOR eye = XMVectorAdd(origin, XMVectorSet(x, 0.f, z, 0.f));
+
+    // 位置
+    XMFLOAT3 eyeF; XMStoreFloat3(&eyeF, eye);
+    self_->SetPosition(eyeF);
+
+    // --- 向き：Transformは「+Z が前方」、回転は SetRotation(度)→内部で RollPitchYaw(pitch,yaw,roll) を使用 ---
+    //          よって +Z を (target - eye) に合わせるEulerを求める
+    XMVECTOR dir = XMVectorSubtract(targetPos, eye);      // = target - eye
+    dir = XMVector3Normalize(dir);
+
+    XMFLOAT3 d; XMStoreFloat3(&d, dir);
+    const float yaw = std::atan2(d.x, d.z);                                 // +Z基準の水平角
+    const float pitch = std::atan2(d.y, std::sqrt(d.x * d.x + d.z * d.z));    // 上下角
+
+    self_->SetRotation(Vector3{
+        XMConvertToDegrees(pitch) + 30,   // X = pitch[deg]
+        XMConvertToDegrees(yaw),     // Y = yaw[deg]
+        0.0f                         // Z = roll
+        });
+
 }

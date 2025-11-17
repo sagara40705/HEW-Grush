@@ -9,7 +9,8 @@
 class CanvasUI : public MonoBehaviour
 {
 public:
-	CanvasUI(const char* texPass , Vector2 pos = Vector2::zero(), Vector2 size = Vector2::one(), Vector2 uvPos = Vector2::zero(), Vector2 uvSize = Vector2::one());
+	//CanvasUI(const char* texPass , Vector2 pos = Vector2::zero(), Vector2 size = Vector2::one(), Vector2 uvPos = Vector2::zero(), Vector2 uvSize = Vector2::one());
+	CanvasUI(Texture* texture, Vector2 pos = Vector2::zero(), Vector2 size = Vector2::one(), Vector2 uvPos = Vector2::zero(), Vector2 uvSize = Vector2::one());
 	void Start() override;	
 	void OnDestroy() override;
 	void Draw() override;
@@ -25,6 +26,7 @@ public:
 		PixelShader* ps;
 	};
 	Data m_data;
+	//bool texOwner = false;
 public:
 	void SetOffset(Vector2 offset);
 	void SetPosX(float x);
@@ -33,7 +35,6 @@ public:
 	void SetUVPos(Vector2  pos);
 	void SetUVScale(Vector2  scale);
 	void SetColor(DirectX::XMFLOAT4 color);
-	void SetTexture(Texture* tex);
 	void SetVertexShader(Shader* vs);
 	void SetPixelShader(Shader* ps);
 private:
