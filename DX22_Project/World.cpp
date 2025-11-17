@@ -89,7 +89,6 @@ void World::Update()
 void World::Draw()
 {
     RenderSystem::Render(*this);
-  
 }
 
 void World::ClearAll()
