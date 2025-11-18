@@ -14,16 +14,17 @@ public:
 
 public:
     ModelComponent() = default;
-    ModelComponent(const char* file, float s = 1.0f, Model::Flip f = Model::Flip::None) : path(file ? file : ""), scale(s), flip(f) {}
+    //ModelComponent(const char* file, float s = 1.0f, Model::Flip f = Model::Flip::None) : path(file ? file : ""), scale(s), flip(f) {}
+    ModelComponent(Model* m) {}
     ~ModelComponent() override = default;
 
     void Start() override { LoadIfNeeded();  }
-    void OnDestroy() override { model.reset(); }
+    void OnDestroy() override { /*model.reset(); */}
 
     void SetSource(const std::string& file, float s = 1.0f, Model::Flip f = Model::Flip::None)
     {
-        path = file; scale = s; flip = f;
-        LoadIfNeeded(true);
+        //path = file; scale = s; flip = f;
+        //LoadIfNeeded(true);
     }
 
     Model* Get() const { return model.get(); }
