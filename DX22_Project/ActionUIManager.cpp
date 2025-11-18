@@ -1,6 +1,6 @@
 ﻿#include "ActionUIManager.h"
 #include "Game.h"
-#include "PlayerControll.h"
+#include "PlayerAction.h"
 
 ActionUIManager::ActionUIManager(CanvasUI* spin, CanvasUI* dash)
 {
@@ -15,8 +15,8 @@ void ActionUIManager::Start()
     {
         if (!o->active) continue;
         if (!o->CompareTag(Tag::Player)) continue;
-        pc = o->TryGetComponent<PlayerControll>();
-        if (pc) break;
+        pa = o->TryGetComponent<PlayerAction>();
+        if (pa) break;
     }
     // UI 初期設定（位置と横幅だけ決めて、縦は 0 にしておく）
     for (int i = 0; i < Action::Count; ++i)
@@ -44,15 +44,15 @@ void ActionUIManager::OnDestroy()
     {
         ui[i] = nullptr;
     }
-    pc = nullptr;
+    pa = nullptr;
 }
 
 void ActionUIManager::Update()
 {
     //Ctの割合を取得
     float ctr[Action::Count];
-    ctr[Action::Spining] = pc->GetSpinCtRatio();
-    ctr[Action::Dash] = pc->GetDashCtRatio();
+    ctr[Action::Spining] = pa->GetSpinCtRatio();
+    ctr[Action::Dash] = pa->GetDashCtRatio();
 
     //UI情報を更新
     for (int action = 0; action < Action::Count; ++action)

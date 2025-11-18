@@ -139,7 +139,7 @@ void HummerScript::GradeUp()
 void HummerScript::GaugeDecay()
 {
 	// ゲージをマイナス
-	// ** 未実装 **
+	gauge -= kGaugeDecayValue;
 
 	// ゲージのマイナスを超えたら
 	if (gauge < 0.f)
