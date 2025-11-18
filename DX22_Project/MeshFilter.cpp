@@ -2,6 +2,8 @@
 #include <vector>
 #include <DirectXMath.h>
 
+std::array<std::unique_ptr<MeshBuffer>, static_cast<int>(MeshFilter::Type::Count)> s_meshBuffers{};
+
 void MeshFilter::Start()
 {
 	BuildPrimitive();
@@ -9,25 +11,23 @@ void MeshFilter::Start()
 
 void MeshFilter::OnDestroy()
 {
-	mMeshBuffer.reset();
+	for (auto& t : s_meshBuffers)
+	{
+		t.reset();
+	}
+}
+
+MeshBuffer* MeshFilter::GetMeshBuffer() const
+{
+	return s_meshBuffers[type].get();
 }
 
 void MeshFilter::BuildPrimitive()
 {
-	switch (PrimitiveType)
-	{
-	case MeshFilter::Cube:		BuildCube();
-		break;
-	case MeshFilter::Sphere:	BuildSphere();
-		break;
-	case MeshFilter::Plane:		BuildPlane();
-		break;
-	case MeshFilter::Cylinder:	BuildCylinder();
-		break;
-	default:
-		BuildCube();
-		break;
-	}
+	BuildCube();
+	BuildSphere();
+	BuildPlane();
+	BuildCylinder();
 }
 
 void MeshFilter::BuildCube()
@@ -88,8 +88,8 @@ void MeshFilter::BuildCube()
 	desc.idxSize = 4;
 	desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
-	mMeshBuffer = std::make_shared<MeshBuffer>();
-	mMeshBuffer->Create(desc);
+	s_meshBuffers[static_cast<int>(Type::Cube)] = std::make_unique<MeshBuffer>();
+	s_meshBuffers[static_cast<int>(Type::Cube)]->Create(desc);
 }
 
 void MeshFilter::BuildSphere()
@@ -151,8 +151,8 @@ void MeshFilter::BuildSphere()
 	desc.idxSize = sizeof(unsigned int);
 	desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
-	mMeshBuffer = std::make_shared<MeshBuffer>();
-	mMeshBuffer->Create(desc);
+	s_meshBuffers[static_cast<int>(Type::Sphere)] = std::make_unique<MeshBuffer>();
+	s_meshBuffers[static_cast<int>(Type::Sphere)]->Create(desc);
 }
 
 void MeshFilter::BuildPlane()
@@ -177,8 +177,8 @@ void MeshFilter::BuildPlane()
 	desc.idxSize = sizeof(unsigned int);
 	desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
-	mMeshBuffer = std::make_shared<MeshBuffer>();
-	mMeshBuffer->Create(desc);
+	s_meshBuffers[static_cast<int>(Type::Plane)] = std::make_unique<MeshBuffer>();
+	s_meshBuffers[static_cast<int>(Type::Plane)]->Create(desc);
 }
 
 void MeshFilter::BuildCylinder()
@@ -304,133 +304,6 @@ void MeshFilter::BuildCylinder()
 	desc.idxSize = sizeof(unsigned int);
 	desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
 
-	mMeshBuffer = std::make_shared<MeshBuffer>();
-	mMeshBuffer->Create(desc);
+	s_meshBuffers[static_cast<int>(Type::Cylinder)] = std::make_unique<MeshBuffer>();
+	s_meshBuffers[static_cast<int>(Type::Cylinder)]->Create(desc);
 }
-
-//void MeshFilter::BuildCylinder()
-//{
-//	using namespace DirectX;
-//
-//	const int slice = 24;          // 角度分割
-//	const float radius = 0.5f;     // 半径
-//	const float halfH = 0.5f;     // 高さ/2
-//
-//	std::vector<Vertex> vertices;
-//	std::vector<unsigned int> indices;
-//
-//	// -------- 側面頂点 --------
-//	// 縦は bottom(0) / top(1) の2本
-//	for (int yStep = 0; yStep <= 1; ++yStep)
-//	{
-//		const float y = (yStep == 0) ? -halfH : +halfH;
-//		const float v = static_cast<float>(yStep); // 0 or 1
-//
-//		for (int i = 0; i <= slice; ++i)
-//		{
-//			const float t = static_cast<float>(i) / slice; // 0..1
-//			const float theta = XM_2PI * t;
-//			const float x = std::cos(theta) * radius;
-//			const float z = std::sin(theta) * radius;
-//
-//			Vertex vert{};
-//			vert.pos[0] = x;
-//			vert.pos[1] = y;
-//			vert.pos[2] = z;
-//			vert.uv[0] = t; // U: 角度
-//			vert.uv[1] = v; // V: 高さ
-//			vertices.push_back(vert);
-//		}
-//	}
-//	const unsigned int sideStride = static_cast<unsigned int>(slice + 1);
-//
-//	// -------- 側面インデックス --------
-//	for (int i = 0; i < slice; ++i)
-//	{
-//		const unsigned int a = i;                 // bottom row
-//		const unsigned int b = i + sideStride;    // top row
-//
-//		indices.push_back(a);
-//		indices.push_back(b);
-//		indices.push_back(a + 1);
-//
-//		indices.push_back(a + 1);
-//		indices.push_back(b);
-//		indices.push_back(b + 1);
-//	}
-//
-//	// -------- 下キャップ（triangle fan）--------
-//	const unsigned int bottomCenterIndex = static_cast<unsigned int>(vertices.size());
-//	{
-//		Vertex c{};
-//		c.pos[0] = 0.0f; c.pos[1] = -halfH; c.pos[2] = 0.0f;
-//		c.uv[0] = 0.5f; c.uv[1] = 0.5f;
-//		vertices.push_back(c);
-//
-//		const unsigned int ringStart = static_cast<unsigned int>(vertices.size());
-//		for (int i = 0; i <= slice; ++i)
-//		{
-//			const float t = static_cast<float>(i) / slice;
-//			const float theta = XM_2PI * t;
-//			const float x = std::cos(theta) * radius;
-//			const float z = std::sin(theta) * radius;
-//
-//			Vertex v{};
-//			v.pos[0] = x; v.pos[1] = -halfH; v.pos[2] = z;
-//			// 平面マッピング（中心(0.5,0.5)）
-//			v.uv[0] = 0.5f + (x / (radius * 2.0f));
-//			v.uv[1] = 0.5f - (z / (radius * 2.0f));
-//			vertices.push_back(v);
-//		}
-//		for (int i = 0; i < slice; ++i)
-//		{
-//			indices.push_back(bottomCenterIndex);
-//			indices.push_back(ringStart + i + 1);
-//			indices.push_back(ringStart + i);
-//		}
-//	}
-//
-//	// -------- 上キャップ（triangle fan）--------
-//	const unsigned int topCenterIndex = static_cast<unsigned int>(vertices.size());
-//	{
-//		Vertex c{};
-//		c.pos[0] = 0.0f; c.pos[1] = +halfH; c.pos[2] = 0.0f;
-//		c.uv[0] = 0.5f; c.uv[1] = 0.5f;
-//		vertices.push_back(c);
-//
-//		const unsigned int ringStart = static_cast<unsigned int>(vertices.size());
-//		for (int i = 0; i <= slice; ++i)
-//		{
-//			const float t = static_cast<float>(i) / slice;
-//			const float theta = XM_2PI * t;
-//			const float x = std::cos(theta) * radius;
-//			const float z = std::sin(theta) * radius;
-//
-//			Vertex v{};
-//			v.pos[0] = x; v.pos[1] = +halfH; v.pos[2] = z;
-//			v.uv[0] = 0.5f + (x / (radius * 2.0f));
-//			v.uv[1] = 0.5f - (z / (radius * 2.0f));
-//			vertices.push_back(v);
-//		}
-//		for (int i = 0; i < slice; ++i)
-//		{
-//			indices.push_back(topCenterIndex);
-//			indices.push_back(ringStart + i);
-//			indices.push_back(ringStart + i + 1);
-//		}
-//	}
-//
-//	// ---- バッファ作成 ----
-//	MeshBuffer::Description desc{};
-//	desc.pVtx = vertices.data();
-//	desc.vtxCount = static_cast<UINT>(vertices.size());
-//	desc.vtxSize = sizeof(Vertex);
-//	desc.pIdx = indices.data();
-//	desc.idxCount = static_cast<UINT>(indices.size());
-//	desc.idxSize = sizeof(unsigned int);
-//	desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-//
-//	mMeshBuffer = std::make_shared<MeshBuffer>();
-//	mMeshBuffer->Create(desc);
-//}
-

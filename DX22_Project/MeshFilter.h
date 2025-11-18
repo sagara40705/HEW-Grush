@@ -1,4 +1,6 @@
 #pragma once
+#include <memory>
+#include <array>
 #include "Component.h"
 #include "MeshBuffer.h"
 
@@ -21,16 +23,15 @@ public:
         Count
     };
 private:
-
-    Type PrimitiveType{};
-    std::shared_ptr<MeshBuffer> mMeshBuffer{};
+    static std::array<std::unique_ptr<MeshBuffer>, Type::Count> s_meshBuffers;
+    Type type{};
 public:
-    MeshFilter(Type type) : PrimitiveType(type) {}
+    MeshFilter(Type t) : type(t) {}
     ~MeshFilter() override = default;
     void Start() override;
     void OnDestroy() override;
-    std::shared_ptr<MeshBuffer> GetMeshBuffer() const { return mMeshBuffer; }
-    Type GetType() const { return PrimitiveType; }
+    MeshBuffer* GetMeshBuffer() const;
+    Type GetType() const { return type; }
 private:
     void BuildPrimitive(); // í—Ş‚²‚Æ‚Ì¶¬ƒ‹[ƒ`ƒ“ŒÄ‚Ño‚µ
     void BuildCube();
