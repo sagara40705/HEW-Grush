@@ -131,8 +131,6 @@ void PlayerAction::DashTryStart()
     move_->SetMoveOverride(true);
 
     dashCooldownTimer_ = dashCooldown;
-
-
 }
 
 void PlayerAction::DashUpdate(float dt)
@@ -179,6 +177,7 @@ void PlayerAction::SpinningUpdate(float dt)
         t_->AddRotate(Vector3(0, delta, 0));
         move_->AddExternalYaw(delta); // Ž©‘Oyaw‚à“¯Šú
 
+        //* ˆêŽü‚ÅI—¹ *
         if (spinAccumDeg_ >= 360.0f) {
             spinning_ = false;
             spinAccumDeg_ = 0.0f;
