@@ -198,6 +198,9 @@
     <ClCompile Include="PlayerAction.cpp">
       <Filter>コンポーネント\Script\Player</Filter>
     </ClCompile>
+    <ClCompile Include="ModelManager.cpp">
+      <Filter>システム</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Defines.h">
@@ -364,6 +367,9 @@
     </ClInclude>
     <ClInclude Include="PlayerAction.h">
       <Filter>コンポーネント\Script\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="ModelManager.h">
+      <Filter>システム</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
