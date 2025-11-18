@@ -174,6 +174,14 @@ void SceneGame::CreateProtStage()
     benti2.AddComponent<ModelRenderer>();
     benti2.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0,1,0 }, DirectX::XMFLOAT3{ 4,2 , 2 });
     LineManager::AddBoxCollider(&benti2);
+
+    GameObject& benti2 = W->CreateGameObject();
+    benti2.AddComponent<Transform>(DirectX::XMFLOAT3{ 4,-0.9f,8 }, Vec3Zero, Vec3One);
+    benti2.AddComponent<ModelComponent>("Assets/Model/swing1", 0.01f, Model::ZFlip);
+    benti2.AddComponent<ModelRenderer>();
+    benti2.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0,1,0 }, DirectX::XMFLOAT3{ 4,2 , 2 });
+    LineManager::AddBoxCollider(&benti2);
+    
 }
 
 void SceneGame::CreateGlassModel()
