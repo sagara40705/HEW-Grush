@@ -102,12 +102,12 @@ SceneGame::SceneGame()
 
     //BuildBlocksFromMap(map, /*unit=*/kUnit, /*scale=*/blockScale, /*isStaticCollider=*/true);
 
-    //GameObject& karubi = W->CreateGameObject();
-    //karubi.AddComponent<Transform>(DirectX::XMFLOAT3{ 2,0.5,2 }, Vec3Zero, Vec3One);
-    //karubi.AddComponent<ModelComponent>("Assets/‚Ü‚¯‚ñ®ÔŒ©‚©‚é‚Ñ•Pˆß‘•MMD/‚Ü‚¯‚ñ®ÔŒ©‚©‚é‚Ñ•Pˆß‘•ver1.0.pmx", 0.08f, Model::ZFlip);
-    //karubi.AddComponent<ModelRenderer>();
-    //karubi.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0,0.75f,0 }, DirectX::XMFLOAT3{ 1, 1.5, 1 });
-    //LineManager::AddBoxCollider(&karubi);
+    GameObject& karubi = W->CreateGameObject();
+    karubi.AddComponent<Transform>(DirectX::XMFLOAT3{ 2,0.5,2 }, Vec3Zero, Vec3One);
+    karubi.AddComponent<ModelComponent>("Assets/‚Ü‚¯‚ñ®ÔŒ©‚©‚é‚Ñ•Pˆß‘•MMD/‚Ü‚¯‚ñ®ÔŒ©‚©‚é‚Ñ•Pˆß‘•ver1.0.pmx", 0.08f, Model::ZFlip);
+    karubi.AddComponent<ModelRenderer>();
+    karubi.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0,0.75f,0 }, DirectX::XMFLOAT3{ 1, 1.5, 1 });
+    LineManager::AddBoxCollider(&karubi);
     CreateGlassModel();
     CreateTimerUi();
     CreateScoreUi();
@@ -155,8 +155,8 @@ void SceneGame::CreateGlassModel()
 {
     GameObject& ufo = W->CreateGameObject();
     ufo.AddComponent<Transform>(DirectX::XMFLOAT3{ 4,0.5,4 }, Vec3Zero, Vec3One);
-    //ufo.AddComponent<ModelComponent>("Assets/Model/MD_player_prototype.fbx", 0.08f, Model::ZFlip);
-    //ufo.AddComponent<ModelRenderer>();
+    ufo.AddComponent<ModelComponent>("Assets/Model/MD_REbenti_prototype.fbx", 0.08f, Model::ZFlip);
+    ufo.AddComponent<ModelRenderer>();
     ufo.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0,0,0 }, DirectX::XMFLOAT3{ 2, 2, 2 });
     LineManager::AddBoxCollider(&ufo);
 }
