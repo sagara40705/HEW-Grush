@@ -10,6 +10,7 @@
 #include "RenderSystem.h"
 #include "Game.h"
 #include "TextureManager.h"
+#include "ModelManager.h"
 
 World* W = nullptr;
 
@@ -64,6 +65,7 @@ SceneGame::SceneGame()
 
     Debug::Init();
     RegisterTexture();
+    RegisterModel();
 
     GameObject& camera = W->CreateGameObject();
     camera.AddComponent<Transform>(Camera::initPos(), Camera::initRotate(), Vector3::zero());
@@ -104,7 +106,7 @@ SceneGame::SceneGame()
 
     GameObject& karubi = W->CreateGameObject();
     karubi.AddComponent<Transform>(DirectX::XMFLOAT3{ 2,0.5,2 }, Vec3Zero, Vec3One);
-    karubi.AddComponent<ModelComponent>("Assets/‚Ü‚¯‚ñ®ÔŒ©‚©‚é‚Ñ•Pˆß‘•MMD/‚Ü‚¯‚ñ®ÔŒ©‚©‚é‚Ñ•Pˆß‘•ver1.0.pmx", 0.08f, Model::ZFlip);
+    karubi.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::Karubi));
     karubi.AddComponent<ModelRenderer>();
     karubi.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0,0.75f,0 }, DirectX::XMFLOAT3{ 1, 1.5, 1 });
     LineManager::AddBoxCollider(&karubi);
@@ -139,8 +141,6 @@ void SceneGame::Update()
 void SceneGame::Draw()
 {
     W->Draw();
-
-
 }
 
 void SceneGame::RegisterTexture()
@@ -151,11 +151,19 @@ void SceneGame::RegisterTexture()
     TextureManager::RegisterAuto(TextureTag::DashUI);
 }
 
+void SceneGame::RegisterModel()
+{
+    ModelManager::RegisterAuto(ModelTag::Karubi);
+    ModelManager::RegisterAuto(ModelTag::Swing);
+    ModelManager::RegisterAuto(ModelTag::Benti);
+    ModelManager::RegisterAuto(ModelTag::Ufo);
+}
+
 void SceneGame::CreateGlassModel()
 {
     GameObject& ufo = W->CreateGameObject();
     ufo.AddComponent<Transform>(DirectX::XMFLOAT3{ 4,0.5,4 }, Vec3Zero, Vec3One);
-    ufo.AddComponent<ModelComponent>("Assets/Model/test_G.UFO.fbx", 0.01f, Model::ZFlip);
+    ufo.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::Ufo));
     ufo.AddComponent<ModelRenderer>();
     ufo.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0,0,0 }, DirectX::XMFLOAT3{ 2, 2, 2 });
     LineManager::AddBoxCollider(&ufo);

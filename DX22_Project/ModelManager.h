@@ -12,14 +12,21 @@ enum class ModelTag: int
 	Count
 };
 
+struct ModelLoadData
+{
+	const char* pass = "";
+	float size = 0.0f;
+	Model::Flip flip = Model::Flip::None;
+};
+
 class ModelManager
 {
 private:
 	static std::array<std::unique_ptr<Model>, static_cast<int>(ModelTag::Count)> s_models;
-	static const char* kModelPath[static_cast<int>(ModelTag::Count)];
+	static const ModelLoadData kModelData[static_cast<int>(ModelTag::Count)];
 public:
 	/// 成功時 true, 失敗時 false
-	static bool Register(ModelTag tag, const char* filePath);
+	static bool Register(ModelTag tag, const ModelLoadData& data);
 	static bool RegisterAuto(ModelTag tag);   // ファイルパスを自動参照
 
 	/// 取得：tag に対応する Texture のポインタを返す（なければ nullptr）
