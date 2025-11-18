@@ -249,7 +249,8 @@ void PlayerControll::DashUpdate(float dt)
     const float T = std::max(dashDuration, 1e-6f);
     const float t = std::min(dashTime, T);
     const float ratio = t / T; // 0¨1
-    const float spd = dashStartSpeed + (dashEndSpeed - dashStartSpeed) * ratio; // 5¨2
+    const float usi = dashEndSpeed - dashStartSpeed;
+    const float spd = dashStartSpeed + ((dashEndSpeed - dashStartSpeed)) * ratio; // 5¨2
 
     // …•½¬•ª‚ðã‘‚«iy‚Íd—ÍˆÛŽj
     rb_->velocity.x = dashDir.x * spd;
