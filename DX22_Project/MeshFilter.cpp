@@ -16,8 +16,6 @@ void MeshFilter::BuildPrimitive()
 {
 	switch (PrimitiveType)
 	{
-	case MeshFilter::None:		BuildCube();
-		break;
 	case MeshFilter::Cube:		BuildCube();
 		break;
 	case MeshFilter::Sphere:	BuildSphere();
