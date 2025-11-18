@@ -155,7 +155,7 @@ void SceneGame::CreateGlassModel()
 {
     GameObject& ufo = W->CreateGameObject();
     ufo.AddComponent<Transform>(DirectX::XMFLOAT3{ 4,0.5,4 }, Vec3Zero, Vec3One);
-    ufo.AddComponent<ModelComponent>("Assets/Model/MD_REbenti_prototype.fbx", 0.08f, Model::ZFlip);
+    ufo.AddComponent<ModelComponent>("Assets/Model/test_G.UFO.fbx", 0.01f, Model::ZFlip);
     ufo.AddComponent<ModelRenderer>();
     ufo.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0,0,0 }, DirectX::XMFLOAT3{ 2, 2, 2 });
     LineManager::AddBoxCollider(&ufo);

@@ -69,7 +69,7 @@ Texture2D    g_tex0 : register(t0);
 SamplerState g_samp : register(s0);
 float4 main(PS_IN pin) : SV_Target
 {
-    return float4(1, 0, 0, 1); 
+    return float4(1, 1, 1, 1);
     return g_tex0.Sample(g_samp, pin.uv);
 }
 )EOT";
