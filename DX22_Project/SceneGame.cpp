@@ -116,18 +116,18 @@ SceneGame::SceneGame()
     CreateScoreUi();
     CreateActionUi();
 
-    GameObject& SampleUi = W->CreateGameObject();
-    auto& ui = SampleUi.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::GaugeMaxLv1));
-    SampleUi.AddComponent<GlassGauge>(hammer.TryGetComponent<HummerScript>());
+    GameObject& gauge = W->CreateGameObject();
+    CanvasUI& gaugeUI = gauge.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::GaugeMaxLv1));
 
-    ui.SetColor({ 1 ,1 ,1 , 1.f });
+    GameObject& GaEf = W->CreateGameObject();
+    CanvasUI& gaefUI = GaEf.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::GaugeEffect));
 
+    GameObject& gaugeUiManagerObj = W->CreateGameObject();
+    gaugeUiManagerObj.AddComponent<GlassGauge>(&gaugeUI, &gaefUI);
+
+   
     W->Start();
-    float p = 0.8f;
-    ui.SetOffset(Vector2(0, 200 * (1 - p)));
-    ui.SetSize(Vector2(1, p));
-    ui.SetUVPos(Vector2(0, (1 - p)));
-    ui.SetUVScale(Vector2(1, p));
+   
 }
 SceneGame::~SceneGame()
 {
@@ -148,6 +148,7 @@ void SceneGame::RegisterTexture()
 {
     TextureManager::RegisterAuto(TextureTag::Number);
     TextureManager::RegisterAuto(TextureTag::GaugeMaxLv1);
+    TextureManager::RegisterAuto(TextureTag::GaugeEffect);
     TextureManager::RegisterAuto(TextureTag::SpinUI);
     TextureManager::RegisterAuto(TextureTag::DashUI);
 }
