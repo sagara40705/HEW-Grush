@@ -13,6 +13,7 @@ public:
 
 private:
 	void RegisterTexture();
+	void CreateProtStage();
 	void CreateGlassModel();
 	void SetPlayerAndHummer();
 	void CreateTimerUi();

@@ -102,13 +102,14 @@ SceneGame::SceneGame()
 
     //BuildBlocksFromMap(map, /*unit=*/kUnit, /*scale=*/blockScale, /*isStaticCollider=*/true);
 
-    GameObject& karubi = W->CreateGameObject();
+   /* GameObject& karubi = W->CreateGameObject();
     karubi.AddComponent<Transform>(DirectX::XMFLOAT3{ 2,0.5,2 }, Vec3Zero, Vec3One);
     karubi.AddComponent<ModelComponent>("Assets/Ç‹ÇØÇÒéÆê‘å©Ç©ÇÈÇ—ïPàﬂëïMMD/Ç‹ÇØÇÒéÆê‘å©Ç©ÇÈÇ—ïPàﬂëïver1.0.pmx", 0.08f, Model::ZFlip);
     karubi.AddComponent<ModelRenderer>();
     karubi.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0,0.75f,0 }, DirectX::XMFLOAT3{ 1, 1.5, 1 });
-    LineManager::AddBoxCollider(&karubi);
-    CreateGlassModel();
+    LineManager::AddBoxCollider(&karubi);*/
+
+    CreateProtStage();
     CreateTimerUi();
     CreateScoreUi();
     CreateActionUi();
@@ -151,14 +152,32 @@ void SceneGame::RegisterTexture()
     TextureManager::RegisterAuto(TextureTag::DashUI);
 }
 
+void SceneGame::CreateProtStage()
+{
+    GameObject& ufo1 = W->CreateGameObject();
+    ufo1.AddComponent<Transform>(DirectX::XMFLOAT3{ 4,0,4 }, Vec3Zero, Vec3One);
+    ufo1.AddComponent<ModelComponent>("Assets/Model/test_G.UFO.fbx", 0.01f, Model::ZFlip);
+    ufo1.AddComponent<ModelRenderer>();
+    ufo1.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0,2,0 }, DirectX::XMFLOAT3{ 4,4 , 4 });
+    LineManager::AddBoxCollider(&ufo1);
+
+    GameObject& benti1 = W->CreateGameObject();
+    benti1.AddComponent<Transform>(DirectX::XMFLOAT3{ -4,-0.9f,8 }, Vec3Zero, Vec3One);
+    benti1.AddComponent<ModelComponent>("Assets/Model/MD_REbenti_prototype.fbx", 0.01f, Model::ZFlip);
+    benti1.AddComponent<ModelRenderer>();
+    benti1.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0,1,0 }, DirectX::XMFLOAT3{ 4,2 , 2 });
+    LineManager::AddBoxCollider(&benti1);
+
+    GameObject& benti2 = W->CreateGameObject();
+    benti2.AddComponent<Transform>(DirectX::XMFLOAT3{ 4,-0.9f,8 }, Vec3Zero, Vec3One);
+    benti2.AddComponent<ModelComponent>("Assets/Model/MD_REbenti_prototype.fbx", 0.01f, Model::ZFlip);
+    benti2.AddComponent<ModelRenderer>();
+    benti2.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0,1,0 }, DirectX::XMFLOAT3{ 4,2 , 2 });
+    LineManager::AddBoxCollider(&benti2);
+}
+
 void SceneGame::CreateGlassModel()
 {
-    GameObject& ufo = W->CreateGameObject();
-    ufo.AddComponent<Transform>(DirectX::XMFLOAT3{ 4,0.5,4 }, Vec3Zero, Vec3One);
-    ufo.AddComponent<ModelComponent>("Assets/Model/test_G.UFO.fbx", 0.01f, Model::ZFlip);
-    ufo.AddComponent<ModelRenderer>();
-    ufo.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0,0,0 }, DirectX::XMFLOAT3{ 2, 2, 2 });
-    LineManager::AddBoxCollider(&ufo);
 }
 
 void SceneGame::SetPlayerAndHummer()
