@@ -2,7 +2,7 @@
 #include <vector>
 #include <DirectXMath.h>
 
-std::array<std::unique_ptr<MeshBuffer>, static_cast<int>(MeshFilter::Type::Count)> s_meshBuffers{};
+std::array<std::unique_ptr<MeshBuffer>, MeshFilter::Type::Count> MeshFilter::s_meshBuffers{};
 
 void MeshFilter::Start()
 {
