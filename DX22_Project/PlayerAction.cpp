@@ -116,8 +116,9 @@ void PlayerAction::DashTryStart()
     // 方向は現在の水平速度向き
     const Vector3 v = move_->VelocityRef();
     const float v2 = std::max(v.x * v.x + v.z * v.z, 1e-12f);
+    const float a = 1.00f;
     const float inv = 1.0f / std::sqrt(v2);
-    dashDir_ = { v.x * inv, 0.0f, v.z * inv };
+    dashDir_ = { v.x * inv * a, 0.0f, v.z * inv * a };
 
     // 発動
     isDash_ = true;
@@ -140,8 +141,7 @@ void PlayerAction::DashUpdate(float dt)
     const float t = std::min(dashTime_, T);
     const float ratio = t / T; // 0��1
     const float usi = dashEndSpeed - dashStartSpeed;
-    const float r = std::min(dashTime_ / T, 1.0f);
-    const float spd = dashStartSpeed + (dashEndSpeed - dashStartSpeed) * ratio; // 5→2
+    const float spd = dashStartSpeed + ((dashEndSpeed - dashStartSpeed)) * ratio; //
 
     rb_->velocity.x = dashDir_.x * spd;
     rb_->velocity.z = dashDir_.z * spd;

@@ -2,6 +2,8 @@
 #include "CameraFollow.h"
 #include "GameObject.h"
 #include "Transform.h"
+#include "PlayerAction.h"
+#include "Game.h"
 #include <DirectXMath.h>
 #include <cassert>
 
@@ -50,6 +52,15 @@ void CameraFollow::Start()
     assert(self_ && "CameraFollow requires Transform");
     assert(target_ && "CameraFollow target Transform is null");
 
+    // === PlayerControllの取得 ===
+    for (auto& o : Game::GetWorld().objects)
+    {
+        if (!o->active) continue;
+        if (!o->CompareTag(Tag::Player)) continue;
+        pa_ = o->TryGetComponent<PlayerAction>();
+        if (pa_) break;
+    }
+
     WrapAngle_();
     RecomputeTransform_(); // 初期反映
 }
@@ -70,6 +81,8 @@ void CameraFollow::OnDestroy()
 
 void CameraFollow::ApplyKeyboardInput_()
 {
+    if (pa_->IsDashing()) return;
+
     // あなたのTime管理があるなら置換（例：Time::deltaTime）
     constexpr float DT = 1.f / 60.f;
     float d = 0.f;
