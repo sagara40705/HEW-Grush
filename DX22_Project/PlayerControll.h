@@ -21,9 +21,9 @@ public:
 
 	// --- ダッシュ仕様（変数化） ---
 	float dashDuration = 1.0f;   // 「ダッシュ時間」秒（線形減速に使用）
-	float dashStartSpeed = 10.0f;   // 初速「5」
-	float dashEndSpeed = 1.0f;   // 終了速度「2」
-	float dashCooldown = 2.0f;   // クールタイム「５」秒
+	float dashStartSpeed = 15.0f;   // 初速「10」
+	float dashEndSpeed = 1.0f;   // 終了速度「1」
+	float dashCooldown = 2.0f;   // クールタイム「2」秒
 	float minDashMoveEps = 0.05f;  // “移動中”判定の閾値（水平速度）
 
 	// --- 回転攻撃（例：Rキー） ---

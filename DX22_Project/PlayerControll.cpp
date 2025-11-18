@@ -221,10 +221,11 @@ void PlayerControll::DashTryStart(bool grounded)
     const Vector3 v = rb_->velocity;
     const float v2 = v.x * v.x + v.z * v.z;
     if (v2 <= (minDashMoveEps * minDashMoveEps)) return; // 停止中→発動しない
+    const float a = 0.80f;
 
     // 水平速度方向へダッシュ
     const float inv = 1.0f / std::sqrt(std::max(v2, 1e-12f));
-    dashDir = { v.x * inv, 0.0f, v.z * inv };
+    dashDir = { v.x * inv*a, 0.0f, v.z * inv*a };
 
     // 発動
     isDash = true;
@@ -248,7 +249,8 @@ void PlayerControll::DashUpdate(float dt)
     const float T = std::max(dashDuration, 1e-6f);
     const float t = std::min(dashTime, T);
     const float ratio = t / T; // 0→1
-    const float spd = dashStartSpeed + (dashEndSpeed - dashStartSpeed) * ratio; // 5→2
+    const float usi = dashEndSpeed - dashStartSpeed;
+    const float spd = dashStartSpeed + ((dashEndSpeed - dashStartSpeed)) * ratio; // 5→2
 
     // 水平成分を上書き（yは重力維持）
     rb_->velocity.x = dashDir.x * spd;
