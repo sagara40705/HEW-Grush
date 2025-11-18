@@ -83,8 +83,6 @@ void ModelRenderer::Draw()
     Model* model = mc->Get();
     if (!model) return;
 
-    
-
     // 行列CB更新（Transform/Cameraの既存APIを使用）
     MatrixCB cb{};
     cb.world = XMMatrixTranspose(XMLoadFloat4x4(&t->GetMatrix()));

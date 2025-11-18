@@ -17,7 +17,7 @@ public:
     ModelComponent(const char* file, float s = 1.0f, Model::Flip f = Model::Flip::None) : path(file ? file : ""), scale(s), flip(f) {}
     ~ModelComponent() override = default;
 
-    void Start() override { LoadIfNeeded(); }
+    void Start() override { LoadIfNeeded();  }
     void OnDestroy() override { model.reset(); }
 
     void SetSource(const std::string& file, float s = 1.0f, Model::Flip f = Model::Flip::None)
@@ -38,6 +38,7 @@ private:
         if (!model->Load(path.c_str(), scale, flip))
         {
             model.reset(); // Ž¸”sŽž‚Í‹ó‚É–ß‚·
+            assert(model && "model::load model = nullptr");
         }
     }
 };
