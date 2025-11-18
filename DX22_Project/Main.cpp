@@ -5,7 +5,7 @@
 #include "Sprite.h"
 #include "Input.h"
 #include "SceneGame.h"
-#include "DebugScene.h"
+//#include "DebugScene.h"
 #include "Defines.h"
 #include "ShaderList.h"
 #include "LineManager.h"

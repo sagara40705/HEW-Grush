@@ -9,6 +9,8 @@
 #include "LineManager.h"
 #include "RenderSystem.h"
 #include "Game.h"
+#include "TextureManager.h"
+#include "ModelManager.h"
 
 World* W = nullptr;
 
@@ -61,61 +63,66 @@ SceneGame::SceneGame()
 {
     W = &Game::GetWorld();
 
-	Debug::Init();
+    Debug::Init();
+    RegisterTexture();
+    RegisterModel();
 
-	GameObject& camera = W->CreateGameObject();	
-	camera.AddComponent<Transform>(Camera::initPos(), Camera::initRotate(), Vector3::zero());
-	camera.AddComponent<Camera>();
+    GameObject& camera = W->CreateGameObject();
+    camera.AddComponent<Transform>(Camera::initPos(), Camera::initRotate(), Vector3::zero());
+    camera.AddComponent<Camera>();
     LineManager::Init();
 
-	GameObject& player = W->CreateGameObject();
-	player.AddComponent<Transform>(Vector3(0, 2, 0), Vector3::zero(), Vector3(0.5, 0.5, 0.5));
-	player.AddComponent<MeshFilter>(MeshFilter::Type::Cylinder);
-	player.AddComponent<MeshRender>(1);
-    player.AddComponent<BoxCollider>(true, Vector3(0, 0, 0), Vector3(1,1,1));
-   // player.AddComponent<SphereCollider>(0.5f, false);
-   // player.AddComponent<CapsuleCollider>(0.01f, 0.5f, false);
-	player.AddComponent<Rigidbody>();
-	player.AddComponent<PlayerControll>();
-	camera.AddComponent<CameraFollow>(&player.GetComponent<Transform>());
+    GameObject& player = W->CreateGameObject();
+    player.AddComponent<Transform>(Vector3(0, 2, 0), Vector3::zero(), Vector3(0.5f, 0.5f, 0.5f));
+    player.AddComponent<MeshFilter>(MeshFilter::Type::Cylinder);
+    player.AddComponent<MeshRender>(1);
+    player.AddComponent<BoxCollider>(true, Vector3(0, 0, 0), Vector3(1, 1, 1));
+    // player.AddComponent<SphereCollider>(0.5f, false);
+    // player.AddComponent<CapsuleCollider>(0.01f, 0.5f, false);
+    player.AddComponent<Rigidbody>();
+    player.AddComponent<PlayerMove>();
+    player.AddComponent<PlayerAction>();
+    camera.AddComponent<CameraFollow>(&player.GetComponent<Transform>());
     player.SetTag(Tag::Player);
-   // LineManager::AddBoxCollider(&player);
+    // LineManager::AddBoxCollider(&player);
 
     GameObject& hammer = W->CreateGameObject();
-    hammer.AddComponent<Transform>(Vector3(1, 0, 0), Vector3::zero(), kDefaultHummerScale);
+    hammer.AddComponent<Transform>(Vector3(0, 0, 1), Vector3::zero(), kDefaultHummerScale);
     hammer.TryGetComponent<Transform>()->SetParent(&player.GetComponent<Transform>());
     hammer.AddComponent<MeshFilter>(MeshFilter::Type::Cube);
     hammer.AddComponent<MeshRender>(1);
     auto& hbc = hammer.AddComponent<BoxCollider>(false); hbc.isTrigger = true;
     hammer.AddComponent<HummerScript>(player.TryGetComponent<Transform>());
     hammer.SetTag(Tag::Weapon);
-    
-    //GameObject& floor = W->CreateGameObject();
-    //floor.AddComponent<Transform>(Vector3(0, -30, 0), Vector3::zero(), Vector3(50, 50, 50));
-    //floor.AddComponent<MeshFilter>(MeshFilter::Type::Sphere);
-    //floor.AddComponent<MeshRender>();
-    //floor.AddComponent<SphereCollider>();
-    ////floor.AddComponent<PlanetMove>();
-    //floor.SetTag(Tag::Ground);
 
-    BuildBlocksFromMap(map, /*unit=*/kUnit, /*scale=*/blockScale, /*isStaticCollider=*/true);
+    GameObject& floor = W->CreateGameObject();
+    floor.AddComponent<Transform>(Vector3(0, -1, 0), Vector3::zero(), Vector3(50, 0.1, 50));
+    floor.AddComponent<MeshFilter>(MeshFilter::Type::Plane);
+    floor.AddComponent<MeshRender>();
+    floor.AddComponent<BoxCollider>();
+    floor.SetTag(Tag::Ground);
+
+    //BuildBlocksFromMap(map, /*unit=*/kUnit, /*scale=*/blockScale, /*isStaticCollider=*/true);
 
     GameObject& karubi = W->CreateGameObject();
     karubi.AddComponent<Transform>(DirectX::XMFLOAT3{ 2,0.5,2 }, Vec3Zero, Vec3One);
-    karubi.AddComponent<ModelComponent>("Assets/Ç‹ÇØÇÒéÆê‘å©Ç©ÇÈÇ—ïPàﬂëïMMD/Ç‹ÇØÇÒéÆê‘å©Ç©ÇÈÇ—ïPàﬂëïver1.0.pmx", 0.08f, Model::ZFlip);
+    karubi.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::Karubi));
     karubi.AddComponent<ModelRenderer>();
-    karubi.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{0,0.75f,0}, DirectX::XMFLOAT3{1, 1.5, 1});
+    karubi.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0,0.75f,0 }, DirectX::XMFLOAT3{ 1, 1.5, 1 });
     LineManager::AddBoxCollider(&karubi);
 
+    CreateGlassModel();
     CreateTimerUi();
+    CreateScoreUi();
+    CreateActionUi();
 
     GameObject& SampleUi = W->CreateGameObject();
-    auto& ui = SampleUi.AddComponent<CanvasUI>("Assets/Texture/Star.png");
+    auto& ui = SampleUi.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::GaugeMaxLv1));
     SampleUi.AddComponent<GlassGauge>(hammer.TryGetComponent<HummerScript>());
 
-    ui.SetColor({ 1 ,1 ,1 , 1.f});
+    ui.SetColor({ 1 ,1 ,1 , 1.f });
 
-	W->Start();
+    W->Start();
     float p = 0.8f;
     ui.SetOffset(Vector2(0, 200 * (1 - p)));
     ui.SetSize(Vector2(1, p));
@@ -124,43 +131,104 @@ SceneGame::SceneGame()
 }
 SceneGame::~SceneGame()
 {
-	W->ClearAll();
+    W->ClearAll();
     W = nullptr;
+    TextureManager::Clear();
 }
 void SceneGame::Update()
 {
-	W->Update();
+    W->Update();
 }
 void SceneGame::Draw()
 {
-	W->Draw();
+    W->Draw();
+}
 
+void SceneGame::RegisterTexture()
+{
+    TextureManager::RegisterAuto(TextureTag::Number);
+    TextureManager::RegisterAuto(TextureTag::GaugeMaxLv1);
+    TextureManager::RegisterAuto(TextureTag::SpinUI);
+    TextureManager::RegisterAuto(TextureTag::DashUI);
+}
 
+void SceneGame::RegisterModel()
+{
+    ModelManager::RegisterAuto(ModelTag::Karubi);
+    ModelManager::RegisterAuto(ModelTag::Swing);
+    ModelManager::RegisterAuto(ModelTag::Benti);
+    ModelManager::RegisterAuto(ModelTag::Ufo);
+}
+
+void SceneGame::CreateGlassModel()
+{
+    GameObject& ufo = W->CreateGameObject();
+    ufo.AddComponent<Transform>(DirectX::XMFLOAT3{ 4,0.5,4 }, Vec3Zero, Vec3One);
+    ufo.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::Ufo));
+    ufo.AddComponent<ModelRenderer>();
+    ufo.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0,0,0 }, DirectX::XMFLOAT3{ 2, 2, 2 });
+    LineManager::AddBoxCollider(&ufo);
 }
 
 void SceneGame::SetPlayerAndHummer()
 {
-
 }
 
 void SceneGame::CreateTimerUi()
 {
     GameObject& tm = W->CreateGameObject();
-    CanvasUI& tmUI = tm.AddComponent<CanvasUI>("Assets/Texture/Number.png");
+    CanvasUI& tmUI = tm.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Number));
 
     GameObject& om = W->CreateGameObject();
-    CanvasUI& omUI = om.AddComponent<CanvasUI>("Assets/Texture/Number.png");
+    CanvasUI& omUI = om.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Number));
 
-    GameObject& TimerUi_colon   = W->CreateGameObject();
+    GameObject& TimerUi_colon = W->CreateGameObject();
 
     GameObject& ts = W->CreateGameObject();
-    CanvasUI& tsUI = ts.AddComponent<CanvasUI>("Assets/Texture/Number.png");
+    CanvasUI& tsUI = ts.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Number));
 
     GameObject& os = W->CreateGameObject();
-    CanvasUI& osUI = os.AddComponent<CanvasUI>("Assets/Texture/Number.png");
+    CanvasUI& osUI = os.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Number));
 
     GameObject& TimerUi_manager = W->CreateGameObject();
     TimerUi_manager.AddComponent<TimerUIManager>(&tmUI, &omUI, &tsUI, &osUI);
 }
 
+void SceneGame::CreateScoreUi()
+{
+    // ÉXÉRÉAÇÃèâä˙âª
+    ScoreManager::Instance().Reset(500);
 
+    // êÁÇÃà 
+    GameObject& th = W->CreateGameObject();
+    CanvasUI& thUI = th.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Number));
+
+    // ïSÇÃà 
+    GameObject& h = W->CreateGameObject();
+    CanvasUI& hUI = h.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Number));
+
+    // è\ÇÃà 
+    GameObject& t = W->CreateGameObject();
+    CanvasUI& tUI = t.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Number));
+
+    // àÍÇÃà 
+    GameObject& o = W->CreateGameObject();
+    CanvasUI& oUI = o.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Number));
+
+    GameObject& scoreUiManagerObj = W->CreateGameObject();
+    scoreUiManagerObj.AddComponent<ScoreUIManager>(&thUI, &hUI, &tUI, &oUI);
+}
+
+void SceneGame::CreateActionUi()
+{
+    //
+    GameObject& spin = W->CreateGameObject();
+    CanvasUI& spinUI = spin.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::SpinUI));
+
+    // 
+    GameObject& dash = W->CreateGameObject();
+    CanvasUI& dashUI = dash.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::DashUI));
+
+    GameObject& actionUiManagerObj = W->CreateGameObject();
+    actionUiManagerObj.AddComponent<ActionUIManager>(&spinUI, &dashUI);
+}

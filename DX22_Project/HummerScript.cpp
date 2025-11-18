@@ -8,14 +8,31 @@
 #include "DebugLog.h"
 #include "GlassScript.h"
 
+static inline Vector3 Lerp(const Vector3& a, const Vector3& b, float t)
+{
+	return a + (b - a) * std::clamp(t, 0.0f, 1.0f);
+}
+
 void HummerScript::Start()
 {
 	t = Parent->TryGetComponent<Transform>();
+	col = Parent->TryGetComponent<Collider>();
 	assert(t && "HummerScript requires Transform");
+
+	// 当たり判定は標準OFF（プレイヤーのアクション時のみON）
+	SetInternalHitEnable(false);
 }
 
 void HummerScript::Update()
 {
+	constexpr float DT = 1.0f / 60.0f;
+
+	// 通常攻撃の進行
+	if (normalAttacking) TickNormalAttack(DT);
+
+	const bool nowHit = IsHitActive();
+	if (col) col->isTrigger = true;
+
 	if (isGaugeDecaying)
 	{
 		GaugeDecay();
@@ -24,7 +41,7 @@ void HummerScript::Update()
 	{
 		// タイマー更新
 		// ** 仮実装 **
-		timerGaugeDecayDelay += 1.f / 60.f;
+		timerGaugeDecayDelay += DT;
 
 		if (timerGaugeDecayDelay >= kGaugeDecayDelay)
 		{
@@ -39,10 +56,13 @@ void HummerScript::OnDestroy()
 {
 	t = nullptr;
 	owner = nullptr;
+	col = nullptr;
 }
 
-void HummerScript::OnTriggerEnter(const TriggerInfo& c)
+void HummerScript::OnTriggerStay(const TriggerInfo& c)
 {
+	if (!IsHitActive()) return;
+
 	if (c.other)
 	{
 		if (!c.other->CompareTag(Tag::Glass)) return;
@@ -61,6 +81,24 @@ void HummerScript::OnTriggerEnter(const TriggerInfo& c)
 			}
 		}
 	}
+}
+
+void HummerScript::StartNormalAttack()
+{
+	// 多重起動ガード（モーション時間中は再起動しない）
+	if (normalAttacking) return;
+
+	normalAttacking = true;
+	normalTimer = 0.f;
+
+	// 当たり判定ON（内部）
+	SetInternalHitEnable(true);
+
+	// 開始位置へスナップ（ローカル）
+	if (t) t->SetPosition(attackStartLocal);
+
+	// 見た目ONにしたい場合はここで
+	//SetVisualEnabled(true);
 }
 
 bool HummerScript::CheckGrade(GameObject* glass)
@@ -101,7 +139,7 @@ void HummerScript::GradeUp()
 void HummerScript::GaugeDecay()
 {
 	// ゲージをマイナス
-	// ** 未実装 **
+	gauge -= kGaugeDecayValue;
 
 	// ゲージのマイナスを超えたら
 	if (gauge < 0.f)
@@ -123,6 +161,29 @@ void HummerScript::GradeDown()
 void HummerScript::ScaleByGrade()
 {
 	t->SetScale(kDefaultHummerScale * kHummerScaleRatio[ToInt(grade)]);
+}
+
+void HummerScript::TickNormalAttack(float dt)
+{
+	normalTimer += dt;
+	const float T = std::max(motionTime, 1e-6f);
+	const float r = std::min(normalTimer / T, 1.0f);
+
+	// 線形補間で「開始→終了」へ移動（ローカル）
+	if (t) t->SetPosition(Lerp(attackStartLocal, attackEndLocal, r));
+
+	if (normalTimer >= T)
+	{
+		// 完了
+		normalAttacking = false;
+		normalTimer = 0.f;
+
+		// 内部の当たり判定OFF（外部からのONは維持）
+		SetInternalHitEnable(false);
+
+		// 待機位置へ戻す（仕様に合わせたい場合は任意）
+		if (t) t->SetPosition(idleLocal);
+	}
 }
 
 float HummerScript::GetGaugeRatio()

@@ -12,11 +12,14 @@ constexpr int ToInt(GlassGrade g) { return static_cast<int>(g); }
 
 // グレードごとのゲージの上がり値
 constexpr float kGaugeUpValue[ToInt(GlassGrade::Count)] = { 1.f, 3.f, 5.f };
+// グレードごとのKg(スコア変動値)
+constexpr int kWeightKg[ToInt(GlassGrade::Count)] = { 1, 3, 5 };
 
 class GlassScript : public Component
 {
 public:
 	void Start() override;
+	void OnWillDestroy() override;
 	void OnDestroy() override;
 	GlassGrade grade = GlassGrade::Grade_1;
 };

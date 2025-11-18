@@ -14,17 +14,18 @@ class MeshFilter : public Component
 public:
     enum Type
     {
-        None,
         Cube,
         Sphere,
         Plane,
-        Cylinder
+        Cylinder,
+        Count
     };
 private:
+
     Type PrimitiveType{};
     std::shared_ptr<MeshBuffer> mMeshBuffer{};
 public:
-    MeshFilter(Type type = None) : PrimitiveType(type) {}
+    MeshFilter(Type type) : PrimitiveType(type) {}
     ~MeshFilter() override = default;
     void Start() override;
     void OnDestroy() override;
