@@ -73,7 +73,7 @@ SceneGame::SceneGame()
     LineManager::Init();
 
     GameObject& player = W->CreateGameObject();
-    player.AddComponent<Transform>(Vector3(0, 2, 0), Vector3::zero(), Vector3(0.5, 0.5, 0.5));
+    player.AddComponent<Transform>(Vector3(0, 2, 0), Vector3::zero(), Vector3(0.5f, 0.5f, 0.5f));
     player.AddComponent<MeshFilter>(MeshFilter::Type::Cylinder);
     player.AddComponent<MeshRender>(1);
     player.AddComponent<BoxCollider>(true, Vector3(0, 0, 0), Vector3(1, 1, 1));
@@ -110,6 +110,7 @@ SceneGame::SceneGame()
     karubi.AddComponent<ModelRenderer>();
     karubi.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0,0.75f,0 }, DirectX::XMFLOAT3{ 1, 1.5, 1 });
     LineManager::AddBoxCollider(&karubi);
+
     CreateGlassModel();
     CreateTimerUi();
     CreateScoreUi();

@@ -178,7 +178,7 @@ void PlayerAction::SpinningUpdate(float dt)
         move_->AddExternalYaw(delta); // Ž©‘Oyaw‚à“¯Šú
 
         //* ˆêŽü‚ÅI—¹ *
-        if (spinAccumDeg_ >= 360.0f) {
+        if (spinAccumDeg_ >= spinRotate) {
             spinning_ = false;
             spinAccumDeg_ = 0.0f;
             move_->SetRotateLock(false);

@@ -2,6 +2,7 @@
 #include <memory>
 #include <array>
 #include "Model.h"
+#include "Vector3.h"
 
 enum class ModelTag: int
 {
@@ -17,6 +18,8 @@ struct ModelLoadData
 	const char* pass = "";
 	float size = 0.0f;
 	Model::Flip flip = Model::Flip::None;
+	Vector3 colliderPos = Vector3::zero();
+	Vector3 colliderSize = Vector3::one();
 };
 
 class ModelManager

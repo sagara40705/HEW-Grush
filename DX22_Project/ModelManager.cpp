@@ -5,10 +5,10 @@ std::array<std::unique_ptr<Model>, static_cast<int>(ModelTag::Count)> ModelManag
 
 const ModelLoadData ModelManager::kModelData[static_cast<int>(ModelTag::Count)] =
 {
-    {"Assets/Ç‹ÇØÇÒéÆê‘å©Ç©ÇÈÇ—ïPàﬂëïMMD/Ç‹ÇØÇÒéÆê‘å©Ç©ÇÈÇ—ïPàﬂëïver1.0.pmx", 0.08, Model::Flip::ZFlip },
-    {"Assets/Model/MD_ActionkomuSwing_prototype.fbx", 0.08, Model::Flip::ZFlip},
-    {"Assets/Model/MD_REbenti_prototype.fbx", 0.01, Model::Flip::ZFlip},
-    {"Assets/Model/MD_UFO_prototype.fbx", 0.01, Model::Flip::ZFlip},
+    {"Assets/Ç‹ÇØÇÒéÆê‘å©Ç©ÇÈÇ—ïPàﬂëïMMD/Ç‹ÇØÇÒéÆê‘å©Ç©ÇÈÇ—ïPàﬂëïver1.0.pmx", 0.08, Model::Flip::ZFlip, Vector3(0,0,0), Vector3(0,0,0) },
+    {"Assets/Model/MD_ActionkomuSwing_prototype.fbx",                         0.08, Model::Flip::ZFlip, Vector3(0,0,0), Vector3(0,0,0) },
+    {"Assets/Model/MD_REbenti_prototype.fbx",                                 0.01, Model::Flip::ZFlip, Vector3(0,0,0), Vector3(0,0,0) },
+    {"Assets/Model/MD_UFO_prototype.fbx",                                     0.01, Model::Flip::ZFlip, Vector3(0,0,0), Vector3(0,0,0) },
 };
 
 bool ModelManager::Register(ModelTag tag, const ModelLoadData& data)
