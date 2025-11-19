@@ -131,7 +131,7 @@ void HummerScript::GaugeUp(GameObject* glass)
 void HummerScript::GradeUp()
 {
 	grade = static_cast<HummerGrade>(ToInt(grade) + 1);
-	gauge = 0.f;
+	gauge = kMaxGaugeValue[ToInt(grade)] * KGradeUpGaugeRatio;
 	Debug::LogValue(" HummerScript::gradelup", ToInt(grade) + 1);
 	ScaleByGrade();
 }

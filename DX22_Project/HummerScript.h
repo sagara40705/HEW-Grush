@@ -18,9 +18,12 @@ constexpr int ToInt(HummerGrade g) {return static_cast<int>(g);}
 constexpr float kMaxGaugeValue[ToInt(HummerGrade::Count)] = {10.f, 20.f, 30.f};
 
 // デフォルトのハンマーの大きさ
-constexpr Vector3 kDefaultHummerScale = Vector3(0.4f, 0.4f, 0.8f);
+constexpr Vector3 kDefaultHummerScale = Vector3(0.2f, 0.2f, 0.4f);
 // グレードごとの大きさ(倍率)
 constexpr float kHummerScaleRatio[ToInt(HummerGrade::Count)] = { 1.f, 1.5f, 2.25f };
+
+// グレードUp時に貰えるゲージの最低値(全体の割合)
+constexpr float KGradeUpGaugeRatio = 0.2f;
 
 class Transform; class Collider; //前方宣言
 
