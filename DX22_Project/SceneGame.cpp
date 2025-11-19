@@ -87,7 +87,7 @@ SceneGame::SceneGame()
     // LineManager::AddBoxCollider(&player);
 
     GameObject& hammer = W->CreateGameObject();
-    hammer.AddComponent<Transform>(Vector3(0, 0, 1), Vector3::zero(), kDefaultHummerScale);
+    hammer.AddComponent<Transform>(Vector3(0, 0, 1.5f), Vector3::zero(), kDefaultHummerScale);
     hammer.TryGetComponent<Transform>()->SetParent(&player.GetComponent<Transform>());
     hammer.AddComponent<MeshFilter>(MeshFilter::Type::Cube);
     hammer.AddComponent<MeshRender>(1);
@@ -169,7 +169,7 @@ void SceneGame::CreateProtStage()
     //最後に一番大きいガラスを割ってみよう！(最大強化できた時)
     //UFOを割ったらクリア
     GameObject& ufo1 = W->CreateGameObject();
-    ufo1.AddComponent<Transform>(DirectX::XMFLOAT3{ 10, 0.f,10 }, Vec3Zero, Vec3One);
+    ufo1.AddComponent<Transform>(DirectX::XMFLOAT3{ 10, -0.5f,10 }, Vec3Zero, Vec3One);
     ufo1.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::Ufo));
     ufo1.AddComponent<ModelRenderer>();
     ufo1.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0,2,0 }, DirectX::XMFLOAT3{ 4,4 , 4 });
