@@ -10,6 +10,7 @@ enum class ModelTag: int
 	Swing,
 	Benti,
 	Ufo,
+	ProtPlay,
 	Count
 };
 
