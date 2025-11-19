@@ -181,7 +181,7 @@ void SceneGame::CreateProtStage()
     //ハンマーがパワーアップした！大きいガラスを割ったほうがゲージがより増えやすい！
     //たくさん壊して最大強化させよう！
     GameObject& benti1 = W->CreateGameObject();
-    benti1.AddComponent<Transform>(DirectX::XMFLOAT3{ -10,-0.9f,10 }, Vec3Zero, Vector3( 1.5f, 1.5f, 1.5f));
+    benti1.AddComponent<Transform>(DirectX::XMFLOAT3{ -10,-0.9f,10 }, Vec3Zero, Vector3( 1.0f, 1.0f, 1.0f));
     benti1.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::Benti));
     benti1.AddComponent<ModelRenderer>();
     benti1.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0,1,0 }, DirectX::XMFLOAT3{ 4,2 , 2 });
@@ -191,7 +191,7 @@ void SceneGame::CreateProtStage()
     
 
     GameObject& benti2 = W->CreateGameObject();
-    benti2.AddComponent<Transform>(DirectX::XMFLOAT3{ 20,-0.9f,-16 }, Vec3Zero, Vector3( 1.5f, 1.5f, 1.5f));
+    benti2.AddComponent<Transform>(DirectX::XMFLOAT3{ 20,-0.9f,-16 }, Vec3Zero, Vector3( 1.0f, 1.0f, 1.0f));
     benti2.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::Benti));
     benti2.AddComponent<ModelRenderer>();
     benti2.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0,1,0 }, DirectX::XMFLOAT3{ 4,2 , 2 });
@@ -200,7 +200,7 @@ void SceneGame::CreateProtStage()
     benti2.SetTag(Tag::Glass);
 
     GameObject& benti3 = W->CreateGameObject();
-    benti3.AddComponent<Transform>(DirectX::XMFLOAT3{ 11,-0.9f,-13 }, Vec3Zero, Vector3( 1.5f, 1.5f, 1.5f));
+    benti3.AddComponent<Transform>(DirectX::XMFLOAT3{ 11,-0.9f,-13 }, Vec3Zero, Vector3( 1.0f, 1.0f, 1.0f));
     benti3.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::Benti));
     benti3.AddComponent<ModelRenderer>();
     benti3.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0,1,0 }, DirectX::XMFLOAT3{ 4,2 , 2 });
@@ -213,7 +213,7 @@ void SceneGame::CreateProtStage()
     //<内容文>物を壊すとゲージがたまる！ゲージがMAXになるとハンマーが強化され、より大きなガラスを破壊できるようになるぞ！
     //もっと小さなガラスを割ってゲージをためてみよう！
     GameObject& swing1 = W->CreateGameObject();
-    swing1.AddComponent<Transform>(DirectX::XMFLOAT3{ -7,-0.9f,-8 }, Vec3Zero, Vec3One);
+    swing1.AddComponent<Transform>(DirectX::XMFLOAT3{ -7,-0.9f,-8 }, Vec3Zero, Vector3(0.5f, 0.5f, 0.5f));
     swing1.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::Swing));
     swing1.AddComponent<ModelRenderer>();
     swing1.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0, 0.7f, 0.2f }, DirectX::XMFLOAT3{ 1.5f, 1.5f , 1.5f });
@@ -222,7 +222,7 @@ void SceneGame::CreateProtStage()
     swing1.SetTag(Tag::Glass);
 
     GameObject& swing2 = W->CreateGameObject();
-    swing2.AddComponent<Transform>(DirectX::XMFLOAT3{ -12,-0.9f,-2 }, Vec3Zero, Vec3One);
+    swing2.AddComponent<Transform>(DirectX::XMFLOAT3{ -12,-0.9f,-2 }, Vec3Zero, Vector3(0.5f, 0.5f, 0.5f));
     swing2.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::Swing));
     swing2.AddComponent<ModelRenderer>();
     swing2.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0, 0.7f, 0.2f }, DirectX::XMFLOAT3{ 1.5f, 1.5f , 1.5f });
@@ -231,7 +231,7 @@ void SceneGame::CreateProtStage()
     swing2.SetTag(Tag::Glass);
 
     GameObject& swing3 = W->CreateGameObject();
-    swing3.AddComponent<Transform>(DirectX::XMFLOAT3{ -22,-0.9f,-13 }, Vec3Zero, Vec3One);
+    swing3.AddComponent<Transform>(DirectX::XMFLOAT3{ -22,-0.9f,-13 }, Vec3Zero, Vector3(0.5f, 0.5f, 0.5f));
     swing3.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::Swing));
     swing3.AddComponent<ModelRenderer>();
     swing3.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0, 0.7f, 0.2f }, DirectX::XMFLOAT3{ 1.5f, 1.5f , 1.5f });
@@ -242,7 +242,7 @@ void SceneGame::CreateProtStage()
 
     //物が少なくてさみしいので適当に置きます↓（削除OK）
     GameObject& player1 = W->CreateGameObject();
-    player1.AddComponent<Transform>(DirectX::XMFLOAT3{ -12,-0.9f,8 }, Vec3Zero, Vec3One);
+    player1.AddComponent<Transform>(DirectX::XMFLOAT3{ -12,-0.9f,8 }, Vec3Zero, Vector3(0.5f, 0.5f, 0.5f));
     player1.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::ProtPlay));
     player1.AddComponent<ModelRenderer>();
     player1.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ -0.2f, 1, 0 }, DirectX::XMFLOAT3{ 1, 2, 1 });
@@ -251,7 +251,7 @@ void SceneGame::CreateProtStage()
     player1.SetTag(Tag::Glass);
 
     GameObject& player2 = W->CreateGameObject();
-    player2.AddComponent<Transform>(DirectX::XMFLOAT3{ 5,-0.9f,2 }, Vec3Zero, Vec3One);
+    player2.AddComponent<Transform>(DirectX::XMFLOAT3{ 5,-0.9f,2 }, Vec3Zero, Vector3(0.5f, 0.5f, 0.5f));
     player2.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::ProtPlay));
     player2.AddComponent<ModelRenderer>();
     player2.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ -0.2f, 1, 0 }, DirectX::XMFLOAT3{ 1, 2, 1 });
@@ -260,7 +260,7 @@ void SceneGame::CreateProtStage()
     player2.SetTag(Tag::Glass);
 
     GameObject& player3 = W->CreateGameObject();
-    player3.AddComponent<Transform>(DirectX::XMFLOAT3{ -20,-0.9f,-20 }, Vec3Zero, Vec3One);
+    player3.AddComponent<Transform>(DirectX::XMFLOAT3{ -20,-0.9f,-20 }, Vec3Zero, Vector3(0.5f, 0.5f, 0.5f));
     player3.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::ProtPlay));
     player3.AddComponent<ModelRenderer>();
     player3.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ -0.2f, 1, 0 }, DirectX::XMFLOAT3{ 1, 2, 1 });
@@ -269,7 +269,7 @@ void SceneGame::CreateProtStage()
     player3.SetTag(Tag::Glass);
 
     GameObject& player4 = W->CreateGameObject();
-    player4.AddComponent<Transform>(DirectX::XMFLOAT3{ -16,-0.9f,-16 }, Vec3Zero, Vec3One);
+    player4.AddComponent<Transform>(DirectX::XMFLOAT3{ -16,-0.9f,-16 }, Vec3Zero, Vector3(0.5f, 0.5f, 0.5f));
     player4.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::ProtPlay));
     player4.AddComponent<ModelRenderer>();
     player4.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ -0.2f, 1, 0 }, DirectX::XMFLOAT3{ 1, 2, 1 });
@@ -278,7 +278,7 @@ void SceneGame::CreateProtStage()
     player4.SetTag(Tag::Glass);
 
     GameObject& player5 = W->CreateGameObject();
-    player5.AddComponent<Transform>(DirectX::XMFLOAT3{ 13,-0.9f,2 }, Vec3Zero, Vec3One);
+    player5.AddComponent<Transform>(DirectX::XMFLOAT3{ 13,-0.9f,2 }, Vec3Zero, Vector3(0.5f, 0.5f, 0.5f));
     player5.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::ProtPlay));
     player5.AddComponent<ModelRenderer>();
     player5.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ -0.2f, 1, 0 }, DirectX::XMFLOAT3{ 1, 2, 1 });
@@ -287,7 +287,7 @@ void SceneGame::CreateProtStage()
     player5.SetTag(Tag::Glass);
 
     GameObject& player6 = W->CreateGameObject();
-    player6.AddComponent<Transform>(DirectX::XMFLOAT3{ 22,-0.9f,8 }, Vec3Zero, Vec3One);
+    player6.AddComponent<Transform>(DirectX::XMFLOAT3{ 22,-0.9f,8 }, Vec3Zero, Vector3(0.5f, 0.5f, 0.5f));
     player6.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::ProtPlay));
     player6.AddComponent<ModelRenderer>();
     player6.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ -0.2f, 1, 0 }, DirectX::XMFLOAT3{ 1, 2, 1 });
@@ -296,7 +296,7 @@ void SceneGame::CreateProtStage()
     player6.SetTag(Tag::Glass);
 
     GameObject& player7 = W->CreateGameObject();
-    player7.AddComponent<Transform>(DirectX::XMFLOAT3{ -17,-0.9f,15 }, Vec3Zero, Vec3One);
+    player7.AddComponent<Transform>(DirectX::XMFLOAT3{ -17,-0.9f,15 }, Vec3Zero, Vector3(0.5f, 0.5f, 0.5f));
     player7.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::ProtPlay));
     player7.AddComponent<ModelRenderer>();
     player7.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ -0.2f, 1, 0 }, DirectX::XMFLOAT3{ 1, 2, 1 });
@@ -305,7 +305,7 @@ void SceneGame::CreateProtStage()
     player7.SetTag(Tag::Glass);
 
     GameObject& player8 = W->CreateGameObject();
-    player8.AddComponent<Transform>(DirectX::XMFLOAT3{ 6,-0.9f,17 }, Vec3Zero, Vec3One);
+    player8.AddComponent<Transform>(DirectX::XMFLOAT3{ 6,-0.9f,17 }, Vec3Zero, Vector3(0.5f, 0.5f, 0.5f));
     player8.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::ProtPlay));
     player8.AddComponent<ModelRenderer>();
     player8.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ -0.2f, 1, 0 }, DirectX::XMFLOAT3{ 1, 2, 1 });
@@ -314,7 +314,7 @@ void SceneGame::CreateProtStage()
     player8.SetTag(Tag::Glass);
 
     GameObject& player9 = W->CreateGameObject();
-    player9.AddComponent<Transform>(DirectX::XMFLOAT3{ 20,-0.9f,-12 }, Vec3Zero, Vec3One);
+    player9.AddComponent<Transform>(DirectX::XMFLOAT3{ 20,-0.9f,-12 }, Vec3Zero, Vector3(0.5f, 0.5f, 0.5f));
     player9.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::ProtPlay));
     player9.AddComponent<ModelRenderer>();
     player9.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ -0.2f, 1, 0 }, DirectX::XMFLOAT3{ 1, 2, 1 });
@@ -323,7 +323,7 @@ void SceneGame::CreateProtStage()
     player9.SetTag(Tag::Glass);
 
     GameObject& player10 = W->CreateGameObject();
-    player10.AddComponent<Transform>(DirectX::XMFLOAT3{ 14,-0.9f,-19 }, Vec3Zero, Vec3One);
+    player10.AddComponent<Transform>(DirectX::XMFLOAT3{ 14,-0.9f,-19 }, Vec3Zero, Vector3(0.5f, 0.5f, 0.5f));
     player10.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::ProtPlay));
     player10.AddComponent<ModelRenderer>();
     player10.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ -0.2f, 1, 0 }, DirectX::XMFLOAT3{ 1, 2, 1 });
