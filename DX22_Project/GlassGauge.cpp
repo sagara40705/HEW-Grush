@@ -4,9 +4,10 @@
 #include "HummerScript.h"
 #include "CanvasUI.h"
 
-GlassGauge::GlassGauge(CanvasUI* base, CanvasUI* effect)
+GlassGauge::GlassGauge(CanvasUI* base, CanvasUI* frame, CanvasUI* effect)
 {
     gUi[Gauge::Base] = base;
+    gUi[Gauge::Frame] = frame;
     gUi[Gauge::UpEffect] = effect;
 }
 
@@ -26,6 +27,11 @@ void GlassGauge::Start()
     gUi[Gauge::Base]->SetSize({ 1, 0 });
     gUi[Gauge::Base]->SetUVPos({ 0, 1 });
     gUi[Gauge::Base]->SetUVScale({ 1, 0 });
+
+    gUi[Gauge::Frame]->SetOffset({ 0, 0 });
+    gUi[Gauge::Frame]->SetSize({ 0, 0 });
+    gUi[Gauge::Frame]->SetUVPos({ 0, 0 });
+    gUi[Gauge::Frame]->SetUVScale({ 1, 1 });
 
     gUi[Gauge::UpEffect]->SetOffset({ -10, 50 });
     gUi[Gauge::UpEffect]->SetSize({ 1.f / 24.f , 1.f / 12.f });
@@ -70,7 +76,7 @@ void GlassGauge::Update()
 
 
     HummerGrade g = hs->grade;    
-    DirectX::XMFLOAT4 col;
+    DirectX::XMFLOAT4 col{};
 
     switch (g)
     {
@@ -81,6 +87,7 @@ void GlassGauge::Update()
     case HummerGrade::Grade_3:
         col = { 1.0f, 0.85f, 0.0f, 1.0f }; break;
     }
+
 
     gUi[Gauge::Base]->SetColor(col);
 

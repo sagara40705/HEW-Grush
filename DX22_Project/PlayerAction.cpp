@@ -128,8 +128,6 @@ void PlayerAction::DashTryStart()
 
     // この間、移動側は速度をいじらない
     move_->SetMoveOverride(true);
-
-    dashCooldownTimer_ = dashCooldown;
 }
 
 void PlayerAction::DashUpdate(float dt)
@@ -149,6 +147,7 @@ void PlayerAction::DashUpdate(float dt)
     if (dashTime_ >= T) {
         isDash_ = false;
         dashTime_ = 0.0f;
+        dashCooldownTimer_ = dashCooldown;
         // 終端速度を残す
         rb_->velocity.x = dashDir_.x * dashEndSpeed;
         rb_->velocity.z = dashDir_.z * dashEndSpeed;
@@ -163,7 +162,8 @@ void PlayerAction::SpinningUpdate(float dt)
     const bool spinPad = usePad && Trigger(PadMap::Spin);
 
     // 起動
-    if (!spinning_) {
+    if (!spinning_ && !isDash_)
+    {
         if ((spinKey || spinPad) && spinCooldownTimer_ <= 0.0f) {
             spinning_ = true;
             spinAccumDeg_ = 0.0f;

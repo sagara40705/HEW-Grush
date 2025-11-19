@@ -9,6 +9,7 @@ private:
 	enum Gauge
 	{
 		Base,
+		Frame,
 		UpEffect,
 		Count
 	};
@@ -23,7 +24,7 @@ private:
 
 	float prevGauge = 0.f;    // 1フレーム前のゲージ量
 public:
-	GlassGauge(CanvasUI* base, CanvasUI* effect);
+	GlassGauge(CanvasUI* base, CanvasUI* frame, CanvasUI* effect);
 	void Start() override;
 	void OnDestroy() override;
 	void Update() override;
