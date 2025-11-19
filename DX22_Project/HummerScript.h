@@ -33,7 +33,7 @@ public:
 	Vector3 idleLocal = Vector3(0, 0, 1); // 待機位置（子として前方1）
 	float motionTime = 0.3f; // 「モーション時間(0.5)」
 	// ===== ゲージ減衰 =====
-	const float kGaugeDecayValue = 0.0f;
+	const float kGaugeDecayValue = 0.01f;
 private:
 	Transform* t = nullptr;
 	Transform* owner = nullptr;

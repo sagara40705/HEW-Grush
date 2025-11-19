@@ -12,8 +12,8 @@ public:
 	// ===== 調整値 =====
 	// ダッシュ：地面＆移動中（停止中は不可）
 	float dashDuration = 1.0f; // 秒
-	float dashStartSpeed = 15.0f; // 初速
-	float dashEndSpeed = 2.0f; // 終端
+	float dashStartSpeed = 20.0f; // 初速
+	float dashEndSpeed = 1.0f; // 終端
 	float dashCooldown = 3.0f; // クールタイム（秒）
 	float minDashMoveEps = 0.05f; // “移動中”判定の水平速度閾値
 

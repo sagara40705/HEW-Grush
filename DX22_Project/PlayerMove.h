@@ -10,7 +10,7 @@ class PlayerMove final : public MonoBehaviour
 {
 public:
 	// ===== 調整値 =====
-	float MOVE_SPEED = 5.0f; // m/s
+	float MOVE_SPEED = 8.0f; // m/s
 	float AIR_CONTROL = 0.5f; // 空中制御 0..1（落下中など）
 	float GROUND_EPS = 0.10f; // 接地判定の許容
 	float SMOOTH_ACC = 20.0f; // 速度追従（大きいほどキビキビ）
