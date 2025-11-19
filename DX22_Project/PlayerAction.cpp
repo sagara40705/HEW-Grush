@@ -102,6 +102,7 @@ void PlayerAction::DashTryStart()
 {
     if (!move_->IsGrounded()) return;
     if (isDash_) return;
+    if (isAction_) return;
     if (dashCooldownTimer_ > 0.0f) return;
 
     // “入力デバイスの選択”：このフレームにパッド入力があればキーボードは無視
@@ -122,6 +123,7 @@ void PlayerAction::DashTryStart()
 
     // 発動
     isDash_ = true;
+    isAction_ = true;
     dashTime_ = 0.0f;
     rb_->velocity.x = dashDir_.x * dashStartSpeed;
     rb_->velocity.z = dashDir_.z * dashStartSpeed;
@@ -146,6 +148,7 @@ void PlayerAction::DashUpdate(float dt)
 
     if (dashTime_ >= T) {
         isDash_ = false;
+        isAction_ = false;
         dashTime_ = 0.0f;
         dashCooldownTimer_ = dashCooldown;
         // 終端速度を残す
@@ -162,7 +165,7 @@ void PlayerAction::SpinningUpdate(float dt)
     const bool spinPad = usePad && Trigger(PadMap::Spin);
 
     // 起動
-    if (!spinning_ && !isDash_)
+    if (!spinning_ && !isAction_)
     {
         if ((spinKey || spinPad) && spinCooldownTimer_ <= 0.0f) {
             spinning_ = true;
@@ -180,6 +183,7 @@ void PlayerAction::SpinningUpdate(float dt)
 
         if (spinAccumDeg_ >= spinRotate) {
             spinning_ = false;
+            isAction_ = false;
             spinAccumDeg_ = 0.0f;
             move_->SetRotateLock(false);
             spinCooldownTimer_ = spinCooldown;
@@ -191,6 +195,7 @@ void PlayerAction::NormalAttackTryStart()
 {
     if (!hummer_) return;
     if (normalCooldownTimer_ > 0.0f) return;
+    if (isAction_) return;
 
     const bool usePad = ControllerActiveThisFrame();
     const bool atkKey = (!usePad) && IsKeyTrigger('E');
@@ -208,5 +213,6 @@ void PlayerAction::UpdateHummerMask()
 {
     if (!hummer_) return;
     const bool on = ((hummer_->IsNormalAttacking()) || spinning_ || isDash_);
+    isAction_ = on;
     hummer_->SetActionHitEnable(on);
 }

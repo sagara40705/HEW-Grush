@@ -42,6 +42,7 @@ private:
 	Transform* cam_ = nullptr;
 	Rigidbody* rb_ = nullptr;
 	Collider* col_ = nullptr;
+	PlayerAction* pa_ = nullptr;
 
 	float  facingYawDeg_ = 0.0f;
 	bool   moveOverride_ = false; // ダッシュ等で速度を外部制御

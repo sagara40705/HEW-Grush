@@ -103,12 +103,12 @@ void ModelRenderer::Draw()
     const XMFLOAT4X4& wMat = t->GetMatrix();
     const XMFLOAT4X4& vMat = c->GetView();
     const XMFLOAT4X4& pMat = c->GetProjection();
-    XMMATRIX W = XMLoadFloat4x4(&wMat);
-    XMMATRIX V = XMLoadFloat4x4(&vMat);
-    XMMATRIX P = XMLoadFloat4x4(&pMat);
-    W = XMMatrixTranspose(W);
-    V = XMMatrixTranspose(V);
-    P = XMMatrixTranspose(P);
+    XMMATRIX W = XMMatrixTranspose(XMLoadFloat4x4(&wMat));
+    XMMATRIX V = XMMatrixTranspose(XMLoadFloat4x4(&vMat));
+    XMMATRIX P = XMMatrixTranspose(XMLoadFloat4x4(&pMat));
+    //W = XMMatrixTranspose(W);
+    //V = XMMatrixTranspose(V);
+    //P = XMMatrixTranspose(P);
     XMStoreFloat4x4(&wvp.world, W);
     XMStoreFloat4x4(&wvp.view, V);
     XMStoreFloat4x4(&wvp.proj, P);
@@ -127,14 +127,14 @@ void ModelRenderer::Draw()
     }
 
     // ==== マテリアルのセット（とりあえず 0 番マテリアルを使用） ====
-    if (model->GetMaterialNum() > 0)
-    {
-        const Model::Material* mat = model->GetMaterial(0);
-        if (mat)
-        {
-            ShaderList::SetMaterial(*mat);
-        }
-    }
+    //if (model->GetMaterialNum() > 0)
+    //{
+    //    const Model::Material* mat = model->GetMaterial(0);
+    //    if (mat)
+    //    {
+    //        ShaderList::SetMaterial(*mat);
+    //    }
+    //}
     // ==== VS / PS を ShaderList から取得してモデルにセット ====
     VertexShader* vs = ShaderList::GetVS(vsKind);
     PixelShader* ps = ShaderList::GetPS(psKind);
