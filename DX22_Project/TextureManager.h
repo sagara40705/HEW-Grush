@@ -6,6 +6,7 @@
 enum class TextureTag : int
 {
     Number,          // Assets/Texture/Number.png
+    GaugeBaseLv1,    // Assets/Texture/GaugeBase_Level1.png
     GaugeMaxLv1,     // Assets/Texture/GaugeMAX_Level1.png
     GaugeEffect,
     SpinUI,

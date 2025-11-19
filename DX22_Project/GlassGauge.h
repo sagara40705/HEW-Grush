@@ -8,6 +8,7 @@ class GlassGauge : public MonoBehaviour
 private:
 	enum Gauge
 	{
+		Frame,
 		Base,
 		UpEffect,
 		Count
@@ -20,10 +21,9 @@ private:
 	int   efFrame = 0;        // 現在のフレーム番号
 	int efCounter = 0;        // カウンタ
 	bool  efPlaying = false;  // 再生中フラグ
-
 	float prevGauge = 0.f;    // 1フレーム前のゲージ量
 public:
-	GlassGauge(CanvasUI* base, CanvasUI* effect);
+	GlassGauge(CanvasUI* frame, CanvasUI* base, CanvasUI* effect);
 	void Start() override;
 	void OnDestroy() override;
 	void Update() override;

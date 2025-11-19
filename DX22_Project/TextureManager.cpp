@@ -6,6 +6,7 @@ std::array<std::unique_ptr<Texture>, static_cast<int>(TextureTag::Count)> Textur
 const char* TextureManager::kTexturePath[static_cast<int>(TextureTag::Count)] =
 {
     "Assets/Texture/Number.png",
+    "Assets/Texture/GaugeBase_Level1.png",
     "Assets/Texture/GaugeMAX_Level1.png",
     "Assets/Texture/kirakira.png",
     "Assets/Texture/RotateUI.png",

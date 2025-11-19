@@ -1,18 +1,19 @@
-#include "GlassGauge.h"
+ï»¿#include "GlassGauge.h"
 #include "GameObject.h"
 #include "Game.h"
 #include "HummerScript.h"
 #include "CanvasUI.h"
 
-GlassGauge::GlassGauge(CanvasUI* base, CanvasUI* effect)
+GlassGauge::GlassGauge(CanvasUI* frame, CanvasUI* base, CanvasUI* effect)
 {
+    gUi[Gauge::Frame] = frame;
     gUi[Gauge::Base] = base;
     gUi[Gauge::UpEffect] = effect;
 }
 
 void GlassGauge::Start()
 {
-    // === HummerScript‚Ìæ“¾ ===
+    // === HummerScriptã®å–å¾— ===
     for (auto& o : Game::GetWorld().objects)
     {
         if (!o->active) continue;
@@ -20,8 +21,12 @@ void GlassGauge::Start()
         hs = o->TryGetComponent<HummerScript>();
         if (hs) break;
     }
-    // UI ‰Šúİ’è
-    
+    // UI åˆæœŸè¨­å®š
+    gUi[Gauge::Frame]->SetOffset({ 0,0 });
+    gUi[Gauge::Frame]->SetSize({ 1, 1 });
+    gUi[Gauge::Frame]->SetUVPos({ 1, 1 });
+    gUi[Gauge::Frame]->SetUVScale({ 1, 1 });
+
     gUi[Gauge::Base]->SetOffset({ 0, 200  });
     gUi[Gauge::Base]->SetSize({ 1, 0 });
     gUi[Gauge::Base]->SetUVPos({ 0, 1 });
@@ -48,16 +53,19 @@ void GlassGauge::Update()
 {
 	if (!hs || !gUi[Gauge::Base]) return;
 
+    //ã‚²ãƒ¼ã‚¸ã®å‰²åˆã‚’å–å¾—
 	float r = hs->GetGaugeRatio();
 	
+    //ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®åº§æ¨™ã®æ›´æ–°
     gUi[Gauge::UpEffect]->SetPosY(30 * (1 - r) );
-    gUi[Gauge::UpEffect]->SetSize({ 1.f / 24.f , 1.f / 12.f });
-    gUi[Gauge::Base]->SetPosY(200 * (1 - r));
+
+    //ã‚²ãƒ¼ã‚¸ã®UIã®æ›´æ–°
+    gUi[Gauge::Base]->SetPosY( 200 * (1 - r));
     gUi[Gauge::Base]->SetSize({ 1 , r });
     gUi[Gauge::Base]->SetUVPos({ 0 , 1 - r });
     gUi[Gauge::Base]->SetUVScale({ 1 , r });
 
-    if (r > prevGauge + 0.02f)   // Œë·‘Îô‚Å 0.02f ˆÈã‚È‚çã¸ˆµ‚¢
+    if (r > prevGauge + 0.02f)   // èª¤å·®å¯¾ç­–ã§ 0.02f ä»¥ä¸Šãªã‚‰ä¸Šæ˜‡æ‰±ã„
     {
         efPlaying = true;
         efFrame = 0;
@@ -65,7 +73,7 @@ void GlassGauge::Update()
     }
     prevGauge = r;
 
-    //ƒGƒtƒFƒNƒgÄ¶
+    //ã‚¨ãƒ•ã‚§ã‚¯ãƒˆå†ç”Ÿ
     GaugeEffect();
 
 
@@ -90,8 +98,8 @@ void GlassGauge::GaugeEffect()
 {
     if (!efPlaying) return;
 
-    constexpr int Interval = 2;        // 2ƒtƒŒ[ƒ€‚²‚Æ‚ÉŸ‚Ì‰æ‘œ‚Ö
-    constexpr int frameMax = 32;       // 8~4 ‚Ì 32–‡
+    constexpr int Interval = 2;        // 2ãƒ•ãƒ¬ãƒ¼ãƒ ã”ã¨ã«æ¬¡ã®ç”»åƒã¸
+    constexpr int frameMax = 32;       // 8Ã—4 ã® 32æš
 
     efCounter++;
 
@@ -108,7 +116,7 @@ void GlassGauge::GaugeEffect()
     }
 
 
-    //UV İ’è
+    //UV è¨­å®š
     int x = efFrame % 8;
     int y = efFrame / 8;
 
