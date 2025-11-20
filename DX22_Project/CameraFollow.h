@@ -1,10 +1,11 @@
 // === File: CameraFollow.h ===
 #pragma once
 #include "Component.h"
-#include "Transform.h"
 #include "Vector3.h"
 #include <cstdint>
 #include <cmath>
+
+class Transfrom; class PlayerAction;
 
 // 仕様：
 // 1) 原点 = プレイヤー(ターゲット)位置 + (0, height, 0)
@@ -38,6 +39,7 @@ public:
 private:
 	Transform* self_ = nullptr;
 	Transform* target_ = nullptr;
+	PlayerAction* pa_ = nullptr;
 	Settings cfg_{};
 
 private:

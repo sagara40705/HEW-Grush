@@ -1,4 +1,6 @@
 #pragma once
+#include <memory>
+#include <array>
 #include "Component.h"
 #include "MeshBuffer.h"
 
@@ -14,26 +16,31 @@ class MeshFilter : public Component
 public:
     enum Type
     {
-        None,
         Cube,
         Sphere,
         Plane,
-        Cylinder
+        Cylinder,
+        Count
     };
 private:
-    Type PrimitiveType{};
-    std::shared_ptr<MeshBuffer> mMeshBuffer{};
+    static std::array<std::unique_ptr<MeshBuffer>, Type::Count> s_meshBuffers;
+    Type type{};
 public:
-    MeshFilter(Type type = None) : PrimitiveType(type) {}
+    explicit MeshFilter(Type t = Cube) : type(t) {}
     ~MeshFilter() override = default;
+
     void Start() override;
     void OnDestroy() override;
-    std::shared_ptr<MeshBuffer> GetMeshBuffer() const { return mMeshBuffer; }
-    Type GetType() const { return PrimitiveType; }
+
+    MeshBuffer* GetMeshBuffer() const;
+    Type GetType() const { return type; }
+
+    static void ReleaseAll();
 private:
-    void BuildPrimitive(); // 種類ごとの生成ルーチン呼び出し
-    void BuildCube();
-    void BuildSphere();
-    void BuildPlane();
-    void BuildCylinder();
+    static void EnsureBuilt(Type t); // 必要なプリミティブだけ生成
+
+    static void BuildCube();
+    static void BuildSphere();
+    static void BuildPlane();
+    static void BuildCylinder();
 };

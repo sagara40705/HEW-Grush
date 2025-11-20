@@ -73,12 +73,9 @@ void HummerScript::OnTriggerStay(const TriggerInfo& c)
 			//Debug::LogValue(" HummerScript::Destroy id", c.other->id);
 			GaugeUp(c.other);
 			
-			// ゲージ減衰中なら止める & Delayタイマーを初期化
-			if (isGaugeDecaying)
-			{
-				isGaugeDecaying = false;
-				timerGaugeDecayDelay = 0.f;
-			}
+			// ゲージ減衰中なら止める& Delayタイマーを初期化
+			isGaugeDecaying = false;
+			timerGaugeDecayDelay = 0.f;
 		}
 	}
 }
@@ -131,7 +128,7 @@ void HummerScript::GaugeUp(GameObject* glass)
 void HummerScript::GradeUp()
 {
 	grade = static_cast<HummerGrade>(ToInt(grade) + 1);
-	gauge = 0.f;
+	gauge = kMaxGaugeValue[ToInt(grade)] * KGradeUpGaugeRatio;
 	Debug::LogValue(" HummerScript::gradelup", ToInt(grade) + 1);
 	ScaleByGrade();
 }

@@ -1,5 +1,6 @@
 // Game.cpp
 #include "Game.h"
+#include "AllComponet.h"
 
 // static メンバ定義
 World Game::world{};
@@ -30,6 +31,8 @@ void Game::Uninit()
         delete s_nextScene;
         s_nextScene = nullptr;
     }
+
+    MeshFilter::ReleaseAll();
 
     // World 上のオブジェクトもすべて削除
     world.ClearAll();
