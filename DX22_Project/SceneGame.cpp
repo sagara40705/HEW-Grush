@@ -129,7 +129,7 @@ SceneGame::SceneGame()
     GameObject& gaugeUiManagerObj = W->CreateGameObject();
     gaugeUiManagerObj.AddComponent<GlassGauge>(&gaugeFrameUI , &gaugeUI, &gaefUI);
 
-   
+ 
     W->Start();
    
 }
