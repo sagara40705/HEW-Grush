@@ -117,17 +117,17 @@ SceneGame::SceneGame()
     CreateScoreUi();
     CreateActionUi();
 
-    GameObject& gauge = W->CreateGameObject();
-    CanvasUI& gaugeUI = gauge.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::GaugeMaxLv1));
-
     GameObject& gaugeFrame = W->CreateGameObject();
     CanvasUI& gaugeFrameUI = gaugeFrame.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::GaugeFrame));
+
+    GameObject& gauge = W->CreateGameObject();
+    CanvasUI& gaugeUI = gauge.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::GaugeMaxLv1));
 
     GameObject& GaEf = W->CreateGameObject();
     CanvasUI& gaefUI = GaEf.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::GaugeEffect));
 
     GameObject& gaugeUiManagerObj = W->CreateGameObject();
-    gaugeUiManagerObj.AddComponent<GlassGauge>(&gaugeUI, &gaugeFrameUI, &gaefUI);
+    gaugeUiManagerObj.AddComponent<GlassGauge>(&gaugeFrameUI , &gaugeUI, &gaefUI);
 
    
     W->Start();
