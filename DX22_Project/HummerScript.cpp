@@ -8,6 +8,8 @@
 #include "DebugLog.h"
 #include "GlassScript.h"
 
+constexpr float kDebugGaugeUpValue = 1.0f;
+
 static inline Vector3 Lerp(const Vector3& a, const Vector3& b, float t)
 {
 	return a + (b - a) * std::clamp(t, 0.0f, 1.0f);
@@ -50,6 +52,11 @@ void HummerScript::Update()
 			Debug::Log(" HummerScript::Update - StartGaugeDecay");
 		}
 	}
+
+	// デバックコマンド
+#ifdef _DEBUG
+	DebugCommand();
+#endif // DEBUG	
 }
 
 void HummerScript::OnDestroy()
@@ -180,6 +187,24 @@ void HummerScript::TickNormalAttack(float dt)
 
 		// 待機位置へ戻す（仕様に合わせたい場合は任意）
 		if (t) t->SetPosition(idleLocal);
+	}
+}
+
+void HummerScript::DebugCommand()
+{
+	if (IsKeyPress('G') && IsKeyPress('W'))
+	{
+		gauge += kDebugGaugeUpValue;
+		if (gauge >= kMaxGaugeValue[ToInt(grade)])
+		{
+			// 1・2 → グレードUP , 3 → 最大値の正規化
+			if (grade == HummerGrade::Grade_3) gauge = kMaxGaugeValue[ToInt(HummerGrade::Grade_3)];
+			else GradeUp();
+		}
+	}
+	if (IsKeyPress('G') && IsKeyPress('S'))
+	{
+		gauge -= kDebugGaugeUpValue;
 	}
 }
 

@@ -86,6 +86,8 @@ private:
 	// 内部ヘルパ
 	void SetInternalHitEnable(bool on) { internalHitEnable = on; }
 	void TickNormalAttack(float dt);    // 位置補間
+	//デバックコマンド
+	void DebugCommand();
 public:
 	float GetGaugeRatio();			//ゲージの割合を取得
 };
