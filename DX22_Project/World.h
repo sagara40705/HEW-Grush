@@ -5,7 +5,7 @@
 #include <algorithm>
 #include "GameObject.h"
 
-
+//World.h
 class World
 {
 public:
@@ -34,4 +34,4 @@ public:
     World& operator=(World&&) = delete; // Å© í«â¡
 };
 
-extern World W;
+//extern World W;

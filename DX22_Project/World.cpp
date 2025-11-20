@@ -89,7 +89,6 @@ void World::Update()
 void World::Draw()
 {
     RenderSystem::Render(*this);
-  
 }
 
 void World::ClearAll()
@@ -140,6 +139,7 @@ void World::ProcessDestroyQueue()
             objects.erase(it);
         }
     }
+
 
     toDestroy.clear();
 }

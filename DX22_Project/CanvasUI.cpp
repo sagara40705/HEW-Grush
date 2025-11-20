@@ -6,12 +6,26 @@ using namespace DirectX;
 std::shared_ptr<VertexShader> CanvasUI::s_defVS;
 std::shared_ptr<PixelShader>  CanvasUI::s_defPS;
 
-CanvasUI::CanvasUI(const char* texPass, Vector2 pos, Vector2 size, Vector2 uvPos, Vector2 uvSize)
+//CanvasUI::CanvasUI(const char* texPass, Vector2 pos, Vector2 size, Vector2 uvPos, Vector2 uvSize)
+//{
+//	m_data.texture = new Texture();
+//	m_data.texture->Create(texPass);
+//	texOwner = true;
+//	SetOffset(pos);
+//	SetSize(size);
+//	SetParam();
+//	SetUVPos(uvPos);
+//	SetUVScale(uvSize);
+//	m_data.param[2] = { 1, 1, 1, 1 };
+//}
+
+CanvasUI::CanvasUI(Texture* texture, Vector2 pos, Vector2 size, Vector2 uvPos, Vector2 uvSize)
 {
-	m_data.texture = new Texture();
-	m_data.texture->Create(texPass);
+	m_data.texture = texture;
+	//texOwner = false;
 	SetOffset(pos);
 	SetSize(size);
+	SetParam();
 	SetUVPos(uvPos);
 	SetUVScale(uvSize);
 	m_data.param[2] = { 1, 1, 1, 1 };
@@ -21,7 +35,6 @@ void CanvasUI::Start()
 {
 	CreateMesh();
 	ensureDefaultShaders();
-	SetParam();
 
 	m_data.vs = s_defVS.get();
 	m_data.ps = s_defPS.get();
@@ -29,7 +42,8 @@ void CanvasUI::Start()
 
 void CanvasUI::OnDestroy()
 {
-	delete m_data.texture; m_data.texture = nullptr;
+	//if(texOwner) delete m_data.texture;
+	m_data.texture = nullptr;
 	m_data.vs = nullptr;
 	m_data.ps = nullptr;
 }
@@ -37,7 +51,6 @@ void CanvasUI::OnDestroy()
 void CanvasUI::Draw()
 {
 	if (!m_data.mesh || !m_data.vs || !m_data.ps || !m_data.texture) return;
-
 
 	SetMatrix();
 	m_data.vs->WriteBuffer(0, m_data.matrix);
@@ -52,6 +65,16 @@ void CanvasUI::SetOffset(Vector2  offset)
 {
 	m_data.param[0].x = offset.x;
 	m_data.param[0].y = offset.y;
+}
+
+void CanvasUI::SetPosX(float x)
+{
+	m_data.param[0].x = x;
+}
+
+void CanvasUI::SetPosY(float y)
+{
+	m_data.param[0].y = y;
 }
 
 void CanvasUI::SetSize(Vector2 size)
@@ -76,10 +99,6 @@ void CanvasUI::SetUVScale(Vector2 scale)
 void CanvasUI::SetColor(DirectX::XMFLOAT4 color)
 {
 	m_data.param[2] = color;
-}
-
-void CanvasUI::SetTexture(Texture* tex)
-{
 }
 
 void CanvasUI::SetVertexShader(Shader* vs)
@@ -191,5 +210,5 @@ void CanvasUI::SetParam()
 
 	// param[0] = (offsetX, offsetY, width, height)
 	m_data.param[0].z = texW * m_data.param[0].z;
-	m_data.param[0].w = texW * m_data.param[0].w;
+	m_data.param[0].w = texH * m_data.param[0].w;
 }
