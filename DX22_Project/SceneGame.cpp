@@ -11,6 +11,7 @@
 #include "Game.h"
 #include "TextureManager.h"
 #include "ModelManager.h"
+#include "Prefab.h"
 
 World* W = nullptr;
 
@@ -69,6 +70,7 @@ void SceneGame::Load()
     Debug::Init();
     RegisterTexture();
     RegisterModel();
+    RegisterAllPrefabs();
 
     GameObject& camera = W->CreateGameObject();
     camera.AddComponent<Transform>(Camera::initPos(), Camera::initRotate(), Vector3::zero());
@@ -213,32 +215,43 @@ void SceneGame::CreateProtStage()
     // ここで簡単な操作説明
     //<内容文>物を壊すとゲージがたまる！ゲージがMAXになるとハンマーが強化され、より大きなガラスを破壊できるようになるぞ！
     //もっと小さなガラスを割ってゲージをためてみよう！
-    GameObject& swing1 = W->CreateGameObject();
-    swing1.AddComponent<Transform>(DirectX::XMFLOAT3{ -7,-0.9f,-8 }, Vec3Zero, Vector3(0.8f, 0.8f, 0.8f));
-    swing1.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::Swing));
-    swing1.AddComponent<ModelRenderer>();
-    swing1.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0, 0.7f, 0.2f }, DirectX::XMFLOAT3{ 1.5f, 1.5f , 1.5f });
-    LineManager::AddBoxCollider(&swing1);
-    swing1.AddComponent<GlassScript>(GlassGrade::Grade_1);
-    swing1.SetTag(Tag::Glass);
 
-    GameObject& swing2 = W->CreateGameObject();
-    swing2.AddComponent<Transform>(DirectX::XMFLOAT3{ -12,-0.9f,-2 }, Vec3Zero, Vector3(0.8f, 0.8f, 0.8f));
-    swing2.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::Swing));
-    swing2.AddComponent<ModelRenderer>();
-    swing2.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0, 0.7f, 0.2f }, DirectX::XMFLOAT3{ 1.5f, 1.5f , 1.5f });
-    LineManager::AddBoxCollider(&swing2);
-    swing2.AddComponent<GlassScript>(GlassGrade::Grade_1);
-    swing2.SetTag(Tag::Glass);
 
-    GameObject& swing3 = W->CreateGameObject();
-    swing3.AddComponent<Transform>(DirectX::XMFLOAT3{ -22,-0.9f,-13 }, Vec3Zero, Vector3(0.8f, 0.8f, 0.8f));
-    swing3.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::Swing));
-    swing3.AddComponent<ModelRenderer>();
-    swing3.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0, 0.7f, 0.2f }, DirectX::XMFLOAT3{ 1.5f, 1.5f , 1.5f });
-    LineManager::AddBoxCollider(&swing3);
-    swing3.AddComponent<GlassScript>(GlassGrade::Grade_1);
-    swing3.SetTag(Tag::Glass);
+
+    /* === before ===  */
+
+    //GameObject& swing1 = W->CreateGameObject();
+    //swing1.AddComponent<Transform>(DirectX::XMFLOAT3{ -7,-0.9f,-8 }, Vec3Zero, Vector3(0.8f, 0.8f, 0.8f));
+    //swing1.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::Swing));
+    //swing1.AddComponent<ModelRenderer>();
+    //swing1.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0, 0.7f, 0.2f }, DirectX::XMFLOAT3{ 1.5f, 1.5f , 1.5f });
+    //LineManager::AddBoxCollider(&swing1);
+    //swing1.AddComponent<GlassScript>(GlassGrade::Grade_1);
+    //swing1.SetTag(Tag::Glass);
+
+    //GameObject& swing2 = W->CreateGameObject();
+    //swing2.AddComponent<Transform>(DirectX::XMFLOAT3{ -12,-0.9f,-2 }, Vec3Zero, Vector3(0.8f, 0.8f, 0.8f));
+    //swing2.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::Swing));
+    //swing2.AddComponent<ModelRenderer>();
+    //swing2.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0, 0.7f, 0.2f }, DirectX::XMFLOAT3{ 1.5f, 1.5f , 1.5f });
+    //LineManager::AddBoxCollider(&swing2);
+    //swing2.AddComponent<GlassScript>(GlassGrade::Grade_1);
+    //swing2.SetTag(Tag::Glass);
+
+    //GameObject& swing3 = W->CreateGameObject();
+    //swing3.AddComponent<Transform>(DirectX::XMFLOAT3{ -22,-0.9f,-13 }, Vec3Zero, Vector3(0.8f, 0.8f, 0.8f));
+    //swing3.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::Swing));
+    //swing3.AddComponent<ModelRenderer>();
+    //swing3.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0, 0.7f, 0.2f }, DirectX::XMFLOAT3{ 1.5f, 1.5f , 1.5f });
+    //LineManager::AddBoxCollider(&swing3);
+    //swing3.AddComponent<GlassScript>(GlassGrade::Grade_1);
+    //swing3.SetTag(Tag::Glass);
+
+    /* === after ===  */
+
+    Prefab::Instantiate(*W, PrefabId::Swing, Vector3(-7, -0.9f, -8), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+    Prefab::Instantiate(*W, PrefabId::Swing, Vector3(-12, -0.9f, -2), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+    Prefab::Instantiate(*W, PrefabId::Swing, Vector3(-22, -0.9f, -13), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
 
 
     //物が少なくてさみしいので適当に置きます↓（削除OK）

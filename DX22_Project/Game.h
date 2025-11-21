@@ -6,23 +6,18 @@
 
 class Game
 {
-public:
-    // ゲーム全体で共有する World
-    static World world;
-
 private:
     static std::vector<std::unique_ptr<Scene>> s_scenes;
     static std::unique_ptr<Scene> s_nextScene;
 
 public:
-    // 最初のシーンを渡して初期化
-    // 例: Game::Init(new SceneGame());
-    static void Init();
+
+    static void Init();     // 初期化
     static void Uninit();
     // 毎フレーム呼ぶ
     static void Update();
     static void Draw();
-    // World へのアクセサ（W の代わりに使う想定）
+    // World へのアクセサ
     static World& GetWorld();
 
 public:

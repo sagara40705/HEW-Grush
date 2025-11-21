@@ -175,6 +175,7 @@
     <ClCompile Include="PlanetMove.cpp" />
     <ClCompile Include="PlayerAction.cpp" />
     <ClCompile Include="PlayerMove.cpp" />
+    <ClCompile Include="Prefab.cpp" />
     <ClCompile Include="Rigidbody.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneGame.cpp" />
@@ -222,6 +223,7 @@
     <ClInclude Include="PlanetMove.h" />
     <ClInclude Include="PlayerAction.h" />
     <ClInclude Include="PlayerMove.h" />
+    <ClInclude Include="Prefab.h" />
     <ClInclude Include="RenderSystem.h" />
     <ClInclude Include="Rigidbody.h" />
     <ClInclude Include="SampleMapData.h" />
