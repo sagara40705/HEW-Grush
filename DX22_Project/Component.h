@@ -5,15 +5,21 @@ class GameObject;
 //基底コンポーネントクラス
 class Component
 {
-protected:
+public:
+	GameObject* Parent = nullptr;	//所有者
+private:
+	bool enabled = true;			//有効
+private:
+	bool onStart = false;
+	bool onDestroy = false;
 public:
 	virtual ~Component() = default;
-	GameObject* Parent = nullptr;	//所有者
-	bool enabled = true;			//有効
 public:
-	virtual void Start() {}
-	virtual void OnWillDestroy() {}
-	virtual void OnDestroy() {}
+	void RootStart();
+	void RootOnDestroy();
+protected:
+	virtual void Start() {};
+	virtual void OnDestroy() {};
 public:
 	void SetEnabled(bool v) { enabled = v; }
 	bool IsEnabled() const { return enabled; }

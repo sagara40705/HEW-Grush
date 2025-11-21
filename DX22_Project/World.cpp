@@ -48,7 +48,7 @@ void World::Start()
         {
             if (auto* c = kv.second.get())
             {
-                c->Start();
+                c->RootStart();
             }
         }
     }
@@ -100,7 +100,7 @@ void World::ClearAll()
         if (!up) continue;
         for (auto& kv : up->components) 
         {
-            if (kv.second) kv.second->OnDestroy();
+            if (kv.second) kv.second->RootOnDestroy();
         }
     }
     // 2) 実体を破棄
@@ -120,7 +120,7 @@ void World::ProcessDestroyQueue()
     {
         if (auto* go = Find(id)) {
             for (auto& kv : go->components) {
-                if (kv.second) kv.second->OnWillDestroy();
+                if (kv.second) kv.second->RootOnDestroy();
             }
         }
     }
@@ -130,13 +130,9 @@ void World::ProcessDestroyQueue()
         auto it = std::find_if(objects.begin(), objects.end(),
             [id](const std::unique_ptr<GameObject>& p) { return p && p->id == id; });
 
-        if (it != objects.end()) {
-            // OnDestroy
-            for (auto& kv : (*it)->components) {
-                if (kv.second) kv.second->OnDestroy();
-            }
+        if (it != objects.end()) 
+        {
             // unique_ptr をベクタから取り除く（他要素の「指す先アドレス」は不変）
-
             objects.erase(it);
         }
     }

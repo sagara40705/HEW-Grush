@@ -26,13 +26,7 @@ public:
     World* world = nullptr;
     Tag tag = Tag::None;
 
-    ~GameObject()
-    {
-        for (auto& kv : components)
-        {
-            kv.second->OnDestroy();
-        }
-    }
+    ~GameObject() {}
 
     // ’Ç‰Á
     template<class T, class... Args>

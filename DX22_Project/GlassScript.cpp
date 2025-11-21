@@ -7,12 +7,12 @@ void GlassScript::Start()
 
 }
 
-void GlassScript::OnWillDestroy()
-{
-	ScoreManager::Instance().AddDestroyedKg(kWeightKg[ToInt(grade)]);
-}
+//void GlassScript::OnWillDestroy()
+//{
+//	
+//}
 
 void GlassScript::OnDestroy()
 {
-	
+	ScoreManager::Instance().AddDestroyedKg(kWeightKg[ToInt(grade)]);
 }
