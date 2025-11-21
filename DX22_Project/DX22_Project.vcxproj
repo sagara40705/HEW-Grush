@@ -155,6 +155,7 @@
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="DirectX.cpp" />
+    <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Geometory.cpp" />
@@ -208,6 +209,7 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="DebugLog.h" />
     <ClInclude Include="DebugScene.h" />
+    <ClInclude Include="Frustum.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GlassGauge.h" />
     <ClInclude Include="GlassScript.h" />

@@ -12,6 +12,7 @@ public:
     //float scale = 1.0f;
     //Model::Flip flip = Model::Flip::None;
     Model* model = nullptr;
+    float boundsRadius = 22.0f;
 
 public:
     ModelComponent() = default;
