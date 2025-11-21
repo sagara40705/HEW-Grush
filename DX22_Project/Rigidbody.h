@@ -5,6 +5,8 @@
 
 class Rigidbody : public MonoBehaviour
 {
+private:
+    Transform* tf = nullptr;
 public:
     Vector3 velocity = Vector3::zero();
     bool useGravity = true;

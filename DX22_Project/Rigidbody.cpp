@@ -5,12 +5,12 @@
 
 void Rigidbody::Start()
 {
-
+    tf = Parent->TryGetComponent<Transform>();
 }
 
 void Rigidbody::Update()
 {
-    auto* tf = Parent->TryGetComponent<Transform>();
+    
     //if (!tf || isKinematic) return;
 
     // 固定Δt想定（あなたのプロジェクトに合わせて）
