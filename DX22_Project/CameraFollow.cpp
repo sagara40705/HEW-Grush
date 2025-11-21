@@ -48,7 +48,7 @@ namespace
 
 void CameraFollow::Start()
 {
-    self_ = Parent->TryGetComponent<Transform>();
+    self_ = gameObject->TryGetComponent<Transform>();
     assert(self_ && "CameraFollow requires Transform");
     assert(target_ && "CameraFollow target Transform is null");
 

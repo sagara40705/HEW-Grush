@@ -52,14 +52,14 @@ constexpr float ResetPosY = -20.0f;
 
 void PlayerMove::Start()
 {
-    t_ = Parent->TryGetComponent<Transform>();
-    rb_ = Parent->TryGetComponent<Rigidbody>();
+    t_ = gameObject->TryGetComponent<Transform>();
+    rb_ = gameObject->TryGetComponent<Rigidbody>();
     col_ = nullptr;
-    for (auto& kv : Parent->components) {
+    for (auto& kv : gameObject->components) {
         if (auto* c = dynamic_cast<Collider*>(kv.second.get())) { col_ = c; break; }
     }
-    cam_ = Camera::Main()->Parent->TryGetComponent<Transform>();
-    pa_ = Parent->TryGetComponent<PlayerAction>();
+    cam_ = Camera::Main()->gameObject->TryGetComponent<Transform>();
+    pa_ = gameObject->TryGetComponent<PlayerAction>();
 
     assert(t_ && rb_ && col_ && "PlayerMove requires Transform/Rigidbody/Collider");
     facingYawDeg_ = 0.0f; // ‰ŠúyawiÅ‰‚Ì“ü—Í‚Å³‘Îj
@@ -90,7 +90,7 @@ bool PlayerMove::IsGrounded() const
     const auto me = col_->GetWorldAABB();
 
     for (auto& o : Game::GetWorld().objects) {
-        if (!o->active || o.get() == Parent) continue;
+        if (!o->active || o.get() == gameObject) continue;
         for (auto& kv : o->components) {
             auto* other = dynamic_cast<Collider*>(kv.second.get());
             if (!other || !other->isStatic) continue;

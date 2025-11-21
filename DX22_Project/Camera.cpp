@@ -44,7 +44,7 @@ void Camera::RebuildViewFromTransform()
 {
 	using namespace DirectX;
 	// Transform —v‹
-	auto* tf = Parent->TryGetComponent<Transform>();
+	auto* tf = gameObject->TryGetComponent<Transform>();
 	assert(tf && "Camera requires Transform component");
 
 	const XMFLOAT3 posF = tf->GetPosition();

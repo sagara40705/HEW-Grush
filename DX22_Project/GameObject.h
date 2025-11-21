@@ -39,7 +39,7 @@ public:
         assert(it == components.end() && "Component already exists on this GameObject");
 
         auto ptr = std::make_unique<T>(std::forward<Args>(args)...);
-        ptr->Parent = this;
+        ptr->gameObject = this;
 
         T* raw = ptr.get();
         components.emplace(key, std::move(ptr));

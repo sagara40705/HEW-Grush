@@ -17,8 +17,8 @@ static inline Vector3 Lerp(const Vector3& a, const Vector3& b, float t)
 
 void HummerScript::Start()
 {
-	t = Parent->TryGetComponent<Transform>();
-	col = Parent->TryGetComponent<Collider>();
+	t = gameObject->TryGetComponent<Transform>();
+	col = gameObject->TryGetComponent<Collider>();
 	assert(t && "HummerScript requires Transform");
 
 	// 当たり判定は標準OFF（プレイヤーのアクション時のみON）

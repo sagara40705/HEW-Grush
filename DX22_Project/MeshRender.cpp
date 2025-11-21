@@ -14,9 +14,9 @@ struct MatrixCB
 
 void MeshRender::Start()
 {
-	t = Parent->TryGetComponent<Transform>();
+	t = gameObject->TryGetComponent<Transform>();
 	c = Camera::Main();
-	mf = Parent->TryGetComponent<MeshFilter>();
+	mf = gameObject->TryGetComponent<MeshFilter>();
 	SetDefaultVS();
 	if (PStype) SetWhitePS();
 	else SetDefaultPS();

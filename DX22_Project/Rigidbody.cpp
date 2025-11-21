@@ -5,7 +5,7 @@
 
 void Rigidbody::Start()
 {
-    tf = Parent->TryGetComponent<Transform>();
+    tf = gameObject->TryGetComponent<Transform>();
 }
 
 void Rigidbody::Update()

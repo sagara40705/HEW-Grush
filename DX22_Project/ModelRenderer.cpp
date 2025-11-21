@@ -24,9 +24,9 @@ struct WVPMatrices
 
 void ModelRenderer::Start()
 {
-    t = Parent->TryGetComponent<Transform>();
+    t = gameObject->TryGetComponent<Transform>();
     c = Camera::Main();
-    mc = Parent->TryGetComponent<ModelComponent>();
+    mc = gameObject->TryGetComponent<ModelComponent>();
     //EnsureShaders();
 }
 
@@ -119,7 +119,7 @@ void ModelRenderer::Draw()
         psKind == ShaderList::PS_TOON ||
         psKind == ShaderList::PS_FOG)
     {
-        if (auto* camTf = c->Parent->TryGetComponent<Transform>())
+        if (auto* camTf = c->gameObject->TryGetComponent<Transform>())
         {
             XMFLOAT3 camPos = camTf->GetWorldPosition();
             ShaderList::SetCameraPos(camPos);

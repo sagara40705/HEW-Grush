@@ -6,7 +6,7 @@ class GameObject;
 class Component
 {
 public:
-	GameObject* Parent = nullptr;	//Š—LÒ
+	GameObject* gameObject = nullptr;	//Š—LÒ
 private:
 	bool enabled = true;			//—LŒø
 private:
