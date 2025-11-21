@@ -2,6 +2,7 @@
 #include <unordered_map>
 #include <typeindex>
 #include <memory>
+#include <cassert>
 #include "Component.h"
 
 using ObjectId = std::uint32_t;

@@ -59,7 +59,6 @@ void PlayerMove::Start()
         if (auto* c = dynamic_cast<Collider*>(kv.second.get())) { col_ = c; break; }
     }
     cam_ = Camera::Main()->Parent->TryGetComponent<Transform>();
-
     pa_ = Parent->TryGetComponent<PlayerAction>();
 
     assert(t_ && rb_ && col_ && "PlayerMove requires Transform/Rigidbody/Collider");
@@ -86,7 +85,10 @@ void PlayerMove::OnDestroy()
 
 bool PlayerMove::IsGrounded() const
 {
+    
+
     const auto me = col_->GetWorldAABB();
+
     for (auto& o : Game::GetWorld().objects) {
         if (!o->active || o.get() == Parent) continue;
         for (auto& kv : o->components) {
@@ -98,7 +100,7 @@ bool PlayerMove::IsGrounded() const
             if (dy >= -GROUND_EPS && dy <= GROUND_EPS) return true;
         }
     }
-    return false;
+    return true;
 }
 
 float PlayerMove::HorizontalSpeed() const

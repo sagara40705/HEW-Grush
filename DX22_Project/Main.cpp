@@ -30,7 +30,7 @@ HRESULT Init(HWND hWnd, UINT width, UINT height)
 	Timer::Init();
 
 	// ÉVÅ[Éì
-	Game::Init(new SceneGame());
+	Game::Init();
 
 	return hr;
 }

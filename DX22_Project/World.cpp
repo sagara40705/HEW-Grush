@@ -38,6 +38,7 @@ const GameObject* World::Find(ObjectId id) const noexcept
 
 void World::Start()
 {
+    Debug::Log(" World::Start()");
     for (auto& up : objects) 
     {
         if (!up) continue;

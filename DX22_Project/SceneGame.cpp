@@ -59,9 +59,12 @@ namespace
     }
 }
 
-SceneGame::SceneGame()
+SceneGame::SceneGame(){}
+SceneGame::~SceneGame(){}
+
+void SceneGame::Load()
 {
-    W = &Game::GetWorld();
+    W = &GetWorld();
 
     Debug::Init();
     RegisterTexture();
@@ -127,25 +130,19 @@ SceneGame::SceneGame()
     CanvasUI& gaefUI = GaEf.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::GaugeEffect));
 
     GameObject& gaugeUiManagerObj = W->CreateGameObject();
-    gaugeUiManagerObj.AddComponent<GlassGauge>(&gaugeFrameUI , &gaugeUI, &gaefUI);
-
- 
-    W->Start();
-   
-}
-SceneGame::~SceneGame()
-{
-    W->ClearAll();
-    W = nullptr;
-    TextureManager::Clear();
+    gaugeUiManagerObj.AddComponent<GlassGauge>(&gaugeFrameUI, &gaugeUI, &gaefUI);
 }
 void SceneGame::Update()
 {
-    W->Update();
 }
 void SceneGame::Draw()
 {
-    W->Draw();
+}
+
+void SceneGame::Unload()
+{
+    W = nullptr;
+    TextureManager::Clear();
 }
 
 void SceneGame::RegisterTexture()
