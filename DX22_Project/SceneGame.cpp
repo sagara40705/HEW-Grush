@@ -111,7 +111,7 @@ void SceneGame::Load()
 
     GameObject& karubi = W->CreateGameObject();
     karubi.AddComponent<Transform>(DirectX::XMFLOAT3{ 2,0.5,2 }, Vec3Zero, Vec3One);
-    karubi.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::Karubi));
+    karubi.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::Player));
     karubi.AddComponent<ModelRenderer>();
     karubi.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0,0.75f,0 }, DirectX::XMFLOAT3{ 1, 1.5, 1 });
     LineManager::AddBoxCollider(&karubi);
@@ -164,6 +164,7 @@ void SceneGame::RegisterModel()
     ModelManager::RegisterAuto(ModelTag::Benti);
     ModelManager::RegisterAuto(ModelTag::Ufo);
     ModelManager::RegisterAuto(ModelTag::ProtPlay);
+    ModelManager::RegisterAuto(ModelTag::Player);
 }
 
 void SceneGame::CreateProtStage()

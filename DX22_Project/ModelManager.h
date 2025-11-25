@@ -11,6 +11,7 @@ enum class ModelTag: int
 	Benti,
 	Ufo,
 	ProtPlay,
+	Player,
 	Count
 };
 
