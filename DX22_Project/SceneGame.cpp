@@ -178,32 +178,39 @@ void SceneGame::CreateGlassModel()
 void SceneGame::SetPlayerAndHummer()
 {
     GameObject& camera = W->CreateGameObject();
-    camera.AddComponent<Transform>(Camera::initPos(), Camera::initRotate(), Vector3::zero());
+    Transform& cameraTf = camera.AddComponent<Transform>(Camera::initPos(), Camera::initRotate(), Vector3::zero());
     camera.AddComponent<Camera>();
     LineManager::Init();
 
+    GameObject& pivot = W->CreateGameObject();
+    Transform& pivotTf = pivot.AddComponent<Transform>(Vector3::zero(), Vector3::zero(), Vector3::zero());
+
+
     GameObject& player = W->CreateGameObject();
-    player.AddComponent<Transform>(Vector3(0, 2, 0), Vector3::zero(), Vector3(1, 1, 1));
+    Transform& playerTf = player.AddComponent<Transform>(Vector3(0, 2, 0), Vector3::zero(), Vector3(1, 1, 1));
     player.AddComponent<MeshFilter>(MeshFilter::Type::Cylinder);
     player.AddComponent<MeshRender>(1);
     player.AddComponent<BoxCollider>(true, Vector3(0, 0, 0), Vector3(1, 1, 1));
-    // player.AddComponent<SphereCollider>(0.5f, false);
-    // player.AddComponent<CapsuleCollider>(0.01f, 0.5f, false);
     player.AddComponent<Rigidbody>();
     player.AddComponent<PlayerMove>();
     player.AddComponent<PlayerAction>();
-    camera.AddComponent<CameraFollow>(&player.GetComponent<Transform>());
+    //camera.AddComponent<CameraFollow>(&player.GetComponent<Transform>());
     player.SetTag(Tag::Player);
     // LineManager::AddBoxCollider(&player);
 
     GameObject& hammer = W->CreateGameObject();
-    hammer.AddComponent<Transform>(Vector3(0, 0, 1.5f), Vector3::zero(), kDefaultHummerScale);
-    hammer.TryGetComponent<Transform>()->SetParent(&player.GetComponent<Transform>());
+    Transform& hammerTf = hammer.AddComponent<Transform>(Vector3(0, 0, 1.5f), Vector3::zero(), kDefaultHummerScale);
+    //hammer.TryGetComponent<Transform>()->SetParent(&player.GetComponent<Transform>());
     hammer.AddComponent<MeshFilter>(MeshFilter::Type::Cube);
     hammer.AddComponent<MeshRender>(1);
     auto& hbc = hammer.AddComponent<BoxCollider>(false); hbc.isTrigger = true;
-    hammer.AddComponent<HummerScript>(player.TryGetComponent<Transform>());
+    hammer.AddComponent<HummerScript>(playerTf);
     hammer.SetTag(Tag::Weapon);
+
+    cameraTf.SetParent(&pivotTf);
+    pivotTf.SetParent(&playerTf);
+    hammerTf.SetParent(&playerTf);
+
 }
 
 void SceneGame::CreateTimerUi()

@@ -213,6 +213,9 @@
     <ClCompile Include="Frustum.cpp">
       <Filter>システム</Filter>
     </ClCompile>
+    <ClCompile Include="CameraOrbitRig.cpp">
+      <Filter>コンポーネント</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Defines.h">
@@ -388,6 +391,9 @@
     </ClInclude>
     <ClInclude Include="Frustum.h">
       <Filter>システム</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraOrbitRig.h">
+      <Filter>コンポーネント</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
