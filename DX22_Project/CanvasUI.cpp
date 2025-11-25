@@ -36,7 +36,6 @@ void CanvasUI::Start()
 	CreateMesh();
 	ensureDefaultShaders();
 
-
 	m_data.vs = s_defVS.get();
 	m_data.ps = s_defPS.get();
 }

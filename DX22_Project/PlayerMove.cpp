@@ -4,6 +4,7 @@
 #include "Rigidbody.h"
 #include "Collider.h"
 #include "Camera.h"
+#include "PlayerAction.h"
 #include "Game.h"
 #include "Input.h"
 #include <algorithm>
@@ -59,6 +60,8 @@ void PlayerMove::Start()
     }
     cam_ = Camera::Main()->Parent->TryGetComponent<Transform>();
 
+    pa_ = Parent->TryGetComponent<PlayerAction>();
+
     assert(t_ && rb_ && col_ && "PlayerMove requires Transform/Rigidbody/Collider");
     facingYawDeg_ = 0.0f; // 初期yaw（最初の入力で正対）
 }
@@ -78,7 +81,7 @@ void PlayerMove::Update()
 
 void PlayerMove::OnDestroy()
 {
-    t_ = nullptr; cam_ = nullptr; rb_ = nullptr; col_ = nullptr;
+    t_ = nullptr; cam_ = nullptr; rb_ = nullptr; col_ = nullptr; cam_ = nullptr; pa_ = nullptr;
 }
 
 bool PlayerMove::IsGrounded() const
@@ -156,7 +159,8 @@ void PlayerMove::ApplyHorizontal(float dt, bool grounded)
     }
 
     // 向き（回転ロックされていなければ即時スナップ）
-    if (rotateToMove && !rotateLock_ && wishLen2 > 1e-6f) {
+    if (!pa_->IsAction() && rotateToMove && !rotateLock_ && wishLen2 > 1e-6f)
+    {
         FaceToWish(wish);
     }
 

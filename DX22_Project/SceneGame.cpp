@@ -10,6 +10,7 @@
 #include "RenderSystem.h"
 #include "Game.h"
 #include "TextureManager.h"
+#include "ModelManager.h"
 
 World* W = nullptr;
 
@@ -64,6 +65,7 @@ SceneGame::SceneGame()
 
     Debug::Init();
     RegisterTexture();
+    RegisterModel();
 
     GameObject& camera = W->CreateGameObject();
     camera.AddComponent<Transform>(Camera::initPos(), Camera::initRotate(), Vector3::zero());
@@ -71,7 +73,7 @@ SceneGame::SceneGame()
     LineManager::Init();
 
     GameObject& player = W->CreateGameObject();
-    player.AddComponent<Transform>(Vector3(0, 2, 0), Vector3::zero(), Vector3(0.5, 0.5, 0.5));
+    player.AddComponent<Transform>(Vector3(0, 2, 0), Vector3::zero(), Vector3(1, 1, 1));
     player.AddComponent<MeshFilter>(MeshFilter::Type::Cylinder);
     player.AddComponent<MeshRender>(1);
     player.AddComponent<BoxCollider>(true, Vector3(0, 0, 0), Vector3(1, 1, 1));
@@ -85,7 +87,7 @@ SceneGame::SceneGame()
     // LineManager::AddBoxCollider(&player);
 
     GameObject& hammer = W->CreateGameObject();
-    hammer.AddComponent<Transform>(Vector3(0, 0, 1), Vector3::zero(), kDefaultHummerScale);
+    hammer.AddComponent<Transform>(Vector3(0, 0, 1.5f), Vector3::zero(), kDefaultHummerScale);
     hammer.TryGetComponent<Transform>()->SetParent(&player.GetComponent<Transform>());
     hammer.AddComponent<MeshFilter>(MeshFilter::Type::Cube);
     hammer.AddComponent<MeshRender>(1);
@@ -104,27 +106,32 @@ SceneGame::SceneGame()
 
     //GameObject& karubi = W->CreateGameObject();
     //karubi.AddComponent<Transform>(DirectX::XMFLOAT3{ 2,0.5,2 }, Vec3Zero, Vec3One);
-    //karubi.AddComponent<ModelComponent>("Assets/まけん式赤見かるび姫衣装MMD/まけん式赤見かるび姫衣装ver1.0.pmx", 0.08f, Model::ZFlip);
+    //karubi.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::Karubi));
     //karubi.AddComponent<ModelRenderer>();
     //karubi.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0,0.75f,0 }, DirectX::XMFLOAT3{ 1, 1.5, 1 });
     //LineManager::AddBoxCollider(&karubi);
-    CreateGlassModel();
+
+    CreateProtStage();
+    //CreateGlassModel();
     CreateTimerUi();
     CreateScoreUi();
     CreateActionUi();
 
-    GameObject& SampleUi = W->CreateGameObject();
-    auto& ui = SampleUi.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::GaugeMaxLv1));
-    SampleUi.AddComponent<GlassGauge>(hammer.TryGetComponent<HummerScript>());
+    GameObject& gaugeFrame = W->CreateGameObject();
+    CanvasUI& gaugeFrameUI = gaugeFrame.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::GaugeFrame));
 
-    ui.SetColor({ 1 ,1 ,1 , 1.f });
+    GameObject& gauge = W->CreateGameObject();
+    CanvasUI& gaugeUI = gauge.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::GaugeMaxLv1));
 
+    GameObject& GaEf = W->CreateGameObject();
+    CanvasUI& gaefUI = GaEf.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::GaugeEffect));
+
+    GameObject& gaugeUiManagerObj = W->CreateGameObject();
+    gaugeUiManagerObj.AddComponent<GlassGauge>(&gaugeFrameUI , &gaugeUI, &gaefUI);
+
+   
     W->Start();
-    float p = 0.8f;
-    ui.SetOffset(Vector2(0, 200 * (1 - p)));
-    ui.SetSize(Vector2(1, p));
-    ui.SetUVPos(Vector2(0, (1 - p)));
-    ui.SetUVScale(Vector2(1, p));
+   
 }
 SceneGame::~SceneGame()
 {
@@ -139,24 +146,202 @@ void SceneGame::Update()
 void SceneGame::Draw()
 {
     W->Draw();
-
-
 }
 
 void SceneGame::RegisterTexture()
 {
     TextureManager::RegisterAuto(TextureTag::Number);
+    TextureManager::RegisterAuto(TextureTag::GaugeFrame);
     TextureManager::RegisterAuto(TextureTag::GaugeMaxLv1);
+    TextureManager::RegisterAuto(TextureTag::GaugeEffect);
     TextureManager::RegisterAuto(TextureTag::SpinUI);
     TextureManager::RegisterAuto(TextureTag::DashUI);
+}
+
+void SceneGame::RegisterModel()
+{
+    ModelManager::RegisterAuto(ModelTag::Karubi);
+    ModelManager::RegisterAuto(ModelTag::Swing);
+    ModelManager::RegisterAuto(ModelTag::Benti);
+    ModelManager::RegisterAuto(ModelTag::Ufo);
+    ModelManager::RegisterAuto(ModelTag::ProtPlay);
+}
+
+void SceneGame::CreateProtStage()
+{
+    //最後に壊させる
+    //最後に一番大きいガラスを割ってみよう！(最大強化できた時)
+    //UFOを割ったらクリア
+    GameObject& ufo1 = W->CreateGameObject();
+    ufo1.AddComponent<Transform>(DirectX::XMFLOAT3{ 10, -0.5f,10 }, Vec3Zero, Vec3One);
+    ufo1.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::Ufo));
+    ufo1.AddComponent<ModelRenderer>();
+    ufo1.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0,2,0 }, DirectX::XMFLOAT3{ 4,4 , 4 });
+    LineManager::AddBoxCollider(&ufo1);
+    ufo1.AddComponent<GlassScript>(GlassGrade::Grade_3);
+    ufo1.SetTag(Tag::Glass);
+
+    //二番目に壊させる
+    //ハンマーがパワーアップした！大きいガラスを割ったほうがゲージがより増えやすい！
+    //たくさん壊して最大強化させよう！
+    GameObject& benti1 = W->CreateGameObject();
+    benti1.AddComponent<Transform>(DirectX::XMFLOAT3{ -10,-0.9f,10 }, Vec3Zero, Vector3( 1.2f, 1.2f, 1.2f));
+    benti1.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::Benti));
+    benti1.AddComponent<ModelRenderer>();
+    benti1.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0,1,0 }, DirectX::XMFLOAT3{ 4,2 , 2 });
+    LineManager::AddBoxCollider(&benti1);
+    benti1.AddComponent<GlassScript>(GlassGrade::Grade_2);
+    benti1.SetTag(Tag::Glass);
+    
+
+    GameObject& benti2 = W->CreateGameObject();
+    benti2.AddComponent<Transform>(DirectX::XMFLOAT3{ 20,-0.9f,-16 }, Vec3Zero, Vector3( 1.2f, 1.2f, 1.2f));
+    benti2.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::Benti));
+    benti2.AddComponent<ModelRenderer>();
+    benti2.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0,1,0 }, DirectX::XMFLOAT3{ 4,2 , 2 });
+    LineManager::AddBoxCollider(&benti2);
+    benti2.AddComponent<GlassScript>(GlassGrade::Grade_2);
+    benti2.SetTag(Tag::Glass);
+
+    GameObject& benti3 = W->CreateGameObject();
+    benti3.AddComponent<Transform>(DirectX::XMFLOAT3{ 11,-0.9f,-13 }, Vec3Zero, Vector3( 1.2f, 1.2f, 1.2f));
+    benti3.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::Benti));
+    benti3.AddComponent<ModelRenderer>();
+    benti3.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0,1,0 }, DirectX::XMFLOAT3{ 4,2 , 2 });
+    LineManager::AddBoxCollider(&benti3);
+    benti3.AddComponent<GlassScript>(GlassGrade::Grade_2);
+    benti3.SetTag(Tag::Glass);
+
+    //一番初めに壊させる。
+    // ここで簡単な操作説明
+    //<内容文>物を壊すとゲージがたまる！ゲージがMAXになるとハンマーが強化され、より大きなガラスを破壊できるようになるぞ！
+    //もっと小さなガラスを割ってゲージをためてみよう！
+    GameObject& swing1 = W->CreateGameObject();
+    swing1.AddComponent<Transform>(DirectX::XMFLOAT3{ -7,-0.9f,-8 }, Vec3Zero, Vector3(0.8f, 0.8f, 0.8f));
+    swing1.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::Swing));
+    swing1.AddComponent<ModelRenderer>();
+    swing1.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0, 0.7f, 0.2f }, DirectX::XMFLOAT3{ 1.5f, 1.5f , 1.5f });
+    LineManager::AddBoxCollider(&swing1);
+    swing1.AddComponent<GlassScript>(GlassGrade::Grade_1);
+    swing1.SetTag(Tag::Glass);
+
+    GameObject& swing2 = W->CreateGameObject();
+    swing2.AddComponent<Transform>(DirectX::XMFLOAT3{ -12,-0.9f,-2 }, Vec3Zero, Vector3(0.8f, 0.8f, 0.8f));
+    swing2.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::Swing));
+    swing2.AddComponent<ModelRenderer>();
+    swing2.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0, 0.7f, 0.2f }, DirectX::XMFLOAT3{ 1.5f, 1.5f , 1.5f });
+    LineManager::AddBoxCollider(&swing2);
+    swing2.AddComponent<GlassScript>(GlassGrade::Grade_1);
+    swing2.SetTag(Tag::Glass);
+
+    GameObject& swing3 = W->CreateGameObject();
+    swing3.AddComponent<Transform>(DirectX::XMFLOAT3{ -22,-0.9f,-13 }, Vec3Zero, Vector3(0.8f, 0.8f, 0.8f));
+    swing3.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::Swing));
+    swing3.AddComponent<ModelRenderer>();
+    swing3.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0, 0.7f, 0.2f }, DirectX::XMFLOAT3{ 1.5f, 1.5f , 1.5f });
+    LineManager::AddBoxCollider(&swing3);
+    swing3.AddComponent<GlassScript>(GlassGrade::Grade_1);
+    swing3.SetTag(Tag::Glass);
+
+
+    //物が少なくてさみしいので適当に置きます↓（削除OK）
+    GameObject& player1 = W->CreateGameObject();
+    player1.AddComponent<Transform>(DirectX::XMFLOAT3{ -12,-0.9f,8 }, Vec3Zero, Vector3(0.8f, 0.8f, 0.8f));
+    player1.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::ProtPlay));
+    player1.AddComponent<ModelRenderer>();
+    player1.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ -0.2f, 1, 0 }, DirectX::XMFLOAT3{ 1, 2, 1 });
+    LineManager::AddBoxCollider(&player1);
+    player1.AddComponent<GlassScript>(GlassGrade::Grade_1);
+    player1.SetTag(Tag::Glass);
+
+    GameObject& player2 = W->CreateGameObject();
+    player2.AddComponent<Transform>(DirectX::XMFLOAT3{ 5,-0.9f,2 }, Vec3Zero, Vector3(0.8f, 0.8f, 0.8f));
+    player2.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::ProtPlay));
+    player2.AddComponent<ModelRenderer>();
+    player2.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ -0.2f, 1, 0 }, DirectX::XMFLOAT3{ 1, 2, 1 });
+    LineManager::AddBoxCollider(&player2);
+    player2.AddComponent<GlassScript>(GlassGrade::Grade_1);
+    player2.SetTag(Tag::Glass);
+
+    GameObject& player3 = W->CreateGameObject();
+    player3.AddComponent<Transform>(DirectX::XMFLOAT3{ -20,-0.9f,-20 }, Vec3Zero, Vector3(0.8f, 0.8f, 0.8f));
+    player3.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::ProtPlay));
+    player3.AddComponent<ModelRenderer>();
+    player3.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ -0.2f, 1, 0 }, DirectX::XMFLOAT3{ 1, 2, 1 });
+    LineManager::AddBoxCollider(&player3);
+    player3.AddComponent<GlassScript>(GlassGrade::Grade_1);
+    player3.SetTag(Tag::Glass);
+
+    GameObject& player4 = W->CreateGameObject();
+    player4.AddComponent<Transform>(DirectX::XMFLOAT3{ -16,-0.9f,-16 }, Vec3Zero, Vector3(0.8f, 0.8f, 0.8f));
+    player4.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::ProtPlay));
+    player4.AddComponent<ModelRenderer>();
+    player4.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ -0.2f, 1, 0 }, DirectX::XMFLOAT3{ 1, 2, 1 });
+    LineManager::AddBoxCollider(&player4);
+    player4.AddComponent<GlassScript>(GlassGrade::Grade_1);
+    player4.SetTag(Tag::Glass);
+
+    GameObject& player5 = W->CreateGameObject();
+    player5.AddComponent<Transform>(DirectX::XMFLOAT3{ 13,-0.9f,2 }, Vec3Zero, Vector3(0.8f, 0.8f, 0.8f));
+    player5.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::ProtPlay));
+    player5.AddComponent<ModelRenderer>();
+    player5.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ -0.2f, 1, 0 }, DirectX::XMFLOAT3{ 1, 2, 1 });
+    LineManager::AddBoxCollider(&player5);
+    player5.AddComponent<GlassScript>(GlassGrade::Grade_1);
+    player5.SetTag(Tag::Glass);
+
+    GameObject& player6 = W->CreateGameObject();
+    player6.AddComponent<Transform>(DirectX::XMFLOAT3{ 22,-0.9f,8 }, Vec3Zero, Vector3(0.8f, 0.8f, 0.8f));
+    player6.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::ProtPlay));
+    player6.AddComponent<ModelRenderer>();
+    player6.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ -0.2f, 1, 0 }, DirectX::XMFLOAT3{ 1, 2, 1 });
+    LineManager::AddBoxCollider(&player6);
+    player6.AddComponent<GlassScript>(GlassGrade::Grade_1);
+    player6.SetTag(Tag::Glass);
+
+    GameObject& player7 = W->CreateGameObject();
+    player7.AddComponent<Transform>(DirectX::XMFLOAT3{ -17,-0.9f,15 }, Vec3Zero, Vector3(0.8f, 0.8f, 0.8f));
+    player7.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::ProtPlay));
+    player7.AddComponent<ModelRenderer>();
+    player7.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ -0.2f, 1, 0 }, DirectX::XMFLOAT3{ 1, 2, 1 });
+    LineManager::AddBoxCollider(&player7);
+    player7.AddComponent<GlassScript>(GlassGrade::Grade_1);
+    player7.SetTag(Tag::Glass);
+
+    GameObject& player8 = W->CreateGameObject();
+    player8.AddComponent<Transform>(DirectX::XMFLOAT3{ 6,-0.9f,17 }, Vec3Zero, Vector3(0.8f, 0.8f, 0.8f));
+    player8.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::ProtPlay));
+    player8.AddComponent<ModelRenderer>();
+    player8.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ -0.2f, 1, 0 }, DirectX::XMFLOAT3{ 1, 2, 1 });
+    LineManager::AddBoxCollider(&player8);
+    player8.AddComponent<GlassScript>(GlassGrade::Grade_1);
+    player8.SetTag(Tag::Glass);
+
+    GameObject& player9 = W->CreateGameObject();
+    player9.AddComponent<Transform>(DirectX::XMFLOAT3{ 20,-0.9f,-12 }, Vec3Zero, Vector3(0.8f, 0.8f, 0.8f));
+    player9.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::ProtPlay));
+    player9.AddComponent<ModelRenderer>();
+    player9.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ -0.2f, 1, 0 }, DirectX::XMFLOAT3{ 1, 2, 1 });
+    LineManager::AddBoxCollider(&player9);
+    player9.AddComponent<GlassScript>(GlassGrade::Grade_1);
+    player9.SetTag(Tag::Glass);
+
+    GameObject& player10 = W->CreateGameObject();
+    player10.AddComponent<Transform>(DirectX::XMFLOAT3{ 14,-0.9f,-19 }, Vec3Zero, Vector3(0.8f, 0.8f, 0.8f));
+    player10.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::ProtPlay));
+    player10.AddComponent<ModelRenderer>();
+    player10.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ -0.2f, 1, 0 }, DirectX::XMFLOAT3{ 1, 2, 1 });
+    LineManager::AddBoxCollider(&player10);
+    player10.AddComponent<GlassScript>(GlassGrade::Grade_1);
+    player10.SetTag(Tag::Glass);
 }
 
 void SceneGame::CreateGlassModel()
 {
     GameObject& ufo = W->CreateGameObject();
     ufo.AddComponent<Transform>(DirectX::XMFLOAT3{ 4,0.5,4 }, Vec3Zero, Vec3One);
-    //ufo.AddComponent<ModelComponent>("Assets/Model/MD_player_prototype.fbx", 0.08f, Model::ZFlip);
-    //ufo.AddComponent<ModelRenderer>();
+    ufo.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::Ufo));
+    ufo.AddComponent<ModelRenderer>();
     ufo.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0,0,0 }, DirectX::XMFLOAT3{ 2, 2, 2 });
     LineManager::AddBoxCollider(&ufo);
 }

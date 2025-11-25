@@ -168,6 +168,7 @@
     <ClCompile Include="MeshRender.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="ModelComponent.cpp" />
+    <ClCompile Include="ModelManager.cpp" />
     <ClCompile Include="ModelRenderer.cpp" />
     <ClCompile Include="PhysicsSystem.cpp" />
     <ClCompile Include="PlanetMove.cpp" />
@@ -214,6 +215,7 @@
     <ClInclude Include="MeshFilter.h" />
     <ClInclude Include="MeshRender.h" />
     <ClInclude Include="ModelComponent.h" />
+    <ClInclude Include="ModelManager.h" />
     <ClInclude Include="ModelRenderer.h" />
     <ClInclude Include="PhysicsSystem.h" />
     <ClInclude Include="PlanetMove.h" />
