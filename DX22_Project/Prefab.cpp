@@ -46,4 +46,46 @@ void RegisterAllPrefabs()
             auto& gs = go.AddComponent<GlassScript>(GlassGrade::Grade_1);
             (void)gs;
         });
+    Prefab::Register(PrefabId::Benti,
+        [](GameObject& go) {
+            go.SetTag(Tag::Glass);
+            auto& mc = go.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::Benti));
+            (void)mc;
+            auto& mr = go.AddComponent<ModelRenderer>();
+            (void)mr;
+            auto& bc = go.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0,1,0 }, DirectX::XMFLOAT3{ 4,2 , 2 });
+            (void)bc;
+            LineManager::AddBoxCollider(&go);
+            auto& gs = go.AddComponent<GlassScript>(GlassGrade::Grade_2);
+            (void)gs;
+
+        });
+    Prefab::Register(PrefabId::Ufo,
+        [](GameObject& go) {
+            go.SetTag(Tag::Glass);
+
+            auto& mc = go.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::Ufo));
+            (void)mc;
+            auto& mr = go.AddComponent<ModelRenderer>();
+            (void)mr;
+            auto& bc = go.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0,2,0 }, DirectX::XMFLOAT3{ 4,4 , 4 });
+            (void)bc;
+            LineManager::AddBoxCollider(&go);
+            auto& gs = go.AddComponent<GlassScript>(GlassGrade::Grade_3);
+            (void)gs;
+
+        });
+    Prefab::Register(PrefabId::ProtPlay,
+        [](GameObject& go) {
+            go.SetTag(Tag::Glass);
+            auto& mc = go.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::ProtPlay));
+            (void)mc;
+            auto& mr = go.AddComponent<ModelRenderer>();
+            (void)mr;
+            auto& bc = go.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ -0.2f, 1, 0 }, DirectX::XMFLOAT3{ 1, 2, 1 });
+            (void)bc;
+            LineManager::AddBoxCollider(&go);
+            auto& gs = go.AddComponent<GlassScript>(GlassGrade::Grade_1);
+            (void)gs;
+        });
 }
