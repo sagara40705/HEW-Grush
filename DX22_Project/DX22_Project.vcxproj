@@ -148,8 +148,8 @@
     <ClCompile Include="ActionUIManager.cpp" />
     <ClCompile Include="BoxCollider.cpp" />
     <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CameraControl.cpp" />
     <ClCompile Include="CameraFollow.cpp" />
-    <ClCompile Include="CameraOrbitRig.cpp" />
     <ClCompile Include="CanvasUI.cpp" />
     <ClCompile Include="CapsuleCollider.cpp" />
     <ClCompile Include="Collider.cpp" />
@@ -201,8 +201,8 @@
     <ClInclude Include="AllComponet.h" />
     <ClInclude Include="BoxCollider.h" />
     <ClInclude Include="Camera.h" />
+    <ClInclude Include="CameraControl.h" />
     <ClInclude Include="CameraFollow.h" />
-    <ClInclude Include="CameraOrbitRig.h" />
     <ClInclude Include="CanvasUI.h" />
     <ClInclude Include="CapsuleCollider.h" />
     <ClInclude Include="Collider.h" />

@@ -7,8 +7,8 @@ class Camera : public Component
 {
 public:
     // ==== íËêîíËã` ====
-    static constexpr Vector3 initPos()      noexcept { return { 0, 1, -3 }; }
-    static constexpr Vector3 initRotate()   noexcept { return { 30, 0, 0 }; }
+    static constexpr Vector3 initPos()      noexcept { return { 0, 0, -10 }; }
+    static constexpr Vector3 initRotate()   noexcept { return { 0, 0, 0 }; }
     static constexpr DirectX::XMFLOAT3 defaltPos = { 0.0f, 1.0f, -3.0f };
     static constexpr DirectX::XMFLOAT3 defaltRotate = { 30.0f, 0.0f,  0.0f };
     static constexpr float DEFAULT_FOVY = DirectX::XM_PIDIV4; // 45Åã

@@ -36,3 +36,4 @@ class Transform;
 class Camera;
 class MeshFilter;
 class MeshRender;
+class PlayerAction;

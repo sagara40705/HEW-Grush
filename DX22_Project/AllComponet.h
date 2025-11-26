@@ -22,3 +22,5 @@
 #include "ScoreManager.h"
 #include "ScoreUIManager.h"
 #include "ActionUIManager.h"
+#include "CameraOrbitRig.h"
+#include "CameraControl.h"
