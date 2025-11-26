@@ -216,6 +216,9 @@
     <ClCompile Include="CameraControl.cpp">
       <Filter>コンポーネント\Script</Filter>
     </ClCompile>
+    <ClCompile Include="CameraShake.cpp">
+      <Filter>コンポーネント\Script</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Defines.h">
@@ -393,6 +396,9 @@
       <Filter>システム</Filter>
     </ClInclude>
     <ClInclude Include="CameraControl.h">
+      <Filter>コンポーネント\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraShake.h">
       <Filter>コンポーネント\Script</Filter>
     </ClInclude>
   </ItemGroup>
