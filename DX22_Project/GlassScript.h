@@ -23,4 +23,6 @@ public:
 	//void OnWillDestroy() override;
 	void OnDestroy() override;
 	GlassGrade grade = GlassGrade::Grade_1;
+private:
+	void SpawnShards();
 };

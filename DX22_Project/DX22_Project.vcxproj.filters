@@ -219,6 +219,9 @@
     <ClCompile Include="CameraShake.cpp">
       <Filter>コンポーネント\Script</Filter>
     </ClCompile>
+    <ClCompile Include="GlassShard.cpp">
+      <Filter>コンポーネント\Script</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Defines.h">
@@ -399,6 +402,9 @@
       <Filter>コンポーネント\Script</Filter>
     </ClInclude>
     <ClInclude Include="CameraShake.h">
+      <Filter>コンポーネント\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="GlassShard.h">
       <Filter>コンポーネント\Script</Filter>
     </ClInclude>
   </ItemGroup>
