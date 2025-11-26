@@ -79,6 +79,7 @@ void HummerScript::OnTriggerStay(const TriggerInfo& c)
 		{
 			c.other->Destroy();
 			CameraShake::StartShake(static_cast<CameraShake::Level>(static_cast<int>(grade)));
+			c.other->TryGetComponent<GlassScript>()->SpawnShards();
 			GaugeUp(c.other);
 			
 			// ゲージ減衰中なら止める& Delayタイマーを初期化

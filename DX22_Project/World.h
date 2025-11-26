@@ -20,6 +20,7 @@ public:
     // ”jŠü—\–ñ
     std::vector<ObjectId>  toDestroy{};
     ObjectId               nextId = 1;
+    bool isClearing = true;
 private:
     std::vector<GameObject*> pendingStartObjects;
 public:

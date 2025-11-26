@@ -8,6 +8,10 @@ void GlassShard::Start()
     rb = gameObject->TryGetComponent<Rigidbody>();
 }
 
+void GlassShard::OnDestroy()
+{
+}
+
 void GlassShard::Update()
 {
     const float dt = 1.f / 60.f;

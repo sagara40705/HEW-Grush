@@ -172,6 +172,8 @@ void World::Draw()
 
 void World::ClearAll()
 {
+    isClearing = true;
+
     // OnDestroy ‚ğŒÄ‚ñ‚Å‚©‚ç‘Síœ
     for (auto& up : objects)
     {
@@ -192,6 +194,8 @@ void World::ClearAll()
     updateList.clear();
     fixedUpdateList.clear();
     lateUpdateList.clear();
+
+    isClearing = false;
 }
 
 //====================== “o˜^ / ‰ğœ ======================

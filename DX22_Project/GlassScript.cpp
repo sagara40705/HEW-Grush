@@ -12,15 +12,15 @@ constexpr int   shardCount = 5;      // âΩå¬îÚÇŒÇ∑ÅH
 constexpr float power = 10.0f;   // îÚÇ—éUÇËÇÃã≠Ç≥
 constexpr float upwardBias = 1.3f;    // è≠Çµè„ï˚å¸Ç…óÕÇâ¡Ç¶ÇÈ
 
+constexpr int kShardCount[ToInt(GlassGrade::Count)] = { 6, 8, 10 };
+constexpr float kShardPower[ToInt(GlassGrade::Count)] = { 6.f, 8.f, 10.f };
+constexpr float kShardScale[ToInt(GlassGrade::Count)] = { 0.4f, 0.7f, 1.f };
+
 void GlassScript::Start()
 {
 
 }
 
-//void GlassScript::OnWillDestroy()
-//{
-//	
-//}
 
 void GlassScript::OnDestroy()
 {
@@ -31,10 +31,13 @@ void GlassScript::OnDestroy()
 void GlassScript::SpawnShards()
 {
     World& w = Game::GetWorld();
+    if (w.isClearing) return;
+    
     Transform& myTf = gameObject->GetComponent<Transform>();
     Vector3 center = myTf.GetPosition();
+    Vector3 size = Vector3::one() * kShardScale[ToInt(grade)];
 
-    for (int i = 0; i < shardCount; ++i)
+    for (int i = 0; i < kShardCount[ToInt(grade)]; ++i)
     {
         // --- ãœìôÇ…äpìxÇäÑÇËêUÇÈÅiïŒÇËÇ»ÇµÅj ---
         float t = static_cast<float>(i) / shardCount;
@@ -47,12 +50,14 @@ void GlassScript::SpawnShards()
         };
         dir.Normalize();
 
+       
         // --- åáï–ê∂ê¨ ---
         GameObject& g = w.CreateGameObject();
-
+        
         // Transform
-        auto& tf = g.AddComponent<Transform>();
-        tf.SetPosition(center);
+        auto& tf = g.AddComponent<Transform>(center, Vector3::zero(), size);
+        //tf.SetPosition(center);
+     
 
         auto& mf = g.AddComponent<MeshFilter>(MeshFilter::Type::Cube);
         auto& mr = g.AddComponent<MeshRender>();
@@ -64,6 +69,7 @@ void GlassScript::SpawnShards()
         auto& shard = g.AddComponent<GlassShard>();
 
         // --- èâë¨Çó^Ç¶ÇÈÅiImpulse) ---
-        rb.AddForce(dir * power);
+        rb.AddForce(dir * kShardPower[ToInt(grade)] * (1 + (i % 3) * 0.3));
+        
     }
 }

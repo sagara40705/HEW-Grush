@@ -14,6 +14,8 @@ public:
 
 public:
     void Start() override;
+    void OnDestroy() override;
     void Update() override;
+
 };
 
