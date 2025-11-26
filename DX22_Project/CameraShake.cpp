@@ -1,5 +1,6 @@
 ﻿// === File: CameraShake.cpp ===
 #include "CameraShake.h"
+#include "GameObject.h"
 #include <DirectXMath.h>
 #include "DebugLog.h"
 

@@ -6,6 +6,7 @@
 #include "Camera.h"
 #include "PlayerAction.h"
 #include "Game.h"
+#include "GameObject.h"
 #include "Input.h"
 #include <algorithm>
 #include <cmath>

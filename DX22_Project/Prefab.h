@@ -4,7 +4,6 @@
 #include <typeindex>
 
 #include "Vector3.h"
-#include "World.h"
 #include "GameObject.h"
 #include "Transform.h"
 

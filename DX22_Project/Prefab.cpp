@@ -1,4 +1,5 @@
 #include "Prefab.h"
+#include "World.h"
 #include "AllComponet.h"
 #include "ModelManager.h"
 #include "LineManager.h"

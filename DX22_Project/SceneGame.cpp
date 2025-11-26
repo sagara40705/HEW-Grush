@@ -1,7 +1,6 @@
 #include "SceneGame.h"
 #include <DirectXMath.h>
 #include "Defines.h"
-#include "World.h"
 #include "AllComponet.h"
 #include "PhysicsSystem.h"
 #include "SampleMapData.h"
@@ -9,6 +8,7 @@
 #include "LineManager.h"
 #include "RenderSystem.h"
 #include "Game.h"
+#include "GameObject.h"
 #include "TextureManager.h"
 #include "ModelManager.h"
 #include "Prefab.h"

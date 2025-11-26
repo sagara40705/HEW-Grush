@@ -1,5 +1,6 @@
 // Game.cpp
 #include "Game.h"
+#include "GameObject.h"
 #include "AllComponet.h"
 #include "SceneGame.h"
 #include <cassert>

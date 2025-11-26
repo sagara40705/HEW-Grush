@@ -3,6 +3,7 @@
 #include "Transform.h"
 #include "Camera.h"
 #include "MeshFilter.h"
+#include "GameObject.h"
 
 class SampleScript : public Component
 {

@@ -11,6 +11,7 @@
 #include "LineManager.h"
 #include "Timer.h"
 #include "Game.h"
+#include "GameObject.h"
 
 
 //--- ƒOƒ[ƒoƒ‹•Ï”

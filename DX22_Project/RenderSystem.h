@@ -1,5 +1,4 @@
 #pragma once
-#include "World.h"
 #include "GameObject.h"
 #include "Transform.h"
 #include "Camera.h"

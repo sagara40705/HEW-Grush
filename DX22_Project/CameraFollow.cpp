@@ -4,6 +4,7 @@
 #include "Transform.h"
 #include "PlayerAction.h"
 #include "Game.h"
+#include "GameObject.h"
 #include <DirectXMath.h>
 #include <cassert>
 

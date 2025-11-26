@@ -2,13 +2,15 @@
 #include <unordered_map>
 #include <typeindex>
 #include <memory>
+#include <cstdint>
 #include <cassert>
+#include <type_traits>
+#include <utility>
 #include "Component.h"
+#include "World.h"
 
-using ObjectId = std::uint32_t;
-class World;
-
-enum class Tag : uint8_t
+// タグ（既存仕様に合わせておく）
+enum class Tag : std::uint8_t
 {
     None,
     Player,
@@ -20,15 +22,24 @@ enum class Tag : uint8_t
 class GameObject
 {
 public:
-	ObjectId id = 0;
-	bool active = true;
+    ObjectId id = 0;
+    bool     active = true;
+
     std::unordered_map<std::type_index, std::unique_ptr<Component>> components{};
     World* world = nullptr;
-    Tag tag = Tag::None;
+    Tag    tag = Tag::None;
 
-    ~GameObject() {}
+public:
+    GameObject() = default;
+    GameObject(const GameObject&) = delete;
+    GameObject& operator=(const GameObject&) = delete;
+    GameObject(GameObject&&) noexcept = default;
+    GameObject& operator=(GameObject&&) noexcept = default;
 
-    // 追加
+    ~GameObject(); // 登録解除のため cpp で定義
+
+    //====================== コンポーネント追加 ======================
+
     template<class T, class... Args>
     T& AddComponent(Args&&... args)
     {
@@ -44,35 +55,47 @@ public:
         T* raw = ptr.get();
         components.emplace(key, std::move(ptr));
 
+        // World へ登録（MonoBehaviour / IFixedUpdate / ILateUpdate）
+        if (world)
+        {
+            if (auto* mb = dynamic_cast<MonoBehaviour*>(raw))
+                world->Register(mb);
+
+            if (auto* fu = dynamic_cast<IFixedUpdate*>(raw))
+                world->Register(fu);
+
+            if (auto* lu = dynamic_cast<ILateUpdate*>(raw))
+                world->Register(lu);
+        }
+
         return *raw;
     }
 
-    // 取得
+    //====================== コンポーネント取得 ======================
+
     template<class T>
-    T& GetComponent() 
+    T& GetComponent()
     {
-        static_assert(std::is_base_of_v<Component, T>);
+        static_assert(std::is_base_of_v<Component, T>, "T must derive from Component");
         auto it = components.find(std::type_index(typeid(T)));
-        assert(it != components.end());
+        assert(it != components.end() && "Component not found");
         return *static_cast<T*>(it->second.get());
     }
 
     template<class T>
     T* TryGetComponent() noexcept
     {
-        static_assert(std::is_base_of_v<Component, T>);
+        static_assert(std::is_base_of_v<Component, T>, "T must derive from Component");
         auto it = components.find(std::type_index(typeid(T)));
         return (it == components.end()) ? nullptr : static_cast<T*>(it->second.get());
     }
 
+    //====================== 破棄予約 ======================
+
     void Destroy(float time = 0.f);
 
-    void SetTag(Tag t) { tag = t; }
-    bool CompareTag(Tag t) { return (tag == t); }
+    //====================== Tag ユーティリティ ======================
 
-    GameObject() = default;
-    GameObject(const GameObject&) = delete;
-    GameObject& operator=(const GameObject&) = delete;
-    GameObject(GameObject&&) noexcept = default;
-    GameObject& operator=(GameObject&&) noexcept = default;
+    void SetTag(Tag t) { tag = t; }
+    bool CompareTag(Tag t)    const { return tag == t; }
 };
