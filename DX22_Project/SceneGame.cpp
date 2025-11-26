@@ -182,17 +182,9 @@ void SceneGame::SetPlayerAndHummer()
     Transform& cameraTf = camera.AddComponent<Transform>(Camera::initPos(), Camera::initRotate(), Vector3::one());
     camera.AddComponent<Camera>();
 
-    GameObject& sample = W->CreateGameObject();
-    Transform& sampleTf = sample.AddComponent<Transform>(Vector3(2, 0, 0), Vector3::zero(), Vector3(0.5f, 0.5f, 0.5f));
-    sample.AddComponent<MeshFilter>(MeshFilter::Type::Sphere);
-    sample.AddComponent<MeshRender>();
-    //sample.AddComponent<Camera>();
-
     GameObject& pivot = W->CreateGameObject();
     Transform& pivotTf = pivot.AddComponent<Transform>(Vector3(0,1,0), Vector3::zero(), Vector3::one());
     pivot.AddComponent<CameraControl>();
-    pivot.AddComponent<MeshFilter>(MeshFilter::Type::Cube);
-    pivot.AddComponent<MeshRender>();
 
     GameObject& player = W->CreateGameObject();
     Transform& playerTf = player.AddComponent<Transform>(Vector3(0, 2, 0), Vector3::zero(), Vector3(1, 1, 1));
@@ -212,9 +204,7 @@ void SceneGame::SetPlayerAndHummer()
     hammer.AddComponent<HummerScript>(&playerTf);
     hammer.SetTag(Tag::Weapon);
 
-    //pivotTf.SetParent(&playerTf);
     hammerTf.SetParent(&playerTf);
-    sampleTf.SetParent(&playerTf);
     cameraTf.SetParent(&pivotTf);
 }
 

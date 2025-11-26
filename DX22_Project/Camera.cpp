@@ -1,4 +1,4 @@
-#include "Camera.h"
+ï»¿#include "Camera.h"
 #include "GameObject.h"
 #include "Transform.h"
 #include "DebugLog.h"
@@ -43,21 +43,24 @@ DirectX::XMFLOAT4X4 Camera::GetViewProjection()
 void Camera::RebuildViewFromTransform()
 {
 	using namespace DirectX;
-	// Transform —v‹
+	// Transform è¦æ±‚
 	auto* tf = gameObject->TryGetComponent<Transform>();
 	assert(tf && "Camera requires Transform component");
 
-	const XMFLOAT3 posF = tf->GetPosition();
-	const XMFLOAT4 rotQ = tf->GetRotationQuaternion();
+	const XMFLOAT4X4& M = tf->GetMatrix();  // è¦ªå­è¾¼ã¿ã®worldMatrix
 
-	// ƒ[ƒJƒ‹‚ÌŠî’êƒxƒNƒgƒ‹‚ğ‰ñ“]‚µ‚ÄAƒJƒƒ‰‚Ì forward / up ‚ğ“¾‚é
-	const XMVECTOR q = XMLoadFloat4(&rotQ);            // ³‹K‰»‘O’ñiTransform‚ª•Ûj
-	const XMVECTOR fwd = XMVector3Rotate(XMLoadFloat3(&Vector3::XMforward), q); // +Z
-	const XMVECTOR up = XMVector3Rotate(XMLoadFloat3(&Vector3::XMup), q);
+	XMFLOAT3 eyeF{ M._41, M._42, M._43 }; 	// ä½ç½®ï¼ˆè¡Œ4,1ã€œ3ï¼‰
+	XMFLOAT3 fwdF{ M._31, M._32, M._33 };  	// åŸºåº•ï¼ˆè¡Œ3 = forward, è¡Œ2 = upï¼‰
+	XMFLOAT3 upF{ M._21, M._22, M._23 };
 
-	const XMVECTOR eye = XMLoadFloat3(&posF);
+	XMVECTOR eye = XMLoadFloat3(&eyeF);
+	XMVECTOR fwd = XMLoadFloat3(&fwdF);
+	XMVECTOR up = XMLoadFloat3(&upF);
 
-	// LookTo
+	// å¿µã®ãŸã‚æ­£è¦åŒ–
+	fwd = XMVector3Normalize(fwd);
+	up = XMVector3Normalize(up);
+
 	const XMMATRIX V = XMMatrixLookToLH(eye, fwd, up);
 	XMStoreFloat4x4(&view_, V);
 }

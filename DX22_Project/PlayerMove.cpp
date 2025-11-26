@@ -141,7 +141,7 @@ void PlayerMove::ApplyHorizontal(float dt, bool grounded)
     XMVECTOR rightXZ = XMVectorSet(1.f, 0.f, 0.f, 0.f);
     if (cam_) {
         const auto p = t_->GetPosition();
-        const auto c = cam_->GetPosition();
+        const auto c = cam_->GetWorldPosition();
         XMVECTOR camFwd = XMVectorSet(p.x - c.x, p.y - c.y, p.z - c.z, 0.f);
         camFwd = XMVectorSet(XMVectorGetX(camFwd), 0.f, XMVectorGetZ(camFwd), 0.f);
         if (XMVectorGetX(XMVector3LengthSq(camFwd)) > 1e-6f) {
