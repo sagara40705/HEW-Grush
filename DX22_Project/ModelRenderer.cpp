@@ -6,6 +6,7 @@
 #include "DirectX.h"
 #include <DirectXMath.h>
 #include "DebugLog.h"
+#include "CameraShake.h"
 
 using namespace DirectX;
 
@@ -100,15 +101,13 @@ void ModelRenderer::Draw()
 
     // ==== 行列を取得して転置 → ShaderList にセット ====
     WVPMatrices wvp{};
-    const XMFLOAT4X4& wMat = t->GetMatrix();
+    XMFLOAT4X4 wMat = t->GetMatrix();
+    CameraShake::Shake(gameObject, wMat);
     const XMFLOAT4X4& vMat = c->GetView();
     const XMFLOAT4X4& pMat = c->GetProjection();
     XMMATRIX W = XMMatrixTranspose(XMLoadFloat4x4(&wMat));
     XMMATRIX V = XMMatrixTranspose(XMLoadFloat4x4(&vMat));
     XMMATRIX P = XMMatrixTranspose(XMLoadFloat4x4(&pMat));
-    //W = XMMatrixTranspose(W);
-    //V = XMMatrixTranspose(V);
-    //P = XMMatrixTranspose(P);
     XMStoreFloat4x4(&wvp.world, W);
     XMStoreFloat4x4(&wvp.view, V);
     XMStoreFloat4x4(&wvp.proj, P);

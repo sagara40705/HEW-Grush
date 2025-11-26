@@ -181,6 +181,7 @@ void SceneGame::SetPlayerAndHummer()
     GameObject& camera = W->CreateGameObject();
     Transform& cameraTf = camera.AddComponent<Transform>(Camera::initPos(), Camera::initRotate(), Vector3::one());
     camera.AddComponent<Camera>();
+    camera.AddComponent<CameraShake>();
 
     GameObject& pivot = W->CreateGameObject();
     Transform& pivotTf = pivot.AddComponent<Transform>(Vector3(0,1,0), Vector3::zero(), Vector3::one());

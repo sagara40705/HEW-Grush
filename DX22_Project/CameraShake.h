@@ -4,7 +4,6 @@
 #include "Component.h"
 #include "Vector3.h"
 #include "GameObject.h"
-#include "Layer.h"     // Tag::Player など
 #include <cstdint>
 #include <cmath>
 #include <cstdlib>
@@ -15,7 +14,7 @@
 class CameraShake : public MonoBehaviour
 {
 public:
-    enum class Level : std::uint8_t
+    enum class Level : int
     {
         Level_1 = 0,
         Level_2 = 1,
@@ -37,31 +36,40 @@ public:
     // Render側から呼ぶ関数。
     // - 引数の GameObject が「揺らす対象かどうか」を内部で判定する。
     // - 揺らすべきならオフセットを返し、揺らさない場合は (0,0,0) を返す。
-    static void Shake(GameObject* go, XMFLOAT4X4& world);
+    static void Shake(GameObject* go, DirectX::XMFLOAT4X4& world);
 
     // 状態確認（必要なら）
     static bool IsActive();
 
 private:
-    // プロファイル1つ分
-    struct Profile{ 
-    float amplitude; // 最大振幅 
-    float duration;  // 継続時間
-    };
-    // レベルごとのパラメータ
-    static constexpr Profile kProfiles_[] ={
-        { 0.03f, 0.15f }, // Small
-        { 0.10f, 0.25f }, // Medium
-        { 0.25f, 0.35f }, // Large
+    // パラメータ種類
+    struct Profile
+    { 
+    float amplitude;  // 最大振幅 
+    float duration;   // 継続時間
+    float frequency;  // 揺れの速さ
+    Vector3 axisMask; // 上下/左右/奥行きの揺れ配分
     };
 
-    // シングルトン的に1インスタンスだけ生かす
+    // 調整パラメータ
+    static constexpr Profile kProfiles_[static_cast<int>(Level::Count)] =
+    {
+        { 0.10f, 0.15f, 12.0f, Vector3(1.0f, 0.2f, 0.0f) }, // Grade_1
+        { 0.15f, 0.25f, 12.0f, Vector3(1.0f, 0.5f, 0.0f) }, // Grade_2
+        { 0.20f, 0.35f, 12.0f, Vector3(1.0f, 1.0f, 0.0f) }, // Grade_3
+    };
+
+    // シングルトンインスタンス
     static CameraShake* s_instance_;
 
     // 状態
     static float   s_time_;      // 残り時間
     static float   s_duration_;  // 総時間
     static float   s_amplitude_; // 初期振幅
+    static float   s_frequency_; // 現在の揺れ周波数
+    static Vector3 s_axisMask_;  // 現在の軸マスク
+    static Vector3 s_phase_;     // XYZ の位相
+    static Vector3 s_freqMult_;  // 軸ごとの周波数倍率
     static Vector3 s_offset_;    // 今フレームの共通オフセット
 
 private:

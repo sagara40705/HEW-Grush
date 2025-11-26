@@ -7,6 +7,7 @@
 #include <cmath>
 #include "DebugLog.h"
 #include "GlassScript.h"
+#include "CameraShake.h"
 
 constexpr float kDebugGaugeUpValue = 1.0f;
 
@@ -77,7 +78,7 @@ void HummerScript::OnTriggerStay(const TriggerInfo& c)
 		if (CheckGrade(c.other))
 		{
 			c.other->Destroy();
-			//Debug::LogValue(" HummerScript::Destroy id", c.other->id);
+			CameraShake::StartShake(static_cast<CameraShake::Level>(static_cast<int>(grade)));
 			GaugeUp(c.other);
 			
 			// ゲージ減衰中なら止める& Delayタイマーを初期化
@@ -205,6 +206,11 @@ void HummerScript::DebugCommand()
 	if (IsKeyPress('G') && IsKeyPress('S'))
 	{
 		gauge -= kDebugGaugeUpValue;
+	}
+
+	if (IsKeyPress('H'))
+	{
+		CameraShake::StartShake(static_cast<CameraShake::Level>(static_cast<int>(grade)));
 	}
 }
 

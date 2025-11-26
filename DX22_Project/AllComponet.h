@@ -24,3 +24,4 @@
 #include "ActionUIManager.h"
 #include "CameraOrbitRig.h"
 #include "CameraControl.h"
+#include "CameraShake.h"
