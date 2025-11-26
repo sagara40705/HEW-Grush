@@ -26,7 +26,7 @@ void Scene::RootLoad()
 	world.ClearAll();
 	Load();
 
-	world.Start();
+	//world.Start();
 }
 
 void Scene::RootUnload()

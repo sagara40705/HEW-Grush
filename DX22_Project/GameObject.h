@@ -28,6 +28,7 @@ public:
     std::unordered_map<std::type_index, std::unique_ptr<Component>> components{};
     World* world = nullptr;
     Tag    tag = Tag::None;
+    bool pendingStart = false;
 
 public:
     GameObject() = default;
@@ -66,6 +67,12 @@ public:
 
             if (auto* lu = dynamic_cast<ILateUpdate*>(raw))
                 world->Register(lu);
+        }
+
+        if (!pendingStart)
+        {
+            pendingStart = true;
+            world->RequestStart(this);
         }
 
         return *raw;

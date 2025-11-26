@@ -20,7 +20,8 @@ public:
     // ”jŠü—\–ñ
     std::vector<ObjectId>  toDestroy{};
     ObjectId               nextId = 1;
-
+private:
+    std::vector<GameObject*> pendingStartObjects;
 public:
     World();
     ~World();
@@ -29,6 +30,9 @@ public:
     World& operator=(const World&) = delete;
     World(World&&) = delete;
     World& operator=(World&&) = delete;
+
+    // Start —\–ñ API
+    void RequestStart(GameObject* go);
 
     //============ ¶¬E”jŠüEŒŸõ ============
 

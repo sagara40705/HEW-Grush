@@ -14,12 +14,25 @@ World::~World() = default;
 
 //====================== 生成・破棄・検索 ======================
 
+void World::RequestStart(GameObject* go)
+{
+    if (!go) return;
+    pendingStartObjects.push_back(go);
+}
+
 GameObject& World::CreateGameObject()
 {
     auto obj = std::make_unique<GameObject>();
     obj->id = nextId++;
     obj->world = this;
+
+    GameObject* raw = obj.get();
     objects.emplace_back(std::move(obj));
+
+    // ★ 新規生成も Start 対象
+    raw->pendingStart = true;
+    pendingStartObjects.push_back(raw);
+
     return *objects.back();
 }
 
@@ -78,6 +91,30 @@ void World::Update()
         {
             return std::find(toDestroy.begin(), toDestroy.end(), id) != toDestroy.end();
         };
+
+
+    // 0) Start 待ち GameObject の Start を実行
+    if (!pendingStartObjects.empty())
+    {
+        for (auto* go : pendingStartObjects)
+        {
+            if (!go) continue;
+            if (!go->active) continue;
+            if (isPending(go->id)) continue;
+
+            // 全コンポーネントに RootStart（中で onStart チェック）
+            for (auto& kv : go->components)
+            {
+                if (auto* c = kv.second.get())
+                {
+                    c->RootStart();
+                }
+            }
+
+            go->pendingStart = false;
+        }
+        pendingStartObjects.clear();
+    }
 
     // 1) MonoBehaviour.Update フェーズ
     for (auto* mb : updateList)
