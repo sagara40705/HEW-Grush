@@ -234,26 +234,47 @@ Texture2D tex : register(t0);
 SamplerState samp : register(s0);
 float4 main(PS_IN pin) : SV_TARGET
 {
-	float4 color = float4(1.0f, 1.0f, 1.0f, 1.0f);
-	if(objAmbient.a >= 1.0f)
-		color = tex.Sample(samp, pin.uv);
-	float3 N = normalize(pin.normal);
-	float3 L = normalize(-lightDir);
-	float dotNL = saturate((dot(N, L) + 0.5f) / 1.5f);
-	float3 diffuse = objDiffuse.rgb * lightDiffuse.rgb;
-	float3 ambient = objAmbient.rgb * lightDiffuse.rgb;
-	float3 specular = objSpecular.rgb * lightDiffuse.rgb;
-	// 本来のLambert拡散反射（思った表現が出来なかったので採用せず
-	// color.rgb *= saturate(diffuse * dotNL + ambient);
-	// 環境光で拡散反射部分の色が変わらないようにlerp(環境光,diffuse,dotNL)で計算
-	// 環境光が弱ければ黒(乗算)、強ければ白(加算)となるように、各計算を線形で補間
-	diffuse *= color.rgb;
-	color.rgb = saturate(lerp(
-		lerp(diffuse * ambient, diffuse + ambient, pow(ambient, 4.0f)),
-		diffuse, dotNL));
-	// 本来なら必要ない鏡面反射、Lambert向けに若干だけ適用
-	color.rgb += specular * pow(saturate(dotNL), max(0.01f, objSpecular.a) * 0.5f) * 0.5f;
-	return color;
+	 // 基本色とアルファを分離して扱う
+    float3 baseColor = float3(1.0f, 1.0f, 1.0f);
+    float  alpha     = 1.0f;
+
+    // ★ テクスチャを使うマテリアルのときだけサンプル
+    //   objAmbient.a は「テクスチャ有効フラグ」としてそのまま使用
+    if (objAmbient.a >= 1.0f)
+    {
+        float4 texc = tex.Sample(samp, pin.uv);
+        baseColor = texc.rgb;  // 拡散反射のベース色
+        alpha     = texc.a;    // 透明 PNG のアルファを保持
+    }
+
+    // ランバート系ライティング
+    float3 N = normalize(pin.normal);
+    float3 L = normalize(-lightDir.xyz);
+    float  dotNL = saturate((dot(N, L) + 0.5f) / 1.5f);
+
+    float3 diffuse  = objDiffuse.rgb * lightDiffuse.rgb;
+    float3 ambient  = objAmbient.rgb * lightDiffuse.rgb;
+    float3 specular = objSpecular.rgb * lightDiffuse.rgb;
+
+    // 元の処理：diffuse にベースカラーを乗算
+    diffuse *= baseColor;
+
+    // 元コメント通りの処理を baseColor ベースで
+    float3 litColor = saturate(
+        lerp(
+            lerp(diffuse * ambient,
+                 diffuse + ambient,
+                 pow(ambient, 4.0f)),
+            diffuse,
+            dotNL));
+
+    // 鏡面成分（元の式を維持）
+    litColor += specular
+        * pow(saturate(dotNL), max(0.01f, objSpecular.a) * 0.5f)
+        * 0.5f;
+
+    // ★ アルファはテクスチャありなら tex.a, なければ 1.0
+    return float4(litColor, alpha);
 })EOT";
 	m_pPS[PS_LAMBERT] = new PixelShader();
 	m_pPS[PS_LAMBERT]->Compile(code);
@@ -287,7 +308,7 @@ Texture2D tex : register(t0);
 SamplerState samp : register(s0);
 float4 main(PS_IN pin) : SV_TARGET
 {
-	float4 color = float4(1.0f, 1.0f, 1.0f, 1.0f);
+	float4 color = float4(1.0f, 1.0f, 1.0f, 0.5f);
 	if(objAmbient.a >= 1.0f)
 		color = tex.Sample(samp, pin.uv);
 	float3 N = normalize(pin.normal);

@@ -6,6 +6,7 @@
 #include "Camera.h"
 #include "PlayerAction.h"
 #include "Game.h"
+#include "GameObject.h"
 #include "Input.h"
 #include <algorithm>
 #include <cmath>
@@ -52,15 +53,14 @@ constexpr float ResetPosY = -20.0f;
 
 void PlayerMove::Start()
 {
-    t_ = Parent->TryGetComponent<Transform>();
-    rb_ = Parent->TryGetComponent<Rigidbody>();
+    t_ = gameObject->TryGetComponent<Transform>();
+    rb_ = gameObject->TryGetComponent<Rigidbody>();
     col_ = nullptr;
-    for (auto& kv : Parent->components) {
+    for (auto& kv : gameObject->components) {
         if (auto* c = dynamic_cast<Collider*>(kv.second.get())) { col_ = c; break; }
     }
-    cam_ = Camera::Main()->Parent->TryGetComponent<Transform>();
-
-    pa_ = Parent->TryGetComponent<PlayerAction>();
+    cam_ = Camera::Main()->gameObject->TryGetComponent<Transform>();
+    pa_ = gameObject->TryGetComponent<PlayerAction>();
 
     assert(t_ && rb_ && col_ && "PlayerMove requires Transform/Rigidbody/Collider");
     facingYawDeg_ = 0.0f; // ‰ŠúyawiÅ‰‚Ì“ü—Í‚Å³‘Îj
@@ -86,9 +86,12 @@ void PlayerMove::OnDestroy()
 
 bool PlayerMove::IsGrounded() const
 {
+    
+
     const auto me = col_->GetWorldAABB();
+
     for (auto& o : Game::GetWorld().objects) {
-        if (!o->active || o.get() == Parent) continue;
+        if (!o->active || o.get() == gameObject) continue;
         for (auto& kv : o->components) {
             auto* other = dynamic_cast<Collider*>(kv.second.get());
             if (!other || !other->isStatic) continue;
@@ -98,7 +101,7 @@ bool PlayerMove::IsGrounded() const
             if (dy >= -GROUND_EPS && dy <= GROUND_EPS) return true;
         }
     }
-    return false;
+    return true;
 }
 
 float PlayerMove::HorizontalSpeed() const
@@ -139,7 +142,7 @@ void PlayerMove::ApplyHorizontal(float dt, bool grounded)
     XMVECTOR rightXZ = XMVectorSet(1.f, 0.f, 0.f, 0.f);
     if (cam_) {
         const auto p = t_->GetPosition();
-        const auto c = cam_->GetPosition();
+        const auto c = cam_->GetWorldPosition();
         XMVECTOR camFwd = XMVectorSet(p.x - c.x, p.y - c.y, p.z - c.z, 0.f);
         camFwd = XMVectorSet(XMVectorGetX(camFwd), 0.f, XMVectorGetZ(camFwd), 0.f);
         if (XMVectorGetX(XMVector3LengthSq(camFwd)) > 1e-6f) {

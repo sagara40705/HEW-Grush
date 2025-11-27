@@ -53,7 +53,7 @@ void LineManager::AddBoxCollider(GameObject* go)
 void LineManager::AddBoxCollider(const BoxCollider* bc)
 {
     if (!bc) return;
-    auto* tf = bc->Parent->TryGetComponent<Transform>();
+    auto* tf = bc->gameObject->TryGetComponent<Transform>();
     if (!tf) return;
 
     // ワールド行列（S*R*T 想定）

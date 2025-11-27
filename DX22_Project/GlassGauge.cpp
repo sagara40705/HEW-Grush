@@ -1,6 +1,7 @@
 ﻿#include "GlassGauge.h"
 #include "GameObject.h"
 #include "Game.h"
+#include "GameObject.h"
 #include "HummerScript.h"
 #include "CanvasUI.h"
 
