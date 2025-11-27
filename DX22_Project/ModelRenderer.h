@@ -14,10 +14,11 @@ public:
     ModelComponent* mc = nullptr;
     VertexShader* m_pVS = nullptr;
     PixelShader* m_pPS = nullptr;
+    GlassScript* gs = nullptr;
 
     // 使用する VS / PS をインスタンスごとに選択可能
     ShaderList::VSKind vsKind = ShaderList::VS_WORLD;
-    ShaderList::PSKind psKind = ShaderList::PS_LAMBERT;
+    ShaderList::PSKind psKind = ShaderList::PS_GLASS;
 
 public:
     ModelRenderer() {}

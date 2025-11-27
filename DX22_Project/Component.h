@@ -67,3 +67,4 @@ class Rigidbody;
 class CanvasUI;
 class HummerScript;
 class SpriteAnimation;
+class GlassScript;

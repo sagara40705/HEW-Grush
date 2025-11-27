@@ -7,8 +7,11 @@
 #include <DirectXMath.h>
 #include "DebugLog.h"
 #include "CameraShake.h"
+#include "GlassScript.h"
 
 using namespace DirectX;
+
+
 
 struct MatrixCB
 {
@@ -28,6 +31,12 @@ void ModelRenderer::Start()
     t = gameObject->TryGetComponent<Transform>();
     c = Camera::Main();
     mc = gameObject->TryGetComponent<ModelComponent>();
+
+
+    if (psKind == ShaderList::PS_GLASS)
+    {
+        gs = gameObject->TryGetComponent<GlassScript>();
+    }
     //EnsureShaders();
 }
 
@@ -116,13 +125,21 @@ void ModelRenderer::Draw()
     // ==== カメラ位置のセット（Specular / Toon / Fog 用） ====
     if (psKind == ShaderList::PS_SPECULAR ||
         psKind == ShaderList::PS_TOON ||
-        psKind == ShaderList::PS_FOG)
+        psKind == ShaderList::PS_FOG ||
+        psKind == ShaderList::PS_GLASS)
     {
         if (auto* camTf = c->gameObject->TryGetComponent<Transform>())
         {
             XMFLOAT3 camPos = camTf->GetWorldPosition();
             ShaderList::SetCameraPos(camPos);
         }
+    }
+
+    if (psKind == ShaderList::PS_GLASS && gs)
+    {
+        // ガラス固有パラメータ
+        DirectX::XMFLOAT4 tint = kTintColor[ToInt(gs->grade)];
+        ShaderList::SetGlassParam(tint, 3.0f, 0.5f, 1.0f);
     }
 
     // ==== マテリアルのセット（とりあえず 0 番マテリアルを使用） ====
