@@ -108,6 +108,13 @@ void SceneGame::Load()
 
     GameObject& gaugeUiManagerObj = W->CreateGameObject();
     gaugeUiManagerObj.AddComponent<GlassGauge>(&gaugeFrameUI, &gaugeUI, &gaefUI);
+
+    GameObject& IntroEf = W->CreateGameObject();
+    CanvasUI& InEfUI = IntroEf.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::GaugeEffect));
+
+    GameObject& IntroUiManagerObj = W->CreateGameObject();
+    IntroUiManagerObj.AddComponent<PlayerIntroSequence>(&InEfUI);
+
 }
 void SceneGame::Update()
 {

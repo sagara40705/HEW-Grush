@@ -25,3 +25,4 @@
 #include "CameraOrbitRig.h"
 #include "CameraControl.h"
 #include "CameraShake.h"
+#include "PlayerIntroSequence.h"
