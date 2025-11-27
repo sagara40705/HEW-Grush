@@ -71,7 +71,16 @@ void GlassGauge::Update()
         efFrame = 0;
         gUi[Gauge::UpEffect]->SetColor({ 1,1,1,1 });
     }
+    else if (r < prevGauge)
+    {
+        gUi[Gauge::Frame]->SetColor({ efDenger,0,0,1 });
+        efDenger += 0.05;
+        if (efDenger >= 1)
+            efDenger = 0.0f;
+    }
     prevGauge = r;
+
+
 
     //エフェクト再生
     GaugeEffect();

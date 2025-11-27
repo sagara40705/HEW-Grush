@@ -22,6 +22,8 @@ private:
 	int efCounter = 0;        // カウンタ
 	bool  efPlaying = false;  // 再生中フラグ
 	float prevGauge = 0.f;    // 1フレーム前のゲージ量
+
+	float efDenger = 0.f;
 public:
 	GlassGauge(CanvasUI* frame, CanvasUI* base, CanvasUI* effect);
 	void Start() override;
