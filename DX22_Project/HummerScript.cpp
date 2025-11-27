@@ -83,7 +83,7 @@ void HummerScript::OnTriggerStay(const TriggerInfo& c)
 					PlayerAction* pa = playerObj->TryGetComponent<PlayerAction>();
 					if (pa)
 					{
-						pa->PlayHitVibration(0.15f, 0.8f);
+						pa->PlayHitVibration(0.15f, 0.8f); //U“®–½—ß@¶‚ª‹­‚³ ‰E‚ª‹­‚³
 					}
 				}
 			}
