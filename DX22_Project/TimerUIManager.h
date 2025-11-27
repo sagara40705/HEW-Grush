@@ -26,5 +26,7 @@ private:
 	const Vector2 kNumberSize = { 0.5f, 5.0f };											//èkè¨ó¶
 	Vector2 GetNumberUVPos(int n) { return { n * 0.1f, 1.f }; }							//UVPos
 	const Vector2 kNumberUVSize = { 0.1f, 1.f };										//UVSize
+public:
+	void TimerStart();
 
 };

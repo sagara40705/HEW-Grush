@@ -227,6 +227,7 @@ void SceneGame::CreateTimerUi()
 
     GameObject& TimerUi_manager = W->CreateGameObject();
     TimerUi_manager.AddComponent<TimerUIManager>(&tmUI, &omUI, &tsUI, &osUI);
+    TimerUi_manager.SetTag(Tag::Timer);
 }
 
 void SceneGame::CreateScoreUi()

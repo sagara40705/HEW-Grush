@@ -222,6 +222,9 @@
     <ClCompile Include="GlassShard.cpp">
       <Filter>コンポーネント\Script</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerIntroSequence.cpp">
+      <Filter>コンポーネント\Script\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Defines.h">
@@ -406,6 +409,9 @@
     </ClInclude>
     <ClInclude Include="GlassShard.h">
       <Filter>コンポーネント\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerIntroSequence.h">
+      <Filter>コンポーネント\Script\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

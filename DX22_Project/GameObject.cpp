@@ -29,7 +29,7 @@ GameObject::~GameObject()
     }
 }
 
-void GameObject::Destroy(float /*time*/)
+void GameObject::Destroy(float time)
 {
     if (!world)
     {
@@ -37,6 +37,25 @@ void GameObject::Destroy(float /*time*/)
         return;
     }
 
-    world->RequestDestroy(id);
-    Debug::LogValue("GameObject::Destroy id", id);
+    if (time <= 0.0f)
+    {
+        world->RequestDestroy(id);
+        Debug::LogValue("GameObject::Destroy id", id);
+        return;
+    }
+
+    destroyTimer = time;
+    isDestroyScheduled = true;
+}
+
+void GameObject::DestroyTimerUpdate()
+{
+    constexpr float fixedDt = 1.0f / 60.0f;
+
+    destroyTimer -= fixedDt;
+    if (destroyTimer <= 0.0f)
+    {
+        isDestroyScheduled = false;
+        world->RequestDestroy(id);
+    }
 }

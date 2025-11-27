@@ -92,6 +92,14 @@ void World::Update()
             return std::find(toDestroy.begin(), toDestroy.end(), id) != toDestroy.end();
         };
 
+    //-1) GameObject
+
+    for (auto& up : objects)
+    {
+        if (!up || !up->isDestroyScheduled) continue;
+
+        up->DestroyTimerUpdate();
+    }
 
     // 0) Start ‘Ò‚¿ GameObject ‚Ì Start ‚ğÀs
     if (!pendingStartObjects.empty())
