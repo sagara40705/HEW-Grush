@@ -8,8 +8,10 @@ class SceneGame : public Scene
 public:
 	SceneGame();
 	~SceneGame();
+	void Load() final;
 	void Update() final;
 	void Draw() final;
+	void Unload() final;
 
 private:
 	void RegisterTexture();

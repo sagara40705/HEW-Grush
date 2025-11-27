@@ -20,7 +20,9 @@ class GlassScript : public Component
 public:
 	GlassScript(GlassGrade g = GlassGrade::Grade_1) : grade(g) {}
 	void Start() override;
-	void OnWillDestroy() override;
+	//void OnWillDestroy() override;
 	void OnDestroy() override;
 	GlassGrade grade = GlassGrade::Grade_1;
+public:
+	void SpawnShards();
 };

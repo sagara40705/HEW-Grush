@@ -3,6 +3,7 @@
 #include "Transform.h"
 #include "Camera.h"
 #include "MeshFilter.h"
+#include "GameObject.h"
 
 class SampleScript : public Component
 {
@@ -16,9 +17,9 @@ public:
     void Start() override
     {
         Debug::Log("SampleScript::Start");
-        if (Parent)
+        if (gameObject)
         {
-            t = Parent->TryGetComponent<Transform>();
+            t = gameObject->TryGetComponent<Transform>();
             if (t)
             {
                 Debug::LogValue("cube pos x", t->GetPosition().x);
@@ -26,7 +27,7 @@ public:
                 Debug::LogValue("cube pos z", t->GetPosition().z);
             }
 
-            m = Parent->TryGetComponent<MeshFilter>();
+            m = gameObject->TryGetComponent<MeshFilter>();
             if (m)
             {
                 Debug::LogValue("cube Type", m->GetType());

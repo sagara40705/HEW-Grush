@@ -204,6 +204,24 @@
     <ClCompile Include="ModelManager.cpp">
       <Filter>システム</Filter>
     </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>コンポーネント</Filter>
+    </ClCompile>
+    <ClCompile Include="Prefab.cpp">
+      <Filter>システム</Filter>
+    </ClCompile>
+    <ClCompile Include="Frustum.cpp">
+      <Filter>システム</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraControl.cpp">
+      <Filter>コンポーネント\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="CameraShake.cpp">
+      <Filter>コンポーネント\Script</Filter>
+    </ClCompile>
+    <ClCompile Include="GlassShard.cpp">
+      <Filter>コンポーネント\Script</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Defines.h">
@@ -347,9 +365,6 @@
     <ClInclude Include="CollisionListener.h">
       <Filter>コンポーネント\Utillity</Filter>
     </ClInclude>
-    <ClInclude Include="Component.h">
-      <Filter>コンポーネント\Utillity</Filter>
-    </ClInclude>
     <ClInclude Include="MeshFilter.h">
       <Filter>コンポーネント\Utillity</Filter>
     </ClInclude>
@@ -373,6 +388,24 @@
     </ClInclude>
     <ClInclude Include="ModelManager.h">
       <Filter>システム</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>コンポーネント</Filter>
+    </ClInclude>
+    <ClInclude Include="Prefab.h">
+      <Filter>システム</Filter>
+    </ClInclude>
+    <ClInclude Include="Frustum.h">
+      <Filter>システム</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraControl.h">
+      <Filter>コンポーネント\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraShake.h">
+      <Filter>コンポーネント\Script</Filter>
+    </ClInclude>
+    <ClInclude Include="GlassShard.h">
+      <Filter>コンポーネント\Script</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

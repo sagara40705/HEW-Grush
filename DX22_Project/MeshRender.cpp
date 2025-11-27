@@ -4,6 +4,7 @@
 #include "MeshRender.h"
 #include "GameObject.h"
 #include "DirectX.h"
+#include "CameraShake.h"
 //MeshRender.cpp
 struct MatrixCB
 {
@@ -14,9 +15,9 @@ struct MatrixCB
 
 void MeshRender::Start()
 {
-	t = Parent->TryGetComponent<Transform>();
+	t = gameObject->TryGetComponent<Transform>();
 	c = Camera::Main();
-	mf = Parent->TryGetComponent<MeshFilter>();
+	mf = gameObject->TryGetComponent<MeshFilter>();
 	SetDefaultVS();
 	if (PStype) SetWhitePS();
 	else SetDefaultPS();
@@ -32,7 +33,9 @@ void MeshRender::Draw()
 	MatrixCB WVP;
 	// === s—ñ‚ÌŽæ“¾ ===
 	using namespace DirectX;
-	XMMATRIX world = XMLoadFloat4x4(&t->GetMatrix());
+	XMFLOAT4X4 wMat = t->GetMatrix();
+	CameraShake::Shake(gameObject, wMat);
+	XMMATRIX world = XMLoadFloat4x4(&wMat);
 	XMMATRIX view = XMLoadFloat4x4(&c->GetView());
 	XMMATRIX proj = XMLoadFloat4x4(&c->GetProjection());
 	// === “]’u ===

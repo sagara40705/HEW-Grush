@@ -1,6 +1,9 @@
 ﻿#include "ActionUIManager.h"
 #include "Game.h"
+#include "World.h"
+#include "GameObject.h"
 #include "PlayerAction.h"
+#include <algorithm>
 
 ActionUIManager::ActionUIManager(CanvasUI* spin, CanvasUI* dash)
 {

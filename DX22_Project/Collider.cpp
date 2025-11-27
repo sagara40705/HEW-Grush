@@ -5,11 +5,11 @@
 
 const Transform* Collider::GetTransform() const 
 {
-    return Parent ? Parent->TryGetComponent<Transform>() : nullptr;
+    return gameObject ? gameObject->TryGetComponent<Transform>() : nullptr;
 }
 
 Transform* Collider::GetTransform() 
 {
-    return Parent ? Parent->TryGetComponent<Transform>() : nullptr;
+    return gameObject ? gameObject->TryGetComponent<Transform>() : nullptr;
 }
 

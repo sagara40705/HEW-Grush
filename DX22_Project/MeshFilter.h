@@ -26,6 +26,7 @@ private:
     static std::array<std::unique_ptr<MeshBuffer>, Type::Count> s_meshBuffers;
     Type type{};
 public:
+    float boundsRadius = 30.0f;
     explicit MeshFilter(Type t = Cube) : type(t) {}
     ~MeshFilter() override = default;
 

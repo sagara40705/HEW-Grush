@@ -6,6 +6,7 @@
 #include "Collider.h"
 #include "HummerScript.h"
 #include "Game.h"
+#include "GameObject.h"
 #include "Input.h"
 #include <algorithm>
 #include <cmath>
@@ -60,9 +61,9 @@ namespace
 
 void PlayerAction::Start()
 {
-    t_ = Parent->TryGetComponent<Transform>();
-    rb_ = Parent->TryGetComponent<Rigidbody>();
-    move_ = Parent->TryGetComponent<PlayerMove>();
+    t_ = gameObject->TryGetComponent<Transform>();
+    rb_ = gameObject->TryGetComponent<Rigidbody>();
+    move_ = gameObject->TryGetComponent<PlayerMove>();
     assert(t_ && rb_ && move_ && "PlayerAction requires Transform/Rigidbody/PlayerMove");
 
     AcquireHummer();
