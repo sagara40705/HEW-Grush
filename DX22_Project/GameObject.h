@@ -17,6 +17,7 @@ enum class Tag : std::uint8_t
     Weapon,
     Glass,
     Ground,
+    Timer,
 };
 
 class GameObject
