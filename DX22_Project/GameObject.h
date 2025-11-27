@@ -29,7 +29,8 @@ public:
     World* world = nullptr;
     Tag    tag = Tag::None;
     bool pendingStart = false;
-
+    float destroyTimer = -1.0f;
+    bool isDestroyScheduled = false;
 public:
     GameObject() = default;
     GameObject(const GameObject&) = delete;
@@ -105,4 +106,5 @@ public:
 
     void SetTag(Tag t) { tag = t; }
     bool CompareTag(Tag t)    const { return tag == t; }
+    void DestroyTimerUpdate();
 };
