@@ -24,7 +24,9 @@ public:
 
 	// 通常攻撃（E）
 	float normalMotionTime = 0.3f; // クールタイム = モーション時間
-
+	// 振動:Bボタンで実装
+	float vibrationDuration  = 0.5f; // 振動する時間
+	float vibrationIntensity = 0.8f; // 振動の強さ(0.0f ~ 1.0f)
 
 public:
 	void Start() override;
@@ -36,6 +38,7 @@ public:
 	bool  IsSpinning() const { return spinning_; }
 	bool  IsAction() const { return isAction_; }
 	//void  ClearAction() { isAction_ = false; }
+	void PlayHitVibration(float time = 0.3, float power = 0.8f);
 private:
 	// 依存
 	Transform* t_ = nullptr;
@@ -57,6 +60,10 @@ private:
 	// 通常攻撃
 	float normalCooldownTimer_ = 0.0f;
 	bool isAction_ = false;
+
+	//振動タイマー
+	float vibrationTimer_ = 0.0f;
+
 public:
 	float GetDashCtRatio() { return (dashCooldownTimer_ / dashCooldown); }
 	float GetSpinCtRatio() { return (spinCooldownTimer_ / spinCooldown); }
@@ -68,4 +75,5 @@ private:
 	void NormalAttackTryStart();
 	void UpdateHummerMask();
 	void AcquireHummer();
+	void UpdateVibration(float dt);
 };

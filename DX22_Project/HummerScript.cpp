@@ -7,6 +7,7 @@
 #include <cmath>
 #include "DebugLog.h"
 #include "GlassScript.h"
+#include "PlayerAction.h"
 
 static inline Vector3 Lerp(const Vector3& a, const Vector3& b, float t)
 {
@@ -70,16 +71,31 @@ void HummerScript::OnTriggerStay(const TriggerInfo& c)
 		if (CheckGrade(c.other))
 		{
 			c.other->Destroy();
-			//Debug::LogValue(" HummerScript::Destroy id", c.other->id);
+
+			if (t && t->GetParent()) // 親のTransformがあるか確認
+			{
+				// t->GetParent() は親のTransformコンポーネント
+				// そのコンポーネントが所属するGameObjectは 'Parent' に入っているはずです
+				GameObject* playerObj = t->GetParent()->Parent;
+
+				if (playerObj)
+				{
+					PlayerAction* pa = playerObj->TryGetComponent<PlayerAction>();
+					if (pa)
+					{
+						pa->PlayHitVibration(0.15f, 0.8f);
+					}
+				}
+			}
+
 			GaugeUp(c.other);
-			
+
 			// ゲージ減衰中なら止める& Delayタイマーを初期化
 			isGaugeDecaying = false;
 			timerGaugeDecayDelay = 0.f;
 		}
 	}
 }
-
 void HummerScript::StartNormalAttack()
 {
 	// 多重起動ガード（モーション時間中は再起動しない）

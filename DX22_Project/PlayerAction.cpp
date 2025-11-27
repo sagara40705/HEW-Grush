@@ -22,6 +22,7 @@ namespace PadMap
     constexpr WORD Spin = XINPUT_GAMEPAD_LEFT_SHOULDER;  // L1相当
     constexpr WORD Normal = XINPUT_GAMEPAD_X; // □相当
     constexpr SHORT STICK_DEAD = XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE;
+    constexpr WORD  vibrate = XINPUT_GAMEPAD_A; // B相当
 }
 // 簡易エッジ判定をこの翻訳単位で保持（他所の XInput 呼び出しと独立）
 namespace 
@@ -44,6 +45,16 @@ namespace
         if (!gPad.connected) return false;
         const bool anyBtn = (gPad.curr.Gamepad.wButtons != 0);
         return anyBtn || AnyStickActive();
+    }
+
+    void SetPadVibration(float leftMotor, float rightMotor)
+    {
+        if (!gPad.connected) return;
+        XINPUT_VIBRATION vib;
+
+        vib.wLeftMotorSpeed  = static_cast<WORD>(Clamp01(leftMotor) * 65535.0f);
+        vib.wRightMotorSpeed = static_cast<WORD>(Clamp01(rightMotor) * 65535.0f);
+        XInputSetState(0, &vib);
     }
 }
 
@@ -80,17 +91,24 @@ void PlayerAction::Update()
 
     // “行動中だけ”ハンマー当たり判定ON
     UpdateHummerMask();
+
+    // 振動更新
+    UpdateVibration(DT);
 }
 
 void PlayerAction::OnDestroy()
 {
+    // 振動を確実に止める
+    SetPadVibration(0.0f, 0.0f);
+
     t_ = nullptr; rb_ = nullptr; move_ = nullptr; hummer_ = nullptr;
 }
 
 void PlayerAction::AcquireHummer()
 {
     // Worldから自分の子（Tag::Weapon）を探索
-    for (auto& o : Game::GetWorld().objects) {
+    for (auto& o : Game::GetWorld().objects) 
+    {
         if (!o->active || !o->CompareTag(Tag::Weapon)) continue;
         HummerScript* hs = o->TryGetComponent<HummerScript>();
         Transform* ht = o->TryGetComponent<Transform>();
@@ -215,4 +233,35 @@ void PlayerAction::UpdateHummerMask()
     const bool on = ((hummer_->IsNormalAttacking()) || spinning_ || isDash_);
     isAction_ = on;
     hummer_->SetActionHitEnable(on);
+}
+
+void PlayerAction::PlayHitVibration(float time, float power)
+{
+    vibrationTimer_ = time; // タイマーをセット
+    vibrationIntensity = power; // 強さを更新
+}
+
+void PlayerAction::UpdateVibration(float dt)
+{
+    // Bボタンが押されたら振動タイマーをセット
+    if (Trigger(PadMap::vibrate))
+    {
+        vibrationTimer_ = vibrationDuration;
+    }
+
+    // タイマーが残っていれば振動させる
+    if (vibrationTimer_ >  0.0f)
+    {
+        vibrationTimer_ -= dt;
+
+        // 左と右のモーターを両方動かす
+        SetPadVibration(vibrationIntensity, vibrationIntensity);
+
+        // タイマー終了時にピタっと止めるための処理
+        if (vibrationTimer_ <= 0.0f)
+        {
+            vibrationTimer_ = 0.0f;
+            SetPadVibration(0.0f, 0.0f);
+        }
+    }
 }
