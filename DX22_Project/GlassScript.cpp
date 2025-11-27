@@ -7,6 +7,9 @@
 #include "MeshRender.h"
 #include "Rigidbody.h"
 #include "GlassShard.h"
+#include "ModelComponent.h"
+#include "ModelRenderer.h"
+#include "ModelManager.h"
 
 constexpr int   shardCount = 5;      // 何個飛ばす？
 constexpr float power = 10.0f;   // 飛び散りの強さ
@@ -25,7 +28,7 @@ void GlassScript::Start()
 void GlassScript::OnDestroy()
 {
 	ScoreManager::Instance().AddDestroyedKg(kWeightKg[ToInt(grade)]);
-    SpawnShards();
+    //SpawnShards();
 }
 
 void GlassScript::SpawnShards()
@@ -59,14 +62,17 @@ void GlassScript::SpawnShards()
         //tf.SetPosition(center);
      
 
-        auto& mf = g.AddComponent<MeshFilter>(MeshFilter::Type::Cube);
-        auto& mr = g.AddComponent<MeshRender>();
+        //auto& mf = g.AddComponent<MeshFilter>(MeshFilter::Type::Cube);
+        //auto& mr = g.AddComponent<MeshRender>();
+
+        auto& mc = g.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::ProtPlay));
+        auto& mr = g.AddComponent<ModelRenderer>();
 
         // Rigidbody
         auto& rb = g.AddComponent<Rigidbody>();
 
         // GlassShard（寿命管理）
-        //auto& shard = g.AddComponent<GlassShard>();
+        auto& gs = g.AddComponent<GlassScript>(grade);
         g.Destroy(1.f);
 
         // --- 初速を与える（Impulse) ---

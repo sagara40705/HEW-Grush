@@ -141,6 +141,11 @@ void ModelRenderer::Draw()
         DirectX::XMFLOAT4 tint = kTintColor[ToInt(gs->grade)];
         ShaderList::SetGlassParam(tint, 3.0f, 0.5f, 1.0f);
     }
+    else
+    {
+        DirectX::XMFLOAT4 tint = kTintColor[0];
+        ShaderList::SetGlassParam(tint, 3.0f, 0.5f, 1.0f);
+    }
 
     // ==== マテリアルのセット（とりあえず 0 番マテリアルを使用） ====
     //if (model->GetMaterialNum() > 0)

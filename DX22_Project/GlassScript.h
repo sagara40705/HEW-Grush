@@ -16,7 +16,7 @@ constexpr float kGaugeUpValue[ToInt(GlassGrade::Count)] = { 2.f, 5.f, 10.f };
 // グレードごとのKg(スコア変動値)
 constexpr int kWeightKg[ToInt(GlassGrade::Count)] = { 1, 3, 5 };
 
-constexpr DirectX::XMFLOAT4 kTintColor[ToInt(GlassGrade::Count)] = { {0.7f, 0.9f, 1.0f, 0.6f}, {0.7f, 1.0f, 0.7f, 0.6f}, {1.0f, 0.7f, 0.7f, 0.6f} };
+constexpr DirectX::XMFLOAT4 kTintColor[ToInt(GlassGrade::Count)] = { {0.7f, 0.8f, 1.0f, 0.6f}, {0.7f, 1.0f, 0.7f, 0.6f}, {1.0f, 0.7f, 0.7f, 0.6f} };
 
 class GlassScript : public Component
 {
