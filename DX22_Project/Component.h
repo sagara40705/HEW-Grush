@@ -65,3 +65,5 @@ class MeshRender;
 class PlayerAction;
 class Rigidbody;
 class CanvasUI;
+class HummerScript;
+class SpriteAnimation;

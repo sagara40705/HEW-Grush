@@ -105,9 +105,10 @@ void SceneGame::Load()
 
     GameObject& GaEf = W->CreateGameObject();
     CanvasUI& gaefUI = GaEf.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::GaugeEffect));
+    SpriteAnimation& efSA = GaEf.AddComponent<SpriteAnimation>(8, 4, 32, 0.06f, false);
 
     GameObject& gaugeUiManagerObj = W->CreateGameObject();
-    gaugeUiManagerObj.AddComponent<GlassGauge>(&gaugeFrameUI, &gaugeUI, &gaefUI);
+    gaugeUiManagerObj.AddComponent<GlassGauge>(&gaugeFrameUI, &gaugeUI, &gaefUI, &efSA);
 }
 void SceneGame::Update()
 {

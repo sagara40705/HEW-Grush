@@ -26,6 +26,7 @@ public:
 		PixelShader* ps;
 	};
 	Data m_data;
+	//bool onAnimetion = false;
 	//bool texOwner = false;
 public:
 	void SetOffset(Vector2 offset);

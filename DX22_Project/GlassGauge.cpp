@@ -4,12 +4,14 @@
 #include "GameObject.h"
 #include "HummerScript.h"
 #include "CanvasUI.h"
+#include "SpriteAnimation.h"
 
-GlassGauge::GlassGauge(CanvasUI* frame, CanvasUI* base, CanvasUI* effect)
+GlassGauge::GlassGauge(CanvasUI* frame, CanvasUI* base, CanvasUI* effect, SpriteAnimation* efSA)
 {
     gUi[Gauge::Frame] = frame;
     gUi[Gauge::Base] = base;
     gUi[Gauge::UpEffect] = effect;
+    efSA_ = efSA;
 }
 
 void GlassGauge::Start()
@@ -70,11 +72,14 @@ void GlassGauge::Update()
         efPlaying = true;
         efFrame = 0;
         gUi[Gauge::UpEffect]->SetColor({ 1,1,1,1 });
+        efSA_->Play(true);
+        //gUi[Gauge::UpEffect]->onAnimetion = true;
     }
     prevGauge = r;
 
     //エフェクト再生
-    GaugeEffect();
+    //GaugeEffect();
+
 
 
     HummerGrade g = hs->grade;    
