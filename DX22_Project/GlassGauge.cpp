@@ -27,7 +27,7 @@ void GlassGauge::Start()
     gUi[Gauge::Frame]->SetUVPos({ 1, 1 });
     gUi[Gauge::Frame]->SetUVScale({ 1, 1 });
 
-    gUi[Gauge::Base]->SetOffset({ 0, 200  });
+    gUi[Gauge::Base]->SetOffset({ 0, 290  });
     gUi[Gauge::Base]->SetSize({ 1, 0 });
     gUi[Gauge::Base]->SetUVPos({ 0, 1 });
     gUi[Gauge::Base]->SetUVScale({ 1, 0 });
@@ -57,10 +57,9 @@ void GlassGauge::Update()
 	float r = hs->GetGaugeRatio();
 	
     //エフェクトの座標の更新
-    gUi[Gauge::UpEffect]->SetPosY(30 * (1 - r) );
 
     //ゲージのUIの更新
-    gUi[Gauge::Base]->SetPosY( 200 * (1 - r));
+    gUi[Gauge::Base]->SetPosY( 250 * (1 - r));
     gUi[Gauge::Base]->SetSize({ 1 , r });
     gUi[Gauge::Base]->SetUVPos({ 0 , 1 - r });
     gUi[Gauge::Base]->SetUVScale({ 1 , r });

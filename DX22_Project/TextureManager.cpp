@@ -10,7 +10,7 @@ const char* TextureManager::kTexturePath[static_cast<int>(TextureTag::Count)] =
     "Assets/Texture/GaugeMAX_Level1.png",
     "Assets/Texture/kirakira.png",
     "Assets/Texture/RotateUI.png",
-    "Assets/Texture/DashUI.png",
+    "Assets/Texture/DashUI.png"
 };
 
 bool TextureManager::Register(TextureTag tag, const char* filePath)
