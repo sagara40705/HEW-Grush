@@ -22,7 +22,7 @@ namespace PadMap
     constexpr WORD Spin = XINPUT_GAMEPAD_LEFT_SHOULDER;  // L1相当
     constexpr WORD Normal = XINPUT_GAMEPAD_X; // □相当
     constexpr SHORT STICK_DEAD = XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE;
-    constexpr WORD  vibrate = XINPUT_GAMEPAD_A; // B相当
+   //constexpr WORD  vibrate = XINPUT_GAMEPAD_A; // B相当
 }
 // 簡易エッジ判定をこの翻訳単位で保持（他所の XInput 呼び出しと独立）
 namespace 
@@ -244,10 +244,10 @@ void PlayerAction::PlayHitVibration(float time, float power)
 void PlayerAction::UpdateVibration(float dt)
 {
     // Bボタンが押されたら振動タイマーをセット
-    if (Trigger(PadMap::vibrate))
+    /*if (Trigger(PadMap::vibrate))
     {
         vibrationTimer_ = vibrationDuration;
-    }
+    }*/
 
     // タイマーが残っていれば振動させる
     if (vibrationTimer_ >  0.0f)
