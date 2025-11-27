@@ -66,7 +66,8 @@ void GlassScript::SpawnShards()
         auto& rb = g.AddComponent<Rigidbody>();
 
         // GlassShardiõ–½ŠÇ—j
-        auto& shard = g.AddComponent<GlassShard>();
+        //auto& shard = g.AddComponent<GlassShard>();
+        g.Destroy(1.f);
 
         // --- ‰‘¬‚ğ—^‚¦‚éiImpulse) ---
         rb.AddForce(dir * kShardPower[ToInt(grade)] * (1 + (i % 3) * 0.3));

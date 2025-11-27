@@ -64,3 +64,4 @@ class MeshFilter;
 class MeshRender;
 class PlayerAction;
 class Rigidbody;
+class CanvasUI;
