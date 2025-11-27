@@ -4,11 +4,6 @@
 #include "GameObject.h"
 #include "CanvasUI.h"
 
-PlayerIntroSequence::PlayerIntroSequence(CanvasUI* inUi)
-{
-	
-}
-
 void PlayerIntroSequence::Start()
 {
 }
