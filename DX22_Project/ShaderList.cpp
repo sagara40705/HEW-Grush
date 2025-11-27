@@ -236,7 +236,7 @@ float4 main(PS_IN pin) : SV_TARGET
 {
 	 // 基本色とアルファを分離して扱う
     float3 baseColor = float3(1.0f, 1.0f, 1.0f);
-    float  alpha     = 1.0f;
+    float  alpha     = 0.8f;
 
     // ★ テクスチャを使うマテリアルのときだけサンプル
     //   objAmbient.a は「テクスチャ有効フラグ」としてそのまま使用

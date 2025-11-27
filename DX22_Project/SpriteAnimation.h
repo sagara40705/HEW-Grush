@@ -20,4 +20,6 @@ private:
 	int currentFrame_ = 0;
 	float timer_ = 0.0f;
 	void SetSpriteUV();
+	float dx;
+	float dy;
 };

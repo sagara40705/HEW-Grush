@@ -1,8 +1,14 @@
 #include "SpriteAnimation.h"
+#include "CanvasUI.h"
 
 void SpriteAnimation::Start()
 {
 	SetSpriteUV();
+
+	dx = 1 / columns_;
+	dy = 1 / rows_;
+	Vector2 uvSize = { dx , dy };
+	ui_->SetUVScale(uvSize);
 }
 
 void SpriteAnimation::OnDestroy()
@@ -24,16 +30,14 @@ void SpriteAnimation::Update()
 
 		SetSpriteUV();
 	}
-
 }
 
 void SpriteAnimation::SetSpriteUV()
 {
 	float ix = currentFrame_ / columns_;
 	float iy = currentFrame_ % columns_;
-	float dx = 1 / columns_;
-	float dy = 1 / rows_;
-
+	
 	Vector2 uvPos = { ix * dx , iy * dy };
-	Vector2 uvSize = { dx , dy };
+
+	ui_->SetUVPos(uvPos);
 }
