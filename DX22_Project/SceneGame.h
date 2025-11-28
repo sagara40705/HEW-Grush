@@ -12,7 +12,12 @@ public:
 	void Draw() final;
 
 private:
-
+	void RegisterTexture();
+	void CreateGlassModel();
+	void SetPlayerAndHummer();
+	void CreateTimerUi();
+	void CreateScoreUi();
+	void CreateActionUi();
 };
 
 #endif // __SCENE_GAME_H__

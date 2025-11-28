@@ -145,6 +145,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ActionUIManager.cpp" />
     <ClCompile Include="BoxCollider.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraFollow.cpp" />
@@ -153,6 +154,7 @@
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="DirectX.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Geometory.cpp" />
     <ClCompile Include="GlassGauge.cpp" />
@@ -169,22 +171,28 @@
     <ClCompile Include="ModelRenderer.cpp" />
     <ClCompile Include="PhysicsSystem.cpp" />
     <ClCompile Include="PlanetMove.cpp" />
-    <ClCompile Include="PlayerControll.cpp" />
+    <ClCompile Include="PlayerAction.cpp" />
+    <ClCompile Include="PlayerMove.cpp" />
     <ClCompile Include="Rigidbody.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneGame.cpp" />
+    <ClCompile Include="ScoreUIManager.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderList.cpp" />
     <ClCompile Include="SphereCollider.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Startup.cpp" />
     <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="TextureManager.cpp" />
+    <ClCompile Include="Timer.cpp" />
+    <ClCompile Include="TimerUIManager.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="World.cpp" />
     <ClCompile Include="_geometory.cpp" />
     <ClCompile Include="_model.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ActionUIManager.h" />
     <ClInclude Include="AllComponet.h" />
     <ClInclude Include="BoxCollider.h" />
     <ClInclude Include="Camera.h" />
@@ -197,6 +205,7 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="DebugLog.h" />
     <ClInclude Include="DebugScene.h" />
+    <ClInclude Include="Game.h" />
     <ClInclude Include="GlassGauge.h" />
     <ClInclude Include="GlassScript.h" />
     <ClInclude Include="HummerScript.h" />
@@ -208,7 +217,8 @@
     <ClInclude Include="ModelRenderer.h" />
     <ClInclude Include="PhysicsSystem.h" />
     <ClInclude Include="PlanetMove.h" />
-    <ClInclude Include="PlayerControll.h" />
+    <ClInclude Include="PlayerAction.h" />
+    <ClInclude Include="PlayerMove.h" />
     <ClInclude Include="RenderSystem.h" />
     <ClInclude Include="Rigidbody.h" />
     <ClInclude Include="SampleMapData.h" />
@@ -223,12 +233,16 @@
     <ClInclude Include="Model.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneGame.h" />
+    <ClInclude Include="ScoreManager.h" />
+    <ClInclude Include="ScoreUIManager.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderList.h" />
     <ClInclude Include="SphereCollider.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="TextureManager.h" />
     <ClInclude Include="Timer.h" />
+    <ClInclude Include="TimerUIManager.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vector3.h" />

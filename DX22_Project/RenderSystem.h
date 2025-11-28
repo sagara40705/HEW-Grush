@@ -47,7 +47,7 @@ namespace RenderSystem
                 }
             }
         }
-
+       
         LineManager::Draw();
 
         SetDepthTest(false);

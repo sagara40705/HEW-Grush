@@ -1,6 +1,7 @@
 #pragma once
 #include "Vector3.h"
 #include "Component.h"
+#include "DebugLog.h"
 
 class Camera : public Component
 {
@@ -34,6 +35,7 @@ public:
     {
         // Å‰‚É‹N“®‚µ‚½ Camera ‚ğƒƒCƒ“‚É
         if (s_main == nullptr) s_main = this;
+        Debug::LogValue("Camera-Start", (s_main == nullptr));
         RebuildProjectionIfDirty();
     }
     void OnDestroy();
