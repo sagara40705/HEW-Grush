@@ -1,0 +1,39 @@
+﻿#pragma once
+#include <memory>
+#include <array>
+#include <cstdint>
+#include "Model.h"
+
+enum class ModelTag : uint8_t
+{
+	Karubi,
+	Swing,
+	Benti,
+	Ufo,
+	ProtPlay,
+	Player,
+	Count
+};
+
+struct ModelLoadData
+{
+	const char* pass = "";
+	float size = 0.0f;
+	Model::Flip flip = Model::Flip::None;
+};
+
+class ModelManager final
+{
+private:
+	static std::array<std::unique_ptr<Model>, static_cast<size_t>(ModelTag::Count)> s_models;
+	static std::array<float, static_cast<size_t>(ModelTag::Count)> modelBounds;
+	static const ModelLoadData kModelData[static_cast<size_t>(ModelTag::Count)];
+public:
+	static bool Load(ModelTag tag);
+	static void Unload(ModelTag tag);
+
+	static Model* Get(ModelTag tag);
+	static float GetBounds(ModelTag tag);
+
+	static void Clear();
+};
