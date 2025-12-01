@@ -1,19 +1,22 @@
 #pragma once
 #include <cstdint>
 #include <type_traits>
-
+#include <memory>
 #include "Scene.h"
 #include "SceneManager.h"
+
+struct GameState;
 
 // ゲーム全体のエントリーポイント的クラス。
 // シーン管理自体は SceneManager に委譲する。
 class Game
 {
 private:
-    static bool hasPlayedIntroMovie;
+    static std::unique_ptr<GameState> s_state;
 public:
-    static bool HasPlayedIntroMovie() { return hasPlayedIntroMovie; }
-    static void PlayIntroMovie() { hasPlayedIntroMovie = true; }
+    static GameState* GetState() { return s_state.get(); }
+    static void OriginalInit();
+    static void OriginalUninit();
 public:
     static void Init();     // 初期化
     static void Uninit();   // 終了処理

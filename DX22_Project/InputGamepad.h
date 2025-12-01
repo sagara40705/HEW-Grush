@@ -14,6 +14,28 @@
 //
 // 長押しリピートやコンボ判定などは、ここでは一切やらない。
 //============================================================
+
+/*============================================================
+    XINPUT_GAMEPAD_A
+    XINPUT_GAMEPAD_B
+    XINPUT_GAMEPAD_X
+    XINPUT_GAMEPAD_Y
+
+    XINPUT_GAMEPAD_DPAD_UP
+    XINPUT_GAMEPAD_DPAD_DOWN
+    XINPUT_GAMEPAD_DPAD_LEFT
+    XINPUT_GAMEPAD_DPAD_RIGHT
+
+    XINPUT_GAMEPAD_START
+    XINPUT_GAMEPAD_BACK
+
+    XINPUT_GAMEPAD_LEFT_SHOULDER
+    XINPUT_GAMEPAD_RIGHT_SHOULDER
+
+    XINPUT_GAMEPAD_LEFT_THUMB   // 左スティック押し込み
+    XINPUT_GAMEPAD_RIGHT_THUMB  // 右スティック押し込み
+============================================================*/
+
 class InputGamepad
 {
 public:

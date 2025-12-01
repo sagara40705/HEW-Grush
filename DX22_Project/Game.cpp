@@ -3,12 +3,11 @@
 #include "SceneManager.h"
 #include "SceneGame.h"   // ç≈èâÇÃÉVÅ[Éì
 
-bool Game::hasPlayedIntroMovie;
+
 
 void Game::Init()
 {
-    hasPlayedIntroMovie = false;
-
+    OriginalInit();
 
     SceneManager::Initialize();
 
@@ -19,6 +18,7 @@ void Game::Init()
 void Game::Uninit()
 {
     SceneManager::Finalize();
+    OriginalUninit();
 }
 
 void Game::Update()

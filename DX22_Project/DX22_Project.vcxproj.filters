@@ -255,7 +255,7 @@
     <ClCompile Include="AudioSource.cpp">
       <Filter>Engine\Sound</Filter>
     </ClCompile>
-    <ClCompile Include="LoadingSetUp.cpp">
+    <ClCompile Include="OriginalLoading.cpp">
       <Filter>Game\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="SceneTitle.cpp">
@@ -263,6 +263,9 @@
     </ClCompile>
     <ClCompile Include="TitleManager.cpp">
       <Filter>Game\Components\Title</Filter>
+    </ClCompile>
+    <ClCompile Include="OriginalGame.cpp">
+      <Filter>Game\Entry</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -460,6 +463,9 @@
     </ClInclude>
     <ClInclude Include="TitleManager.h">
       <Filter>Game\Components\Title</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState.h">
+      <Filter>Game\Entry</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

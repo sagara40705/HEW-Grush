@@ -3,7 +3,7 @@
 #include "AllComponent.h"
 #include "TextureManager.h"
 
-void LoadingScene::LoadingSetUp()
+void LoadingScene::OriginalLoad()
 {
 
 }

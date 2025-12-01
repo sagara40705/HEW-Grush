@@ -160,6 +160,7 @@
     <ClCompile Include="EventComponent.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="OriginalGame.cpp" />
     <ClCompile Include="Geometory.cpp" />
     <ClCompile Include="GlassGauge.cpp" />
     <ClCompile Include="GlassGaugeManager.cpp" />
@@ -170,7 +171,7 @@
     <ClCompile Include="InputMouse.cpp" />
     <ClCompile Include="LineManager.cpp" />
     <ClCompile Include="LoadingScene.cpp" />
-    <ClCompile Include="LoadingSetUp.cpp" />
+    <ClCompile Include="OriginalLoading.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MeshBuffer.cpp" />
     <ClCompile Include="MeshFilter.cpp" />
@@ -225,6 +226,7 @@
     <ClInclude Include="EventComponent.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameState.h" />
     <ClInclude Include="Geometory.h" />
     <ClInclude Include="GlassGauge.h" />
     <ClInclude Include="GlassGaugeManager.h" />

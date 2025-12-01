@@ -92,7 +92,6 @@ void LoadingScene::Draw()
 void LoadingScene::Unload()
 {
     // ローディング画面用のリソース解放処理
-    TextureManager::Clear();
     // nextScene は ChangeSceneAlreadyLoaded 時に move 済みなので基本的に nullptr のはず。
     nextScene.reset();
 }
