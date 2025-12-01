@@ -170,6 +170,7 @@
     <ClCompile Include="InputMouse.cpp" />
     <ClCompile Include="LineManager.cpp" />
     <ClCompile Include="LoadingScene.cpp" />
+    <ClCompile Include="LoadingSetUp.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MeshBuffer.cpp" />
     <ClCompile Include="MeshFilter.cpp" />
@@ -197,6 +198,8 @@
     <ClCompile Include="Startup.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TexutureManager.cpp" />
+    <ClCompile Include="SceneTitle.cpp" />
+    <ClCompile Include="TitleManager.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="UiSpriteRenderer.cpp" />
     <ClCompile Include="World.cpp" />
@@ -262,6 +265,8 @@
     <ClInclude Include="SpriteAnimation.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureManager.h" />
+    <ClInclude Include="SceneTitle.h" />
+    <ClInclude Include="TitleManager.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UiSpriteRenderer.h" />
     <ClInclude Include="Vector2.h" />

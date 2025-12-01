@@ -27,6 +27,8 @@ public:
     // 0.0 ～ 1.0 の進捗率（描画用）
     float GetProgress() const { return progress; }
 
+    void LoadingSetUp();
+
 private:
     std::unique_ptr<Scene> nextScene;   // ロード対象の本命シーン
     bool                   started;     // 非同期ロード開始済みか
