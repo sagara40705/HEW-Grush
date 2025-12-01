@@ -4,6 +4,7 @@
 #include "Transform.h"
 #include "PlayerAction.h"
 #include "Game.h"
+#include "GameObject.h"
 #include <DirectXMath.h>
 #include <cassert>
 
@@ -48,7 +49,7 @@ namespace
 
 void CameraFollow::Start()
 {
-    self_ = Parent->TryGetComponent<Transform>();
+    self_ = gameObject->TryGetComponent<Transform>();
     assert(self_ && "CameraFollow requires Transform");
     assert(target_ && "CameraFollow target Transform is null");
 

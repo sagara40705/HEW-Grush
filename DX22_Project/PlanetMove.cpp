@@ -10,7 +10,7 @@ static inline float Sign(bool pos, bool neg) { return (pos ? 1.f : 0.f) - (neg ?
 
 void PlanetMove::Start()
 {
-    t = Parent->TryGetComponent<Transform>();
+    t = gameObject->TryGetComponent<Transform>();
     // プレイヤーTransformは外からセットするか、起動時にWorld走査で拾ってください
     // ここでは仮に既に設定済み想定
 }

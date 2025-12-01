@@ -7,6 +7,9 @@
 #include <cmath>
 #include "DebugLog.h"
 #include "GlassScript.h"
+#include "CameraShake.h"
+
+constexpr float kDebugGaugeUpValue = 1.0f;
 
 static inline Vector3 Lerp(const Vector3& a, const Vector3& b, float t)
 {
@@ -15,8 +18,8 @@ static inline Vector3 Lerp(const Vector3& a, const Vector3& b, float t)
 
 void HummerScript::Start()
 {
-	t = Parent->TryGetComponent<Transform>();
-	col = Parent->TryGetComponent<Collider>();
+	t = gameObject->TryGetComponent<Transform>();
+	col = gameObject->TryGetComponent<Collider>();
 	assert(t && "HummerScript requires Transform");
 
 	// 当たり判定は標準OFF（プレイヤーのアクション時のみON）
@@ -50,6 +53,11 @@ void HummerScript::Update()
 			Debug::Log(" HummerScript::Update - StartGaugeDecay");
 		}
 	}
+
+	// デバックコマンド
+#ifdef _DEBUG
+	DebugCommand();
+#endif // DEBUG	
 }
 
 void HummerScript::OnDestroy()
@@ -70,7 +78,8 @@ void HummerScript::OnTriggerStay(const TriggerInfo& c)
 		if (CheckGrade(c.other))
 		{
 			c.other->Destroy();
-			//Debug::LogValue(" HummerScript::Destroy id", c.other->id);
+			CameraShake::StartShake(static_cast<CameraShake::Level>(static_cast<int>(grade)));
+			c.other->TryGetComponent<GlassScript>()->SpawnShards();
 			GaugeUp(c.other);
 			
 			// ゲージ減衰中なら止める& Delayタイマーを初期化
@@ -180,6 +189,29 @@ void HummerScript::TickNormalAttack(float dt)
 
 		// 待機位置へ戻す（仕様に合わせたい場合は任意）
 		if (t) t->SetPosition(idleLocal);
+	}
+}
+
+void HummerScript::DebugCommand()
+{
+	if (IsKeyPress('G') && IsKeyPress('W'))
+	{
+		gauge += kDebugGaugeUpValue;
+		if (gauge >= kMaxGaugeValue[ToInt(grade)])
+		{
+			// 1・2 → グレードUP , 3 → 最大値の正規化
+			if (grade == HummerGrade::Grade_3) gauge = kMaxGaugeValue[ToInt(HummerGrade::Grade_3)];
+			else GradeUp();
+		}
+	}
+	if (IsKeyPress('G') && IsKeyPress('S'))
+	{
+		gauge -= kDebugGaugeUpValue;
+	}
+
+	if (IsKeyPress('H'))
+	{
+		CameraShake::StartShake(static_cast<CameraShake::Level>(static_cast<int>(grade)));
 	}
 }
 

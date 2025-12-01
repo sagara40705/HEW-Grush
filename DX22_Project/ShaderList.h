@@ -21,6 +21,7 @@ public:
 		PS_SPECULAR, //SetMaterial, SetLight, SetCameraPos
 		PS_TOON, // SetMaterial, SetLight
 		PS_FOG, // SetMaterial, SetLight,SetFog
+		PS_GLASS,
 		PS_KIND_MAX
 	};
 
@@ -43,6 +44,7 @@ public:
 	static void SetLight(DirectX::XMFLOAT4 color, DirectX::XMFLOAT3 dir);
 	static void SetCameraPos(const DirectX::XMFLOAT3 pos);
 	static void SetFog(DirectX::XMFLOAT4 color, float start, float range);
+	static void SetGlassParam(const DirectX::XMFLOAT4& tint,float fresnelPower,float reflectionStrength,float transmissionStrength);
 	
 private:
 	static void MakeWorldVS();
@@ -51,6 +53,7 @@ private:
 	static void MakeSpecularPS();
 	static void MakeToonPS();
 	static void MakeFogPS();
+	static void MakeGlassPS();
 
 private:
 	static VertexShader* m_pVS[VS_KIND_MAX];

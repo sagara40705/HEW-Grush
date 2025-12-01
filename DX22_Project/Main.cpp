@@ -11,6 +11,7 @@
 #include "LineManager.h"
 #include "Timer.h"
 #include "Game.h"
+#include "GameObject.h"
 
 
 //--- グローバル変数
@@ -30,7 +31,7 @@ HRESULT Init(HWND hWnd, UINT width, UINT height)
 	Timer::Init();
 
 	// シーン
-	Game::Init(new SceneGame());
+	Game::Init();
 
 	return hr;
 }

@@ -6,8 +6,12 @@
 #include "DirectX.h"
 #include <DirectXMath.h>
 #include "DebugLog.h"
+#include "CameraShake.h"
+#include "GlassScript.h"
 
 using namespace DirectX;
+
+
 
 struct MatrixCB
 {
@@ -24,9 +28,15 @@ struct WVPMatrices
 
 void ModelRenderer::Start()
 {
-    t = Parent->TryGetComponent<Transform>();
+    t = gameObject->TryGetComponent<Transform>();
     c = Camera::Main();
-    mc = Parent->TryGetComponent<ModelComponent>();
+    mc = gameObject->TryGetComponent<ModelComponent>();
+
+
+    if (psKind == ShaderList::PS_GLASS)
+    {
+        gs = gameObject->TryGetComponent<GlassScript>();
+    }
     //EnsureShaders();
 }
 
@@ -100,15 +110,13 @@ void ModelRenderer::Draw()
 
     // ==== 行列を取得して転置 → ShaderList にセット ====
     WVPMatrices wvp{};
-    const XMFLOAT4X4& wMat = t->GetMatrix();
+    XMFLOAT4X4 wMat = t->GetMatrix();
+    CameraShake::Shake(gameObject, wMat);
     const XMFLOAT4X4& vMat = c->GetView();
     const XMFLOAT4X4& pMat = c->GetProjection();
-    XMMATRIX W = XMLoadFloat4x4(&wMat);
-    XMMATRIX V = XMLoadFloat4x4(&vMat);
-    XMMATRIX P = XMLoadFloat4x4(&pMat);
-    W = XMMatrixTranspose(W);
-    V = XMMatrixTranspose(V);
-    P = XMMatrixTranspose(P);
+    XMMATRIX W = XMMatrixTranspose(XMLoadFloat4x4(&wMat));
+    XMMATRIX V = XMMatrixTranspose(XMLoadFloat4x4(&vMat));
+    XMMATRIX P = XMMatrixTranspose(XMLoadFloat4x4(&pMat));
     XMStoreFloat4x4(&wvp.world, W);
     XMStoreFloat4x4(&wvp.view, V);
     XMStoreFloat4x4(&wvp.proj, P);
@@ -117,24 +125,37 @@ void ModelRenderer::Draw()
     // ==== カメラ位置のセット（Specular / Toon / Fog 用） ====
     if (psKind == ShaderList::PS_SPECULAR ||
         psKind == ShaderList::PS_TOON ||
-        psKind == ShaderList::PS_FOG)
+        psKind == ShaderList::PS_FOG ||
+        psKind == ShaderList::PS_GLASS)
     {
-        if (auto* camTf = c->Parent->TryGetComponent<Transform>())
+        if (auto* camTf = c->gameObject->TryGetComponent<Transform>())
         {
             XMFLOAT3 camPos = camTf->GetWorldPosition();
             ShaderList::SetCameraPos(camPos);
         }
     }
 
-    // ==== マテリアルのセット（とりあえず 0 番マテリアルを使用） ====
-    if (model->GetMaterialNum() > 0)
+    if (psKind == ShaderList::PS_GLASS && gs)
     {
-        const Model::Material* mat = model->GetMaterial(0);
-        if (mat)
-        {
-            ShaderList::SetMaterial(*mat);
-        }
+        // ガラス固有パラメータ
+        DirectX::XMFLOAT4 tint = kTintColor[ToInt(gs->grade)];
+        ShaderList::SetGlassParam(tint, 3.0f, 0.5f, 1.0f);
     }
+    else
+    {
+        DirectX::XMFLOAT4 tint = kTintColor[0];
+        ShaderList::SetGlassParam(tint, 3.0f, 0.5f, 1.0f);
+    }
+
+    // ==== マテリアルのセット（とりあえず 0 番マテリアルを使用） ====
+    //if (model->GetMaterialNum() > 0)
+    //{
+    //    const Model::Material* mat = model->GetMaterial(0);
+    //    if (mat)
+    //    {
+    //        ShaderList::SetMaterial(*mat);
+    //    }
+    //}
     // ==== VS / PS を ShaderList から取得してモデルにセット ====
     VertexShader* vs = ShaderList::GetVS(vsKind);
     PixelShader* ps = ShaderList::GetPS(psKind);
