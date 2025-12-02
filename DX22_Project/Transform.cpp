@@ -106,7 +106,10 @@ const XMFLOAT4X4& Transform::GetMatrix()
 
 XMFLOAT3 Transform::GetWorldPosition() 
 {
-    return pos; // 親子なし＝ローカル＝ワールド
+    // 行列がDirtyならここで再計算
+    RebuildIfDirty();
+    // worldMatrix の平行移動成分
+    return XMFLOAT3(worldMatrix._41, worldMatrix._42, worldMatrix._43);
 }
 
 void Transform::RebuildIfDirty()

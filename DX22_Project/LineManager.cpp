@@ -53,7 +53,7 @@ void LineManager::AddBoxCollider(GameObject* go)
 void LineManager::AddBoxCollider(const BoxCollider* bc)
 {
     if (!bc) return;
-    auto* tf = bc->Parent->TryGetComponent<Transform>();
+    auto* tf = bc->gameObject->TryGetComponent<Transform>();
     if (!tf) return;
 
     // ワールド行列（S*R*T 想定）
@@ -129,7 +129,7 @@ void LineManager::Draw()
     // 頂点数は s_cpu.size()
     if (s_vb) s_vb->Draw(static_cast<int>(s_cpu.size()));
 
-    SetDepthTest(true);
+    //SetDepthTest(true);
 }
 
 void LineManager::ClearAll() {

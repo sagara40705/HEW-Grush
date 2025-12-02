@@ -10,6 +10,7 @@ const ModelLoadData ModelManager::kModelData[static_cast<int>(ModelTag::Count)] 
     {"Assets/Model/MD_REbenti_prototype.fbx",                                 0.01f, Model::Flip::ZFlip, Vector3(0,0,0), Vector3(0,0,0) },
     {"Assets/Model/MD_UFO_prototype.fbx",                                     0.01f, Model::Flip::ZFlip, Vector3(0,0,0), Vector3(0,0,0) },
     {"Assets/Model/MD_player_prototype.fbx",                                  0.01f, Model::Flip::ZFlip, Vector3(0,0,0), Vector3(0,0,0) },
+    {"Assets/Model/playerchara_20251125.fbx",                                 0.01f, Model::Flip::ZFlip, Vector3(0,0,0), Vector3(0,0,0) }
 };
 
 bool ModelManager::Register(ModelTag tag, const ModelLoadData& data)

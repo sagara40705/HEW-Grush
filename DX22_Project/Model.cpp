@@ -235,8 +235,8 @@ bool Model::Load(const char* file, float scale, Flip flip)
 void Model::Draw(int meshNo)
 {
 	// シェーダー設定
-	m_pVS->Bind();
-	m_pPS->Bind();
+	//m_pVS->Bind();
+	//m_pPS->Bind();
 
 	// テクスチャ自動設定
 	bool isAutoTexture = (meshNo == -1);

@@ -1,37 +1,42 @@
 #pragma once
-#include "World.h"
 #include "Scene.h"
+#include <cstdint>
+#include <vector>
+#include <memory>
+
 class Game
 {
-public:
-    // ゲーム全体で共有する World
-    static World world;
-
 private:
-    // 現在のシーン
-    static Scene* s_currentScene;
-    // 次フレームに切り替えるために予約されたシーン
-    static Scene* s_nextScene;
+    static std::vector<std::unique_ptr<Scene>> s_scenes;
+    static std::unique_ptr<Scene> s_nextScene;
 
 public:
-    // 最初のシーンを渡して初期化
-    // 例: Game::Init(new SceneGame());
-    static void Init(Scene* firstScene);
 
+    static void Init();     // 初期化
     static void Uninit();
-
     // 毎フレーム呼ぶ
     static void Update();
     static void Draw();
+    // World へのアクセサ
+    static World& GetWorld();
 
-    // シーン切り替え予約
-    // 例: Game::RequestSceneChange(new DebugScene());
-    static void RequestSceneChange(Scene* nextScene);
-
-    // World へのアクセサ（W の代わりに使う想定）
-    static World& GetWorld() { return world; }
-
+public:
+    static void LoadScene();
+    static void PreLoadNext();
+    static void StackScene();
+    static void PopScene();
 private:
-    // Update の最後で呼ぶ：予約があれば実際に切り替える
-    static void ApplySceneChange();
+    static void SceneStackClear();
+public:
+    template<class T>
+    static void SetNext()
+    {
+        static_assert(std::is_base_of_v<Scene, T>, "T must derive from Scene");
+        if (s_nextScene)
+        {
+            s_nextScene->RootUnload();
+        }
+        s_nextScene = std::make_unique<T>();
+    }
+
 };

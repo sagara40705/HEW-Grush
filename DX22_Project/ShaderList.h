@@ -13,6 +13,7 @@ public:
 	{
 		VS_WORLD, // SetWVP
 		VS_ANIME, // SetWVP,SetBones
+		VS_EXPLODE,
 		VS_KIND_MAX
 	};
 	enum PSKind
@@ -21,10 +22,9 @@ public:
 		PS_SPECULAR, //SetMaterial, SetLight, SetCameraPos
 		PS_TOON, // SetMaterial, SetLight
 		PS_FOG, // SetMaterial, SetLight,SetFog
+		PS_GLASS,
 		PS_KIND_MAX
 	};
-
-
 public:
 	ShaderList();
 	~ShaderList();
@@ -39,18 +39,23 @@ public:
 	// 定数バッファへの設定
 	static void SetWVP(DirectX::XMFLOAT4X4* wvp);
 	static void SetBones(DirectX::XMFLOAT4X4* bones200);
+	static void SetExplodeParam(float amount, float time);
+
 	static void SetMaterial(const Model::Material& material);
 	static void SetLight(DirectX::XMFLOAT4 color, DirectX::XMFLOAT3 dir);
 	static void SetCameraPos(const DirectX::XMFLOAT3 pos);
 	static void SetFog(DirectX::XMFLOAT4 color, float start, float range);
+	static void SetGlassParam(const DirectX::XMFLOAT4& tint,float fresnelPower,float reflectionStrength,float transmissionStrength);
 	
 private:
 	static void MakeWorldVS();
 	static void MakeAnimeVS();
+	static void MakeExplodeVS();
 	static void MakeLambertPS();
 	static void MakeSpecularPS();
 	static void MakeToonPS();
 	static void MakeFogPS();
+	static void MakeGlassPS();
 
 private:
 	static VertexShader* m_pVS[VS_KIND_MAX];
