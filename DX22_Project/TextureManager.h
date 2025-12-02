@@ -6,6 +6,7 @@
 
 enum class TextureTag : uint8_t
 {
+    Title_BG,
     Star,
     GaugeEffect,
     Count
