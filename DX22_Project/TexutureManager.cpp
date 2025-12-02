@@ -6,6 +6,7 @@ std::array<std::unique_ptr<Texture>, static_cast<size_t>(TextureTag::Count)> Tex
 const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)] =
 {
     "Assets/Texture/Title_BackGround.png",
+    "Assets/Texture/UIGauge.png",
     "Assets/Texture/Star.png",
     "Assets/Texture/kirakira.png"
 };

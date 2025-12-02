@@ -21,6 +21,7 @@ private:
     bool loop = true;// ループ再生するか
 
     // アニメーション状態
+    int startFrame = 0;
     bool play = true;
     int currentFrame = 0;   // 現在のコマ番号
     int frameTimer = 0;   // 経過フレームカウンタ
@@ -53,7 +54,8 @@ public:
         frameTimer = 0;
         ApplyFrame();
     }
-
+    void SetStartFrame(int start) { startFrame = start; }
+    void SetFramCount(int count) { frameCount = count; }
 private:
     // currentFrame から UV を計算して適用
     void ApplyFrame();

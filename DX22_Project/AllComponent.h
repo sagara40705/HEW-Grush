@@ -15,5 +15,7 @@
 #include "SpriteAnimation.h"
 #include "CameraContorol.h"
 
+#include "TitleManager.h"
+
 #include "PlayerState.h"
 #include "PlayerMove.h"

@@ -21,17 +21,7 @@ void LoadingScene::SetNextScene(std::unique_ptr<Scene> next)
 // このシーン自身のロード
 void LoadingScene::Load()
 {
-    // ローディング画面用のオブジェクト生成などをここで行う。
-    // 例:
-    //   - カメラ
-    //   - 背景スプライト
-    //   - プログレスバー用 UI 等
-    //
-    // World& w = GetWorld();
-    // auto* camera = w.CreateGameObject("LoadingCamera");
-    // ...
-
-    // 必須処理はないので、何も作らなくても動作自体はする。
+    OriginalLoad();
 }
 
 // 毎フレーム呼ばれる

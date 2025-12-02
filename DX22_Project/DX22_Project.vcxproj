@@ -160,6 +160,7 @@
     <ClCompile Include="EventComponent.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="LoadingGauge.cpp" />
     <ClCompile Include="OriginalGame.cpp" />
     <ClCompile Include="Geometory.cpp" />
     <ClCompile Include="GlassGauge.cpp" />
@@ -237,6 +238,7 @@
     <ClInclude Include="InputMouse.h" />
     <ClInclude Include="Layer.h" />
     <ClInclude Include="LineManager.h" />
+    <ClInclude Include="LoadingGauge.h" />
     <ClInclude Include="LoadingScene.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="MeshBuffer.h" />

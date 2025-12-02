@@ -31,6 +31,9 @@ public:
     void Start() override;
     void OnDestroy() override;
 
+    Vector2& GetSize() { return size; }
+
+
     // İ’èŒn
     void SetCanvas(Canvas* c) { canvas = c; }
     void SetTexture(TextureTag tag);

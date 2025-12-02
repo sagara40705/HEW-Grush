@@ -47,7 +47,7 @@ void SpriteAnimation::Update()
     {
         if (loop)
         {
-            currentFrame = 0;
+            currentFrame = startFrame;
         }
         else
         {

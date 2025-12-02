@@ -20,8 +20,9 @@ void Canvas::Awake()
     }
     else
     {
+        s_main = this;
         // 2 個目以降は想定外（必要なら後で仕様拡張）
-        assert(false && "Multiple Canvas detected. Current design assumes only one Canvas.");
+        //assert(false && "Multiple Canvas detected. Current design assumes only one Canvas.");
     }
 }
 

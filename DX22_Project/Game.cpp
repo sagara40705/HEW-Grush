@@ -1,7 +1,8 @@
 // Game.cpp
 #include "Game.h"
 #include "SceneManager.h"
-#include "SceneGame.h"   // 最初のシーン
+#include "SceneGame.h"  
+#include "SceneTitle.h"// 最初のシーン
 
 
 
@@ -12,6 +13,7 @@ void Game::Init()
     SceneManager::Initialize();
 
     // 最初のシーンを予約
+    //SceneManager::ChangeScene<SceneTitle>();
     SceneManager::ChangeSceneAsync<SceneGame>();
 }
 

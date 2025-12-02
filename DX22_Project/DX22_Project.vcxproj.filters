@@ -267,6 +267,9 @@
     <ClCompile Include="OriginalGame.cpp">
       <Filter>Game\Entry</Filter>
     </ClCompile>
+    <ClCompile Include="LoadingGauge.cpp">
+      <Filter>Game\Components\Loading</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -466,6 +469,9 @@
     </ClInclude>
     <ClInclude Include="GameState.h">
       <Filter>Game\Entry</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadingGauge.h">
+      <Filter>Game\Components\Loading</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
