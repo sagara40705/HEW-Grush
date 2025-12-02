@@ -1,4 +1,4 @@
-#include "ShaderList.h"
+ï»¿#include "ShaderList.h"
 
 
 VertexShader* ShaderList::m_pVS[VS_KIND_MAX];
@@ -20,6 +20,7 @@ void ShaderList::Init()
 	MakeSpecularPS();
 	MakeToonPS();
 	MakeFogPS();
+	MakeGlassPS();
 
 	DirectX::XMFLOAT4X4 mat[250];
 	for (int i = 0; i < 250; ++i)
@@ -115,6 +116,7 @@ void ShaderList::SetCameraPos(const DirectX::XMFLOAT3 pos)
 	};
 	m_pPS[PS_SPECULAR]->WriteBuffer(2, param);
 	m_pPS[PS_TOON]->WriteBuffer(2, param);
+	m_pPS[PS_GLASS]->WriteBuffer(2, param);
 }
 void ShaderList::SetFog(DirectX::XMFLOAT4 color, float start, float range)
 {
@@ -123,6 +125,24 @@ void ShaderList::SetFog(DirectX::XMFLOAT4 color, float start, float range)
 		{start, range, 0.0f, 0.0f}
 	};
 	m_pPS[PS_FOG]->WriteBuffer(3, param);
+}
+
+void ShaderList::SetGlassParam(const DirectX::XMFLOAT4& tint, float fresnelPower, float reflectionStrength, float transmissionStrength)
+{
+	DirectX::XMFLOAT4 param[2];
+
+	// tint
+	param[0] = tint;  // tint = { r, g, b, a } (a ã«ãƒ™ãƒ¼ã‚¹ã‚¢ãƒ«ãƒ•ã‚¡)
+
+	// glassParams = { fresnelPower, reflectionStrength, transmissionStrength, 0 }
+	param[1] = DirectX::XMFLOAT4(
+		fresnelPower,
+		reflectionStrength,
+		transmissionStrength,
+		0.0f);
+
+	// b3 ã«æ›¸ãè¾¼ã‚€
+	m_pPS[PS_GLASS]->WriteBuffer(3, param);
 }
 
 void ShaderList::MakeWorldVS()
@@ -234,26 +254,47 @@ Texture2D tex : register(t0);
 SamplerState samp : register(s0);
 float4 main(PS_IN pin) : SV_TARGET
 {
-	float4 color = float4(1.0f, 1.0f, 1.0f, 1.0f);
-	if(objAmbient.a >= 1.0f)
-		color = tex.Sample(samp, pin.uv);
-	float3 N = normalize(pin.normal);
-	float3 L = normalize(-lightDir);
-	float dotNL = saturate((dot(N, L) + 0.5f) / 1.5f);
-	float3 diffuse = objDiffuse.rgb * lightDiffuse.rgb;
-	float3 ambient = objAmbient.rgb * lightDiffuse.rgb;
-	float3 specular = objSpecular.rgb * lightDiffuse.rgb;
-	// –{—ˆ‚ÌLambertŠgŽU”½ŽËiŽv‚Á‚½•\Œ»‚ªo—ˆ‚È‚©‚Á‚½‚Ì‚ÅÌ—p‚¹‚¸
-	// color.rgb *= saturate(diffuse * dotNL + ambient);
-	// ŠÂ‹«Œõ‚ÅŠgŽU”½ŽË•”•ª‚ÌF‚ª•Ï‚í‚ç‚È‚¢‚æ‚¤‚Élerp(ŠÂ‹«Œõ,diffuse,dotNL)‚ÅŒvŽZ
-	// ŠÂ‹«Œõ‚ªŽã‚¯‚ê‚Î•(æŽZ)A‹­‚¯‚ê‚Î”’(‰ÁŽZ)‚Æ‚È‚é‚æ‚¤‚ÉAŠeŒvŽZ‚ðüŒ`‚Å•âŠÔ
-	diffuse *= color.rgb;
-	color.rgb = saturate(lerp(
-		lerp(diffuse * ambient, diffuse + ambient, pow(ambient, 4.0f)),
-		diffuse, dotNL));
-	// –{—ˆ‚È‚ç•K—v‚È‚¢‹¾–Ê”½ŽËALambertŒü‚¯‚ÉŽáŠ±‚¾‚¯“K—p
-	color.rgb += specular * pow(saturate(dotNL), max(0.01f, objSpecular.a) * 0.5f) * 0.5f;
-	return color;
+	 // åŸºæœ¬è‰²ã¨ã‚¢ãƒ«ãƒ•ã‚¡ã‚’åˆ†é›¢ã—ã¦æ‰±ã†
+    float3 baseColor = float3(1.0f, 1.0f, 1.0f);
+    float  alpha     = 0.8f;
+
+    // â˜… ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’ä½¿ã†ãƒžãƒ†ãƒªã‚¢ãƒ«ã®ã¨ãã ã‘ã‚µãƒ³ãƒ—ãƒ«
+    //   objAmbient.a ã¯ã€Œãƒ†ã‚¯ã‚¹ãƒãƒ£æœ‰åŠ¹ãƒ•ãƒ©ã‚°ã€ã¨ã—ã¦ãã®ã¾ã¾ä½¿ç”¨
+    if (objAmbient.a >= 1.0f)
+    {
+        float4 texc = tex.Sample(samp, pin.uv);
+        baseColor = texc.rgb;  // æ‹¡æ•£åå°„ã®ãƒ™ãƒ¼ã‚¹è‰²
+        alpha     = texc.a;    // é€æ˜Ž PNG ã®ã‚¢ãƒ«ãƒ•ã‚¡ã‚’ä¿æŒ
+    }
+
+    // ãƒ©ãƒ³ãƒãƒ¼ãƒˆç³»ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°
+    float3 N = normalize(pin.normal);
+    float3 L = normalize(-lightDir.xyz);
+    float  dotNL = saturate((dot(N, L) + 0.5f) / 1.5f);
+
+    float3 diffuse  = objDiffuse.rgb * lightDiffuse.rgb;
+    float3 ambient  = objAmbient.rgb * lightDiffuse.rgb;
+    float3 specular = objSpecular.rgb * lightDiffuse.rgb;
+
+    // å…ƒã®å‡¦ç†ï¼šdiffuse ã«ãƒ™ãƒ¼ã‚¹ã‚«ãƒ©ãƒ¼ã‚’ä¹—ç®—
+    diffuse *= baseColor;
+
+    // å…ƒã‚³ãƒ¡ãƒ³ãƒˆé€šã‚Šã®å‡¦ç†ã‚’ baseColor ãƒ™ãƒ¼ã‚¹ã§
+    float3 litColor = saturate(
+        lerp(
+            lerp(diffuse * ambient,
+                 diffuse + ambient,
+                 pow(ambient, 4.0f)),
+            diffuse,
+            dotNL));
+
+    // é¡é¢æˆåˆ†ï¼ˆå…ƒã®å¼ã‚’ç¶­æŒï¼‰
+    litColor += specular
+        * pow(saturate(dotNL), max(0.01f, objSpecular.a) * 0.5f)
+        * 0.5f;
+
+    // â˜… ã‚¢ãƒ«ãƒ•ã‚¡ã¯ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚ã‚Šãªã‚‰ tex.a, ãªã‘ã‚Œã° 1.0
+    return float4(litColor, alpha);
 })EOT";
 	m_pPS[PS_LAMBERT] = new PixelShader();
 	m_pPS[PS_LAMBERT]->Compile(code);
@@ -287,7 +328,7 @@ Texture2D tex : register(t0);
 SamplerState samp : register(s0);
 float4 main(PS_IN pin) : SV_TARGET
 {
-	float4 color = float4(1.0f, 1.0f, 1.0f, 1.0f);
+	float4 color = float4(1.0f, 1.0f, 1.0f, 0.5f);
 	if(objAmbient.a >= 1.0f)
 		color = tex.Sample(samp, pin.uv);
 	float3 N = normalize(pin.normal);
@@ -299,7 +340,7 @@ float4 main(PS_IN pin) : SV_TARGET
 	float3 diffuse = objDiffuse.rgb * lightDiffuse.rgb;
 	float3 ambient = objAmbient.rgb * lightDiffuse.rgb;
 	float3 specular = objSpecular.rgb * lightDiffuse.rgb;
-	// Lambert‚ÌŒvŽZ‚ðŽQl
+	// Lambertã®è¨ˆç®—ã‚’å‚è€ƒ
 	color.rgb *= saturate(lerp(
 		lerp(diffuse * ambient, diffuse + ambient, pow(ambient, 4.0f)),
 		diffuse, dotNL));
@@ -338,12 +379,12 @@ float4 main(PS_IN pin) : SV_TARGET
 		color = tex.Sample(samp, pin.uv);
 	float3 N = normalize(pin.normal);
 	float3 L = normalize(-lightDir);
-	float dotNL = dot(N, L); // ƒ}ƒCƒiƒXž‚ÅŒvŽZ
+	float dotNL = dot(N, L); // ãƒžã‚¤ãƒŠã‚¹è¾¼ã§è¨ˆç®—
 	float3 diffuse = objDiffuse.rgb * lightDiffuse.rgb;
 	float3 ambient = objAmbient.rgb * lightDiffuse.rgb;
 	float3 specular = objSpecular.rgb * lightDiffuse.rgb;
-	float toonNL = saturate((dot(N, L) + 0.5f) / 1.5f * 100.0f); // ‰A‚Ì‹«–Ú‚ð_‚ç‚©‚­
-	// Lambert‚ÌŒvŽZ‚ðŽQl
+	float toonNL = saturate((dot(N, L) + 0.5f) / 1.5f * 100.0f); // é™°ã®å¢ƒç›®ã‚’æŸ”ã‚‰ã‹ã
+	// Lambertã®è¨ˆç®—ã‚’å‚è€ƒ
 	color.rgb *= saturate(lerp(
 		lerp(diffuse * ambient, diffuse + ambient, pow(ambient, 4.0f)),
 		diffuse, toonNL));
@@ -405,4 +446,94 @@ float4 main(PS_IN pin) : SV_TARGET
 })EOT";
 	m_pPS[PS_FOG] = new PixelShader();
 	m_pPS[PS_FOG]->Compile(code);
+}
+
+void ShaderList::MakeGlassPS()
+{
+	const char* code = R"EOT(
+struct PS_IN {
+	float4 pos : SV_POSITION;
+	float3 normal : NORMAL0;
+	float2 uv : TEXCOORD0;
+	float4 color : COLOR0;
+	float4 wPos  : POSITION0;
+};
+cbuffer Material : register(b0)
+{
+	float4 objDiffuse;
+	float4 objAmbient;
+	float4 objSpecular;
+
+};
+cbuffer Light : register(b1)
+{
+	float4 lightDiffuse;
+	float4 lightDir;
+};
+cbuffer Camera : register(b2)
+{
+	float4 cameraPos;
+};
+// ã‚¬ãƒ©ã‚¹å›ºæœ‰ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
+cbuffer GlassParam : register(b3)
+{
+    float4 glassTint;        // rgb = ã‚¬ãƒ©ã‚¹ã®è‰², a = ãƒ™ãƒ¼ã‚¹ã‚¢ãƒ«ãƒ•ã‚¡
+    float4 glassParams;  
+};
+Texture2D tex : register(t0);
+SamplerState samp : register(s0);
+float4 main(PS_IN pin) : SV_TARGET
+{
+	float3 N = normalize(pin.normal);
+    float3 L = normalize(-lightDir.xyz);
+    float3 V = normalize(cameraPos.xyz - pin.wPos.xyz);
+
+	float dotNL = saturate(dot(N, L));
+    float minNL = 0.3;
+    dotNL = lerp(minNL, 1.0f, dotNL);
+
+	float3 baseColor    = objDiffuse.rgb * lightDiffuse.rgb;
+    float3 ambientColor = objAmbient.rgb * lightDiffuse.rgb;
+    float3 specColor    = objSpecular.rgb * lightDiffuse.rgb;
+
+	float4 texColor = float4(1,1,1,1);
+    if (objAmbient.a >= 1.0f)
+    {
+        texColor = tex.Sample(samp, pin.uv);
+    }
+
+	float3 lambert = ambientColor + baseColor * dotNL;
+    lambert *= texColor.rgb;
+
+    float3 R = reflect(-L, N);
+    float  dotRV = saturate(dot(R, V));
+    float  gloss = max(0.01f, objSpecular.a);
+    float3 specular = specColor * pow(dotRV, gloss * 4.0f) * 0.5f;
+
+    float3 litColor = lambert + specular;
+
+    float fresnelPower        = glassParams.x;
+    float reflectionStrength  = glassParams.y;
+    float transmissionStrength= glassParams.z;
+
+	float dotNV   = saturate(dot(N, V));
+    float fresnel = pow(1.0f - dotNV, fresnelPower);
+
+    float3 reflectionColor = lightDiffuse.rgb * glassTint.rgb;
+    float3 transmission    = litColor * glassTint.rgb;
+
+    float3 finalRGB = lerp(
+        transmission * transmissionStrength,
+        reflectionColor,
+        saturate(reflectionStrength * fresnel));
+
+	float baseAlpha    = glassTint.a;
+    float alphaFresnel = 0.3 + 0.7 * fresnel;
+    float finalA = saturate(baseAlpha * alphaFresnel);
+
+	return float4(finalRGB, finalA);
+
+})EOT";
+	m_pPS[PS_GLASS] = new PixelShader();
+	m_pPS[PS_GLASS]->Compile(code);
 }

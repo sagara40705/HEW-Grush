@@ -1,94 +1,110 @@
 // Game.cpp
 #include "Game.h"
+#include "GameObject.h"
+#include "AllComponet.h"
+#include "SceneGame.h"
+#include <cassert>
 
-// static メンバ定義
-World Game::world{};
-Scene* Game::s_currentScene = nullptr;
-Scene* Game::s_nextScene = nullptr;
+std::vector<std::unique_ptr<Scene>> Game::s_scenes;
+std::unique_ptr<Scene>              Game::s_nextScene;
 
-void Game::Init(Scene* firstScene)
+void Game::Init()
 {
-    // World は一旦クリーンな状態にしておく
+	// クリーンアップ
+	Uninit();
 
-    // 現在シーンをセット
-    s_currentScene = firstScene;
-    s_nextScene = nullptr;
+	// 最初のシーンを設定して切り替え
+	SetNext<SceneGame>();
+	LoadScene();
 }
 
 void Game::Uninit()
 {
-    // 現在シーンを破棄
-    if (s_currentScene)
-    {
-        delete s_currentScene;
-        s_currentScene = nullptr;
-    }
+	SceneStackClear();
 
-    // 予約済みシーンが残っていたら破棄
-    if (s_nextScene)
-    {
-        delete s_nextScene;
-        s_nextScene = nullptr;
-    }
+	// 次シーンが残っていれば Unload
+	if (s_nextScene)
+	{
+		s_nextScene->RootUnload();
+		s_nextScene.reset();
+	}
 
-    // World 上のオブジェクトもすべて削除
-    world.ClearAll();
+    MeshFilter::ReleaseAll();
 }
 
 void Game::Update()
 {
-    if (s_currentScene)
-    {
-        // Scene 内部で World::Update() などを呼ぶ想定
-        s_currentScene->RootUpdate();
-    }
+	if (s_scenes.empty()) return;
 
-    // フレーム末尾でシーン切り替えを反映
-    ApplySceneChange();
+	// 一番上のシーンだけを更新
+	s_scenes.back()->RootUpdate();
 }
 
 void Game::Draw()
 {
-    if (s_currentScene)
-    {
-        s_currentScene->RootDraw();
-    }
+	// 下から順に描画（下のシーン → 上のシーン）
+	for (auto& scene : s_scenes)
+	{
+		if (!scene) continue;
+		scene->RootDraw();
+	}
 }
 
-void Game::RequestSceneChange(Scene* nextScene)
+
+World& Game::GetWorld()
 {
-    // すでに同じポインタが予約されているなら何もしない
-    if (nextScene == s_nextScene)
-    {
-        return;
-    }
-
-    // すでに別の予約があった場合は破棄（リーク防止）
-    if (s_nextScene && s_nextScene != nextScene)
-    {
-        delete s_nextScene;
-    }
-
-    s_nextScene = nextScene;
+	return s_scenes.front()->GetWorld();
 }
 
-void Game::ApplySceneChange()
+void Game::LoadScene()
 {
-    if (!s_nextScene)
-    {
-        return; // 予約なし
-    }
+	if (!s_nextScene) return;
 
-    // まず World の中身をクリーンにする
-    world.ClearAll();
+	SceneStackClear();
 
-    // 現在シーンを破棄
-    if (s_currentScene)
-    {
-        delete s_currentScene;
-    }
+	s_scenes.emplace_back(std::move(s_nextScene));
 
-    // 新しいシーンに切り替え
-    s_currentScene = s_nextScene;
-    s_nextScene = nullptr;
+	s_scenes.front()->RootLoad();
 }
+
+void Game::PreLoadNext()
+{
+	if (!s_nextScene) return;
+
+	s_nextScene->RootLoad();
+}
+
+void Game::StackScene()
+{
+	if (!s_nextScene) return;
+
+	s_nextScene->RootLoad();
+
+	s_scenes.emplace_back(std::move(s_nextScene));
+}
+
+void Game::PopScene()
+{
+	if (s_scenes.empty()) return;
+
+	auto& top = s_scenes.back();
+	if (top)
+	{
+		top->RootUnload();
+	}
+	s_scenes.pop_back();
+}
+
+void Game::SceneStackClear()
+{
+	// 既存スタックのシーンをすべて Unload
+	for (auto& scene : s_scenes)
+	{
+		if (scene)
+		{
+			scene->RootUnload();
+		}
+	}
+	s_scenes.clear();
+}
+

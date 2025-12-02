@@ -2,13 +2,16 @@
 #include "ModelComponent.h"
 #include "Transform.h"
 #include "Camera.h"
-#include "Model.h"
 #include "GameObject.h"
 #include "DirectX.h"
 #include <DirectXMath.h>
 #include "DebugLog.h"
+#include "CameraShake.h"
+#include "GlassScript.h"
 
 using namespace DirectX;
+
+
 
 struct MatrixCB
 {
@@ -16,17 +19,30 @@ struct MatrixCB
     XMMATRIX view{};
     XMMATRIX proj{};
 };
+struct WVPMatrices
+{
+    XMFLOAT4X4 world;
+    XMFLOAT4X4 view;
+    XMFLOAT4X4 proj;
+};
 
 void ModelRenderer::Start()
 {
-    t = Parent->TryGetComponent<Transform>();
+    t = gameObject->TryGetComponent<Transform>();
     c = Camera::Main();
-    mc = Parent->TryGetComponent<ModelComponent>();
-    EnsureShaders();
+    mc = gameObject->TryGetComponent<ModelComponent>();
+
+
+    if (psKind == ShaderList::PS_GLASS)
+    {
+        gs = gameObject->TryGetComponent<GlassScript>();
+    }
+    //EnsureShaders();
 }
 
 void ModelRenderer::EnsureShaders()
 {
+    /*
     if (!m_pVS)
     {
         const char* VSCode = R"EOT(
@@ -69,12 +85,14 @@ Texture2D    g_tex0 : register(t0);
 SamplerState g_samp : register(s0);
 float4 main(PS_IN pin) : SV_Target
 {
+    return float4(1, 1, 1, 1);
     return g_tex0.Sample(g_samp, pin.uv);
 }
 )EOT";
         m_pPS = new PixelShader();
         m_pPS->Compile(PSCode);
     }
+    */
 }
 
 void ModelRenderer::Draw()
@@ -88,11 +106,63 @@ void ModelRenderer::Draw()
     cb.world = XMMatrixTranspose(XMLoadFloat4x4(&t->GetMatrix()));
     cb.view = XMMatrixTranspose(XMLoadFloat4x4(&c->GetView()));
     cb.proj = XMMatrixTranspose(XMLoadFloat4x4(&c->GetProjection()));
-    m_pVS->WriteBuffer(0, &cb);
+    //m_pVS->WriteBuffer(0, &cb);
 
-    model->SetVertexShader(m_pVS);
-    model->SetPixelShader(m_pPS);
+    // ==== 行列を取得して転置 → ShaderList にセット ====
+    WVPMatrices wvp{};
+    XMFLOAT4X4 wMat = t->GetMatrix();
+    CameraShake::Shake(gameObject, wMat);
+    const XMFLOAT4X4& vMat = c->GetView();
+    const XMFLOAT4X4& pMat = c->GetProjection();
+    XMMATRIX W = XMMatrixTranspose(XMLoadFloat4x4(&wMat));
+    XMMATRIX V = XMMatrixTranspose(XMLoadFloat4x4(&vMat));
+    XMMATRIX P = XMMatrixTranspose(XMLoadFloat4x4(&pMat));
+    XMStoreFloat4x4(&wvp.world, W);
+    XMStoreFloat4x4(&wvp.view, V);
+    XMStoreFloat4x4(&wvp.proj, P);
+    ShaderList::SetWVP(reinterpret_cast<XMFLOAT4X4*>(&wvp));
 
+    // ==== カメラ位置のセット（Specular / Toon / Fog 用） ====
+    if (psKind == ShaderList::PS_SPECULAR ||
+        psKind == ShaderList::PS_TOON ||
+        psKind == ShaderList::PS_FOG ||
+        psKind == ShaderList::PS_GLASS)
+    {
+        if (auto* camTf = c->gameObject->TryGetComponent<Transform>())
+        {
+            XMFLOAT3 camPos = camTf->GetWorldPosition();
+            ShaderList::SetCameraPos(camPos);
+        }
+    }
+
+    if (psKind == ShaderList::PS_GLASS && gs)
+    {
+        // ガラス固有パラメータ
+        DirectX::XMFLOAT4 tint = kTintColor[ToInt(gs->grade)];
+        ShaderList::SetGlassParam(tint, 3.0f, 0.5f, 1.0f);
+    }
+    else
+    {
+        DirectX::XMFLOAT4 tint = kTintColor[0];
+        ShaderList::SetGlassParam(tint, 3.0f, 0.5f, 1.0f);
+    }
+
+    // ==== マテリアルのセット（とりあえず 0 番マテリアルを使用） ====
+    //if (model->GetMaterialNum() > 0)
+    //{
+    //    const Model::Material* mat = model->GetMaterial(0);
+    //    if (mat)
+    //    {
+    //        ShaderList::SetMaterial(*mat);
+    //    }
+    //}
+    // ==== VS / PS を ShaderList から取得してモデルにセット ====
+    VertexShader* vs = ShaderList::GetVS(vsKind);
+    PixelShader* ps = ShaderList::GetPS(psKind);
+    model->SetVertexShader(vs);
+    model->SetPixelShader(ps);
+    //model->SetVertexShader(m_pVS);
+    //model->SetPixelShader(m_pPS);
 
     // マテリアルのテクスチャ自動設定を活かすため meshNo = -1 で全描画
     model->Draw(-1);
@@ -100,6 +170,6 @@ void ModelRenderer::Draw()
 
 void ModelRenderer::OnDestroy()
 {
-    SAFE_DELETE(m_pVS);
-    SAFE_DELETE(m_pPS);
+    //SAFE_DELETE(m_pVS);
+    //SAFE_DELETE(m_pPS);
 }

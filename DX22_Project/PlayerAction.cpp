@@ -1,4 +1,4 @@
-// === File: PlayerAction.cpp ===
+ï»¿// === File: PlayerAction.cpp ===
 #include "PlayerAction.h"
 #include "PlayerMove.h"
 #include "Transform.h"
@@ -6,24 +6,25 @@
 #include "Collider.h"
 #include "HummerScript.h"
 #include "Game.h"
+#include "GameObject.h"
 #include "Input.h"
 #include <algorithm>
 #include <cmath>
-// --- XInputiƒ{ƒ^ƒ“‚ÅƒAƒNƒVƒ‡ƒ“BƒRƒ“ƒgƒ[ƒ‰“ü—Í‚ªg‚ ‚ê‚ÎhƒL[ƒ{[ƒh‚ğ–³‹j---
+// --- XInputï¼ˆãƒœã‚¿ãƒ³ã§ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã€‚ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©å…¥åŠ›ãŒâ€œã‚ã‚Œã°â€ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã‚’ç„¡è¦–ï¼‰---
 #include <Xinput.h>
 #pragma comment(lib, "Xinput.lib")
 using namespace DirectX;
 static inline float Clamp01(float v) { return std::clamp(v, 0.0f, 1.0f); }
 
-// ƒ{ƒ^ƒ“Š„‚è“–‚Äi•K—v‚È‚ç•ÏXj
+// ãƒœã‚¿ãƒ³å‰²ã‚Šå½“ã¦ï¼ˆå¿…è¦ãªã‚‰å¤‰æ›´ï¼‰
 namespace PadMap 
 {
-    constexpr WORD Dash = XINPUT_GAMEPAD_RIGHT_SHOULDER; // R1‘Š“–
-    constexpr WORD Spin = XINPUT_GAMEPAD_LEFT_SHOULDER;  // L1‘Š“–
-    constexpr WORD Normal = XINPUT_GAMEPAD_X; //  ‘Š“–
+    constexpr WORD Dash = XINPUT_GAMEPAD_RIGHT_SHOULDER; // R1ç›¸å½“
+    constexpr WORD Spin = XINPUT_GAMEPAD_LEFT_SHOULDER;  // L1ç›¸å½“
+    constexpr WORD Normal = XINPUT_GAMEPAD_X; // â–¡ç›¸å½“
     constexpr SHORT STICK_DEAD = XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE;
 }
-// ŠÈˆÕƒGƒbƒW”»’è‚ğ‚±‚Ì–|–ó’PˆÊ‚Å•Ûi‘¼Š‚Ì XInput ŒÄ‚Ño‚µ‚Æ“Æ—§j
+// ç°¡æ˜“ã‚¨ãƒƒã‚¸åˆ¤å®šã‚’ã“ã®ç¿»è¨³å˜ä½ã§ä¿æŒï¼ˆä»–æ‰€ã® XInput å‘¼ã³å‡ºã—ã¨ç‹¬ç«‹ï¼‰
 namespace 
 {
     struct PadState { XINPUT_STATE prev{}, curr{}; bool connected = false; } gPad;
@@ -49,9 +50,9 @@ namespace
 
 void PlayerAction::Start()
 {
-    t_ = Parent->TryGetComponent<Transform>();
-    rb_ = Parent->TryGetComponent<Rigidbody>();
-    move_ = Parent->TryGetComponent<PlayerMove>();
+    t_ = gameObject->TryGetComponent<Transform>();
+    rb_ = gameObject->TryGetComponent<Rigidbody>();
+    move_ = gameObject->TryGetComponent<PlayerMove>();
     assert(t_ && rb_ && move_ && "PlayerAction requires Transform/Rigidbody/PlayerMove");
 
     AcquireHummer();
@@ -63,25 +64,23 @@ void PlayerAction::Update()
 
     PollPad();
 
-    // ƒN[ƒ‹ƒ^ƒCƒ€
+    // ã‚¯ãƒ¼ãƒ«ã‚¿ã‚¤ãƒ 
     if (dashCooldownTimer_ > 0.0f) dashCooldownTimer_ = std::max(0.0f, dashCooldownTimer_ - DT);
     if (spinCooldownTimer_ > 0.0f) spinCooldownTimer_ = std::max(0.0f, spinCooldownTimer_ - DT);
     if (normalCooldownTimer_ > 0.0f) normalCooldownTimer_ = std::max(0.0f, normalCooldownTimer_ - DT);
 
-    // ‰ñ“]UŒ‚iŒü‚«ƒƒbƒNj
+    // å›è»¢æ”»æ’ƒï¼ˆå‘ããƒ­ãƒƒã‚¯ï¼‰
     SpinningUpdate(DT);
 
-    // ƒ_ƒbƒVƒ…iŠO•”‘¬“xã‘‚«j
+    // ãƒ€ãƒƒã‚·ãƒ¥ï¼ˆå¤–éƒ¨é€Ÿåº¦ä¸Šæ›¸ãï¼‰
     if (isDash_) DashUpdate(DT);
     else         DashTryStart();
 
-    // ’ÊíUŒ‚iEj
+    // é€šå¸¸æ”»æ’ƒï¼ˆEï¼‰
     NormalAttackTryStart();
 
-    // gs“®’†‚¾‚¯hƒnƒ“ƒ}[“–‚½‚è”»’èON
+    // â€œè¡Œå‹•ä¸­ã ã‘â€ãƒãƒ³ãƒãƒ¼å½“ãŸã‚Šåˆ¤å®šON
     UpdateHummerMask();
-
-
 }
 
 void PlayerAction::OnDestroy()
@@ -91,7 +90,7 @@ void PlayerAction::OnDestroy()
 
 void PlayerAction::AcquireHummer()
 {
-    // World‚©‚ç©•ª‚ÌqiTag::Weaponj‚ğ’Tõ
+    // Worldã‹ã‚‰è‡ªåˆ†ã®å­ï¼ˆTag::Weaponï¼‰ã‚’æ¢ç´¢
     for (auto& o : Game::GetWorld().objects) {
         if (!o->active || !o->CompareTag(Tag::Weapon)) continue;
         HummerScript* hs = o->TryGetComponent<HummerScript>();
@@ -104,53 +103,56 @@ void PlayerAction::DashTryStart()
 {
     if (!move_->IsGrounded()) return;
     if (isDash_) return;
+    if (isAction_) return;
     if (dashCooldownTimer_ > 0.0f) return;
 
-    // g“ü—ÍƒfƒoƒCƒX‚Ì‘I‘ğhF‚±‚ÌƒtƒŒ[ƒ€‚Éƒpƒbƒh“ü—Í‚ª‚ ‚ê‚ÎƒL[ƒ{[ƒh‚Í–³‹
+    // â€œå…¥åŠ›ãƒ‡ãƒã‚¤ã‚¹ã®é¸æŠâ€ï¼šã“ã®ãƒ•ãƒ¬ãƒ¼ãƒ ã«ãƒ‘ãƒƒãƒ‰å…¥åŠ›ãŒã‚ã‚Œã°ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã¯ç„¡è¦–
     const bool usePad = ControllerActiveThisFrame();
     const bool dashKey = (!usePad) && IsKeyTrigger('F');
     const bool dashPad = usePad && Trigger(PadMap::Dash);
     if (!(dashKey || dashPad)) return;
 
-    // ˆÚ“®’†‚Ì‚İ
+    // ç§»å‹•ä¸­ã®ã¿
     if (move_->HorizontalSpeedSq() <= (minDashMoveEps * minDashMoveEps)) return;
 
-    // •ûŒü‚ÍŒ»İ‚Ì…•½‘¬“xŒü‚«
+    // æ–¹å‘ã¯ç¾åœ¨ã®æ°´å¹³é€Ÿåº¦å‘ã
     const Vector3 v = move_->VelocityRef();
     const float v2 = std::max(v.x * v.x + v.z * v.z, 1e-12f);
+    const float a = 1.00f;
     const float inv = 1.0f / std::sqrt(v2);
-    dashDir_ = { v.x * inv, 0.0f, v.z * inv };
+    dashDir_ = { v.x * inv * a, 0.0f, v.z * inv * a };
 
-    // ”­“®
+    // ç™ºå‹•
     isDash_ = true;
+    isAction_ = true;
     dashTime_ = 0.0f;
     rb_->velocity.x = dashDir_.x * dashStartSpeed;
     rb_->velocity.z = dashDir_.z * dashStartSpeed;
 
-    // ‚±‚ÌŠÔAˆÚ“®‘¤‚Í‘¬“x‚ğ‚¢‚¶‚ç‚È‚¢
+    // ã“ã®é–“ã€ç§»å‹•å´ã¯é€Ÿåº¦ã‚’ã„ã˜ã‚‰ãªã„
     move_->SetMoveOverride(true);
-
-    dashCooldownTimer_ = dashCooldown;
-
-
 }
 
 void PlayerAction::DashUpdate(float dt)
 {
-    dashTime_ += 0; // ŒİŠ·FŒë‹L‚ğ”ğ‚¯‚é‚½‚ßs‚ğc‚·i–¢g—p•Ï”‘Îôj
+    dashTime_ += 0; // äº’æ›ï¼šèª¤è¨˜ã‚’é¿ã‘ã‚‹ãŸã‚è¡Œã‚’æ®‹ã™ï¼ˆæœªä½¿ç”¨å¤‰æ•°å¯¾ç­–ï¼‰
     dashTime_ += dt;
 
     const float T = std::max(dashDuration, 1e-6f);
-    const float r = std::min(dashTime_ / T, 1.0f);
-    const float spd = dashStartSpeed + (dashEndSpeed - dashStartSpeed) * r; // 5¨2
+    const float t = std::min(dashTime_, T);
+    const float ratio = t / T; // 0ï¿½ï¿½1
+    const float usi = dashEndSpeed - dashStartSpeed;
+    const float spd = dashStartSpeed + ((dashEndSpeed - dashStartSpeed)) * ratio; //
 
     rb_->velocity.x = dashDir_.x * spd;
     rb_->velocity.z = dashDir_.z * spd;
 
     if (dashTime_ >= T) {
         isDash_ = false;
+        isAction_ = false;
         dashTime_ = 0.0f;
-        // I’[‘¬“x‚ğc‚·
+        dashCooldownTimer_ = dashCooldown;
+        // çµ‚ç«¯é€Ÿåº¦ã‚’æ®‹ã™
         rb_->velocity.x = dashDir_.x * dashEndSpeed;
         rb_->velocity.z = dashDir_.z * dashEndSpeed;
         move_->SetMoveOverride(false);
@@ -163,8 +165,9 @@ void PlayerAction::SpinningUpdate(float dt)
     const bool spinKey = (!usePad) && IsKeyTrigger('R');
     const bool spinPad = usePad && Trigger(PadMap::Spin);
 
-    // ‹N“®
-    if (!spinning_) {
+    // èµ·å‹•
+    if (!spinning_ && !isAction_)
+    {
         if ((spinKey || spinPad) && spinCooldownTimer_ <= 0.0f) {
             spinning_ = true;
             spinAccumDeg_ = 0.0f;
@@ -172,15 +175,16 @@ void PlayerAction::SpinningUpdate(float dt)
         }
     }
 
-    // Às
+    // å®Ÿè¡Œ
     if (spinning_) {
         const float delta = spinRotSpeed * dt;
         spinAccumDeg_ += delta;
         t_->AddRotate(Vector3(0, delta, 0));
-        move_->AddExternalYaw(delta); // ©‘Oyaw‚à“¯Šú
+        move_->AddExternalYaw(delta); // è‡ªå‰yawã‚‚åŒæœŸ
 
-        if (spinAccumDeg_ >= 360.0f) {
+        if (spinAccumDeg_ >= spinRotate) {
             spinning_ = false;
+            isAction_ = false;
             spinAccumDeg_ = 0.0f;
             move_->SetRotateLock(false);
             spinCooldownTimer_ = spinCooldown;
@@ -192,6 +196,7 @@ void PlayerAction::NormalAttackTryStart()
 {
     if (!hummer_) return;
     if (normalCooldownTimer_ > 0.0f) return;
+    if (isAction_) return;
 
     const bool usePad = ControllerActiveThisFrame();
     const bool atkKey = (!usePad) && IsKeyTrigger('E');
@@ -201,7 +206,7 @@ void PlayerAction::NormalAttackTryStart()
     hummer_->motionTime = normalMotionTime;
     hummer_->StartNormalAttack();
 
-    // À¿˜A‘±‚ÅŒ‚‚Ä‚éƒ‚[ƒVƒ‡ƒ“ŠÔ‚ğCT‚É
+    // å®Ÿè³ªé€£ç¶šã§æ’ƒã¦ã‚‹ï¼ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³æ™‚é–“ã‚’CTã«
     normalCooldownTimer_ = normalMotionTime;
 }
 
@@ -209,5 +214,6 @@ void PlayerAction::UpdateHummerMask()
 {
     if (!hummer_) return;
     const bool on = ((hummer_->IsNormalAttacking()) || spinning_ || isDash_);
+    isAction_ = on;
     hummer_->SetActionHitEnable(on);
 }

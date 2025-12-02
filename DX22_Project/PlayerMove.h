@@ -10,7 +10,7 @@ class PlayerMove final : public MonoBehaviour
 {
 public:
 	// ===== 調整値 =====
-	float MOVE_SPEED = 5.0f; // m/s
+	float MOVE_SPEED = 6.0f; // m/s
 	float AIR_CONTROL = 0.5f; // 空中制御 0..1（落下中など）
 	float GROUND_EPS = 0.10f; // 接地判定の許容
 	float SMOOTH_ACC = 20.0f; // 速度追従（大きいほどキビキビ）
@@ -42,6 +42,7 @@ private:
 	Transform* cam_ = nullptr;
 	Rigidbody* rb_ = nullptr;
 	Collider* col_ = nullptr;
+	PlayerAction* pa_ = nullptr;
 
 	float  facingYawDeg_ = 0.0f;
 	bool   moveOverride_ = false; // ダッシュ等で速度を外部制御

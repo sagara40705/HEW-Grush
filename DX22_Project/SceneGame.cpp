@@ -1,7 +1,6 @@
 #include "SceneGame.h"
 #include <DirectXMath.h>
 #include "Defines.h"
-#include "World.h"
 #include "AllComponet.h"
 #include "PhysicsSystem.h"
 #include "SampleMapData.h"
@@ -9,7 +8,10 @@
 #include "LineManager.h"
 #include "RenderSystem.h"
 #include "Game.h"
+#include "GameObject.h"
 #include "TextureManager.h"
+#include "ModelManager.h"
+#include "Prefab.h"
 
 World* W = nullptr;
 
@@ -58,40 +60,20 @@ namespace
     }
 }
 
-SceneGame::SceneGame()
+SceneGame::SceneGame(){}
+SceneGame::~SceneGame(){}
+
+void SceneGame::Load()
 {
-    W = &Game::GetWorld();
+    W = &GetWorld();
 
     Debug::Init();
     RegisterTexture();
+    RegisterModel();
+    RegisterAllPrefabs();
 
-    GameObject& camera = W->CreateGameObject();
-    camera.AddComponent<Transform>(Camera::initPos(), Camera::initRotate(), Vector3::zero());
-    camera.AddComponent<Camera>();
+    SetPlayerAndHummer();
     LineManager::Init();
-
-    GameObject& player = W->CreateGameObject();
-    player.AddComponent<Transform>(Vector3(0, 2, 0), Vector3::zero(), Vector3(0.5, 0.5, 0.5));
-    player.AddComponent<MeshFilter>(MeshFilter::Type::Cylinder);
-    player.AddComponent<MeshRender>(1);
-    player.AddComponent<BoxCollider>(true, Vector3(0, 0, 0), Vector3(1, 1, 1));
-    // player.AddComponent<SphereCollider>(0.5f, false);
-    // player.AddComponent<CapsuleCollider>(0.01f, 0.5f, false);
-    player.AddComponent<Rigidbody>();
-    player.AddComponent<PlayerMove>();
-    player.AddComponent<PlayerAction>();
-    camera.AddComponent<CameraFollow>(&player.GetComponent<Transform>());
-    player.SetTag(Tag::Player);
-    // LineManager::AddBoxCollider(&player);
-
-    GameObject& hammer = W->CreateGameObject();
-    hammer.AddComponent<Transform>(Vector3(0, 0, 1), Vector3::zero(), kDefaultHummerScale);
-    hammer.TryGetComponent<Transform>()->SetParent(&player.GetComponent<Transform>());
-    hammer.AddComponent<MeshFilter>(MeshFilter::Type::Cube);
-    hammer.AddComponent<MeshRender>(1);
-    auto& hbc = hammer.AddComponent<BoxCollider>(false); hbc.isTrigger = true;
-    hammer.AddComponent<HummerScript>(player.TryGetComponent<Transform>());
-    hammer.SetTag(Tag::Weapon);
 
     GameObject& floor = W->CreateGameObject();
     floor.AddComponent<Transform>(Vector3(0, -1, 0), Vector3::zero(), Vector3(50, 0.1, 50));
@@ -102,67 +84,130 @@ SceneGame::SceneGame()
 
     //BuildBlocksFromMap(map, /*unit=*/kUnit, /*scale=*/blockScale, /*isStaticCollider=*/true);
 
-    //GameObject& karubi = W->CreateGameObject();
-    //karubi.AddComponent<Transform>(DirectX::XMFLOAT3{ 2,0.5,2 }, Vec3Zero, Vec3One);
-    //karubi.AddComponent<ModelComponent>("Assets/Ç‹ÇØÇÒéÆê‘å©Ç©ÇÈÇ—ïPàﬂëïMMD/Ç‹ÇØÇÒéÆê‘å©Ç©ÇÈÇ—ïPàﬂëïver1.0.pmx", 0.08f, Model::ZFlip);
-    //karubi.AddComponent<ModelRenderer>();
-    //karubi.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0,0.75f,0 }, DirectX::XMFLOAT3{ 1, 1.5, 1 });
-    //LineManager::AddBoxCollider(&karubi);
-    CreateGlassModel();
+    GameObject& karubi = W->CreateGameObject();
+    karubi.AddComponent<Transform>(DirectX::XMFLOAT3{ 2,0.5,2 }, Vec3Zero, Vec3One);
+    karubi.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::Player));
+    karubi.AddComponent<ModelRenderer>();
+    karubi.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0,0.75f,0 }, DirectX::XMFLOAT3{ 1, 1.5, 1 });
+    LineManager::AddBoxCollider(&karubi);
+
+    CreateProtStage();
+    //CreateGlassModel();
     CreateTimerUi();
     CreateScoreUi();
     CreateActionUi();
 
-    GameObject& SampleUi = W->CreateGameObject();
-    auto& ui = SampleUi.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::GaugeMaxLv1));
-    SampleUi.AddComponent<GlassGauge>(hammer.TryGetComponent<HummerScript>());
+    GameObject& gaugeFrame = W->CreateGameObject();
+    CanvasUI& gaugeFrameUI = gaugeFrame.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::GaugeFrame));
 
-    ui.SetColor({ 1 ,1 ,1 , 1.f });
+    GameObject& gauge = W->CreateGameObject();
+    CanvasUI& gaugeUI = gauge.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::GaugeMaxLv1));
 
-    W->Start();
-    float p = 0.8f;
-    ui.SetOffset(Vector2(0, 200 * (1 - p)));
-    ui.SetSize(Vector2(1, p));
-    ui.SetUVPos(Vector2(0, (1 - p)));
-    ui.SetUVScale(Vector2(1, p));
-}
-SceneGame::~SceneGame()
-{
-    W->ClearAll();
-    W = nullptr;
-    TextureManager::Clear();
+    GameObject& GaEf = W->CreateGameObject();
+    CanvasUI& gaefUI = GaEf.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::GaugeEffect));
+    SpriteAnimation& efSA = GaEf.AddComponent<SpriteAnimation>(8, 4, 32, 0.06f, false);
+
+    GameObject& gaugeUiManagerObj = W->CreateGameObject();
+    gaugeUiManagerObj.AddComponent<GlassGauge>(&gaugeFrameUI, &gaugeUI, &gaefUI, &efSA);
 }
 void SceneGame::Update()
 {
-    W->Update();
 }
 void SceneGame::Draw()
 {
-    W->Draw();
+}
 
-
+void SceneGame::Unload()
+{
+    W = nullptr;
+    TextureManager::Clear();
 }
 
 void SceneGame::RegisterTexture()
 {
     TextureManager::RegisterAuto(TextureTag::Number);
+    TextureManager::RegisterAuto(TextureTag::GaugeFrame);
     TextureManager::RegisterAuto(TextureTag::GaugeMaxLv1);
+    TextureManager::RegisterAuto(TextureTag::GaugeEffect);
     TextureManager::RegisterAuto(TextureTag::SpinUI);
     TextureManager::RegisterAuto(TextureTag::DashUI);
+}
+
+void SceneGame::RegisterModel()
+{
+    ModelManager::RegisterAuto(ModelTag::Karubi);
+    ModelManager::RegisterAuto(ModelTag::Swing);
+    ModelManager::RegisterAuto(ModelTag::Benti);
+    ModelManager::RegisterAuto(ModelTag::Ufo);
+    ModelManager::RegisterAuto(ModelTag::ProtPlay);
+    ModelManager::RegisterAuto(ModelTag::Player);
+}
+
+void SceneGame::CreateProtStage()
+{
+    Prefab::Instantiate(*W, PrefabId::Ufo, Vector3(10, -0.5f, 10), Vector3::zero(), Vector3::one());
+
+    Prefab::Instantiate(*W, PrefabId::Benti, Vector3(-10, -0.9f, 10), Vector3::zero(), Vector3(1.2f, 1.2f, 1.2f));
+    Prefab::Instantiate(*W, PrefabId::Benti, Vector3(20, -0.9f, -16), Vector3::zero(), Vector3(1.2f, 1.2f, 1.2f));
+    Prefab::Instantiate(*W, PrefabId::Benti, Vector3(11, -0.9f, -13), Vector3::zero(), Vector3(1.2f, 1.2f, 1.2f));
+
+    Prefab::Instantiate(*W, PrefabId::Swing, Vector3(-7, -0.9f, -8), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+    Prefab::Instantiate(*W, PrefabId::Swing, Vector3(-12, -0.9f, -2), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+    Prefab::Instantiate(*W, PrefabId::Swing, Vector3(-22, -0.9f, -13), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+
+    Prefab::Instantiate(*W, PrefabId::ProtPlay, Vector3(-12, -0.9f, 8), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+    Prefab::Instantiate(*W, PrefabId::ProtPlay, Vector3(5, -0.9f, 2), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+    Prefab::Instantiate(*W, PrefabId::ProtPlay, Vector3(-20, -0.9f, -20), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+    Prefab::Instantiate(*W, PrefabId::ProtPlay, Vector3(-16, -0.9f, -16), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+    Prefab::Instantiate(*W, PrefabId::ProtPlay, Vector3(13, -0.9f, 2), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+    Prefab::Instantiate(*W, PrefabId::ProtPlay, Vector3(22, -0.9f, 8), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+    Prefab::Instantiate(*W, PrefabId::ProtPlay, Vector3(-17, -0.9f, 15), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+    Prefab::Instantiate(*W, PrefabId::ProtPlay, Vector3(6, -0.9f, 17), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+    Prefab::Instantiate(*W, PrefabId::ProtPlay, Vector3(20, -0.9f, -12), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+    Prefab::Instantiate(*W, PrefabId::ProtPlay, Vector3(14, -0.9f, -19), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
 }
 
 void SceneGame::CreateGlassModel()
 {
     GameObject& ufo = W->CreateGameObject();
     ufo.AddComponent<Transform>(DirectX::XMFLOAT3{ 4,0.5,4 }, Vec3Zero, Vec3One);
-    //ufo.AddComponent<ModelComponent>("Assets/Model/MD_player_prototype.fbx", 0.08f, Model::ZFlip);
-    //ufo.AddComponent<ModelRenderer>();
+    ufo.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::Ufo));
+    ufo.AddComponent<ModelRenderer>();
     ufo.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0,0,0 }, DirectX::XMFLOAT3{ 2, 2, 2 });
     LineManager::AddBoxCollider(&ufo);
 }
 
 void SceneGame::SetPlayerAndHummer()
 {
+    GameObject& camera = W->CreateGameObject();
+    Transform& cameraTf = camera.AddComponent<Transform>(Camera::initPos(), Camera::initRotate(), Vector3::one());
+    camera.AddComponent<Camera>();
+    camera.AddComponent<CameraShake>();
+
+    GameObject& pivot = W->CreateGameObject();
+    Transform& pivotTf = pivot.AddComponent<Transform>(Vector3(0,1,0), Vector3::zero(), Vector3::one());
+    pivot.AddComponent<CameraControl>();
+
+    GameObject& player = W->CreateGameObject();
+    Transform& playerTf = player.AddComponent<Transform>(Vector3(0, 2, 0), Vector3::zero(), Vector3(1, 1, 1));
+    player.AddComponent<MeshFilter>(MeshFilter::Type::Cylinder);
+    player.AddComponent<MeshRender>(1);
+    player.AddComponent<BoxCollider>(true, Vector3(0, 0, 0), Vector3(1, 1, 1));
+    player.AddComponent<Rigidbody>();
+    player.AddComponent<PlayerMove>();
+    player.AddComponent<PlayerAction>();
+    player.SetTag(Tag::Player);
+  
+    GameObject& hammer = W->CreateGameObject();
+    Transform& hammerTf = hammer.AddComponent<Transform>(Vector3(0, 0, 1.5f), Vector3::zero(), kDefaultHummerScale);
+    hammer.AddComponent<MeshFilter>(MeshFilter::Type::Cube);
+    hammer.AddComponent<MeshRender>(1);
+    auto& hbc = hammer.AddComponent<BoxCollider>(false); hbc.isTrigger = true;
+    hammer.AddComponent<HummerScript>(&playerTf);
+    hammer.SetTag(Tag::Weapon);
+
+    hammerTf.SetParent(&playerTf);
+    cameraTf.SetParent(&pivotTf);
 }
 
 void SceneGame::CreateTimerUi()
@@ -183,6 +228,7 @@ void SceneGame::CreateTimerUi()
 
     GameObject& TimerUi_manager = W->CreateGameObject();
     TimerUi_manager.AddComponent<TimerUIManager>(&tmUI, &omUI, &tsUI, &osUI);
+    TimerUi_manager.SetTag(Tag::Timer);
 }
 
 void SceneGame::CreateScoreUi()

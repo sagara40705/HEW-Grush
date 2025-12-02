@@ -22,18 +22,21 @@ constexpr Vector3 kDefaultHummerScale = Vector3(0.8f, 0.4f, 0.4f);
 // グレードごとの大きさ(倍率)
 constexpr float kHummerScaleRatio[ToInt(HummerGrade::Count)] = { 1.f, 1.5f, 2.25f };
 
+// グレードUp時に貰えるゲージの最低値(全体の割合)
+constexpr float KGradeUpGaugeRatio = 0.2f;
+
 class Transform; class Collider; //前方宣言
 
 class  HummerScript :public MonoBehaviour, public TriggerListener
 {
 public:
 	// ===== チューニング（通常攻撃） =====
-	Vector3 attackStartLocal = Vector3(-1, 0, 1); // 「攻撃開始地点」
-	Vector3 attackEndLocal = Vector3(1, 0, 1); // 「攻撃終了地点」
-	Vector3 idleLocal = Vector3(0, 0, 1); // 待機位置（子として前方1）
-	float motionTime = 0.3f; // 「モーション時間(0.5)」
+	Vector3 attackStartLocal = Vector3(-1, 0, 1.5); // 「攻撃開始地点」
+	Vector3 attackEndLocal = Vector3(1, 0, 1.5); // 「攻撃終了地点」
+	Vector3 idleLocal = Vector3(0, 0, 1.5); // 待機位置（子として前方1）
+	float motionTime = 0.3f; // 「モーション時間(0.3)」
 	// ===== ゲージ減衰 =====
-	const float kGaugeDecayValue = 0.0f;
+	const float kGaugeDecayValue = 0.01f;
 private:
 	Transform* t = nullptr;
 	Transform* owner = nullptr;
@@ -83,6 +86,8 @@ private:
 	// 内部ヘルパ
 	void SetInternalHitEnable(bool on) { internalHitEnable = on; }
 	void TickNormalAttack(float dt);    // 位置補間
+	//デバックコマンド
+	void DebugCommand();
 public:
 	float GetGaugeRatio();			//ゲージの割合を取得
 };

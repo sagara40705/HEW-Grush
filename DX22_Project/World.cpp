@@ -1,20 +1,44 @@
 #include "World.h"
+#include "GameObject.h"
+#include "Component.h"
 #include "RenderSystem.h"
 #include "PhysicsSystem.h"
 #include "DebugLog.h"
+
+#include <algorithm>
+
+//====================== ctor / dtor ======================
+
+World::World() = default;
+World::~World() = default;
+
+//====================== 生成・破棄・検索 ======================
+
+void World::RequestStart(GameObject* go)
+{
+    if (!go) return;
+    pendingStartObjects.push_back(go);
+}
 
 GameObject& World::CreateGameObject()
 {
     auto obj = std::make_unique<GameObject>();
     obj->id = nextId++;
     obj->world = this;
+
+    GameObject* raw = obj.get();
     objects.emplace_back(std::move(obj));
+
+    // ★ 新規生成も Start 対象
+    raw->pendingStart = true;
+    pendingStartObjects.push_back(raw);
+
     return *objects.back();
 }
 
 void World::RequestDestroy(ObjectId id)
 {
-    if (std::find(toDestroy.begin(), toDestroy.end(), id) == toDestroy.end()) 
+    if (std::find(toDestroy.begin(), toDestroy.end(), id) == toDestroy.end())
     {
         toDestroy.push_back(id);
     }
@@ -22,7 +46,8 @@ void World::RequestDestroy(ObjectId id)
 
 GameObject* World::Find(ObjectId id) noexcept
 {
-    for (auto& up : objects) {
+    for (auto& up : objects)
+    {
         if (up && up->id == id) return up.get();
     }
     return nullptr;
@@ -30,24 +55,29 @@ GameObject* World::Find(ObjectId id) noexcept
 
 const GameObject* World::Find(ObjectId id) const noexcept
 {
-    for (auto& up : objects) {
+    for (auto& up : objects)
+    {
         if (up && up->id == id) return up.get();
     }
     return nullptr;
 }
 
+//====================== ライフサイクル ======================
+
 void World::Start()
 {
-    for (auto& up : objects) 
+    Debug::Log("World::Start()");
+
+    // すべてのコンポーネントに対して Start 呼び出し
+    for (auto& up : objects)
     {
         if (!up) continue;
         auto& o = *up;
-        // すべてのコンポーネントに対して Start 呼び出し（既存方針）
         for (auto& kv : o.components)
         {
             if (auto* c = kv.second.get())
             {
-                c->Start();
+                c->RootStart();
             }
         }
     }
@@ -55,35 +85,92 @@ void World::Start()
 
 void World::Update()
 {
-    // 破壊予定をスキップ
-    auto isPending = [this](ObjectId id) 
-    {
-        return std::find(toDestroy.begin(), toDestroy.end(), id) != toDestroy.end();
-    };
+    constexpr float fixedDt = 1.0f / 60.0f;
+
+    auto isPending = [this](ObjectId id)
+        {
+            return std::find(toDestroy.begin(), toDestroy.end(), id) != toDestroy.end();
+        };
+
+    //-1) GameObject
 
     for (auto& up : objects)
     {
-        if (!up) continue;
-        auto& o = *up;
-        if (!o.active || isPending(o.id)) continue;
+        if (!up || !up->isDestroyScheduled) continue;
 
-        for (auto& kv : o.components)
-        {
-            Component* c = kv.second.get();
-            if (!c || !c->IsEnabled()) continue;
-
-            if (auto* mb = dynamic_cast<MonoBehaviour*>(c)) 
-            {
-                mb->Update();
-            }
-        }
+        up->DestroyTimerUpdate();
     }
 
-    PhysicsSystem::Step(*this, 1.0f / 60.0f);
+    // 0) Start 待ち GameObject の Start を実行
+    if (!pendingStartObjects.empty())
+    {
+        for (auto* go : pendingStartObjects)
+        {
+            if (!go) continue;
+            if (!go->active) continue;
+            if (isPending(go->id)) continue;
 
-    if (toDestroy.empty()) return;
-    //破壊処理
-    ProcessDestroyQueue();
+            // 全コンポーネントに RootStart（中で onStart チェック）
+            for (auto& kv : go->components)
+            {
+                if (auto* c = kv.second.get())
+                {
+                    c->RootStart();
+                }
+            }
+
+            go->pendingStart = false;
+        }
+        pendingStartObjects.clear();
+    }
+
+    // 1) MonoBehaviour.Update フェーズ
+    for (auto* mb : updateList)
+    {
+        if (!mb || !mb->IsEnabled()) continue;
+        GameObject* go = mb->gameObject;
+        if (!go || !go->active)      continue;
+        if (isPending(go->id))       continue;
+
+        mb->Update();
+    }
+
+    // 2) FixedUpdate フェーズ
+    for (auto* fu : fixedUpdateList)
+    {
+        if (!fu) continue;
+        auto* c = dynamic_cast<Component*>(fu);
+        if (!c || !c->IsEnabled()) continue;
+
+        GameObject* go = c->gameObject;
+        if (!go || !go->active) continue;
+        if (isPending(go->id))  continue;
+
+        fu->FixedUpdate();
+    }
+
+    // 3) 物理システム（固定刻み）
+    PhysicsSystem::Step(*this, fixedDt);
+
+    // 4) LateUpdate フェーズ
+    for (auto* lu : lateUpdateList)
+    {
+        if (!lu) continue;
+        auto* c = dynamic_cast<Component*>(lu);
+        if (!c || !c->IsEnabled()) continue;
+
+        GameObject* go = c->gameObject;
+        if (!go || !go->active) continue;
+        if (isPending(go->id))  continue;
+
+        lu->LateUpdate();
+    }
+
+    // 5) Destroy キュー処理
+    if (!toDestroy.empty())
+    {
+        ProcessDestroyQueue();
+    }
 }
 
 void World::Draw()
@@ -93,54 +180,124 @@ void World::Draw()
 
 void World::ClearAll()
 {
+    isClearing = true;
+
     // OnDestroy を呼んでから全削除
-    for (auto& up : objects) 
+    for (auto& up : objects)
     {
         if (!up) continue;
-        for (auto& kv : up->components) 
+        auto& o = *up;
+        for (auto& kv : o.components)
         {
-            if (kv.second) kv.second->OnDestroy();
+            if (auto* c = kv.second.get())
+            {
+                c->RootOnDestroy();
+            }
         }
     }
-    // 2) 実体を破棄
+
     objects.clear();
     toDestroy.clear();
+
+    updateList.clear();
+    fixedUpdateList.clear();
+    lateUpdateList.clear();
+
+    isClearing = false;
 }
+
+//====================== 登録 / 解除 ======================
+
+namespace
+{
+    template<class T>
+    void RemovePtr(std::vector<T*>& v, T* p)
+    {
+        auto it = std::find(v.begin(), v.end(), p);
+        if (it != v.end())
+        {
+            *it = v.back();
+            v.pop_back();
+        }
+    }
+}
+
+void World::Register(MonoBehaviour* mb)
+{
+    if (!mb) return;
+    updateList.push_back(mb);
+}
+
+void World::Register(IFixedUpdate* fu)
+{
+    if (!fu) return;
+    fixedUpdateList.push_back(fu);
+}
+
+void World::Register(ILateUpdate* lu)
+{
+    if (!lu) return;
+    lateUpdateList.push_back(lu);
+}
+
+void World::Unregister(MonoBehaviour* mb)
+{
+    if (!mb) return;
+    RemovePtr(updateList, mb);
+}
+
+void World::Unregister(IFixedUpdate* fu)
+{
+    if (!fu) return;
+    RemovePtr(fixedUpdateList, fu);
+}
+
+void World::Unregister(ILateUpdate* lu)
+{
+    if (!lu) return;
+    RemovePtr(lateUpdateList, lu);
+}
+
+//====================== 破壊キュー処理 ======================
 
 void World::ProcessDestroyQueue()
 {
     if (toDestroy.empty()) return;
 
+    // ソートして重複削除
     std::sort(toDestroy.begin(), toDestroy.end());
     toDestroy.erase(std::unique(toDestroy.begin(), toDestroy.end()), toDestroy.end());
 
-    // 1) OnWillDestroy（まだ参照している可能性があるので先に通知）
-    for (auto id : toDestroy) 
+    // 1) OnDestroy 通知
+    for (auto id : toDestroy)
     {
-        if (auto* go = Find(id)) {
-            for (auto& kv : go->components) {
-                if (kv.second) kv.second->OnWillDestroy();
+        if (auto* go = Find(id))
+        {
+            for (auto& kv : go->components)
+            {
+                if (auto* c = kv.second.get())
+                {
+                    c->RootOnDestroy();
+                }
             }
         }
     }
 
-    // 2) OnDestroy → 実体削除
-    for (auto id : toDestroy) {
-        auto it = std::find_if(objects.begin(), objects.end(),
-            [id](const std::unique_ptr<GameObject>& p) { return p && p->id == id; });
+    // 2) 実体削除（GameObject デストラクタでリスト解除）
+    for (auto id : toDestroy)
+    {
+        auto it = std::find_if(
+            objects.begin(), objects.end(),
+            [id](const std::unique_ptr<GameObject>& p)
+            {
+                return p && p->id == id;
+            });
 
-        if (it != objects.end()) {
-            // OnDestroy
-            for (auto& kv : (*it)->components) {
-                if (kv.second) kv.second->OnDestroy();
-            }
-            // unique_ptr をベクタから取り除く（他要素の「指す先アドレス」は不変）
-
+        if (it != objects.end())
+        {
             objects.erase(it);
         }
     }
 
-
     toDestroy.clear();
 }
-

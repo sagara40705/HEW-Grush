@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "DirectXMath.h"
 
 enum class GlassGrade : int
 {
@@ -11,15 +12,20 @@ enum class GlassGrade : int
 constexpr int ToInt(GlassGrade g) { return static_cast<int>(g); }
 
 // グレードごとのゲージの上がり値
-constexpr float kGaugeUpValue[ToInt(GlassGrade::Count)] = { 1.f, 3.f, 5.f };
+constexpr float kGaugeUpValue[ToInt(GlassGrade::Count)] = { 2.f, 5.f, 10.f };
 // グレードごとのKg(スコア変動値)
 constexpr int kWeightKg[ToInt(GlassGrade::Count)] = { 1, 3, 5 };
+
+constexpr DirectX::XMFLOAT4 kTintColor[ToInt(GlassGrade::Count)] = { {0.7f, 0.8f, 1.0f, 0.6f}, {0.7f, 1.0f, 0.7f, 0.6f}, {1.0f, 0.7f, 0.7f, 0.6f} };
 
 class GlassScript : public Component
 {
 public:
+	GlassScript(GlassGrade g = GlassGrade::Grade_1) : grade(g) {}
 	void Start() override;
-	void OnWillDestroy() override;
+	//void OnWillDestroy() override;
 	void OnDestroy() override;
 	GlassGrade grade = GlassGrade::Grade_1;
+public:
+	void SpawnShards();
 };
