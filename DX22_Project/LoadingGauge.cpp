@@ -18,7 +18,6 @@ void LoadingGauge::Update()
 
 	Vector2 size = ui_->GetSize();
 
-
 	ui_->SetSize(size);
 }
 
