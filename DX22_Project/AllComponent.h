@@ -13,6 +13,8 @@
 #include "UiSpriteRenderer.h"
 #include "Sprite3DRenderer.h"
 #include "SpriteAnimation.h"
+#include "Animator.h"
+
 #include "CameraContorol.h"
 
 #include "TitleManager.h"

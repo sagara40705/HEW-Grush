@@ -4,6 +4,7 @@
 #include "PlayerState.h"
 #include "PhysicsSystem.h"
 #include "InputKeyboard.h"
+#include "Animator.h"
 
 void PlayerMove::Start()
 {
@@ -14,6 +15,7 @@ void PlayerMove::Start()
 
 	rb_ = gameObject->GetComponent<Rigidbody>();
 	state_ = gameObject->GetComponent<PlayerState>();
+	animator_ = gameObject->GetComponent<Animator>();
 }
 
 void PlayerMove::Update()
@@ -26,6 +28,7 @@ void PlayerMove::Update()
 
 void PlayerMove::OnDestroy()
 {
+	animator_ = nullptr;
 	state_ = nullptr;
 	rb_ = nullptr;
 	camTF_ = nullptr;
@@ -40,10 +43,9 @@ void PlayerMove::CheckGround()
 	//実装希望
 	//LayerMask Layer::Ground用のマスクを用意できると
 
-	if (Physics::Raycast(*(gameObject->world),ray, &hit, kGroundCheckDistance , ToBit(Layer::Ground)))
-	{
-		state_->isGrounded = true;
-	}
+	state_->isGrounded
+		= Physics::Raycast(*(gameObject->world), ray, &hit, kGroundCheckDistance, ToBit(Layer::Ground));
+
 }
 
 Ray PlayerMove::GetDownwordRay()
@@ -59,11 +61,16 @@ void PlayerMove::Jump()
 	constexpr float JumpForce = 5.0f;
 	constexpr int JumpKey = VK_SPACE;
 
-	if (!state_->isGrounded || !state_->canControl) return;
+	if (!state_->isGrounded) return;
 
 	if (InputKeyboard::GetKeyDown(JumpKey))
 	{
-		rb_->AddForce(Vector3(0.f, JumpForce, 0.f));
+		// ★ ここでジャンプアニメ再生
+		if (animator_)
+		{
+			rb_->AddForce(Vector3(0.f, JumpForce, 0.f));
+			animator_->Play("Jump", 0.0f);
+		}
 	}
 }
 

@@ -14,6 +14,10 @@ enum class ModelTag : uint8_t
 	Player,
 	Count
 };
+constexpr size_t ToIndex(ModelTag tag) noexcept
+{
+	return static_cast<size_t>(tag);
+}
 
 struct ModelLoadData
 {
@@ -34,6 +38,8 @@ public:
 
 	static Model* Get(ModelTag tag);
 	static float GetBounds(ModelTag tag);
+
+	static Model::AnimeNo AddAnimation(ModelTag tag, const char* file);
 
 	static void Clear();
 };

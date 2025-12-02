@@ -44,6 +44,18 @@ float ModelManager::GetBounds(ModelTag tag)
     return modelBounds[static_cast<size_t>(tag)];
 }
 
+Model::AnimeNo ModelManager::AddAnimation(ModelTag tag, const char* file)
+{
+    const size_t idx = ToIndex(tag);
+    if (idx >= s_models.size()) return Model::ANIME_NONE;
+
+    Model* m = s_models[idx].get();
+    if (!m) return Model::ANIME_NONE; // –¢ƒ[ƒh
+    if (!file || file[0] == '\0') return Model::ANIME_NONE;
+
+    return m->AddAnimation(file);
+}
+
 void ModelManager::Clear()
 {
     for (auto& t : s_models)

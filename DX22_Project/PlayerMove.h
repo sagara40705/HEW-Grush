@@ -11,6 +11,7 @@ private:
 	Transform* camTF_ = nullptr;
 	Rigidbody* rb_ = nullptr;
 	PlayerState* state_ = nullptr;
+	Animator* animator_ = nullptr;
 public:
 	void Start() override;
 	void Update() override;

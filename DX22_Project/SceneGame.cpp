@@ -94,7 +94,7 @@ void SceneGame::CreateCameraAndPlayer()
 	GameObject& mainCamera = cameraPivot.CreateChild(Camera::kInitPos, Camera::kInitRotate, Vector3::one());
 	mainCamera.AddComponent<Camera>();
 
-	GameObject& player = w.CreateGameObject(Vector3(-3.f, 2.f, 0.f), Vector3(0.f, 90.f, 0.f));
+	GameObject& player = w.CreateGameObject(Vector3(-3.f, 2.f, 0.f), Vector3(0.f, 0.f, 0.f));
 	player.SetTag(Tag::Player);
 	player.AddComponent<MeshFilter>(ModelTag::Player);
 	player.AddComponent<MeshRenderer>();
@@ -102,8 +102,20 @@ void SceneGame::CreateCameraAndPlayer()
 	player.AddComponent<BoxCollider>();
 	player.AddComponent<PlayerState>();
 	player.AddComponent<PlayerMove>();
-	//palyer.Destroy(1.0f);
-	
+
+	static Model::AnimeNo g_PlayerAnime_Jump =
+		ModelManager::AddAnimation(ModelTag::Player, "Assets/Model/playerchara_20251202/space_suit_12.fbx");
+	auto& anim = player.AddComponent<Animator>();
+
+	// クリップ登録
+	Animator::Clip jumpClip{};
+	jumpClip.name = "Jump";
+	jumpClip.animeNo = g_PlayerAnime_Jump;
+	jumpClip.loop = false;  // ジャンプはとりあえず非ループにしておく
+	jumpClip.speed = 1.0f;
+
+	anim.AddClip(jumpClip);
+
 	GameObject& hummer = player.CreateChild(Vector3(0.f, 2.f, 0.f), Vector3::zero(), Vector3(0.3f, 0.3f, 0.3f));
 	hummer.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube);
 	hummer.AddComponent<MeshRenderer>();

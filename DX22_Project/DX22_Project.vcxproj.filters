@@ -270,6 +270,9 @@
     <ClCompile Include="LoadingGauge.cpp">
       <Filter>Game\Components\Loading</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerAnimation.cpp">
+      <Filter>Game\Components\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -472,6 +475,9 @@
     </ClInclude>
     <ClInclude Include="LoadingGauge.h">
       <Filter>Game\Components\Loading</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerAnimation.h">
+      <Filter>Game\Components\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
