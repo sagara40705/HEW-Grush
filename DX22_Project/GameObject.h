@@ -22,7 +22,7 @@ enum class Tag : std::uint8_t
     GameManager,
     CamreraPivot,
     Player,
-    Weapon,
+    Hammer,
     Enemy,
     Glass
     // •K—v‚É‰ž‚¶‚Ä’Ç‰Á

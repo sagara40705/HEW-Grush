@@ -235,6 +235,7 @@
     <ClInclude Include="GlassGauge.h" />
     <ClInclude Include="GlassGaugeManager.h" />
     <ClInclude Include="GlassObject.h" />
+    <ClInclude Include="Hammer.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="InputGamepad.h" />
     <ClInclude Include="InputKeyboard.h" />
@@ -284,6 +285,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="SceneManager.inl" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="debug_log.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

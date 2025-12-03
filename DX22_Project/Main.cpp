@@ -12,6 +12,7 @@
 #include "ShaderList.h"
 #include "LineManager.h"
 #include "Game.h"
+#include "DebugLog.h"
 
 
 HRESULT Init(HWND hWnd, UINT width, UINT height)
@@ -28,6 +29,7 @@ HRESULT Init(HWND hWnd, UINT width, UINT height)
 	InputGamepad::Init();
 	ShaderList::Init();
 	LineManager::Init();
+	DebugLog::Init();
 	// ÉVÅ[Éì
 	Game::Init();
 

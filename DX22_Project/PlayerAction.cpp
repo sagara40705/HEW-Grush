@@ -1,14 +1,30 @@
 #include "PlayerAction.h"
+#include "Transform.h"
 #include "PlayerState.h"
+#include "Hammer.h"
 #include "GameObject.h"
 #include "DebugLog.h"
+#include "InputKeyboard.h"   
+#include "InputGamepad.h"  
 #include <cassert>
 
 void PlayerAction::Start()
 {
+	tf_ = gameObject->GetComponent<Transform>();
 	state_ = gameObject->GetComponent<PlayerState>();
-	assert(state_ && "state_がnullptrです");
-	if (!state_) return;
+	for (GameObject* go : gameObject->GetChildren())
+	{
+		if (!go) continue;
+		if (go->CompareTag(Tag::Hammer))
+		{
+			hammer_ = go->GetComponent<Hammer>();
+			break;
+		}
+	}
+
+	assert(state_ && tf_ && hammer_ && "参照のどれかがnullptrです");
+	if (!state_ || !tf_ || hammer_) return;
+
 	for (size_t action = 0; action < ToIndex(ActionId::Count); ++action)
 	{
 		state_->canUseAction[action] = true;
@@ -17,6 +33,12 @@ void PlayerAction::Start()
 
 void PlayerAction::Update()
 {
+	assert(state_ && tf_ && hammer_ && "参照のどれかがnullptrです");
+	if (!state_ || !tf_ || hammer_) return;
+
+	if (!state_) return;
+	if (!state_->canControl) return;
+
 	InputWantAction();
 	CheckCanAction();
 	UpdateAction();
@@ -25,17 +47,47 @@ void PlayerAction::Update()
 
 void PlayerAction::OnDestroy()
 {
+	hammer_ = nullptr;
 	state_ = nullptr;
+	tf_ = nullptr;
 }
 
 // ダミー実装
 void PlayerAction::InputWantAction()
 {
+	// そもそもアクション禁止 + 他アクション中 なら入力を見ない
 	if (!state_->canAction) return;
+	if (state_->usingAction != ActionId::None) return;
 
-	state_->wantUseAction[ToIndex(ActionId::NormalAttack)] = false;
-	state_->wantUseAction[ToIndex(ActionId::SpinAttack)] = false;
-	state_->wantUseAction[ToIndex(ActionId::DashAttack)] = false;
+	// まず今フレームの「やりたいアクション」を全部クリア
+	for (size_t i = 0; i < ToIndex(ActionId::Count); ++i)
+	{
+		state_->wantUseAction[i] = false;
+	}
+
+	//==================== NormalAttack (Eキー / Xボタン) ====================
+	if (InputKeyboard::GetKeyDown('E') ||
+		InputGamepad::GetButtonDown(XINPUT_GAMEPAD_X))
+	{
+		state_->wantUseAction[ToIndex(ActionId::NormalAttack)] = true;
+		DebugLog::Output("NormalAttack 入力受付");
+	}
+
+	//==================== SpinAttack (Rキー / R1ボタン) =====================
+	if (InputKeyboard::GetKeyDown('R') ||
+		InputGamepad::GetButtonDown(XINPUT_GAMEPAD_RIGHT_SHOULDER))
+	{
+		state_->wantUseAction[ToIndex(ActionId::SpinAttack)] = true;
+		DebugLog::Output("SpinAttack 入力受付");
+	}
+
+	//==================== DashAttack (Fキー / L1ボタン) =====================
+	if (InputKeyboard::GetKeyDown('F') ||
+		InputGamepad::GetButtonDown(XINPUT_GAMEPAD_LEFT_SHOULDER))
+	{
+		state_->wantUseAction[ToIndex(ActionId::DashAttack)] = true;
+		DebugLog::Output("DashAttack 入力受付");
+	}
 }
 
 void PlayerAction::CheckCanAction()
@@ -51,7 +103,7 @@ void PlayerAction::CheckCanAction()
 		{
 			//使用アクションをセット
 			state_->usingAction = ToId(action);
-			DebugLog::OutputValue("アクション実行 id", action);
+			DebugLog::Output("アクション実行");
 			//一応タイマーリセット
 			state_->actionTimer[action] = 0.f;
 			// 使用不可にしておく
@@ -75,11 +127,11 @@ void PlayerAction::UpdateAction()
 	//使用中アクションごとに更新 *現在は空
 	switch (action)
 	{
-	case ActionId::NormalAttack: UpdateNormalAction();	break;
+	case ActionId::NormalAttack: UpdateNormalAttack();	break;
 
-	case ActionId::SpinAttack:	 UpdateSpinAction();	break;
+	case ActionId::SpinAttack:	 UpdateSpinAttack();	break;
 
-	case ActionId::DashAttack:	 UpdateDashAction();	break;
+	case ActionId::DashAttack:	 UpdateDashAttack();	break;
 
 	default: assert(false && "state_->usingActionが範囲外です");
 		break;
@@ -89,7 +141,7 @@ void PlayerAction::UpdateAction()
 	if (state_->actionTimer[ToIndex(action)]
 		>= state_->kActionTime[ToIndex(action)])
 	{
-		DebugLog::OutputValue("アクション終了 id", action);
+		DebugLog::Output("アクション終了");
 		state_->cooltime[ToIndex(action)] = state_->kActionCT[ToIndex(action)];
 		state_->usingAction = ActionId::None;
 	}
@@ -110,23 +162,27 @@ void PlayerAction::UpdateActionCT()
 		{
 			state_->cooltime[action] = 0.0f;
 			state_->canUseAction[action] = true;
-			DebugLog::OutputValue("アクションCT終了 id", action);
+			DebugLog::Output("アクションCT終了");
 		}
 	}
 }
 
+void PlayerAction::StopNormalAttack()
+{
+}
+
 // ダミー実装
-void PlayerAction::UpdateNormalAction()
+void PlayerAction::UpdateNormalAttack()
 {
 
 }
 
 // ダミー実装
-void PlayerAction::UpdateSpinAction()
+void PlayerAction::UpdateSpinAttack()
 {
 }
 
 // ダミー実装
-void PlayerAction::UpdateDashAction()
+void PlayerAction::UpdateDashAttack()
 {
 }

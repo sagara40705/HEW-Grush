@@ -44,8 +44,8 @@ public:
     static constexpr Vector3 kSize = { 1.0f, 1.0f, 1.0f };
     static constexpr float kRadius = 0.5f;
 public:
-    const float kActionTime[ToIndex(ActionId::Count)] = { 1.f, 5.f, 5.f };
-    const float kActionCT[ToIndex(ActionId::Count)] = { 1.f, 1.f, 1.f };
+    const float kActionTime[ToIndex(ActionId::Count)] = { 0.5f, 2.f, 2.f };
+    const float kActionCT[ToIndex(ActionId::Count)] = { 0.1f, 5.f, 5.f };
 public:
     float GetCoolDownRatio(ActionId action) 
     {

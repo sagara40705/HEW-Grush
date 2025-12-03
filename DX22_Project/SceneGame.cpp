@@ -102,11 +102,15 @@ void SceneGame::CreateCameraAndPlayer()
 	player.AddComponent<BoxCollider>();
 	player.AddComponent<PlayerState>();
 	player.AddComponent<PlayerMove>();
+	player.AddComponent<PlayerAction>();
 	player.AddComponent<Animator>();
 
-	GameObject& hummer = player.CreateChild(Vector3(0.f, 0.f, -2.f), Vector3::zero(), Vector3(0.3f, 0.3f, 0.3f));
+	GameObject& hummer = 
+		player.CreateChild(Vector3(0.f, 0.f, -2.f), Vector3::zero(), Vector3(0.3f, 0.3f, 0.3f));
+	hummer.SetTag(Tag::Hammer);
 	hummer.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube);
 	hummer.AddComponent<MeshRenderer>();
+	hummer.AddComponent<Hammer>();
 	//hummer.Destroy(1.0f);
 
 }

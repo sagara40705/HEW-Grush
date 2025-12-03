@@ -1,12 +1,14 @@
 #pragma once
 #include "Component.h"
 
-class PlayerState;
+class PlayerState; class Hammer;
 
 class PlayerAction : public MonoBehaviour
 {
 private:
+	Transform* tf_ = nullptr;
 	PlayerState* state_ = nullptr;
+	Hammer* hammer_ = nullptr;
 public:
 	void Start() override;
 	void Update() override;
@@ -17,7 +19,9 @@ private:
 	void UpdateAction();
 	void UpdateActionCT();
 private:
-	void UpdateNormalAction();
-	void UpdateSpinAction();
-	void UpdateDashAction();
+	void UpdateNormalAttack();
+	void UpdateSpinAttack();
+	void UpdateDashAttack();
+public:
+	void StopNormalAttack();
 };
