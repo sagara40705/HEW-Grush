@@ -230,25 +230,21 @@ void World::Register(MonoBehaviour* mb)
     if (!mb) return;
     updateList.push_back(mb);
 }
-
 void World::Register(IFixedUpdate* fu)
 {
     if (!fu) return;
     fixedUpdateList.push_back(fu);
 }
-
 void World::Register(ILateUpdate* lu)
 {
     if (!lu) return;
     lateUpdateList.push_back(lu);
 }
-
 void World::Register(Renderer* r)
 {
     if (!r) return;
     rendererList.push_back(r);
 }
-
 void World::Register(Collider* c)
 {
     if (!c) return;
@@ -260,25 +256,21 @@ void World::Unregister(MonoBehaviour* mb)
     if (!mb) return;
     RemovePtr(updateList, mb);
 }
-
 void World::Unregister(IFixedUpdate* fu)
 {
     if (!fu) return;
     RemovePtr(fixedUpdateList, fu);
 }
-
 void World::Unregister(ILateUpdate* lu)
 {
     if (!lu) return;
     RemovePtr(lateUpdateList, lu);
 }
-
 void World::Unregister(Renderer* r)
 {
     if (!r) return;
     RemovePtr(rendererList, r);
 }
-
 void World::Unregister(Collider* c)
 {
     if (!c) return;

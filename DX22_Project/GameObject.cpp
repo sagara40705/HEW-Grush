@@ -27,7 +27,6 @@ GameObject::~GameObject()
         if (auto* r = dynamic_cast<Renderer*>(c))
             world->Unregister(r);
 
-
         if (auto* co = dynamic_cast<Collider*>(c))
             world->Unregister(co);
     }

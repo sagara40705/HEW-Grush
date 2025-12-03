@@ -3,9 +3,11 @@
 #include "PlayerState.h"
 #include "Hammer.h"
 #include "GlassObject.h"
+#include "InputKeyboard.h"
+#include "DebugLog.h"
 
 constexpr float kMaxGaugeVale[ToIndex(HammerGrade::Count)] 
-				= { 10.f, 20.f, 30.f };
+				= { 100.f, 200.f, 300.f };
 
 void GlassGaugeManager::Start()
 {
@@ -23,34 +25,28 @@ void GlassGaugeManager::Update()
 	assert(player_ && hammer_ && "参照のどれかがnullptrです");
 	if (!player_ || !hammer_) return;
 
+#ifdef _DEBUG
+	DebugCommand();
+#endif // DEBUG	
+
 	if (isGaugeEmpty) return;
 
 	// ゲージ減衰中
 	if (isGaugeDecaying)
 	{
 		// ゲージを減衰 + 0をした回ったらGradeDown
-		constexpr float kGaugeDecayValue = 0.1;
+		constexpr float kGaugeDecayValue = 0.1f;
 		gaude_ -= kGaugeDecayValue;
 		if (gaude_ < 0.f)
 		{
-			if (hammer_->GetGrade() == HammerGrade::Grade_1) 
-			{
-				isGaugeEmpty = true;
-				gaude_ = 0.f;
-				return;
-			}
-			else
-			{
-				GradeDown();
-			}
-
+			GradeDown();
 		}
 	}
 	// 非ゲージ減衰中
 	else
 	{
 		// 減衰までの時間を計る
-		constexpr float DT = 0.1 / 60.f;
+		constexpr float DT = 0.1f / 60.f;
 		gaugeDecayDelayTimer += DT;
 		if (gaugeDecayDelayTimer > kGaugeDecayDelayTime)
 		{
@@ -68,7 +64,8 @@ void GlassGaugeManager::OnDestroy()
 
 void GlassGaugeManager::BrakeGlass(GlassGrade grade)
 {
-	constexpr float kGaugeUpVale[ToIndex(GlassGrade::Count)] = {2.f, 5.f, 10.f};
+	constexpr float kGaugeUpVale[ToIndex(GlassGrade::Count)] 
+					= {10.f, 10.f, 10.f};
 	
 	//減衰を止めタイマーをリセット
 	isGaugeDecaying = false;
@@ -95,7 +92,12 @@ void GlassGaugeManager::GradeUp()
 
 void GlassGaugeManager::GradeDown()
 {
-
+	if (hammer_->GetGrade() == HammerGrade::Grade_1)
+	{
+		isGaugeEmpty = true;
+		gaude_ = 0.f;
+		return;
+	}
 
 	hammer_->GradeDown();
 
@@ -107,7 +109,13 @@ void GlassGaugeManager::OnGlassBrake()
 
 }
 
+#ifdef _DEBUG
 void GlassGaugeManager::DebugCommand()
 {
-
+	if (InputKeyboard::GetKeyDown('B'))
+	{
+		//BrakeGlass(GlassGrade::Grade_1);
+		DebugLog::Output("DebugCommand GaugeUp 1");
+	}
 }
+#endif // DEBUG	

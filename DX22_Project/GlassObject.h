@@ -11,7 +11,7 @@ enum class GlassGrade : std::uint8_t
 	Grade_3,
 	Count
 };
-constexpr int ToIndex(GlassGrade g) noexcept {
+constexpr size_t ToIndex(GlassGrade g) noexcept {
 	return static_cast<size_t>(g);
 }
 
@@ -19,11 +19,14 @@ class GlassObject : public Component
 {
 private:
 	GlassGaugeManager* ggm_ = nullptr;
+	GlassGrade grade_ = GlassGrade::Grade_1;
 public:
-	GlassObject(GlassGrade g = GlassGrade::Grade_1) : grade(g) {}
+	GlassObject(GlassGrade g = GlassGrade::Grade_1) : grade_(g) {}
 	void Start() override;
 	void OnDestroy() override;
-	GlassGrade grade = GlassGrade::Grade_1;
+
 public:
+	GlassGrade GetGrade() { return grade_; }
+	void TakeDamage(int v);
 	void SpawnShards();
 };

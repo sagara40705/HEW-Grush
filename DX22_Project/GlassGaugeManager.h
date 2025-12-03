@@ -25,6 +25,9 @@ public:
 	void GradeUp();
 	void GradeDown();
 	void OnGlassBrake();
+
 private:
+#ifdef _DEBUG
 	void DebugCommand();
+#endif // DEBUG	
 };

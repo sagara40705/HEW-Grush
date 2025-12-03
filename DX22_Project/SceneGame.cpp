@@ -114,13 +114,21 @@ void SceneGame::CreateCameraAndPlayer()
 	hummer.AddComponent<Hammer>();
 	//hummer.Destroy(1.0f);
 
+	GameObject& glassGaugeManager = w.CreateGameObject();
+	glassGaugeManager.AddComponent<GlassGaugeManager>();
+
+	GameObject& sample = w.CreateGameObject(Vector3(3.f, 2.f, 3.f));
+	sample.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube);
+	sample.AddComponent<MeshRenderer>();
+	//sample.AddComponent<BoxCollider>();
+	sample.Destroy(1.0f);
 }
 
 void SceneGame::CreateStage()
 {
 	World& w = GetWorld();
 
-	GameObject& floor = w.CreateGameObject(Vector3(0.f, -1.f, 0.f), Vector3::zero(), Vector3(20.f, 0.1f, 20.f));
+	GameObject& floor = w.CreateGameObject(Vector3(0.f, -0.5f, 0.f), Vector3::zero(), Vector3(20.f, 0.1f, 20.f));
 	floor.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube);
 	floor.AddComponent<MeshRenderer>();
 	BoxCollider& collider = floor.AddComponent<BoxCollider>();
