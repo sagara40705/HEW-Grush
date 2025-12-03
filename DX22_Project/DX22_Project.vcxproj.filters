@@ -485,6 +485,9 @@
     <ClInclude Include="PlayerAction.h">
       <Filter>Game\Components\Player</Filter>
     </ClInclude>
+    <ClInclude Include="DebugLog.h">
+      <Filter>Engine\Debug</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="SceneManager.inl">

@@ -1,6 +1,7 @@
 #include "PlayerAction.h"
 #include "PlayerState.h"
 #include "GameObject.h"
+#include "DebugLog.h"
 #include <cassert>
 
 void PlayerAction::Start()
@@ -50,6 +51,7 @@ void PlayerAction::CheckCanAction()
 		{
 			//使用アクションをセット
 			state_->usingAction = ToId(action);
+			DebugLog::OutputValue("アクション実行 id", action);
 			//一応タイマーリセット
 			state_->actionTimer[action] = 0.f;
 			// 使用不可にしておく
@@ -87,6 +89,7 @@ void PlayerAction::UpdateAction()
 	if (state_->actionTimer[ToIndex(action)]
 		>= state_->kActionTime[ToIndex(action)])
 	{
+		DebugLog::OutputValue("アクション終了 id", action);
 		state_->cooltime[ToIndex(action)] = state_->kActionCT[ToIndex(action)];
 		state_->usingAction = ActionId::None;
 	}
@@ -107,6 +110,7 @@ void PlayerAction::UpdateActionCT()
 		{
 			state_->cooltime[action] = 0.0f;
 			state_->canUseAction[action] = true;
+			DebugLog::OutputValue("アクションCT終了 id", action);
 		}
 	}
 }
