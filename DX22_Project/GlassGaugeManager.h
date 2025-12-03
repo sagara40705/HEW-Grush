@@ -9,6 +9,7 @@ class GlassGaugeManager : public MonoBehaviour
 {
 private:
 	float gaude_ = 0.0f;
+	bool isGaugeEmpty = true;
 	bool isGaugeDecaying = false;   //ゲージ減衰中か？
 	float gaugeDecayDelayTimer = 0.f; //ゲージ減衰までのタイマー
 	const float kGaugeDecayDelayTime = 5.f; //ゲージ減衰までの時間
@@ -24,4 +25,6 @@ public:
 	void GradeUp();
 	void GradeDown();
 	void OnGlassBrake();
+private:
+	void DebugCommand();
 };

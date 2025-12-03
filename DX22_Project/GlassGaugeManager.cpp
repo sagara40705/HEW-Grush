@@ -4,7 +4,7 @@
 #include "Hammer.h"
 #include "GlassObject.h"
 
-constexpr float kMaxGaugeVale[ToIndex(HummerGrade::Count)] 
+constexpr float kMaxGaugeVale[ToIndex(HammerGrade::Count)] 
 				= { 10.f, 20.f, 30.f };
 
 void GlassGaugeManager::Start()
@@ -23,14 +23,27 @@ void GlassGaugeManager::Update()
 	assert(player_ && hammer_ && "参照のどれかがnullptrです");
 	if (!player_ || !hammer_) return;
 
+	if (isGaugeEmpty) return;
+
 	// ゲージ減衰中
 	if (isGaugeDecaying)
 	{
 		// ゲージを減衰 + 0をした回ったらGradeDown
 		constexpr float kGaugeDecayValue = 0.1;
-		if (gaude_ -= kGaugeDecayValue  < 0.f)
+		gaude_ -= kGaugeDecayValue;
+		if (gaude_ < 0.f)
 		{
-			GradeDown();
+			if (hammer_->GetGrade() == HammerGrade::Grade_1) 
+			{
+				isGaugeEmpty = true;
+				gaude_ = 0.f;
+				return;
+			}
+			else
+			{
+				GradeDown();
+			}
+
 		}
 	}
 	// 非ゲージ減衰中
@@ -38,7 +51,8 @@ void GlassGaugeManager::Update()
 	{
 		// 減衰までの時間を計る
 		constexpr float DT = 0.1 / 60.f;
-		if (gaugeDecayDelayTimer += DT > kGaugeDecayDelayTime)
+		gaugeDecayDelayTimer += DT;
+		if (gaugeDecayDelayTimer > kGaugeDecayDelayTime)
 		{
 			isGaugeDecaying = true;
 			gaugeDecayDelayTimer = 0.f;
@@ -48,8 +62,8 @@ void GlassGaugeManager::Update()
 
 void GlassGaugeManager::OnDestroy()
 {
-	Hammer* hammer_ = nullptr;
-	PlayerState* player_ = nullptr;
+	hammer_ = nullptr;
+	player_ = nullptr;
 }
 
 void GlassGaugeManager::BrakeGlass(GlassGrade grade)
@@ -59,10 +73,13 @@ void GlassGaugeManager::BrakeGlass(GlassGrade grade)
 	//減衰を止めタイマーをリセット
 	isGaugeDecaying = false;
 	gaugeDecayDelayTimer = 0.f;
+
+	//ゲージを加算
+	gaude_ += kGaugeUpVale[ToIndex(grade)];
+	isGaugeEmpty = false;
 	
 	//ゲージの最大値を超えたらグレードUP
-	if (gaude_ += kGaugeUpVale[ToIndex(grade)] > 
-		kMaxGaugeVale[ToIndex(hammer_->GetGrade())])
+	if (gaude_ >kMaxGaugeVale[ToIndex(hammer_->GetGrade())])
 	{
 		GradeUp();
 	}
@@ -78,12 +95,19 @@ void GlassGaugeManager::GradeUp()
 
 void GlassGaugeManager::GradeDown()
 {
+
+
 	hammer_->GradeDown();
 
 	gaude_ = kMaxGaugeVale[ToIndex(hammer_->GetGrade())];
 }
 
 void GlassGaugeManager::OnGlassBrake()
+{
+
+}
+
+void GlassGaugeManager::DebugCommand()
 {
 
 }
