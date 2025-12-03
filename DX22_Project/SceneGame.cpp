@@ -110,6 +110,7 @@ void SceneGame::CreateCameraAndPlayer()
 	hummer.SetTag(Tag::Hammer);
 	hummer.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube);
 	hummer.AddComponent<MeshRenderer>();
+	hummer.AddComponent<BoxCollider>();
 	hummer.AddComponent<Hammer>();
 	//hummer.Destroy(1.0f);
 

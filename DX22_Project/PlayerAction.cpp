@@ -23,7 +23,7 @@ void PlayerAction::Start()
 	}
 
 	assert(state_ && tf_ && hammer_ && "参照のどれかがnullptrです");
-	if (!state_ || !tf_ || hammer_) return;
+	if (!state_ || !tf_ || !hammer_) return;
 
 	for (size_t action = 0; action < ToIndex(ActionId::Count); ++action)
 	{
@@ -34,7 +34,7 @@ void PlayerAction::Start()
 void PlayerAction::Update()
 {
 	assert(state_ && tf_ && hammer_ && "参照のどれかがnullptrです");
-	if (!state_ || !tf_ || hammer_) return;
+	if (!state_ || !tf_ || !hammer_) return;
 
 	if (!state_) return;
 	if (!state_->canControl) return;
@@ -124,6 +124,16 @@ void PlayerAction::UpdateAction()
 	constexpr float DT = 1.f / 60.f;
 	state_->actionTimer[ToIndex(action)] += DT;
 
+	// アクション時間を超えたら終了 + CoolTime設定
+	if (state_->actionTimer[ToIndex(action)]
+		>= state_->kActionTime[ToIndex(action)])
+	{
+		DebugLog::Output("アクション終了");
+		state_->cooltime[ToIndex(action)] = state_->kActionCT[ToIndex(action)];
+		state_->usingAction = ActionId::None;
+		return;
+	}
+
 	//使用中アクションごとに更新 *現在は空
 	switch (action)
 	{
@@ -135,15 +145,6 @@ void PlayerAction::UpdateAction()
 
 	default: assert(false && "state_->usingActionが範囲外です");
 		break;
-	}
-
-	// アクション時間を超えたら終了 + CoolTime設定
-	if (state_->actionTimer[ToIndex(action)]
-		>= state_->kActionTime[ToIndex(action)])
-	{
-		DebugLog::Output("アクション終了");
-		state_->cooltime[ToIndex(action)] = state_->kActionCT[ToIndex(action)];
-		state_->usingAction = ActionId::None;
 	}
 }
 
@@ -180,6 +181,9 @@ void PlayerAction::UpdateNormalAttack()
 // ダミー実装
 void PlayerAction::UpdateSpinAttack()
 {
+	constexpr Vector3 delta = { 0.f, 18.f, 0.f };
+
+	tf_->AddRotate(delta);
 }
 
 // ダミー実装
