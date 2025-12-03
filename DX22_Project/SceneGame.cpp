@@ -96,24 +96,7 @@ void SceneGame::Load()
     CreateTimerUi();
     CreateScoreUi();
     CreateActionUi();
-
-    GameObject& gaugeFrame = W->CreateGameObject();
-    CanvasUI& gaugeFrameUI = gaugeFrame.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::GaugeFrame));
-
-    GameObject& gauge = W->CreateGameObject();
-    CanvasUI& gaugeUI = gauge.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::GaugeMaxLv1));
-
-    GameObject& GaEf = W->CreateGameObject();
-    CanvasUI& gaefUI = GaEf.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::GaugeEffect));
-
-    GameObject& gaugeUiManagerObj = W->CreateGameObject();
-    gaugeUiManagerObj.AddComponent<GlassGauge>(&gaugeFrameUI, &gaugeUI, &gaefUI);
-
-    GameObject& IntroEf = W->CreateGameObject();
-    CanvasUI& InEfUI = IntroEf.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::GaugeEffect));
-
-    GameObject& IntroUiManagerObj = W->CreateGameObject();
-    IntroUiManagerObj.AddComponent<PlayerIntroSequence>(&InEfUI);
+    CreateGaugeUI();
 
 }
 void SceneGame::Update()
@@ -132,8 +115,9 @@ void SceneGame::Unload()
 void SceneGame::RegisterTexture()
 {
     TextureManager::RegisterAuto(TextureTag::Number);
+    TextureManager::RegisterAuto(TextureTag::CountNumber);
     TextureManager::RegisterAuto(TextureTag::GaugeFrame);
-    TextureManager::RegisterAuto(TextureTag::GaugeMaxLv1);
+    TextureManager::RegisterAuto(TextureTag::GaugeMax);
     TextureManager::RegisterAuto(TextureTag::GaugeEffect);
     TextureManager::RegisterAuto(TextureTag::SpinUI);
     TextureManager::RegisterAuto(TextureTag::DashUI);
@@ -244,19 +228,19 @@ void SceneGame::CreateScoreUi()
 
     // 千の位
     GameObject& th = W->CreateGameObject();
-    CanvasUI& thUI = th.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Number));
+    CanvasUI& thUI = th.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::CountNumber));
 
     // 百の位
     GameObject& h = W->CreateGameObject();
-    CanvasUI& hUI = h.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Number));
+    CanvasUI& hUI = h.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::CountNumber));
 
     // 十の位
     GameObject& t = W->CreateGameObject();
-    CanvasUI& tUI = t.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Number));
+    CanvasUI& tUI = t.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::CountNumber));
 
     // 一の位
     GameObject& o = W->CreateGameObject();
-    CanvasUI& oUI = o.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Number));
+    CanvasUI& oUI = o.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::CountNumber));
 
     GameObject& scoreUiManagerObj = W->CreateGameObject();
     scoreUiManagerObj.AddComponent<ScoreUIManager>(&thUI, &hUI, &tUI, &oUI);
@@ -274,4 +258,23 @@ void SceneGame::CreateActionUi()
 
     GameObject& actionUiManagerObj = W->CreateGameObject();
     actionUiManagerObj.AddComponent<ActionUIManager>(&spinUI, &dashUI);
+}
+
+void SceneGame::CreateGaugeUI()
+{
+    //---ゲージ外枠
+    GameObject& gaugeFrame = W->CreateGameObject();
+    CanvasUI& gaugeFrameUI = gaugeFrame.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::GaugeFrame));
+
+    //---ゲージ本体
+    GameObject& gauge = W->CreateGameObject();
+    CanvasUI& gaugeUI = gauge.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::GaugeMax));
+
+    //---上昇エフェクト
+    GameObject& GaEf = W->CreateGameObject();
+    CanvasUI& gaefUI = GaEf.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::GaugeEffect));
+
+    GameObject& gaugeUiManagerObj = W->CreateGameObject();
+    gaugeUiManagerObj.AddComponent<GlassGauge>(&gaugeFrameUI, &gaugeUI, &gaefUI);
+
 }

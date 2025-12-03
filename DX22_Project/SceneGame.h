@@ -22,6 +22,7 @@ private:
 	void CreateTimerUi();
 	void CreateScoreUi();
 	void CreateActionUi();
+	void CreateGaugeUI();
 };
 
 #endif // __SCENE_GAME_H__

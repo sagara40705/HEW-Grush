@@ -25,7 +25,7 @@ private:
 
 	float efDenger = 0.f;
 public:
-	GlassGauge(CanvasUI* frame, CanvasUI* base, CanvasUI* effect);
+	GlassGauge(CanvasUI* frame, CanvasUI* base, CanvasUI* effect);                                             
 	void Start() override;
 	void OnDestroy() override;
 	void Update() override;

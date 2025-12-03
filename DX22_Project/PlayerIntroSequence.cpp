@@ -27,7 +27,3 @@ void PlayerIntroSequence::FinishIntro()
 
 }
 
-void PlayerIntroSequence::IntroEffect()
-{
-
-}

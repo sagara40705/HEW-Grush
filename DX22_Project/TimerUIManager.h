@@ -22,8 +22,9 @@ public:
 	void OnDestroy() override;
 	void Update() override;
 private:
-	const Vector2 kNumberPos[TimerDigit::Count] = { {1020.f, 20.f},{1070.f, 20.f}, {1150.f, 20.f}, {1200.f, 20.f} };	//位置(四つ分)
-	const Vector2 kNumberSize = { 0.5f, 5.0f };											//縮小率
+	const float scaleFactor = 1.f / 6.5f; // 
+	const Vector2 kNumberPos[TimerDigit::Count] = { {950.f, 20.f},{1020.f, 20.f}, {1130.f, 20.f}, {1200.f, 20.f} };	//位置(四つ分)
+	const Vector2 kNumberSize = { 0.5f * scaleFactor, 5.0f * scaleFactor };										//縮小率
 	Vector2 GetNumberUVPos(int n) { return { n * 0.1f, 1.f }; }							//UVPos
 	const Vector2 kNumberUVSize = { 0.1f, 1.f };										//UVSize
 public:
