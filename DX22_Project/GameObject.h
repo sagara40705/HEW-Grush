@@ -98,6 +98,7 @@ public:
     void SetTag(Tag t) { tag = t; }
     bool CompareTag(Tag t) const { return tag == t; }
     GameObject* FindWithTag(Tag tag) { return world->FindWithTag(tag); }
+    GameObject* FindChildWithTag(Tag tag);
 };
 
 //=========================================================

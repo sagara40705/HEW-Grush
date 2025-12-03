@@ -3,7 +3,7 @@
 
 class GlassGaugeManager;
 
-class GlassGaugeUi : public MonoBehaviour
+class GlassGaugeUI : public MonoBehaviour
 {
 private: //éQè∆
 	GlassGaugeManager* ggm_ = nullptr;
@@ -11,7 +11,7 @@ private: //éQè∆
 	GameObject* effect_ = nullptr;
 	SpriteAnimation* efAnime_ = nullptr;
 public:
-	GlassGaugeUi(GameObject* effect) : effect_(effect) {}
+	GlassGaugeUI(GameObject* effect) : effect_(effect) {}
 	void Awake() override;
 	void Start() override;
 	void Update() override;

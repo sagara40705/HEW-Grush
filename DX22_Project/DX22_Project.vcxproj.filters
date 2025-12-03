@@ -198,7 +198,7 @@
     <ClCompile Include="GlassGaugeManager.cpp">
       <Filter>Game\Components\Environment</Filter>
     </ClCompile>
-    <ClCompile Include="GlassGauge.cpp">
+    <ClCompile Include="GlassGaugeUI.cpp">
       <Filter>Game\Components\UI</Filter>
     </ClCompile>
     <ClCompile Include="GlassObject.cpp">
@@ -407,7 +407,7 @@
     <ClInclude Include="GlassGaugeManager.h">
       <Filter>Game\Components\Environment</Filter>
     </ClInclude>
-    <ClInclude Include="GlassGauge.h">
+    <ClInclude Include="GlassGaugeUI.h">
       <Filter>Game\Components\UI</Filter>
     </ClInclude>
     <ClInclude Include="GlassObject.h">

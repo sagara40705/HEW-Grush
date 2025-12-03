@@ -24,14 +24,17 @@ constexpr ActionId ToId(size_t n) noexcept
 class PlayerState: public Component
 {
 public:
-    // 入力
-    Vector2 moveAxis = Vector2::zero();
-
     // 行動状態
-    bool isGrounded = true;
     bool canMove = true;
     bool canAction = true;
     bool canControl = true;
+
+    // --- 移動関係 ---
+    bool isGrounded = true;
+    Vector2 moveAxis = Vector2::zero();
+
+    // --- ゲージ・破壊関連 ---
+    bool isBrake = false;   //今フレーム破壊したか
 
     // --- アクション関連 ---
     bool  wantUseAction[static_cast<size_t>(ActionId::Count)]{}; //入力されたか

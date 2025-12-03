@@ -164,7 +164,7 @@
     <ClCompile Include="LoadingGauge.cpp" />
     <ClCompile Include="OriginalGame.cpp" />
     <ClCompile Include="Geometory.cpp" />
-    <ClCompile Include="GlassGauge.cpp" />
+    <ClCompile Include="GlassGaugeUI.cpp" />
     <ClCompile Include="GlassGaugeManager.cpp" />
     <ClCompile Include="GlassObject.cpp" />
     <ClCompile Include="Input.cpp" />
@@ -233,7 +233,7 @@
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="Geometory.h" />
-    <ClInclude Include="GlassGauge.h" />
+    <ClInclude Include="GlassGaugeUI.h" />
     <ClInclude Include="GlassGaugeManager.h" />
     <ClInclude Include="GlassObject.h" />
     <ClInclude Include="Hammer.h" />

@@ -1,14 +1,14 @@
-#include "GlassGauge.h"
+#include "GlassGaugeUI.h"
 #include "GameObject.h"
 #include "GlassGaugeManager.h"
 #include "UiSpriteRenderer.h"
 #include "SpriteAnimation.h"
 
-void GlassGaugeUi::Awake()
+void GlassGaugeUI::Awake()
 {
 }
 
-void GlassGaugeUi::Start()
+void GlassGaugeUI::Start()
 {
 	// ŽQÆŽæ“¾
 	ggm_ = nullptr;
@@ -16,12 +16,12 @@ void GlassGaugeUi::Start()
 	efAnime_ = effect_->GetComponent<SpriteAnimation>();
 }
 
-void GlassGaugeUi::Update()
+void GlassGaugeUI::Update()
 {
 
 }
 
-void GlassGaugeUi::OnDestroy()
+void GlassGaugeUI::OnDestroy()
 {
 	ggm_ = nullptr;
 	ui_ = nullptr;

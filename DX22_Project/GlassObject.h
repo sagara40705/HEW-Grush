@@ -11,7 +11,9 @@ enum class GlassGrade : std::uint8_t
 	Grade_3,
 	Count
 };
-constexpr int ToInt(GlassGrade g) { return static_cast<size_t>(g); }
+constexpr int ToIndex(GlassGrade g) noexcept {
+	return static_cast<size_t>(g);
+}
 
 class GlassObject : public Component
 {

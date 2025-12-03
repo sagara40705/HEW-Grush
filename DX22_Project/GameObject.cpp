@@ -207,3 +207,11 @@ void GameObject::DestroyTimerUpdate(float dt)
         world->RequestDestroy(id); // ‚±‚±‚àŠù‘¶d—l‚É‡‚í‚¹‚ÄC³
     }
 }
+
+GameObject* GameObject::FindChildWithTag(Tag tag)
+{
+    for (GameObject* child : children)
+    {
+        if (child->CompareTag(tag)) return child;
+    }
+}
