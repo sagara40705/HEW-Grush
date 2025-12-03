@@ -27,7 +27,7 @@ void MeshRenderer::Start()
 
     switch (mf->GetSource())
     {
-    case MeshSource::Primitive: PrimitiveRender();
+    case MeshSource::Primitive:
         vsKind = ShaderList::VS_PRIM;
         psKind = ShaderList::PS_PRIM;
         break;
@@ -100,23 +100,8 @@ void MeshRenderer::ModelRender()
     Model* model = mf->GetModel();
     if (!model) return;
 
-    // === VS / PS を取得 ===
-    VertexShader* vs = nullptr;
-    if (animator && animator->IsPlaying())
-    {
-        const XMFLOAT4X4* bones = animator->GetBones();
-        if (bones)
-        {
-            // ボーン行列を VS_ANIME の定数バッファに書き込む
-            ShaderList::SetBones(const_cast<XMFLOAT4X4*>(bones));
-
-            // アニメ用 VS を使用
-            vs = ShaderList::GetVS(ShaderList::VS_ANIME);
-        }
-    }
-    if(!vs)  vs = ShaderList::GetVS(vsKind);
-
-
+    //=== VS / PS を取得 ===
+    VertexShader* vs = ShaderList::GetVS(vsKind);
     PixelShader* ps = ShaderList::GetPS(psKind);
 
     if (!vs || !ps) return;
@@ -125,4 +110,5 @@ void MeshRenderer::ModelRender()
     model->SetVertexShader(vs);
     model->SetPixelShader(ps);
     model->Draw(-1);
+  
 }

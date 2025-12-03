@@ -1,101 +1,58 @@
 #include "Animator.h"
 #include "MeshFilter.h"
+#include "MeshRenderer.h"
 #include "GameObject.h"
-// Time クラスなどがあるならインクルード
-// #include "Time.h"
+#include "ShaderList.h"
 
-using namespace DirectX;
-
-void Animator::Awake()
+//---------------------------------------------------------
+// Awake : 参照取得など
+//---------------------------------------------------------
+void Animator::Start()
 {
-    m_meshFilter = gameObject->GetComponent<MeshFilter>();
-    if (m_meshFilter)
+    if (!gameObject) return;
+
+    meshFilter = gameObject->GetComponent<MeshFilter>();
+    meshRenderer = gameObject->GetComponent<MeshRenderer>();
+
+    if (meshFilter)
     {
-        m_model = m_meshFilter->GetModel();
+        //model = meshFilter->GetModel();
+        //currentAnime = model->AddAnimation("Assets/Model/playerchara_20251202/space_suit_12.fbx");
+        //model->Play(currentAnime, true, 1.0f);
     }
 
-    if (m_model)
+    // アニメーション付きモデル用 VS を使うようにしておく
+    if (meshRenderer)
     {
-        m_bones.resize(Model::MaxBoneCount());
-    }
-}
-
-int Animator::AddClip(const Clip& clip)
-{
-    m_clips.push_back(clip);
-    return static_cast<int>(m_clips.size() - 1);
-}
-
-const Animator::Clip* Animator::GetCurrentClip() const
-{
-    if (m_currentClip < 0 || m_currentClip >= static_cast<int>(m_clips.size()))
-        return nullptr;
-    return &m_clips[m_currentClip];
-}
-
-void Animator::Play(const std::string& clipName, float startTime)
-{
-    if (!m_model) return;
-
-    for (int i = 0; i < static_cast<int>(m_clips.size()); ++i)
-    {
-        if (m_clips[i].name == clipName)
-        {
-            m_currentClip = i;
-            m_time = startTime;
-            m_validBones = false;
-            return;
-        }
+        //meshRenderer->vsKind = ShaderList::VS_ANIME;
     }
 }
 
-void Animator::Stop()
+//---------------------------------------------------------
+// Play : 単純再生
+//---------------------------------------------------------
+void Animator::Play(Model::AnimeNo animeNo, bool loop, float spd)
 {
-    m_currentClip = -1;
-    m_validBones = false;
+    if (!model) return;
+    if (animeNo == Model::ANIME_NONE) return;
+
+    currentAnime = animeNo;
+    loopFlag = loop;
+    speed = spd;
+
+    // Model 側に再生を指示
+    model->Play(animeNo, loop, speed);
 }
 
+//---------------------------------------------------------
+// Update : 毎フレームアニメ時間を進める
+//---------------------------------------------------------
 void Animator::Update()
 {
-    if (!m_model || m_currentClip < 0) return;
+    if (!model) return;
+    if (currentAnime == Model::ANIME_NONE) return;
 
-    Clip& clip = m_clips[m_currentClip];
-    if (clip.animeNo == Model::ANIME_NONE) return;
+    constexpr float DT = 1.0f / 60.0f;
 
-    const Model::Animation* anim = m_model->GetAnimation(clip.animeNo);
-    if (!anim) return;
-
-    // ---- Δt を取得（エンジン側に合わせて変更）----
-    float dt = 1.0f / 60.0f;
-    // 例: Time クラスがあるならこうする
-    // float dt = Time::DeltaTime();
-
-    // ---- 時間更新（Animator 側でループ処理）----
-    m_time += dt * clip.speed * m_globalSpeed;
-
-    if (clip.loop && anim->totalTime > 0.0f)
-    {
-        while (m_time >= anim->totalTime)
-        {
-            m_time -= anim->totalTime;
-        }
-    }
-    else
-    {
-        if (m_time > anim->totalTime)
-        {
-            m_time = anim->totalTime;
-            // ループしない場合、ここで Stop() しても良い
-        }
-    }
-
-    // ---- Model に評価させて bones に書き込む ----
-    m_model->SampleAnimationToBones(
-        clip.animeNo,
-        m_time,
-        m_bones.data(),
-        static_cast<uint32_t>(m_bones.size())
-    );
-
-    m_validBones = true;
+    model->Step(DT);
 }

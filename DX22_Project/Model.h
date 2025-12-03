@@ -150,13 +150,12 @@ public:
 	const Material* GetMaterial(unsigned int index);
 	uint32_t GetMaterialNum();
 	DirectX::XMMATRIX GetBone(NodeIndex index);
+	uint32_t    GetBoneNum() const;
+
 	const Animation* GetAnimation(AnimeNo no);
 	// Animator から使う「ボーン数」の公開
 	static constexpr UINT MaxBoneCount() noexcept { return MAX_BONE; }
 
-	//--- アニメーション
-	// 指定アニメーションを指定時間で評価し、bones[0..maxBone) にスキン行列を詰める
-	void SampleAnimationToBones( AnimeNo no, float time, DirectX::XMFLOAT4X4* outBones, uint32_t maxBone);
 
 	// アニメーションの読み込み
 	AnimeNo AddAnimation(const char* file);

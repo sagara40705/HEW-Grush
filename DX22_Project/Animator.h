@@ -1,60 +1,40 @@
 #pragma once
 #include "Component.h"
 #include "Model.h"
-#include <vector>
-#include <string>
 
-// アニメーション再生コンポーネント
+class MeshFilter;
+class MeshRenderer;
+
+//=========================================================
+// 極小機能版 Animator
+//  - Model 内部のアニメをそのまま再生するラッパ
+//  - GameObject ごとに 1 つだけ付ける想定
+//=========================================================
 class Animator final : public MonoBehaviour
 {
-public:
-    struct Clip
-    {
-        std::string      name;             // "Idle" "Walk" など
-        Model::AnimeNo   animeNo = Model::ANIME_NONE;
-        bool             loop = true;
-        float            speed = 1.0f;   // クリップ固有の再生速度
-    };
-
-private:
-    MeshFilter* m_meshFilter = nullptr;
-    Model* m_model = nullptr;
-
-    std::vector<Clip> m_clips;
-    int   m_currentClip = -1;             // m_clips のインデックス
-
-    float m_time = 0.0f;            // 現在の再生時間 [sec]
-    float m_globalSpeed = 1.0f;           // 全体スピード倍率
-
-    // ボーン行列のバッファ (Model::MaxBoneCount 分)
-    std::vector<DirectX::XMFLOAT4X4> m_bones;
-    bool m_validBones = false;
-
 public:
     Animator() = default;
     ~Animator() override = default;
 
-    void Awake() override;
+    void Start() override;
     void Update() override;
 
-    // クリップを追加（初期化時に登録しておく）
-    int  AddClip(const Clip& clip);
+    // 単純再生:
+    //  - animeNo : Model 内部のアニメ番号（Model::AddAnimation の戻り値など）
+    //  - loop    : ループ再生するか
+    //  - speed   : 再生速度（1.0 が等倍）
+    void Play(Model::AnimeNo animeNo, bool loop = true, float speed = 1.0f);
 
-    // 名前で再生
-    void Play(const std::string& clipName, float startTime = 0.0f);
-    void Stop();
+    Model::AnimeNo GetCurrentAnime() const { return currentAnime; }
+    bool           IsLoop()          const { return loopFlag; }
+    float          GetSpeed()        const { return speed; }
 
-    // 状態取得
-    bool IsPlaying() const { return m_currentClip >= 0; }
-    const Clip* GetCurrentClip() const;
+private:
+    MeshFilter* meshFilter = nullptr;
+    MeshRenderer* meshRenderer = nullptr;
+    Model* model = nullptr;
 
-    // MeshRenderer から使う
-    const DirectX::XMFLOAT4X4* GetBones() const
-    {
-        return m_validBones ? m_bones.data() : nullptr;
-    }
-    uint32_t GetBoneCount() const
-    {
-        return static_cast<uint32_t>(m_bones.size());
-    }
+    Model::AnimeNo currentAnime = Model::ANIME_NONE;
+    bool           loopFlag = true;
+    float          speed = 1.0f;
 };

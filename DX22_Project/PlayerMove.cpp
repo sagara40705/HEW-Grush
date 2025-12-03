@@ -5,6 +5,8 @@
 #include "PhysicsSystem.h"
 #include "InputKeyboard.h"
 #include "Animator.h"
+#include "ModelManager.h"
+#include <cmath>
 
 void PlayerMove::Start()
 {
@@ -41,11 +43,10 @@ void PlayerMove::CheckGround()
 	Ray ray = GetDownwordRay();
 	RaycastHit hit;
 	//実装希望
-	//LayerMask Layer::Ground用のマスクを用意できると
 
 	state_->isGrounded
-		= Physics::Raycast(*(gameObject->world), ray, &hit, kGroundCheckDistance, ToBit(Layer::Ground));
-
+		= Physics::Raycast(*(gameObject->world), 
+			ray, &hit, kGroundCheckDistance, ToBit(Layer::Ground));
 }
 
 Ray PlayerMove::GetDownwordRay()
@@ -65,12 +66,7 @@ void PlayerMove::Jump()
 
 	if (InputKeyboard::GetKeyDown(JumpKey))
 	{
-		// ★ ここでジャンプアニメ再生
-		if (animator_)
-		{
-			rb_->AddForce(Vector3(0.f, JumpForce, 0.f));
-			animator_->Play("Jump", 0.0f);
-		}
+		rb_->AddForce(Vector3(0.f, JumpForce, 0.f));
 	}
 }
 
@@ -126,9 +122,48 @@ void PlayerMove::ApplyMoveAxis()
 	rb_->velocity = Vector3(move.x * moveSpeed, vy, move.z * moveSpeed);
 }
 
-
 //移動時カメラ方向と向きを同期させる
 void PlayerMove::AlignRotationToCamera()
 {
+	if (!playerTF_ || !camTF_) return;
 
+	// 入力がほぼゼロなら向きを変えない
+	Vector2 axis = state_->moveAxis;
+	if (axis.Length() <= 0.01f)
+	{
+		return;
+	}
+
+	// ApplyMoveAxis() と同じ計算で「移動方向」を求める
+	Vector3 camForward = Vector3(camTF_->Forward().x, 0.f, camTF_->Forward().z);
+	Vector3 camRight = Vector3(camTF_->Right().x, 0.f, camTF_->Right().z);
+
+	camForward.Normalize();
+	camRight.Normalize();
+
+	// WASD（縦＝axis.y, 横＝axis.x）をカメラ基準で 3D ベクトルに
+	Vector3 moveDir = camForward * axis.y + camRight * axis.x;
+
+	// 水平ベクトルだけ使う（Y は 0 にしておく）
+	moveDir.y = 0.f;
+
+	// 長さがほぼゼロなら何もしない
+	if (moveDir.magnitude() <= 1e-6f)
+	{
+		return;
+	}
+
+	moveDir.Normalize();
+	moveDir *= -1.0f;
+
+	// 移動ベクトルから yaw（Y 回転）を計算
+	// Z+ 方向を 0 度として X+ 方向に行くほどプラス
+	float yawRad = std::atan2(moveDir.x, moveDir.z);
+	constexpr float Rad2Deg = 180.0f / 3.14159265358979323846f;
+	float yawDeg = yawRad * Rad2Deg;
+
+	// プレイヤーの Y 回転だけを移動方向に合わせる
+	Vector3 rot = playerTF_->GetRotation(); // (pitch, yaw, roll) = (x,y,z) [度]
+	rot.y = yawDeg;
+	playerTF_->SetRotation(rot);
 }

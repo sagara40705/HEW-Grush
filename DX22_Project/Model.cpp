@@ -236,6 +236,9 @@ void Model::Draw(int meshNo)
 	m_pVS->Bind();
 	m_pPS->Bind();
 
+	// このモデルがアニメ頂点シェーダを使っているかどうか
+	bool useAnimeVS = (m_pVS == ShaderList::GetVS(ShaderList::VS_ANIME));
+
 	// テクスチャ自動設定
 	bool isAutoTexture = (meshNo == -1);
 
@@ -246,12 +249,74 @@ void Model::Draw(int meshNo)
 	else
 		meshNo = 0;
 
-
 	// 描画
 	for (UINT i = meshNo; i < drawNum; ++i)
 	{
 		const Mesh& mesh = m_meshes[i];
 		const Material& mat = m_materials[mesh.materialID];
+
+		// ===== アニメーション設定 =====
+		/*
+		if (!mesh.bones.empty())
+		{
+			DirectX::XMFLOAT4X4 bones[MAX_BONE];
+			//初期化
+			for (int b = 0; b < MAX_BONE; ++b) {
+				DirectX::XMStoreFloat4x4(&bones[b], DirectX::XMMatrixIdentity());
+			}
+			//
+			const size_t boneCount = std::min(mesh.bones.size(), static_cast<size_t>(MAX_BONE));
+
+			for (size_t b = 0; b < boneCount; ++b) {
+				const Bone& bone = mesh.bones[b];
+				if (bone.index == INDEX_NONE) continue;
+
+				// invOffset * 現在のボーン姿勢
+				DirectX::XMMATRIX skin = bone.invOffset * m_nodes[bone.index].mat;
+
+				// 他の行列と同様にトランスポーズして定数バッファへ
+				skin = DirectX::XMMatrixTranspose(skin);
+				DirectX::XMStoreFloat4x4(&bones[b], skin);
+			}
+
+			ShaderList::SetBones(bones);
+		}
+		*/
+
+		// --- アニメ用ボーン行列をセット ---
+		/*if (useAnimeVS && !mesh.bones.empty())
+		{
+			DirectX::XMFLOAT4X4 boneMats[MAX_BONE];
+
+			// まず全スロット単位行列で初期化（未使用ボーン用）
+			for (UINT j = 0; j < MAX_BONE; ++j)
+			{
+				DirectX::XMStoreFloat4x4(
+					&boneMats[j],
+					DirectX::XMMatrixIdentity()
+				);
+			}
+
+			const size_t boneCount =
+				std::min(mesh.bones.size(), static_cast<size_t>(MAX_BONE));
+
+			for (size_t j = 0; j < boneCount; ++j)
+			{
+				const Bone& b = mesh.bones[j];
+				if (b.index == INDEX_NONE) continue;
+
+				// invOffset * 現在のノード行列 ＝ スキニング行列
+				DirectX::XMMATRIX skin =
+					b.invOffset * m_nodes[b.index].mat;
+
+				// HLSL 側に合わせて転置
+				skin = DirectX::XMMatrixTranspose(skin);
+				DirectX::XMStoreFloat4x4(&boneMats[j], skin);
+			}
+
+			// VS_ANIME の b1 に書き込む
+			ShaderList::SetBones(boneMats);
+		}*/
 
 		// メッシュごとにマテリアルを切り替え
 		ShaderList::SetMaterial(mat);
@@ -318,6 +383,11 @@ DirectX::XMMATRIX Model::GetBone(NodeIndex index)
 	return DirectX::XMMatrixIdentity();
 }
 
+uint32_t Model::GetBoneNum() const
+{
+	return static_cast<uint32_t>(m_nodes.size());
+}
+
 /*
 * @brief アニメーション情報取得
 * @param[in] no アニメ番号
@@ -332,79 +402,6 @@ const Model::Animation* Model::GetAnimation(AnimeNo no)
 	return nullptr;
 }
 
-// time は「そのクリップ内の経過秒」。ループや速度は一切ここでは扱わない。
-void Model::SampleAnimationToBones(AnimeNo no, float time, DirectX::XMFLOAT4X4* outBones, uint32_t maxBone)
-{
-	if (!outBones) return;
-	if (!AnimeNoCheck(no)) return;
-	if (m_meshes.empty()) return;
-
-	const uint32_t maxOut = std::min<uint32_t>(maxBone, MaxBoneCount());
-
-	Animation& anime = m_animes[no];
-
-	// ---- 1) 一時的に nowTime を上書き ----
-	const float oldTime = anime.nowTime;
-
-	if (anime.totalTime > 0.0f)
-	{
-		float t = std::fmod(time, anime.totalTime);
-		if (t < 0.0f) t += anime.totalTime;
-		anime.nowTime = t;
-	}
-	else
-	{
-		anime.nowTime = 0.0f;
-	}
-
-	// ---- 2) MAIN 用の Transform を初期化 ----
-	Transform init{
-		DirectX::XMFLOAT3(0.0f, 0.0f, 0.0f),
-		DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f),
-		DirectX::XMFLOAT3(1.0f, 1.0f, 1.0f),
-	};
-	const size_t nodeCount = m_nodes.size();
-	for (size_t i = 0; i < nodeCount; ++i)
-	{
-		m_nodeTransform[MAIN][i] = init;
-	}
-
-	// ---- 3) MAIN にアニメを焼き込む（局所姿勢）----
-	CalcAnime(MAIN, no);
-
-	// ---- 4) m_nodes[*].mat にグローバル姿勢を計算 ----
-	using namespace DirectX;
-	XMMATRIX root = XMMatrixScaling(m_loadScale, m_loadScale, m_loadScale);
-	CalcBones(0, root);
-
-	// ---- 5) Bone 情報＋ノード行列から skin 行列を生成 ----
-	// どのメッシュのボーンを使うかはゲームの想定次第だが、
-	// 一般的には「スキニング対象のメッシュ（ほぼ 1 つ）」の bones を順に詰める。
-	uint32_t written = 0;
-	for (const Mesh& mesh : m_meshes)
-	{
-		for (const Bone& b : mesh.bones)
-		{
-			if (written >= maxOut) break;
-
-			// ★ここは HLSL の実装に応じて順番を変える可能性あり
-			//   一般的には  offset * current  か  current * offset です。
-			XMMATRIX skin = b.invOffset * m_nodes[b.index].mat;
-			XMStoreFloat4x4(&outBones[written], XMMatrixTranspose(skin));
-			++written;
-		}
-		if (written >= maxOut) break;
-	}
-
-	// 足りないぶんは単位行列で埋めると安全
-	for (; written < maxOut; ++written)
-	{
-		DirectX::XMStoreFloat4x4(&outBones[written], DirectX::XMMatrixIdentity());
-	}
-
-	// ---- 6) nowTime を元に戻す ----
-	anime.nowTime = oldTime;
-}
 
 /*
 * @brief アニメーション読み込み

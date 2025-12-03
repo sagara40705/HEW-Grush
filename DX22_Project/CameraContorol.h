@@ -16,6 +16,7 @@ public:
 	void Update() override;
 private:
 	void FollowPlayer();
+	void RotateByInput();
 	//void ApplyInput_();
 	void WrapAngle_() noexcept
 	{

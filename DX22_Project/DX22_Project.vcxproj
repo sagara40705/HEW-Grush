@@ -180,6 +180,7 @@
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="ModelManager.cpp" />
     <ClCompile Include="PhysicsSystem.cpp" />
+    <ClCompile Include="PlayerAction.cpp" />
     <ClCompile Include="PlayerAnimation.cpp" />
     <ClCompile Include="PlayerMove.cpp" />
     <ClCompile Include="Prefab.cpp" />
@@ -248,6 +249,7 @@
     <ClInclude Include="Model.h" />
     <ClInclude Include="ModelManager.h" />
     <ClInclude Include="PhysicsSystem.h" />
+    <ClInclude Include="PlayerAction.h" />
     <ClInclude Include="PlayerAnimation.h" />
     <ClInclude Include="PlayerMove.h" />
     <ClInclude Include="PlayerState.h" />

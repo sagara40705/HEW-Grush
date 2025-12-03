@@ -273,6 +273,9 @@
     <ClCompile Include="PlayerAnimation.cpp">
       <Filter>Game\Components\Player</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerAction.cpp">
+      <Filter>Game\Components\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -477,6 +480,9 @@
       <Filter>Game\Components\Loading</Filter>
     </ClInclude>
     <ClInclude Include="PlayerAnimation.h">
+      <Filter>Game\Components\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="PlayerAction.h">
       <Filter>Game\Components\Player</Filter>
     </ClInclude>
   </ItemGroup>
