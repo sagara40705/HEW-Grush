@@ -82,6 +82,9 @@
     <Filter Include="Game\Components\Loading">
       <UniqueIdentifier>{47deb2f4-af24-434a-9507-13dda3bcdc76}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Components\GameManager">
+      <UniqueIdentifier>{7bfc992f-9fa0-477f-b671-675a90bbe95f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectX.cpp">
@@ -195,9 +198,6 @@
     <ClCompile Include="PrefabSet.cpp">
       <Filter>Game\Entry</Filter>
     </ClCompile>
-    <ClCompile Include="GlassGaugeManager.cpp">
-      <Filter>Game\Components\Environment</Filter>
-    </ClCompile>
     <ClCompile Include="GlassGaugeUI.cpp">
       <Filter>Game\Components\UI</Filter>
     </ClCompile>
@@ -278,6 +278,15 @@
     </ClCompile>
     <ClCompile Include="Hammer.cpp">
       <Filter>Game\Components\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="GlassGaugeManager.cpp">
+      <Filter>Game\Components\GameManager</Filter>
+    </ClCompile>
+    <ClCompile Include="ScoreManager.cpp">
+      <Filter>Game\Components\GameManager</Filter>
+    </ClCompile>
+    <ClCompile Include="ScoreUI.cpp">
+      <Filter>Game\Components\UI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -404,9 +413,6 @@
     <ClInclude Include="PrefabSet.h">
       <Filter>Game\Entry</Filter>
     </ClInclude>
-    <ClInclude Include="GlassGaugeManager.h">
-      <Filter>Game\Components\Environment</Filter>
-    </ClInclude>
     <ClInclude Include="GlassGaugeUI.h">
       <Filter>Game\Components\UI</Filter>
     </ClInclude>
@@ -493,6 +499,15 @@
     </ClInclude>
     <ClInclude Include="Hammer.h">
       <Filter>Game\Components\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="GlassGaugeManager.h">
+      <Filter>Game\Components\GameManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreManager.h">
+      <Filter>Game\Components\GameManager</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreUI.h">
+      <Filter>Game\Components\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -19,6 +19,7 @@ private:
 	void UpdateAction();
 	void UpdateActionCT();
 private:
+	void SetHammerActive(bool v);
 	void UpdateNormalAttack();
 	void UpdateSpinAttack();
 	void UpdateDashAttack();

@@ -17,6 +17,9 @@ public:
 private:
 	void LoadModels();
 	void LoadTextures();
+	void LoadSound() {}
+
+	void CreateManagers();
 	void CreateCameraAndPlayer();
 	void CreateStage();
 	void CreateUi();

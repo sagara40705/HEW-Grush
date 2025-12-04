@@ -29,6 +29,7 @@ void PlayerAction::Start()
 	{
 		state_->canUseAction[action] = true;
 	}
+	SetHammerActive(false);
 }
 
 void PlayerAction::Update()
@@ -101,7 +102,8 @@ void PlayerAction::CheckCanAction()
 		// 入力がある + 使用可能なら発動
 		if (state_->wantUseAction[action] && state_->canUseAction[action])
 		{
-			//使用アクションをセット
+			//使用アクションをセット + Hammerを有効化
+			SetHammerActive(true);
 			state_->usingAction = ToId(action);
 			DebugLog::Output("アクション実行");
 			//一応タイマーリセット
@@ -129,6 +131,7 @@ void PlayerAction::UpdateAction()
 		>= state_->kActionTime[ToIndex(action)])
 	{
 		DebugLog::Output("アクション終了");
+		SetHammerActive(false);
 		state_->cooltime[ToIndex(action)] = state_->kActionCT[ToIndex(action)];
 		state_->usingAction = ActionId::None;
 		return;
@@ -170,6 +173,12 @@ void PlayerAction::UpdateActionCT()
 
 void PlayerAction::StopNormalAttack()
 {
+}
+
+//攻撃中 = 有効化, その他 = 無効
+void PlayerAction::SetHammerActive(bool v)
+{
+	hammer_->gameObject->active = v;
 }
 
 // ダミー実装

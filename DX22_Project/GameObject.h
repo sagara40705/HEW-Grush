@@ -20,6 +20,9 @@ enum class Tag : std::uint8_t
 {
     None,
     GameManager,
+    GaugeManager,
+    ScoreManager,
+    TimerManager,
     CamreraPivot,
     Player,
     Hammer,

@@ -83,6 +83,24 @@ void SceneGame::LoadTextures()
 	TextureManager::Load(TextureTag::GaugeEffect);
 }
 
+void SceneGame::CreateManagers()
+{
+	World& w = GetWorld();
+
+	GameObject& gameManager = w.CreateGameObject();
+	gameManager.SetTag(Tag::GameManager);
+
+	GameObject& glassGaugeManager = w.CreateGameObject();
+	glassGaugeManager.SetTag(Tag::GaugeManager);
+	glassGaugeManager.AddComponent<GlassGaugeManager>();
+
+	GameObject& scoreManager = w.CreateGameObject();
+	scoreManager.SetTag(Tag::ScoreManager);
+
+	GameObject& timerManager = w.CreateGameObject();
+	timerManager.SetTag(Tag::TimerManager);
+}
+
 void SceneGame::CreateCameraAndPlayer()
 {
 	World& w = GetWorld();
@@ -114,9 +132,6 @@ void SceneGame::CreateCameraAndPlayer()
 	hummer.AddComponent<BoxCollider>();
 	hummer.AddComponent<Hammer>();
 	//hummer.Destroy(1.0f);
-
-	GameObject& glassGaugeManager = w.CreateGameObject();
-	glassGaugeManager.AddComponent<GlassGaugeManager>();
 
 	GameObject& sample = w.CreateGameObject(Vector3(3.f, 2.f, 3.f));
 	sample.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube);
