@@ -201,6 +201,8 @@ HRESULT InitDirectX(HWND hWnd, UINT width, UINT height, bool fullscreen)
 	}
 	SetSamplerState(SAMPLER_LINEAR);
 
+	DebugLog::Init();
+
 	return S_OK;
 }
 

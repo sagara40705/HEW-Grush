@@ -12,7 +12,6 @@
 #include "ShaderList.h"
 #include "LineManager.h"
 #include "Game.h"
-#include "DebugLog.h"
 
 
 HRESULT Init(HWND hWnd, UINT width, UINT height)
@@ -28,8 +27,7 @@ HRESULT Init(HWND hWnd, UINT width, UINT height)
 	InputKeyboard::Init();
 	InputGamepad::Init();
 	ShaderList::Init();
-	LineManager::Init();
-	DebugLog::Init();
+	//LineManager::Init();
 	// ÉVÅ[Éì
 	Game::Init();
 
@@ -40,7 +38,7 @@ void Uninit()
 {
 	Game::Uninit();
 
-	LineManager::Uninit();
+	//LineManager::Uninit();
 	ShaderList::Uninit();
 	InputGamepad::Uninit();
 	InputKeyboard::Uninit();
@@ -48,7 +46,6 @@ void Uninit()
 	TextureManager::Clear();
 	Sprite::Uninit();
 	PrimitiveMeshManager::Uninit();
-	//DebugLog::Uninit();
 	UninitDirectX();
 }
 
