@@ -48,6 +48,7 @@ void Uninit()
 	TextureManager::Clear();
 	Sprite::Uninit();
 	PrimitiveMeshManager::Uninit();
+	//DebugLog::Uninit();
 	UninitDirectX();
 }
 

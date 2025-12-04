@@ -213,4 +213,5 @@ GameObject* GameObject::FindChildWithTag(Tag tag)
     {
         if (child->CompareTag(tag)) return child;
     }
+    return nullptr;
 }

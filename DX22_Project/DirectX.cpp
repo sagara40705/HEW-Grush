@@ -1,5 +1,6 @@
 #include "DirectX.h"
 #include "Texture.h"
+#include "DebugLog.h"
 
 //--- ƒOƒ[ƒoƒ‹•Ï”
 ID3D11Device*				g_pDevice;
@@ -222,6 +223,8 @@ void UninitDirectX()
 	if(g_pSwapChain)
 		g_pSwapChain->SetFullscreenState(false, NULL);
 	SAFE_RELEASE(g_pSwapChain);
+
+	DebugLog::Uninit(g_pDevice);
 	SAFE_RELEASE(g_pDevice);
 }
 

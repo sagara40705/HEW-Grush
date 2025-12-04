@@ -3,6 +3,7 @@
 #include <string>
 #include <ctime>
 #include <sstream>
+#include <d3d11.h>  
 
 const std::string filename = "debug_log.txt";
 
@@ -14,6 +15,27 @@ public:
     {
         std::ofstream ofs(filename, std::ios::trunc); // 上書き
         if (ofs) ofs << "[Debug Log Started]\n";
+    }
+
+    static void Uninit(ID3D11Device* device)
+    {
+#if defined(_DEBUG)
+        if (device)
+        {
+            ID3D11Debug* debug = nullptr;
+            if (SUCCEEDED(device->QueryInterface(__uuidof(ID3D11Debug),
+                reinterpret_cast<void**>(&debug))))
+            {
+                // 残っている D3D11 リソースを詳細付きで出力
+                debug->ReportLiveDeviceObjects(D3D11_RLDO_DETAIL);
+                debug->Release();
+            }
+        }
+#endif
+
+        // ついでにログファイルのフッタを書いてもよい
+        std::ofstream ofs(filename, std::ios::app);
+        if (ofs) ofs << "[Debug Log End]\n";
     }
 
     static void Output(const std::string& msg)
