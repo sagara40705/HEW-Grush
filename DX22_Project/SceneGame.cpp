@@ -13,9 +13,9 @@
 #include "ModelManager.h"
 //#define CONIOEX
 #include"conioex.h"
+#include "Sound.h"
 
 World* W = nullptr;
-INT_PTR g_GameBGM;
 
 namespace
 {
@@ -64,16 +64,14 @@ namespace
 
 SceneGame::SceneGame()
 {
-
-   g_GameBGM = opensound("Sound/maou_bgm_cyber41.mp3");    // オープン＆初期化
-   if (g_GameBGM)
-   {
-       playsound(g_GameBGM, 1);
-   }
-
     W = &Game::GetWorld();
 
     Debug::Init();
+
+    //サウンド読み込み + BGM流す
+    LoadSound();
+    Sound::Play(SoundId::GameBgm, 1);
+
     RegisterTexture();
     RegisterModel();
 
@@ -148,7 +146,7 @@ SceneGame::~SceneGame()
     W->ClearAll();
     W = nullptr;
     TextureManager::Clear();
-    closesound(g_GameBGM);
+    Sound::Clear();
 }
 void SceneGame::Update()
 {
@@ -161,6 +159,16 @@ void SceneGame::Update()
 void SceneGame::Draw()
 {
     W->Draw();
+}
+
+void SceneGame::LoadSound()
+{
+    Sound::Load(SoundId::GameBgm, "Sound/maou_bgm_cyber41.mp3");
+    /*
+    
+    追加していく
+    
+    */
 }
 
 void SceneGame::RegisterTexture()

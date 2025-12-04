@@ -1,10 +1,11 @@
 #pragma once
-#include"conioex.h"
 #define CONIOEX
+#include"conioex.h"
+#include <cstdint> 
 #include <memory>
-#include <list>
+#include <array>
 
-enum class SoundId : int
+enum class SoundId : std::uint8_t
 {
 	GameBgm,
 	PlayerWalkSE,
@@ -17,18 +18,23 @@ enum class SoundId : int
 	GaugeDownSE,
 	Count
 };
-
+constexpr size_t ToIndex(SoundId id) noexcept{
+	return static_cast<size_t>(id);
+}
 
 class Sound
 {
 public:
 	static void Init();
-	static void Uninit();
+	static void Clear();
 
+	static void Load(SoundId id, const char* file);
+	static void UnLoad(SoundId id);
+	
 	static void Play(SoundId id, int loop);
-	static void Closes(SoundId id);
+	static void Stop(SoundId id);
 private:
-	static std::list<std::unique_ptr<INT_PTR>> s_sounds;
+	static std::array<INT_PTR, ToIndex(SoundId::Count)> s_sounds;
 	
 };
 
