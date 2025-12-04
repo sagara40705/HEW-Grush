@@ -41,6 +41,7 @@ private:
 	Transform* t = nullptr;
 	Transform* owner = nullptr;
 	Collider* col = nullptr;
+	PlayerAction* pa = nullptr;
 public:
 	HummerGrade grade = HummerGrade::Grade_1;
 	float gauge = 0.f;

@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "Vector2.h"
 
 enum class GlassGrade : int
 {
@@ -14,6 +15,8 @@ constexpr int ToInt(GlassGrade g) { return static_cast<int>(g); }
 constexpr float kGaugeUpValue[ToInt(GlassGrade::Count)] = { 2.f, 5.f, 10.f };
 // グレードごとのKg(スコア変動値)
 constexpr int kWeightKg[ToInt(GlassGrade::Count)] = { 1, 3, 5 };
+
+constexpr Vector2 kVibraParm[ToInt(GlassGrade::Count)] = { {0.25f, 0.6}, {0.35f, 0.8}, {0.5f, 1.0} };
 
 class GlassScript : public Component
 {

@@ -8,8 +8,12 @@
 #include "DebugLog.h"
 #include "GlassScript.h"
 #include "CameraShake.h"
+#include "PlayerAction.h"
+#include "Game.h"
+#include "Vector2.h"
 
 constexpr float kDebugGaugeUpValue = 1.0f;
+//constexpr Vector2 kVibraParm[ToInt(HummerGrade::Count)] = { {0.25f, 0.6}, {0.35f, 0.8}, {0.5f, 1.0} };
 
 static inline Vector3 Lerp(const Vector3& a, const Vector3& b, float t)
 {
@@ -21,6 +25,15 @@ void HummerScript::Start()
 	t = gameObject->TryGetComponent<Transform>();
 	col = gameObject->TryGetComponent<Collider>();
 	assert(t && "HummerScript requires Transform");
+
+	// === PlayerControllの取得 ===
+	for (auto& o : Game::GetWorld().objects)
+	{
+		if (!o->active) continue;
+		if (!o->CompareTag(Tag::Player)) continue;
+		pa = o->TryGetComponent<PlayerAction>();
+		if (pa) break;
+	}
 
 	// 当たり判定は標準OFF（プレイヤーのアクション時のみON）
 	SetInternalHitEnable(false);
@@ -65,6 +78,7 @@ void HummerScript::OnDestroy()
 	t = nullptr;
 	owner = nullptr;
 	col = nullptr;
+	pa = nullptr;
 }
 
 void HummerScript::OnTriggerStay(const TriggerInfo& c)
@@ -78,8 +92,13 @@ void HummerScript::OnTriggerStay(const TriggerInfo& c)
 		if (CheckGrade(c.other))
 		{
 			c.other->Destroy();
+			pa->PlayHitVibration(kVibraParm[ToInt(grade)].x, kVibraParm[ToInt(grade)].y);
 			CameraShake::StartShake(static_cast<CameraShake::Level>(static_cast<int>(grade)));
-			c.other->TryGetComponent<GlassScript>()->SpawnShards();
+
+			GlassScript* gs = c.other->TryGetComponent<GlassScript>();
+			gs->SpawnShards();
+			pa->PlayHitVibration(kVibraParm[ToInt(gs->grade)].x, kVibraParm[ToInt(gs->grade)].y);
+
 			GaugeUp(c.other);
 			
 			// ゲージ減衰中なら止める& Delayタイマーを初期化

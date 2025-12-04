@@ -54,9 +54,9 @@ private:
     // 調整パラメータ
     static constexpr Profile kProfiles_[static_cast<int>(Level::Count)] =
     {
-        { 0.10f, 0.15f, 12.0f, Vector3(1.0f, 0.2f, 0.0f) }, // Grade_1
-        { 0.15f, 0.25f, 12.0f, Vector3(1.0f, 0.5f, 0.0f) }, // Grade_2
-        { 0.20f, 0.35f, 12.0f, Vector3(1.0f, 1.0f, 0.0f) }, // Grade_3
+        { 0.15f, 0.15f, 12.0f, Vector3(1.0f, 0.02f, 0.0f) }, // Grade_1
+        { 0.30f, 0.25f, 15.0f, Vector3(1.0f, 0.05f, 0.0f) }, // Grade_2
+        { 0.45f, 0.35f, 50.0f, Vector3(1.5f, 0.8f, 0.0f) }, // Grade_3
     };
 
     // シングルトンインスタンス
