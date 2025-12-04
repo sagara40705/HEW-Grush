@@ -2,14 +2,15 @@
 #include "ScoreManager.h"
 #include "GameObject.h"
 
-ScoreUIManager::ScoreUIManager(CanvasUI* th, CanvasUI* h, CanvasUI* t, CanvasUI* o)
+ScoreUIManager::ScoreUIManager(CanvasUI* th, CanvasUI* h, CanvasUI* t, CanvasUI* o, CanvasUI* kg)
 {
-    if (!th || !h || !t || !o) return;
+    if (!th || !h || !t || !o || !kg) return;
 
     uiNumbers[ScoreDigit::Thousands] = th;
     uiNumbers[ScoreDigit::Hundreds] = h;
     uiNumbers[ScoreDigit::Tens] = t;
     uiNumbers[ScoreDigit::Ones] = o;
+    uiKg = kg;
 }
 
 void ScoreUIManager::Start()
@@ -29,6 +30,11 @@ void ScoreUIManager::Start()
         uiNumbers[i]->SetUVPos(GetNumberUVPos(0));
         uiNumbers[i]->SetUVScale(kNumberUVSize);
     }
+    // 位置・サイズ設定
+    uiKg->SetOffset({ 1070.0f, 90.0f });
+    uiKg->SetSize({ 1, 1 });
+    uiKg->SetUVPos({ 1, 1 });
+    uiKg->SetUVScale({ 1, 1 });
 }
 
 void ScoreUIManager::OnDestroy()

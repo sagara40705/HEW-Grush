@@ -16,12 +16,13 @@ public:
 
 private:
     CanvasUI* uiNumbers[ScoreDigit::Count]{}; // 4桁分
+    CanvasUI* uiKg;
     int currentValue = 0;
     static constexpr int MAX_VALUE = 9999;
 
 public:
-    // 4つの CanvasUI を受け取るコンストラクタ
-    ScoreUIManager(CanvasUI* th, CanvasUI* h, CanvasUI* t, CanvasUI* o);
+    // 5つの CanvasUI を受け取るコンストラクタ
+    ScoreUIManager(CanvasUI* th, CanvasUI* h, CanvasUI* t, CanvasUI* o, CanvasUI* kg);
 
     void Start() override;
     void OnDestroy() override;

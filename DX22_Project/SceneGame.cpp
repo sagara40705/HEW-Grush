@@ -115,7 +115,9 @@ void SceneGame::Unload()
 void SceneGame::RegisterTexture()
 {
     TextureManager::RegisterAuto(TextureTag::Number);
-    TextureManager::RegisterAuto(TextureTag::CountNumber);
+    TextureManager::RegisterAuto(TextureTag::Colon);
+    TextureManager::RegisterAuto(TextureTag::CountNumber); 
+    TextureManager::RegisterAuto(TextureTag::Goalkg);
     TextureManager::RegisterAuto(TextureTag::GaugeFrame);
     TextureManager::RegisterAuto(TextureTag::GaugeMax);
     TextureManager::RegisterAuto(TextureTag::GaugeEffect);
@@ -208,16 +210,17 @@ void SceneGame::CreateTimerUi()
     GameObject& om = W->CreateGameObject();
     CanvasUI& omUI = om.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Number));
 
-    GameObject& TimerUi_colon = W->CreateGameObject();
-
     GameObject& ts = W->CreateGameObject();
     CanvasUI& tsUI = ts.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Number));
 
     GameObject& os = W->CreateGameObject();
     CanvasUI& osUI = os.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Number));
 
+    GameObject& TimerUi_colon = W->CreateGameObject();
+    CanvasUI& colonUI = om.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Colon));
+
     GameObject& TimerUi_manager = W->CreateGameObject();
-    TimerUi_manager.AddComponent<TimerUIManager>(&tmUI, &omUI, &tsUI, &osUI);
+    TimerUi_manager.AddComponent<TimerUIManager>(&tmUI, &omUI, &tsUI, &osUI, &colonUI);
     TimerUi_manager.SetTag(Tag::Timer);
 }
 
@@ -242,8 +245,13 @@ void SceneGame::CreateScoreUi()
     GameObject& o = W->CreateGameObject();
     CanvasUI& oUI = o.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::CountNumber));
 
+    // –Ú•Wkg
+    GameObject& kg = W->CreateGameObject();
+    CanvasUI& kgUI = o.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Goalkg));
+
+
     GameObject& scoreUiManagerObj = W->CreateGameObject();
-    scoreUiManagerObj.AddComponent<ScoreUIManager>(&thUI, &hUI, &tUI, &oUI);
+    scoreUiManagerObj.AddComponent<ScoreUIManager>(&thUI, &hUI, &tUI, &oUI, &kgUI);
 }
 
 void SceneGame::CreateActionUi()

@@ -14,10 +14,11 @@ public:
 	};
 private:
 	CanvasUI* uiNumbers[TimerDigit::Count]{}; // •ª•ª •b•b‚Ìl‚Â
+	CanvasUI* uiColon;                        // ƒRƒƒ“
 	float currentTimer = 0.f;
 	static constexpr int MAX_SECONDS = 99 * 60 + 59; // 99:59 ‚Å‘Å‚¿~‚ß
 public:
-	TimerUIManager(CanvasUI* tm, CanvasUI* om, CanvasUI* ts, CanvasUI* os);
+	TimerUIManager(CanvasUI* tm, CanvasUI* om, CanvasUI* ts, CanvasUI* os, CanvasUI* colon);
 	void Start() override;
 	void OnDestroy() override;
 	void Update() override;

@@ -2,14 +2,15 @@
 #include "GameObject.h"
 #include "Timer.h"
 
-TimerUIManager::TimerUIManager(CanvasUI* tm, CanvasUI* om, CanvasUI* ts, CanvasUI* os)
+TimerUIManager::TimerUIManager(CanvasUI* tm, CanvasUI* om, CanvasUI* ts, CanvasUI* os, CanvasUI* colon)
 {
-	if (!tm || !om || !ts || !os) return;
+	if (!tm || !om || !ts || !os || !colon) return;
 
 	uiNumbers[TimerDigit::TensMinute] = tm;
 	uiNumbers[TimerDigit::OnesMinute] = om;
 	uiNumbers[TimerDigit::TensSecond] = ts;
 	uiNumbers[TimerDigit::OnesSecond] = os;
+	uiColon = colon;
 }
 
 void TimerUIManager::Start()
@@ -28,6 +29,12 @@ void TimerUIManager::Start()
 		uiNumbers[i]->SetUVPos(GetNumberUVPos(0));
 		uiNumbers[i]->SetUVScale(kNumberUVSize);
 	}
+	// 位置・サイズ設定
+	uiColon->SetOffset({ 1070.0f, 20.0f });
+	uiColon->SetSize({ 1, 1 });
+	uiColon->SetUVPos({ 1, 1 });
+	uiColon->SetUVScale({ 1, 1 });
+
 }
 
 void TimerUIManager::OnDestroy()
