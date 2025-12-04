@@ -29,6 +29,7 @@ struct Vector2
     Vector2 operator-(const Vector2& v) const noexcept { return { x - v.x, y - v.y }; }
     Vector2 operator*(float s) const noexcept { return { x * s, y * s }; }
     Vector2 operator/(float s) const noexcept { return { x / s, y / s }; }
+    Vector2 operator*(const Vector2& v) const noexcept { return { x * v.x, y * v.y }; }
 
     Vector2& operator+=(const Vector2& v) noexcept { x += v.x; y += v.y; return *this; }
     Vector2& operator-=(const Vector2& v) noexcept { x -= v.x; y -= v.y; return *this; }

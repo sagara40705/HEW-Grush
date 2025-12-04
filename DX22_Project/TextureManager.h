@@ -10,6 +10,10 @@ enum class TextureTag : uint8_t
     LoadGauge,
     Star,
     GaugeEffect,
+    ScoreAtoKg,
+    ScoreNumber,
+    TimerColon,
+    TimerNumber,
     Count
 };
 

@@ -50,7 +50,10 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	// テクスチャーロード
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Star); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GaugeEffect); });
-
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ScoreAtoKg); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ScoreNumber); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::TimerColon); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::TimerNumber); });
 
 	// プレイハブ設定
 	outTasks.emplace_back([this] { RegisterAllPrefabs(); });
@@ -81,6 +84,10 @@ void SceneGame::LoadTextures()
 {
 	TextureManager::Load(TextureTag::Star);
 	TextureManager::Load(TextureTag::GaugeEffect);
+	TextureManager::Load(TextureTag::ScoreAtoKg);
+	TextureManager::Load(TextureTag::ScoreNumber);
+	TextureManager::Load(TextureTag::TimerColon);
+	TextureManager::Load(TextureTag::TimerNumber);
 }
 
 void SceneGame::CreateManagers()

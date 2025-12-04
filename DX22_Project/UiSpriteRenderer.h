@@ -38,6 +38,8 @@ public:
     void SetCanvas(Canvas* c) { canvas = c; }
     void SetTexture(TextureTag tag);
     void SetSize(const Vector2& s) { size = s; }
+    void SetUVPos(const Vector2& p) { uvPos = p; }
+    void SetUVScale(const Vector2& s) { uvScale = s; }
     void SetUV(const Vector2& pos, const Vector2& scale)
     {
         uvPos = pos;

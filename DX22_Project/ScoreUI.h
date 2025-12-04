@@ -11,6 +11,7 @@ enum class ScoreDigits : std::uint8_t
 };
 constexpr size_t ToIndex(ScoreDigits d) noexcept { return static_cast<size_t>(d); }
 
+
 class ScoreManager;
 
 class ScoreUI : public MonoBehaviour
@@ -22,4 +23,7 @@ public:
 	void Start() override;
 	void Update() override;
 	void OnDestroy() override;
+private:
+	Vector2 GetUVPos(int n);
+
 };

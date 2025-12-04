@@ -8,7 +8,11 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     "Assets/Texture/Title_BackGround.png",
     "Assets/Texture/UIGauge.png",
     "Assets/Texture/Star.png",
-    "Assets/Texture/kirakira.png"
+    "Assets/Texture/kirakira.png",
+    "Assets/Texture/ato_kg.png",
+    "Assets/Texture/count_font_ss.png",
+    "Assets/Texture/time_colon.png",
+    "Assets/Texture/time_count_ss.png",
 };
 
 // 配列のデフォルトパスを使用して登録
