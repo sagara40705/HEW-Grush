@@ -27,7 +27,7 @@ HRESULT Init(HWND hWnd, UINT width, UINT height)
 	InputKeyboard::Init();
 	InputGamepad::Init();
 	ShaderList::Init();
-	//LineManager::Init();
+	LineManager::Init();
 	// ÉVÅ[Éì
 	Game::Init();
 
@@ -38,7 +38,7 @@ void Uninit()
 {
 	Game::Uninit();
 
-	//LineManager::Uninit();
+	LineManager::Uninit();
 	ShaderList::Uninit();
 	InputGamepad::Uninit();
 	InputKeyboard::Uninit();

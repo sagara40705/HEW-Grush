@@ -32,8 +32,8 @@ namespace RenderSystem
         }
 
         SetDepthTest(true);
-        //w.DebugDrawColliders();
-        //LineManager::Draw(LineManager::LineGroup::General);
+        w.DebugDrawColliders();
+        LineManager::Draw(LineManager::LineGroup::General);
 
         SetDepthTest(false);
 

@@ -3,8 +3,63 @@
 #include "Transform.h"
 #include "Camera.h"
 #include "BoxCollider.h"
+#include "DirectX.h" // GetDevice / GetContext
 
 using namespace DirectX;
+
+//=====================================================
+// ファイル内限定の動的 VB 管理
+//=====================================================
+namespace
+{
+    ID3D11Buffer* g_lineVB = nullptr;
+    UINT          g_lineVBVertexCapacity = 0;
+
+    inline XMVECTOR V3(float x, float y, float z)
+    {
+        return XMVectorSet(x, y, z, 1.0f);
+    }
+
+    bool EnsureDynamicVB(UINT requiredVertexCount)
+    {
+        if (requiredVertexCount == 0)
+        {
+            return false;
+        }
+
+        ID3D11Device* device = GetDevice();
+        if (!device) return false;
+
+        // 既に十分なサイズが確保されていれば再利用
+        if (g_lineVB && g_lineVBVertexCapacity >= requiredVertexCount)
+        {
+            return true;
+        }
+
+        // 古いバッファを破棄
+        if (g_lineVB)
+        {
+            g_lineVB->Release();
+            g_lineVB = nullptr;
+            g_lineVBVertexCapacity = 0;
+        }
+
+        D3D11_BUFFER_DESC bd = {};
+        bd.ByteWidth = sizeof(LineManager::LineVertex) * requiredVertexCount;
+        bd.Usage = D3D11_USAGE_DYNAMIC;
+        bd.BindFlags = D3D11_BIND_VERTEX_BUFFER;
+        bd.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
+
+        HRESULT hr = device->CreateBuffer(&bd, nullptr, &g_lineVB);
+        if (FAILED(hr))
+        {
+            return false;
+        }
+
+        g_lineVBVertexCapacity = requiredVertexCount;
+        return true;
+    }
+}
 
 //=====================================================
 // 静的メンバ定義
@@ -18,15 +73,6 @@ PixelShader* LineManager::s_ps = nullptr;
 
 XMFLOAT4X4 LineManager::s_view = {};
 XMFLOAT4X4 LineManager::s_proj = {};
-
-// 小ユーティリティ
-namespace
-{
-    inline XMVECTOR V3(float x, float y, float z)
-    {
-        return XMVectorSet(x, y, z, 1.0f);
-    }
-}
 
 //=====================================================
 // 公開 API
@@ -43,17 +89,19 @@ void LineManager::Init()
 
 void LineManager::Uninit()
 {
-    // VB 解放
+    // CPU 側バッファのクリア
     for (auto& b : s_buckets)
     {
-        if (b.vb)
-        {
-            delete b.vb;
-            b.vb = nullptr;
-        }
         b.cpu.clear();
         b.dirty = false;
-        b.vbVertexCount = 0;
+    }
+
+    // 動的 VB を解放
+    if (g_lineVB)
+    {
+        g_lineVB->Release();
+        g_lineVB = nullptr;
+        g_lineVBVertexCapacity = 0;
     }
 
     // シェーダ解放
@@ -102,10 +150,11 @@ void LineManager::Clear(LineGroup group)
 
     auto& bucket = s_buckets[static_cast<std::size_t>(group)];
     bucket.cpu.clear();
-    bucket.dirty = true; // VB の中身は残すが、次回描画時に更新
+    bucket.dirty = true;
 }
 
-void LineManager::AddLine(const XMFLOAT3& a, const XMFLOAT3& b, const XMFLOAT4& color, LineGroup group)
+void LineManager::AddLine(const XMFLOAT3& a, const XMFLOAT3& b,
+    const XMFLOAT4& color, LineGroup group)
 {
     if (group == LineGroup::Count)
     {
@@ -115,7 +164,8 @@ void LineManager::AddLine(const XMFLOAT3& a, const XMFLOAT3& b, const XMFLOAT4& 
     PushLine(bucket, a, b, color);
 }
 
-void LineManager::AddPolyline(const std::vector<XMFLOAT3>& points, const XMFLOAT4& color, LineGroup group)
+void LineManager::AddPolyline(const std::vector<XMFLOAT3>& points,
+    const XMFLOAT4& color, LineGroup group)
 {
     if (points.size() < 2) return;
 
@@ -125,7 +175,9 @@ void LineManager::AddPolyline(const std::vector<XMFLOAT3>& points, const XMFLOAT
     }
 }
 
-void LineManager::AddBoxCollider(const BoxCollider* bc, const XMFLOAT4& color, LineGroup group)
+void LineManager::AddBoxCollider(const BoxCollider* bc,
+    const XMFLOAT4& color,
+    LineGroup group)
 {
     if (!bc) return;
 
@@ -191,7 +243,9 @@ void LineManager::AddBoxCollider(const BoxCollider* bc, const XMFLOAT4& color, L
     PushLine(bucket, W[3], W[7], color);
 }
 
-void LineManager::AddBoxCollider(GameObject* go, const XMFLOAT4& color, LineGroup group)
+void LineManager::AddBoxCollider(GameObject* go,
+    const XMFLOAT4& color,
+    LineGroup group)
 {
     if (!go) return;
 
@@ -246,14 +300,7 @@ void LineManager::Draw(LineGroup group)
     auto drawBucket = [](LineBucket& bucket)
         {
             if (bucket.cpu.empty()) return;
-
-            if (bucket.dirty)
-            {
-                BuildDynamicVB(bucket);
-            }
-            if (!bucket.vb) return;
-
-            bucket.vb->Draw(static_cast<int>(bucket.cpu.size()));
+            BuildDynamicVB(bucket);
         };
 
     if (group == LineGroup::Count)
@@ -334,39 +381,51 @@ void LineManager::BuildDynamicVB(LineBucket& bucket)
         return;
     }
 
-    const std::uint32_t newCount = static_cast<std::uint32_t>(bucket.cpu.size());
-
-    // VB が無い or サイズが変わった場合は作り直し
-    if (!bucket.vb || bucket.vbVertexCount != newCount)
+    ID3D11DeviceContext* ctx = GetContext();
+    if (!ctx)
     {
-        if (!bucket.vb)
-        {
-            bucket.vb = new MeshBuffer();
-        }
-
-        MeshBuffer::Description d = {};
-        d.pVtx = bucket.cpu.data();
-        d.vtxCount = static_cast<int>(newCount);
-        d.vtxSize = sizeof(LineVertex);
-        d.topology = D3D11_PRIMITIVE_TOPOLOGY_LINELIST;
-        d.isWrite = true;          // 動的 VB
-        d.pIdx = nullptr;
-        d.idxSize = 0;
-        d.idxCount = 0;
-
-        bucket.vb->Create(d);
-        bucket.vbVertexCount = newCount;
+        bucket.dirty = false;
+        return;
     }
-    else
+
+    const UINT vertexCount = static_cast<UINT>(bucket.cpu.size());
+    if (!EnsureDynamicVB(vertexCount))
     {
-        // サイズが同じなら Map(WRITE_DISCARD) で中身だけ更新
-        bucket.vb->Write(static_cast<void*>(bucket.cpu.data()));
+        bucket.dirty = false;
+        return;
     }
+
+    // VB 書き込み
+    D3D11_MAPPED_SUBRESOURCE mapped = {};
+    HRESULT hr = ctx->Map(g_lineVB, 0, D3D11_MAP_WRITE_DISCARD, 0, &mapped);
+    if (FAILED(hr))
+    {
+        bucket.dirty = false;
+        return;
+    }
+
+    const size_t bytes = sizeof(LineVertex) * vertexCount;
+    memcpy_s(mapped.pData, bytes, bucket.cpu.data(), bytes);
+    ctx->Unmap(g_lineVB, 0);
+
+    // パイプライン設定
+    const UINT stride = sizeof(LineVertex);
+    const UINT offset = 0;
+
+    ctx->IASetVertexBuffers(0, 1, &g_lineVB, &stride, &offset);
+    ctx->IASetIndexBuffer(nullptr, DXGI_FORMAT_UNKNOWN, 0);
+    ctx->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
+
+    // 描画
+    ctx->Draw(vertexCount, 0);
 
     bucket.dirty = false;
 }
 
-void LineManager::PushLine(LineBucket& bucket, const XMFLOAT3& a, const XMFLOAT3& b, const XMFLOAT4& color)
+void LineManager::PushLine(LineBucket& bucket,
+    const XMFLOAT3& a,
+    const XMFLOAT3& b,
+    const XMFLOAT4& color)
 {
     LineVertex va{};
     va.pos = a;

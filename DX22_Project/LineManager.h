@@ -45,15 +45,24 @@ public:
     static void Clear(LineGroup group);
 
     // ライン追加
-    static void AddLine(const DirectX::XMFLOAT3& a, const DirectX::XMFLOAT3& b, const DirectX::XMFLOAT4& color, LineGroup group = LineGroup::General);
+    static void AddLine(const DirectX::XMFLOAT3& a,
+        const DirectX::XMFLOAT3& b,
+        const DirectX::XMFLOAT4& color,
+        LineGroup group = LineGroup::General);
 
     // 折れ線（points[0]-points[1]-...）を追加
-    static void AddPolyline(const std::vector<DirectX::XMFLOAT3>& points, const DirectX::XMFLOAT4& color, LineGroup group = LineGroup::General);
+    static void AddPolyline(const std::vector<DirectX::XMFLOAT3>& points,
+        const DirectX::XMFLOAT4& color,
+        LineGroup group = LineGroup::General);
 
     // BoxCollider の枠線を追加（Transform 付きのワールド OBB を表示）
-    static void AddBoxCollider(const BoxCollider* bc, const DirectX::XMFLOAT4& color = kGreen, LineGroup group = LineGroup::BoxCollider);
+    static void AddBoxCollider(const BoxCollider* bc,
+        const DirectX::XMFLOAT4& color = kGreen,
+        LineGroup group = LineGroup::BoxCollider);
 
-    static void AddBoxCollider(GameObject* go, const DirectX::XMFLOAT4& color = kGreen, LineGroup group = LineGroup::BoxCollider);
+    static void AddBoxCollider(GameObject* go,
+        const DirectX::XMFLOAT4& color = kGreen,
+        LineGroup group = LineGroup::BoxCollider);
 
     // 描画（group = Count のときは全レイヤーを描画）
     static void Draw(LineGroup group = LineGroup::Count);
@@ -62,9 +71,7 @@ private:
     struct LineBucket
     {
         std::vector<LineVertex> cpu;   // CPU 側頂点バッファ
-        MeshBuffer* vb = nullptr;      // GPU 側 VB（D3D11_USAGE_DYNAMIC）
-        bool dirty = false;            // CPU→GPU 転送が必要か
-        std::uint32_t vbVertexCount = 0; // 現在の VB 頂点数（Write 時のチェック用）
+        bool dirty = false;            // CPU 内容が更新されたか
     };
 
     // レイヤーごとのバケット
