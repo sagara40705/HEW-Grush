@@ -59,6 +59,8 @@ private:
 public:
 	HummerScript(Transform* _o): owner(_o)  {}
 
+	HummerScript();
+	~HummerScript();
 	void Start() override;
 	void Update() override;
 	void OnDestroy() override;

@@ -8,13 +8,39 @@
 #include "DebugLog.h"
 #include "GlassScript.h"
 
+#define CONIOEX
+#include"conioex.h"
+
+INT_PTR g_GradeUpSE;
+INT_PTR g_GradeDownSE;
+INT_PTR g_GlassbreakSE;
+INT_PTR g_GaugeDownSE;
+
 static inline Vector3 Lerp(const Vector3& a, const Vector3& b, float t)
 {
 	return a + (b - a) * std::clamp(t, 0.0f, 1.0f);
 }
 
+HummerScript::HummerScript()
+{
+
+}
+
+HummerScript::~HummerScript()
+{
+	if (g_GradeUpSE) closesound(g_GradeUpSE);
+	if (g_GradeDownSE) closesound(g_GradeDownSE);
+	if (g_GlassbreakSE)closesound(g_GlassbreakSE);
+	if (g_GaugeDownSE) closesound(g_GaugeDownSE);
+}
+
 void HummerScript::Start()
 {
+	g_GradeUpSE = opensound("Sound/start.wav");
+	g_GradeDownSE = opensound("Sound/batu.wav");
+	g_GlassbreakSE = opensound("Sound/glassbreak.mp3");
+	g_GaugeDownSE = opensound("Sound/GaugeDown.mp3");
+
 	t = Parent->TryGetComponent<Transform>();
 	col = Parent->TryGetComponent<Collider>();
 	assert(t && "HummerScript requires Transform");
@@ -48,6 +74,7 @@ void HummerScript::Update()
 			isGaugeDecaying = true;
 			timerGaugeDecayDelay = 0.f;
 			Debug::Log(" HummerScript::Update - StartGaugeDecay");
+			playsound(g_GaugeDownSE,0);
 		}
 	}
 }
@@ -71,6 +98,7 @@ void HummerScript::OnTriggerStay(const TriggerInfo& c)
 		{
 			c.other->Destroy();
 			//Debug::LogValue(" HummerScript::Destroy id", c.other->id);
+			playsound(g_GlassbreakSE,0);
 			GaugeUp(c.other);
 			
 			// ゲージ減衰中なら止める& Delayタイマーを初期化
@@ -115,13 +143,18 @@ void HummerScript::GaugeUp(GameObject* glass)
 	// ゲージを上昇
 	gauge += kGaugeUpValue[ToInt(gs->grade)];
 	Debug::LogValue(" HummerScript::gaugeratio", GetGaugeRatio());
+	
 
 	// ゲージの最大値を超えたら
 	if (gauge >= kMaxGaugeValue[ToInt(grade)])
 	{
 		// 1・2 → グレードUP , 3 → 最大値の正規化
 		if (grade == HummerGrade::Grade_3) gauge = kMaxGaugeValue[ToInt(HummerGrade::Grade_3)];
-		else GradeUp();
+		else
+		{
+			playsound(g_GradeUpSE, 0);
+			GradeUp();
+		}
 	}
 }
 
@@ -143,7 +176,12 @@ void HummerScript::GaugeDecay()
 	{
 		// 1→ 0に正規化 , 3・2  → グレードDOWN
 		if (grade == HummerGrade::Grade_1) gauge = 0.f;
-		else GradeDown();
+		else 
+		{
+			playsound(g_GradeDownSE, 0);
+			GradeDown();
+		}
+			
 	}
 }
 

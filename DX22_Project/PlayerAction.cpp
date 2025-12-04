@@ -13,7 +13,13 @@
 #include <Xinput.h>
 #pragma comment(lib, "Xinput.lib")
 using namespace DirectX;
+#define CONIOEX
+#include"conioex.h"
+
 static inline float Clamp01(float v) { return std::clamp(v, 0.0f, 1.0f); }
+INT_PTR g_WeaponSwingSE;
+INT_PTR g_DashAttackSE;
+INT_PTR g_SpinAttackSE;
 
 // ボタン割り当て（必要なら変更）
 namespace PadMap 
@@ -45,6 +51,20 @@ namespace
         const bool anyBtn = (gPad.curr.Gamepad.wButtons != 0);
         return anyBtn || AnyStickActive();
     }
+}
+
+PlayerAction::PlayerAction()
+{
+    g_WeaponSwingSE = opensound("Sound/WeaponSwing.mp3");
+    g_DashAttackSE = opensound("Sound/DashAttack.mp3");
+    g_SpinAttackSE = opensound("Sound/SpinAttack.mp3");
+}
+
+PlayerAction::~PlayerAction()
+{
+    closesound(g_WeaponSwingSE);
+    closesound(g_DashAttackSE);
+    closesound(g_SpinAttackSE);
 }
 
 void PlayerAction::Start()
@@ -130,6 +150,8 @@ void PlayerAction::DashTryStart()
 
     // この間、移動側は速度をいじらない
     move_->SetMoveOverride(true);
+
+    playsound(g_DashAttackSE, 0);
 }
 
 void PlayerAction::DashUpdate(float dt)
@@ -171,6 +193,8 @@ void PlayerAction::SpinningUpdate(float dt)
             spinning_ = true;
             spinAccumDeg_ = 0.0f;
             move_->SetRotateLock(true);
+
+            playsound(g_SpinAttackSE,0);
         }
     }
 
@@ -204,6 +228,7 @@ void PlayerAction::NormalAttackTryStart()
 
     hummer_->motionTime = normalMotionTime;
     hummer_->StartNormalAttack();
+    playsound(g_WeaponSwingSE,0);
 
     // 実質連続で撃てる＝モーション時間をCTに
     normalCooldownTimer_ = normalMotionTime;

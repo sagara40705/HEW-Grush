@@ -204,6 +204,9 @@
     <ClCompile Include="ModelManager.cpp">
       <Filter>システム</Filter>
     </ClCompile>
+    <ClCompile Include="Sound.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Defines.h">
@@ -373,6 +376,9 @@
     </ClInclude>
     <ClInclude Include="ModelManager.h">
       <Filter>システム</Filter>
+    </ClInclude>
+    <ClInclude Include="Sound.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

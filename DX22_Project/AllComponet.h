@@ -22,3 +22,4 @@
 #include "ScoreManager.h"
 #include "ScoreUIManager.h"
 #include "ActionUIManager.h"
+#include"xaudio2.h"

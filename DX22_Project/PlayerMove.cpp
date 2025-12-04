@@ -14,6 +14,11 @@
 #pragma comment(lib, "Xinput.lib")
 using namespace DirectX;
 
+#define CONIOEX
+#include"conioex.h"
+
+INT_PTR g_WalkSE;
+
 static inline float Sign(bool pos, bool neg) { return (pos ? 1.0f : 0.0f) - (neg ? 1.0f : 0.0f); }
 static inline float Rad2Deg(float r) { return r * (180.0f / 3.14159265358979323846f); }
 static inline bool OverlapXZ(const Collider::AABB& a, const Collider::AABB& b)
@@ -50,8 +55,19 @@ namespace
 constexpr XMFLOAT3 RespawnPos = { 0.0f, 1.0f, 0.0f };
 constexpr float ResetPosY = -20.0f;
 
+PlayerMove::PlayerMove()
+{
+ 
+}
+
+PlayerMove::~PlayerMove()
+{
+    closesound(g_WalkSE);
+}
+
 void PlayerMove::Start()
 {
+    g_WalkSE = opensound("Sound/walk.mp3");
     t_ = Parent->TryGetComponent<Transform>();
     rb_ = Parent->TryGetComponent<Rigidbody>();
     col_ = nullptr;
@@ -176,6 +192,14 @@ void PlayerMove::ApplyHorizontal(float dt, bool grounded)
         v.z += (targetVz - v.z) * a;
     }
 
+    if (HorizontalSpeed() > 0.1f && grounded) {
+        if (!checksound(g_WalkSE))
+            playsound(g_WalkSE, 1); // 1回再生 or ループ開始
+    }
+    else {
+        if(checksound(g_WalkSE))
+            stopsound(g_WalkSE); // 移動していないときは停止
+    }
 
 }
 
