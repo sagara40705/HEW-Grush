@@ -52,6 +52,7 @@ void MeshRenderer::Render()
     if (!(tf && cam && mf)) return;
 
     SetDepthTest(true);
+    SetCullingMode(D3D11_CULL_BACK);
 
     // === WVP ƒZƒbƒg ===
     WVPMatrices wvp{};

@@ -22,7 +22,7 @@ enum class Tag : std::uint8_t
     GameManager,
     GaugeManager,
     ScoreManager,
-    TimerManager,
+    TimerUI,
     CamreraPivot,
     Player,
     Hammer,

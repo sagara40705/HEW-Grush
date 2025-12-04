@@ -19,11 +19,9 @@ class ScoreUI : public MonoBehaviour
 private:
 	ScoreManager* score_ = nullptr;
 	UiSpriteRenderer* ui_[ToIndex(ScoreDigits::Count)]{};
+	UiSpriteRenderer* uiAtoKg_ = nullptr;
 public:
 	void Start() override;
 	void Update() override;
 	void OnDestroy() override;
-private:
-	Vector2 GetUVPos(int n);
-
 };

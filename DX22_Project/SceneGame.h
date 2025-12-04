@@ -23,6 +23,7 @@ private:
 	void CreateCameraAndPlayer();
 	void CreateStage();
 	void CreateUi();
+	void CreateScoreUI();
 };
 
 #endif // __SCENE_GAME_H__

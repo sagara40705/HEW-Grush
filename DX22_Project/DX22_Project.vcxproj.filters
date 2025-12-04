@@ -288,6 +288,9 @@
     <ClCompile Include="ScoreUI.cpp">
       <Filter>Game\Components\UI</Filter>
     </ClCompile>
+    <ClCompile Include="TimerUI.cpp">
+      <Filter>Game\Components\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -507,6 +510,9 @@
       <Filter>Game\Components\GameManager</Filter>
     </ClInclude>
     <ClInclude Include="ScoreUI.h">
+      <Filter>Game\Components\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="TimerUI.h">
       <Filter>Game\Components\UI</Filter>
     </ClInclude>
   </ItemGroup>

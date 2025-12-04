@@ -18,7 +18,7 @@ class UiSpriteRenderer final : public Renderer
 private:
     Canvas* canvas = nullptr;           // nullptr ‚Ìê‡‚Í Canvas::GetMain() ‚ğg‚¤
     TextureTag texTag;
-    Texture* texture = nullptr;
+    Texture* texture_ = nullptr;
 
     Vector2 offset = { 0.f, 0.f };
     Vector2 size = { 100.0f, 100.0f }; // •E‚‚³ [px]

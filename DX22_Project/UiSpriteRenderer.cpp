@@ -2,28 +2,31 @@
 #include "ShaderList.h"
 #include "Canvas.h"
 #include "DirectX.h"
+#include <cassert>
 using namespace DirectX;
 
 void UiSpriteRenderer::Start()
 {
     canvas = Canvas::GetMain();
-    texture = TextureManager::Get(texTag);
+    texture_ = TextureManager::Get(texTag);
+
 }
 
 void UiSpriteRenderer::OnDestroy()
 {
     canvas = nullptr;
-    texture = nullptr;
+    texture_ = nullptr;
 }
 
 void UiSpriteRenderer::SetTexture(TextureTag tag)
 {
     texTag = tag;
-    texture = TextureManager::Get(texTag);
+    texture_ = TextureManager::Get(texTag);
 }
 
 void UiSpriteRenderer::Render()
 { 
+    //assert(canvas && texture && "UiSpriteRenderer::Render()でnullptr");
     // 0) ガード
     if (!IsVisible()) return;
     if (!canvas)
@@ -31,7 +34,11 @@ void UiSpriteRenderer::Render()
         canvas = Canvas::GetMain();
         if (!canvas) return;
     }
-    if (!texture) return;
+    if (!texture_)
+    {
+        texture_ = TextureManager::Get(texTag);
+        return;
+    }
 
 
     // 1) WVP を構築
@@ -69,7 +76,7 @@ void UiSpriteRenderer::Render()
     ps->WriteBuffer(1, &param);
 
     // 5) テクスチャ・サンプラ・ステート
-    ps->SetTexture(0, texture);
+    ps->SetTexture(0, texture_);
     SetDepthTest(false);
     SetCullingMode(D3D11_CULL_NONE);
 

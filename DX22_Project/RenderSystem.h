@@ -4,8 +4,58 @@
 #include "Component.h"
 #include "GameObject.h"
 #include "LineManager.h"
+#include "UiSpriteRenderer.h"
+
+inline void Render(const World& w)
+{
+    auto isPending = [&w](ObjectId id)
+        {
+            return std::find(w.toDestroy.begin(), w.toDestroy.end(), id) != w.toDestroy.end();
+        };
+
+    // 1) 3D / 通常描画
+    SetDepthTest(true);
+    for (auto* r : w.GetRenderers())
+    {
+        if (!r) continue;
+        if (dynamic_cast<UiSpriteRenderer*>(r)) continue; // UI はここでは描かない
+
+        auto* c = dynamic_cast<Component*>(r);
+        if (!c || !c->IsEnabled()) continue;
+        GameObject* go = c->gameObject;
+        if (!go || !go->active) continue;
+        if (isPending(go->id))  continue;
+
+        r->Render();
+    }
+
+    // 2) デバッグ線など
+    w.DebugDrawColliders();
+    LineManager::Draw(LineManager::LineGroup::General);
+
+    // 3) UI のみ（深度 OFF）
+    SetDepthTest(false);
+    for (auto* r : w.GetRenderers())
+    {
+        auto* ui = dynamic_cast<UiSpriteRenderer*>(r);
+        if (!ui) continue;
+        if (!ui->IsVisible()) continue;
+
+        auto* c = static_cast<Component*>(ui);
+        if (!c->IsEnabled()) continue;
+        GameObject* go = c->gameObject;
+        if (!go || !go->active) continue;
+        if (isPending(go->id))  continue;
+
+        ui->Render();
+    }
+
+    // 後始末
+    SetDepthTest(false);
+}
 
 
+/*
 namespace RenderSystem
 {
 
@@ -40,3 +90,4 @@ namespace RenderSystem
 
     }
 }
+*/

@@ -25,3 +25,6 @@
 #include "Hammer.h"
 
 #include "GlassGaugeManager.h"
+
+#include "ScoreManager.h"
+#include "ScoreUI.h"

@@ -207,6 +207,7 @@
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TexutureManager.cpp" />
     <ClCompile Include="SceneTitle.cpp" />
+    <ClCompile Include="TimerUI.cpp" />
     <ClCompile Include="TitleManager.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="UiSpriteRenderer.cpp" />
@@ -282,6 +283,7 @@
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="SceneTitle.h" />
+    <ClInclude Include="TimerUI.h" />
     <ClInclude Include="TitleManager.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="UiSpriteRenderer.h" />
