@@ -152,6 +152,7 @@
     <ClCompile Include="BoxCollider.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraContorol.cpp" />
+    <ClCompile Include="CameraShake.cpp" />
     <ClCompile Include="Canvas.cpp" />
     <ClCompile Include="CapsuleCollider.cpp" />
     <ClCompile Include="Collider.cpp" />
@@ -225,6 +226,7 @@
     <ClInclude Include="BoxCollider.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraContorol.h" />
+    <ClInclude Include="CameraShake.h" />
     <ClInclude Include="Canvas.h" />
     <ClInclude Include="CapsuleCollider.h" />
     <ClInclude Include="Collider.h" />

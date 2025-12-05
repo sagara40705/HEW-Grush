@@ -297,6 +297,9 @@
     <ClCompile Include="GlassShard.cpp">
       <Filter>Game\Components\Environment</Filter>
     </ClCompile>
+    <ClCompile Include="CameraShake.cpp">
+      <Filter>Game\Components\Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -526,6 +529,9 @@
     </ClInclude>
     <ClInclude Include="GlassShard.h">
       <Filter>Game\Components\Environment</Filter>
+    </ClInclude>
+    <ClInclude Include="CameraShake.h">
+      <Filter>Game\Components\Camera</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
