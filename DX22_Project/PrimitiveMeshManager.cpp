@@ -26,6 +26,9 @@ void PrimitiveMeshManager::Init()
 
     CreateCylinder();
     primitiveBounds[(size_t)PrimitiveMeshTag::Cylinder] = std::sqrt(0.5f * 0.5f + 0.5f * 0.5f);
+
+    CreateGlassShard();
+    primitiveBounds[(size_t)PrimitiveMeshTag::GlassShard] = 0.5f; // radius
 }
 
 void PrimitiveMeshManager::Uninit()
@@ -315,4 +318,29 @@ void PrimitiveMeshManager::CreateCylinder()
     auto mb = std::make_unique<MeshBuffer>();
     mb->Create(desc);
     primitives[static_cast<size_t>(PrimitiveMeshTag::Cylinder)] = std::move(mb);
+}
+
+void PrimitiveMeshManager::CreateGlassShard()
+{
+    constexpr Vertex vtx[] = 
+    {
+    {{-0.5f,  0.0f, 0.0f}, {0.0f, 0.0f}},
+    {{ 0.5f,  0.0f, 0.0f}, {1.0f, 0.0f}},
+    {{ 0.0f,  1.0f, 0.0f}, {0.5f, 1.0f}},
+    };
+    constexpr unsigned int idx[] = { 0, 1, 2 };
+
+    MeshBuffer::Description desc{};
+    desc.pVtx = vtx;
+    desc.vtxCount = static_cast<UINT>(std::size(vtx));
+    desc.vtxSize = sizeof(Vertex);
+    desc.isWrite = false;
+    desc.pIdx = idx;
+    desc.idxCount = static_cast<UINT>(std::size(idx));
+    desc.idxSize = sizeof(unsigned int);
+    desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
+
+    auto mb = std::make_unique<MeshBuffer>();
+    mb->Create(desc);
+    primitives[static_cast<size_t>(PrimitiveMeshTag::GlassShard)] = std::move(mb);
 }

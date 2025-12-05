@@ -4,10 +4,10 @@
 #include "GlassGaugeManager.h"
 #include "ScoreManager.h"
 #include "DebugLog.h"
-#include "MeshFilter.h"
-#include "MeshRenderer.h"
 #include "Prefab.h"
 #include "PrefabSet.h"
+#include "Rigidbody.h"
+
 
 void GlassObject::Start()
 {
@@ -48,7 +48,11 @@ void GlassObject::SpawnShards()
 	World& W = *gameObject->world;
 
 	GameObject& shard = Prefab::Instantiate(W, PrefabId::GlassShard, tf_->GetPosition());
+	Rigidbody* rb_ = shard.GetComponent<Rigidbody>();
+	if (!rb_) return;
 
+	constexpr Vector3 Impulse = { 0.f, 10.f, 0.f };
+	rb_->AddForce(Impulse);
 	shard.Destroy(3.0f);
 
 	DebugLog::OutputValue("SpawnShards, ID", shard.id);

@@ -10,6 +10,7 @@ enum class PrimitiveMeshTag : uint8_t
     Sphere,
     Plane,
     Cylinder,
+    GlassShard,
     Count
 };
 
@@ -36,4 +37,5 @@ private:
     static void CreateSphere();
     static void CreatePlane();
     static void CreateCylinder();
+    static void CreateGlassShard();
 };
