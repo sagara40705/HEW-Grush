@@ -25,6 +25,7 @@ void Hammer::OnDestroy()
 
 void Hammer::OnTriggerStay(const TriggerInfo& info)
 {
+	DebugLog::Output("Hammer::OnTriggerStay");
 	if (info.other->CompareTag(Tag::Glass))
 	{
 		DebugLog::Output("Hammer::OnTriggerStay");
