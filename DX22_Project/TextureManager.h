@@ -13,6 +13,7 @@ enum class TextureTag : int
     GaugeMax,     
     GaugeEffect,
     SpinUI,
+    SpinButtonUI,
     DashUI,
     Count
 };

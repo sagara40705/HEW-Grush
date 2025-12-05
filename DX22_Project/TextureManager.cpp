@@ -12,7 +12,8 @@ const char* TextureManager::kTexturePath[static_cast<int>(TextureTag::Count)] =
     "Assets/Texture/lv1_0_b.png",
     "Assets/Texture/lv1_max_b.png",
     "Assets/Texture/kirakira.png",
-    "Assets/Texture/RotateUI.png",
+    "Assets/Texture/UI_rotation.png",
+    "Assets/Texture/UI_rotation_moji.png",
     "Assets/Texture/DashUI.png"
 };
 

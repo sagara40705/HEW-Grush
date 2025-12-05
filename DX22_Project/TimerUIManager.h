@@ -14,7 +14,7 @@ public:
 	};
 private:
 	CanvasUI* uiNumbers[TimerDigit::Count]{}; // •ª•ª •b•b‚Ìl‚Â
-	CanvasUI* uiColon;                        // ƒRƒƒ“
+	CanvasUI* uiColon; // ’Ç‰Á‚µ‚½êŠ
 	float currentTimer = 0.f;
 	static constexpr int MAX_SECONDS = 99 * 60 + 59; // 99:59 ‚Å‘Å‚¿~‚ß
 public:
@@ -24,8 +24,8 @@ public:
 	void Update() override;
 private:
 	const float scaleFactor = 1.f / 6.5f; // 
-	const Vector2 kNumberPos[TimerDigit::Count] = { {950.f, 20.f},{1020.f, 20.f}, {1130.f, 20.f}, {1200.f, 20.f} };	//ˆÊ’u(l‚Â•ª)
-	const Vector2 kNumberSize = { 0.5f * scaleFactor, 5.0f * scaleFactor };										//k¬—¦
+	const Vector2 kNumberPos[TimerDigit::Count] = { {930.f, 15.f},{1010.f, 15.f}, {1117.f, 15.f}, {1197.f, 15.f} };	//ˆÊ’u(l‚Â•ª)
+	const Vector2 kNumberSize = { 0.55f * scaleFactor, 5.5f * scaleFactor };										//k¬—¦
 	Vector2 GetNumberUVPos(int n) { return { n * 0.1f, 1.f }; }							//UVPos
 	const Vector2 kNumberUVSize = { 0.1f, 1.f };										//UVSize
 public:

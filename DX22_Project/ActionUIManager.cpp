@@ -5,10 +5,11 @@
 #include "PlayerAction.h"
 #include <algorithm>
 
-ActionUIManager::ActionUIManager(CanvasUI* spin, CanvasUI* dash)
+ActionUIManager::ActionUIManager(CanvasUI* spin, CanvasUI* dash, CanvasUI* spbuUI)
 {
     ui[Action::Spining] = spin;
     ui[Action::Dash] = dash;
+    buttonUi = spbuUI;
 }
 
 void ActionUIManager::Start()
@@ -39,6 +40,11 @@ void ActionUIManager::Start()
         canvas->SetUVPos({ 0.0f, 1.0f }); // 下端
         canvas->SetUVScale({ 1.0f, 0.0f }); // 高さ 0
     }
+    // 位置・サイズ設定
+    buttonUi->SetOffset({ 950.0f, 670.0f });
+    buttonUi->SetSize({ 0.1, 0.1 });
+    buttonUi->SetUVPos({ 1, 1 });
+    buttonUi->SetUVScale({ 1, 1 });
 }
 
 void ActionUIManager::OnDestroy()

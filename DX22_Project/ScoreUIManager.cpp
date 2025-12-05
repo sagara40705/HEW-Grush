@@ -31,8 +31,8 @@ void ScoreUIManager::Start()
         uiNumbers[i]->SetUVScale(kNumberUVSize);
     }
     // 位置・サイズ設定
-    uiKg->SetOffset({ 1070.0f, 90.0f });
-    uiKg->SetSize({ 1, 1 });
+    uiKg->SetOffset({ 940.0f, 130.0f });
+    uiKg->SetSize({ 0.6, 0.6 });
     uiKg->SetUVPos({ 1, 1 });
     uiKg->SetUVScale({ 1, 1 });
 }

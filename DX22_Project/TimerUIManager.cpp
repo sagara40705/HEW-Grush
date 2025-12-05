@@ -4,7 +4,7 @@
 
 TimerUIManager::TimerUIManager(CanvasUI* tm, CanvasUI* om, CanvasUI* ts, CanvasUI* os, CanvasUI* colon)
 {
-	if (!tm || !om || !ts || !os || !colon) return;
+	if (!tm || !om || !ts || !os/* || !colon*/) return;
 
 	uiNumbers[TimerDigit::TensMinute] = tm;
 	uiNumbers[TimerDigit::OnesMinute] = om;
@@ -30,8 +30,8 @@ void TimerUIManager::Start()
 		uiNumbers[i]->SetUVScale(kNumberUVSize);
 	}
 	// 位置・サイズ設定
-	uiColon->SetOffset({ 1070.0f, 20.0f });
-	uiColon->SetSize({ 1, 1 });
+	uiColon->SetOffset({ 1095.0f, 33.0f });
+	uiColon->SetSize({ 0.5, 0.5 });
 	uiColon->SetUVPos({ 1, 1 });
 	uiColon->SetUVScale({ 1, 1 });
 

@@ -122,6 +122,7 @@ void SceneGame::RegisterTexture()
     TextureManager::RegisterAuto(TextureTag::GaugeMax);
     TextureManager::RegisterAuto(TextureTag::GaugeEffect);
     TextureManager::RegisterAuto(TextureTag::SpinUI);
+    TextureManager::RegisterAuto(TextureTag::SpinButtonUI);
     TextureManager::RegisterAuto(TextureTag::DashUI);
 }
 
@@ -210,14 +211,14 @@ void SceneGame::CreateTimerUi()
     GameObject& om = W->CreateGameObject();
     CanvasUI& omUI = om.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Number));
 
+    GameObject& TimerUi_colon = W->CreateGameObject();
+    CanvasUI& colonUI = TimerUi_colon.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Colon));
+
     GameObject& ts = W->CreateGameObject();
     CanvasUI& tsUI = ts.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Number));
 
     GameObject& os = W->CreateGameObject();
     CanvasUI& osUI = os.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Number));
-
-    GameObject& TimerUi_colon = W->CreateGameObject();
-    CanvasUI& colonUI = om.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Colon));
 
     GameObject& TimerUi_manager = W->CreateGameObject();
     TimerUi_manager.AddComponent<TimerUIManager>(&tmUI, &omUI, &tsUI, &osUI, &colonUI);
@@ -245,9 +246,9 @@ void SceneGame::CreateScoreUi()
     GameObject& o = W->CreateGameObject();
     CanvasUI& oUI = o.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::CountNumber));
 
-    // –Ú•Wkg
+    //–Ú•Wkg
     GameObject& kg = W->CreateGameObject();
-    CanvasUI& kgUI = o.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Goalkg));
+    CanvasUI& kgUI = kg.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Goalkg));
 
 
     GameObject& scoreUiManagerObj = W->CreateGameObject();
@@ -260,12 +261,17 @@ void SceneGame::CreateActionUi()
     GameObject& spin = W->CreateGameObject();
     CanvasUI& spinUI = spin.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::SpinUI));
 
+    //
+    GameObject& spinBu = W->CreateGameObject();
+    CanvasUI& spbuUI = spinBu.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::SpinButtonUI));
+
+
     // 
     GameObject& dash = W->CreateGameObject();
     CanvasUI& dashUI = dash.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::DashUI));
 
     GameObject& actionUiManagerObj = W->CreateGameObject();
-    actionUiManagerObj.AddComponent<ActionUIManager>(&spinUI, &dashUI);
+    actionUiManagerObj.AddComponent<ActionUIManager>(&spinUI, &dashUI, &spbuUI);
 }
 
 void SceneGame::CreateGaugeUI()

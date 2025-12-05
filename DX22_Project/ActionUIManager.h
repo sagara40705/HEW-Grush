@@ -15,9 +15,10 @@ private:
 	};
 private:
 	CanvasUI* ui[Action::Count]{};
+	CanvasUI* buttonUi;
 	PlayerAction* pa = nullptr;
 public:
-	ActionUIManager(CanvasUI* spin, CanvasUI* dash);
+	ActionUIManager(CanvasUI* spin, CanvasUI* dash, CanvasUI* spbu);
 	void Start() override;
 	void OnDestroy() override;
 	void Update() override;
