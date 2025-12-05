@@ -1,6 +1,7 @@
 #include "SpriteAnimation.h"
 #include "UiSpriteRenderer.h"
 #include "GameObject.h"
+#include "DebugLog.h"
 
 SpriteAnimation::SpriteAnimation(int cols, int rows, int interval, int count, bool doLoop) : columns(cols), rows(rows), frameCount(count), frameInterval(interval), loop(doLoop)
 {
@@ -20,7 +21,7 @@ void SpriteAnimation::Awake()
 
     currentFrame = 0;
     frameTimer = 0;
-   
+    play = false;
 }
 
 void SpriteAnimation::Start()
@@ -53,6 +54,8 @@ void SpriteAnimation::Update()
         {
             play = false;
             currentFrame = frameCount - 1; // ç≈èIÉRÉ}Ç≈í‚é~
+            currentFrame = 0;
+            DebugLog::Output("Animation End OneLoop");
             return;
         }
     }

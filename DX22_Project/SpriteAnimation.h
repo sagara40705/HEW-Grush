@@ -22,7 +22,7 @@ private:
 
     // アニメーション状態
     int startFrame = 0;
-    bool play = true;
+    bool play = false;
     int currentFrame = 0;   // 現在のコマ番号
     int frameTimer = 0;   // 経過フレームカウンタ
 

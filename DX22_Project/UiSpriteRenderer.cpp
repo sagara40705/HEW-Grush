@@ -40,7 +40,6 @@ void UiSpriteRenderer::Render()
         return;
     }
 
-
     // 1) WVP Çç\íz
     XMMATRIX W = XMMatrixIdentity();
     XMMATRIX V = XMMatrixIdentity();

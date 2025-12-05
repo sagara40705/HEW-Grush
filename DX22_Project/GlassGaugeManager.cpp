@@ -35,9 +35,10 @@ void GlassGaugeManager::Update()
 	if (isGaugeDecaying)
 	{
 		// ゲージを減衰 + 0をした回ったらGradeDown
-		constexpr float kGaugeDecayValue = 0.1f;
-		gaude_ -= kGaugeDecayValue;
-		if (gaude_ < 0.f)
+		dirty_ = true;
+		constexpr float kGaugeDecayValue = 0.01f;
+		gauge_ -= kGaugeDecayValue;
+		if (gauge_ < 0.f)
 		{
 			GradeDown();
 		}
@@ -47,11 +48,13 @@ void GlassGaugeManager::Update()
 	{
 		// 減衰までの時間を計る
 		constexpr float DT = 0.1f / 60.f;
+		constexpr float kGaugeDecayDelayTime = 10.f; //ゲージ減衰までの時間
 		gaugeDecayDelayTimer += DT;
-		if (gaugeDecayDelayTimer > kGaugeDecayDelayTime)
+		if (gaugeDecayDelayTimer >=  kGaugeDecayDelayTime)
 		{
 			isGaugeDecaying = true;
 			gaugeDecayDelayTimer = 0.f;
+			DebugLog::Output("ゲージ減衰開始");
 		}
 	}
 }
@@ -71,12 +74,15 @@ void GlassGaugeManager::BrakeGlass(GlassGrade grade)
 	isGaugeDecaying = false;
 	gaugeDecayDelayTimer = 0.f;
 
+	dirty_ = true;
+	up_ = true;
 	//ゲージを加算
-	gaude_ += kGaugeUpVale[ToIndex(grade)];
+	gauge_ += kGaugeUpVale[ToIndex(grade)];
 	isGaugeEmpty = false;
+	DebugLog::OutputValue("GlassGaugeManager::BrakeGlass, Gauhe", gauge_);
 	
 	//ゲージの最大値を超えたらグレードUP
-	if (gaude_ >kMaxGaugeVale[ToIndex(hammer_->GetGrade())])
+	if (gauge_ > kMaxGaugeVale[ToIndex(hammer_->GetGrade())])
 	{
 		GradeUp();
 	}
@@ -84,10 +90,16 @@ void GlassGaugeManager::BrakeGlass(GlassGrade grade)
 
 void GlassGaugeManager::GradeUp()
 {
+	if (hammer_->GetGrade() == HammerGrade::Grade_3)
+	{
+		gauge_ = kMaxGaugeVale[ToIndex(HammerGrade::Grade_3)];
+		return;
+	}
+
 	hammer_->GradeUp();
 
 	constexpr float kWhenGradeUpMinGauge = 5;
-	gaude_ = kWhenGradeUpMinGauge;
+	gauge_ = kWhenGradeUpMinGauge;
 }
 
 void GlassGaugeManager::GradeDown()
@@ -95,18 +107,25 @@ void GlassGaugeManager::GradeDown()
 	if (hammer_->GetGrade() == HammerGrade::Grade_1)
 	{
 		isGaugeEmpty = true;
-		gaude_ = 0.f;
+		gauge_ = 0.f;
+		DebugLog::Output("GlassGauge, is Empty");
 		return;
 	}
 
 	hammer_->GradeDown();
 
-	gaude_ = kMaxGaugeVale[ToIndex(hammer_->GetGrade())];
+	gauge_ = kMaxGaugeVale[ToIndex(hammer_->GetGrade())];
 }
 
-void GlassGaugeManager::OnGlassBrake()
-{
 
+float GlassGaugeManager::GetGaugeRatio()
+{
+	dirty_ = false;
+	up_ = false;
+	size_t grade = ToIndex(hammer_->GetGrade());
+	float ratio = gauge_  / kMaxGaugeVale[grade];
+
+	return  ratio;
 }
 
 #ifdef _DEBUG
@@ -114,7 +133,7 @@ void GlassGaugeManager::DebugCommand()
 {
 	if (InputKeyboard::GetKeyDown('B'))
 	{
-		//BrakeGlass(GlassGrade::Grade_1);
+		BrakeGlass(GlassGrade::Grade_1);
 		DebugLog::Output("DebugCommand GaugeUp 1");
 	}
 }

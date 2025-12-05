@@ -18,15 +18,16 @@ constexpr size_t ToIndex(GlassGrade g) noexcept {
 class GlassObject : public Component
 {
 private:
-	GlassGaugeManager* ggm_ = nullptr;
+	GlassGaugeManager* gaude_ = nullptr;
 	GlassGrade grade_ = GlassGrade::Grade_1;
+	float hp_ = 0;
+	Transform* tf_ = nullptr;
 public:
 	GlassObject(GlassGrade g = GlassGrade::Grade_1) : grade_(g) {}
 	void Start() override;
 	void OnDestroy() override;
-
 public:
 	GlassGrade GetGrade() { return grade_; }
-	void TakeDamage(int v);
+	void TakeDamage(float damage);
 	void SpawnShards();
 };

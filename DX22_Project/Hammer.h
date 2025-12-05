@@ -30,6 +30,7 @@ class Hammer : public MonoBehaviour, public TriggerListener
 private:
 	HammerGrade grade_ = HammerGrade::Grade_1;
 private:
+	Transform* tf_ = nullptr;
 	BoxCollider* bc_ = nullptr;
 public:
 	void Start() override;

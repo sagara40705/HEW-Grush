@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "Rigidbody.h"
 #include "PlayerState.h"
+#include "PlayerAction.h"
 #include "PhysicsSystem.h"
 #include "InputKeyboard.h"
 #include "Animator.h"
@@ -74,6 +75,8 @@ void PlayerMove::Jump()
 //WASDとRステックで前後左右移動
 void PlayerMove::InputMoveAxis()
 {
+	if (state_->usingAction != ActionId::None) return;
+
 	Vector2 axis = Vector2::zero();
 
 	// --- キーボード WASD ---

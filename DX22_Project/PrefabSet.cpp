@@ -22,8 +22,8 @@ void RegisterAllPrefabs()
                 DirectX::XMFLOAT3{ 0, 0.7f, 0.2f },
                 DirectX::XMFLOAT3{ 1.5f, 1.5f, 1.5f });
             (void)bc;
-            //auto& gs = go.AddComponent<GlassScript>(GlassGrade::Grade_1);
-            //(void)gs;
+            auto& gs = go.AddComponent<GlassObject>(GlassGrade::Grade_1);
+            (void)gs;
         });
 
     Prefab::Register(P::Benti,
@@ -36,7 +36,7 @@ void RegisterAllPrefabs()
                 DirectX::XMFLOAT3{ 0, 1, 0 },
                 DirectX::XMFLOAT3{ 4, 2, 2 });
             (void)bc;
-            //auto& gs = go.AddComponent<GlassScript>(GlassGrade::Grade_2); (void)gs;
+            auto& gs = go.AddComponent<GlassObject>(GlassGrade::Grade_2); (void)gs;
         });
 
     Prefab::Register(P::Ufo,
@@ -49,7 +49,7 @@ void RegisterAllPrefabs()
                 DirectX::XMFLOAT3{ 0, 2, 0 },
                 DirectX::XMFLOAT3{ 4, 4, 4 });
             (void)bc;
-            //auto& gs = go.AddComponent<GlassScript>(GlassGrade::Grade_3); (void)gs;
+            auto& gs = go.AddComponent<GlassObject>(GlassGrade::Grade_3); (void)gs;
         });
 
     Prefab::Register(P::ProtPlay,
@@ -62,6 +62,6 @@ void RegisterAllPrefabs()
                 DirectX::XMFLOAT3{ -0.2f, 1, 0 },
                 DirectX::XMFLOAT3{ 1, 2, 1 });
             (void)bc;
-            //auto& gs = go.AddComponent<GlassScript>(GlassGrade::Grade_1); (void)gs;
+            auto& gs = go.AddComponent<GlassObject>(GlassGrade::Grade_1); (void)gs;
         });
 }
