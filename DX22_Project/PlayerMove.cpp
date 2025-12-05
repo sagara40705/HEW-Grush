@@ -75,7 +75,7 @@ void PlayerMove::Jump()
 //WASDとRステックで前後左右移動
 void PlayerMove::InputMoveAxis()
 {
-	if (state_->usingAction != ActionId::None) return;
+	//if (state_->usingAction != ActionId::None) return;
 
 	Vector2 axis = Vector2::zero();
 

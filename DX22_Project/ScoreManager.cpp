@@ -1,8 +1,20 @@
 #include "ScoreManager.h"
+#include "GlassObject.h"
+#include "DebugLog.h"
+#include "Game.h"
+#include "GameState.h"
 
-void ScoreManager::UpScore(int v)
+void ScoreManager::UpScore(GlassGrade grade)
 {
-	score_ += v;
+	constexpr int kUpValue[ToIndex(GlassGrade::Count)] = { 3, 6, 10 };
+
+	score_ += kUpValue[ToIndex(grade)];
+	DebugLog::OutputValue("Up Score", score_);
+
+	if (score_ >= Game::GetState()->GetGoalScore())
+	{
+		DebugLog::Output("Score Max");
+	}
 }
 
 void ScoreManager::Reset()

@@ -1,6 +1,8 @@
 #pragma once
 #include "Component.h"
 
+enum class GlassGrade : std::uint8_t;
+
 class ScoreManager : public Component
 {
 private:
@@ -9,7 +11,7 @@ private:
 public:
 	int GetScore() { return score_; }
 	bool GetDirty() { return dirty_; }
-	void UpScore(int v);
+	void UpScore(GlassGrade grade);
 	void SetDirty(bool v) { dirty_ = v; }
 	void Reset();
 };

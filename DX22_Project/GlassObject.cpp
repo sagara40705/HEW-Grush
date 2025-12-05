@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "Transform.h"
 #include "GlassGaugeManager.h"
+#include "ScoreManager.h"
 #include "DebugLog.h"
 #include "MeshFilter.h"
 #include "MeshRenderer.h"
@@ -11,6 +12,8 @@ void GlassObject::Start()
 	GameObject* gaugeMgr = gameObject->world->FindWithTag(Tag::GaugeManager);
 	gaude_ = gaugeMgr->GetComponent<GlassGaugeManager>();
 
+	GameObject* score = gameObject->FindWithTag(Tag::ScoreManager);
+	score_ = score->GetComponent<ScoreManager>();
 
 	constexpr float HP[ToIndex(GlassGrade::Count)] = { 1.f, 3.f, 5.f };
 	hp_ = HP[ToIndex(grade_)];
@@ -21,6 +24,7 @@ void GlassObject::Start()
 void GlassObject::OnDestroy()
 {
 	gaude_ = nullptr;
+	score_ = nullptr;
 	tf_ = nullptr;
 }
 
@@ -31,6 +35,7 @@ void GlassObject::TakeDamage(float damage)
 	{
 		gameObject->Destroy();
 		gaude_->BrakeGlass(grade_);
+		score_->UpScore(grade_);
 		SpawnShards();
 		DebugLog::OutputValue("GlassObject Destory, ID", gameObject->id);
 	}

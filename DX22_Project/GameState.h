@@ -10,14 +10,23 @@ enum class StageId : std::uint8_t
     // ...
     Count
 };
+constexpr size_t ToIndex(StageId stage) noexcept {
+    return static_cast<size_t>(stage);
+}
 
 struct GameState
 {
     bool hasPlayedIntroMovie = false;
+    StageId stage_ = StageId::Stage1;
+    const int kGoalScore[ToIndex(StageId::Count)] = { 1,100,100 };
 
     void Reset()
     {
         hasPlayedIntroMovie = false;
+    }
+    int GetGoalScore()
+    {
+        return kGoalScore[ToIndex(stage_)];
     }
 };
 

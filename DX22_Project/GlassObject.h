@@ -2,7 +2,7 @@
 #include <cstdint>
 #include "Component.h"
 
-class GlassGaugeManager;
+class GlassGaugeManager; class ScoreManager;
 
 enum class GlassGrade : std::uint8_t
 {
@@ -19,6 +19,7 @@ class GlassObject : public Component
 {
 private:
 	GlassGaugeManager* gaude_ = nullptr;
+	ScoreManager* score_ = nullptr;
 	GlassGrade grade_ = GlassGrade::Grade_1;
 	float hp_ = 0;
 	Transform* tf_ = nullptr;

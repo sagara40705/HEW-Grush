@@ -2,6 +2,9 @@
 #include "GameObject.h"
 #include "Transform.h"
 #include "BoxCollider.h"
+#include "GlassGaugeManager.h"
+#include "ScoreManager.h"
+
 #include "GlassObject.h"
 #include "DebugLog.h"
 
@@ -10,8 +13,14 @@ void Hammer::Start()
 	tf_ = gameObject->GetComponent<Transform>();
 	bc_ = gameObject->GetComponent<BoxCollider>();
 
-	assert(bc_ && "ŽQÆ‚Ì‚Ç‚ê‚©‚ªnullptr‚Å‚·");
-	if (!bc_) return;
+	GameObject* gauge = gameObject->FindWithTag(Tag::GaugeManager);
+	gauge_ = gauge->GetComponent<GlassGaugeManager>();
+
+	GameObject* score = gameObject->FindWithTag(Tag::ScoreManager);
+	score_ = score->GetComponent<ScoreManager>();
+
+	assert(tf_ && bc_ && gauge_ && score_ && "ŽQÆ‚Ì‚Ç‚ê‚©‚ªnullptr‚Å‚·");
+	if (!tf_ || !bc_ || !gauge_ || !score_) return;
 
 	bc_->isTrigger = true;
 	bc_->isStatic = false;
@@ -25,6 +34,8 @@ void Hammer::OnDestroy()
 {
 	tf_ = nullptr;
 	bc_ = nullptr;
+	gauge_ = nullptr;
+	score_ = nullptr;
 }
 
 void Hammer::OnTriggerStay(const TriggerInfo& info)
