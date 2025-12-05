@@ -34,24 +34,30 @@ public:
 
     Vector2& GetSize() { return size; }
 
+    // Renderer::Render ÇÃé¿ëï
+    void Render() override;
 
     // ê›íËån
     void SetCanvas(Canvas* c) { canvas = c; }
     void SetTexture(TextureTag tag);
     void SetOffset(const Vector2& o) { offset = o; }
     void SetSize(const Vector2& s) { size = s; }
-    void SetUVPos(const Vector2& p) { uvPos = p; }
-    void SetUVScale(const Vector2& s) { uvScale = s; }
+
     void SetUV(const Vector2& pos, const Vector2& scale)
     {
         uvPos = pos;
         uvScale = scale;
     }
+
+    void SetUVPos(const Vector2& p) { uvPos = p; }
+    void SetUVPosX(float x) { uvPos.x = x; }
+    void SetUVPosY(float y) { uvPos.y = y; }
+
+    void SetUVScale(const Vector2& s) { uvScale = s; }
+    void SetUVScaleX(float x) { uvScale.x = x; }
+    void SetUVScaleY(float y) { uvScale.y = y; }
+
     void SetColor(const DirectX::XMFLOAT4& c) { color = c; }
-
-    // Renderer::Render ÇÃé¿ëï
-    void Render() override;
-
 private:
     Sprite::ParamCB GetSpriteParamCB();
 };

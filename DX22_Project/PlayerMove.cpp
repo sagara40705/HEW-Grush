@@ -130,6 +130,12 @@ void PlayerMove::AlignRotationToCamera()
 {
 	if (!playerTF_ || !camTF_) return;
 
+	// š ƒAƒNƒVƒ‡ƒ“’†‚Í‰ñ“]‚ð‚±‚±‚ÅG‚ç‚È‚¢
+	if (state_ && state_->usingAction != ActionId::None)
+	{
+		return;
+	}
+
 	// “ü—Í‚ª‚Ù‚Úƒ[ƒ‚È‚çŒü‚«‚ð•Ï‚¦‚È‚¢
 	Vector2 axis = state_->moveAxis;
 	if (axis.Length() <= 0.01f)

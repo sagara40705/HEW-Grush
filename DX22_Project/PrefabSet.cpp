@@ -6,6 +6,7 @@
 #include "AllComponent.h"
 #include "TextureManager.h"
 #include "ModelManager.h"
+#include "PrimitiveMeshManager.h"
 
 void RegisterAllPrefabs()
 {
@@ -63,5 +64,11 @@ void RegisterAllPrefabs()
                 DirectX::XMFLOAT3{ 1, 2, 1 });
             (void)bc;
             auto& gs = go.AddComponent<GlassObject>(GlassGrade::Grade_1); (void)gs;
+        });
+    Prefab::Register(P::GlassShard,
+        [](GameObject& go) {
+            auto& mf = go.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); (void)mf;
+            auto& mr = go.AddComponent<MeshRenderer>(); (void)mr;
+            auto& bc = go.AddComponent<BoxCollider>();  (void)bc;
         });
 }

@@ -6,6 +6,8 @@
 #include "DebugLog.h"
 #include "MeshFilter.h"
 #include "MeshRenderer.h"
+#include "Prefab.h"
+#include "PrefabSet.h"
 
 void GlassObject::Start()
 {
@@ -43,9 +45,11 @@ void GlassObject::TakeDamage(float damage)
 
 void GlassObject::SpawnShards()
 {
-	GameObject& shard = gameObject->world->CreateGameObject(tf_->GetPosition());
-	shard.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube);
-	shard.AddComponent<MeshRenderer>();
-	shard.Destroy(1.0f);
+	World& W = *gameObject->world;
+
+	GameObject& shard = Prefab::Instantiate(W, PrefabId::GlassShard, tf_->GetPosition());
+
+	shard.Destroy(3.0f);
+
 	DebugLog::OutputValue("SpawnShards, ID", shard.id);
 }

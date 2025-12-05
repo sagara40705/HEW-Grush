@@ -10,6 +10,7 @@ enum class PrefabId : std::uint8_t
     Benti,
     Ufo,
     ProtPlay,
+    GlassShard,
     Count
 };
 
