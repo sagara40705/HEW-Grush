@@ -92,13 +92,17 @@ void World::Start()
 {
 
     // すべての GameObject に対して Start を流す
-    for (auto& up : objects)
+    // 今フレームで処理する分を退避
+    std::vector<GameObject*> starts = std::move(pendingStartObjects);
+    pendingStartObjects.clear();
+
+    for (auto& up : starts)
     {
         if (!up) continue;
+        if (!up->active) continue;
         up->CallStart();
     }
 
-    pendingStartObjects.clear();
 }
 
 void World::Update()
@@ -121,14 +125,17 @@ void World::Update()
     // 0) Start �҂� GameObject �� Start �����s
     if (!pendingStartObjects.empty())
     {
-        for (auto* go : pendingStartObjects)
+        // 今フレームで処理する分を退避
+        std::vector<GameObject*> starts = std::move(pendingStartObjects);
+        pendingStartObjects.clear();
+
+        for (auto* go : starts)
         {
             if (!go) continue;
             if (!go->active) continue;
 
             go->CallStart();
         }
-        pendingStartObjects.clear();
     }
 
     // 1) MonoBehaviour.Update �t�F�[�Y

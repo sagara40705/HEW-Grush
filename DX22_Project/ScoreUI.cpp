@@ -12,7 +12,7 @@ void ScoreUI::Start()
 	GameObject* scoreMgr = gameObject->world->FindWithTag(Tag::ScoreManager);
 	score_ = scoreMgr->GetComponent<ScoreManager>();
 
-	constexpr Vector2 kNumberPos[ToIndex(ScoreDigits::Count)] = { {100.f,0.f},{140.f,0.f},{180.f,0.f} };
+	constexpr Vector2 kNumberPos[ToIndex(ScoreDigits::Count)] = { {1050.f,75.f},{1100.f,75.f},{1150.f,75.f} };
 	constexpr Vector2 kNumberSize = { 40.f,60.f };
 	for (size_t digits = 0; digits < ToIndex(ScoreDigits::Count); ++digits)
 	{
@@ -21,8 +21,8 @@ void ScoreUI::Start()
 		ui_[digits]->SetUVScale(kNumberUVScale);
 	}
 
-	constexpr Vector2 kAtoKgPos = { 0.f,0.f };
-	constexpr Vector2 kAtoKgSize = { 400.f,80.f };
+	constexpr Vector2 kAtoKgPos = { 980.f,70.f };
+	constexpr Vector2 kAtoKgSize = { 300.f,80.f };
 
 	GameObject& atoKg = gameObject->CreateChild();
 	uiAtoKg_ = &(atoKg.AddComponent<UiSpriteRenderer>(TextureTag::ScoreAtoKg, kAtoKgPos, kAtoKgSize));

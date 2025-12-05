@@ -49,6 +49,8 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 
 	// テクスチャーロード
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Star); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GaugeEmpty); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GaugeMax); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GaugeEffect); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ScoreAtoKg); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ScoreNumber); });
@@ -63,6 +65,8 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { CreateCameraAndPlayer(); });
 	outTasks.emplace_back([this] { CreateStage(); });
 	outTasks.emplace_back([this] { CreateUi(); });
+	outTasks.emplace_back([this] { CreateGaugeUI(); });
+	outTasks.emplace_back([this] { CreateTimerUI(); });
 	outTasks.emplace_back([this] { CreateScoreUI(); });
 
 	// 最後に Start を流す
@@ -123,7 +127,7 @@ void SceneGame::CreateCameraAndPlayer()
 	GameObject& player = w.CreateGameObject(Vector3(-3.f, 2.f, 0.f), Vector3(0.f, 0.f, 0.f));
 	player.SetTag(Tag::Player);
 	player.AddComponent<MeshFilter>(ModelTag::Swing);
-	//player.AddComponent<MeshRenderer>();
+	player.AddComponent<MeshRenderer>();
 	player.AddComponent<Rigidbody>();
 	player.AddComponent<BoxCollider>();
 	player.AddComponent<PlayerState>();
@@ -136,16 +140,9 @@ void SceneGame::CreateCameraAndPlayer()
 		player.CreateChild(Vector3(0.f, 0.f, -2.f), Vector3::zero(), Vector3(0.3f, 0.3f, 0.3f));
 	hummer.SetTag(Tag::Hammer);
 	hummer.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube);
-	//hummer.AddComponent<MeshRenderer>();
+	hummer.AddComponent<MeshRenderer>();
 	hummer.AddComponent<BoxCollider>();
 	hummer.AddComponent<Hammer>();
-	//hummer.Destroy(1.0f);
-
-	GameObject& sample = w.CreateGameObject(Vector3(3.f, 2.f, 3.f));
-	sample.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube);
-	//sample.AddComponent<MeshRenderer>();
-	sample.AddComponent<BoxCollider>();
-	sample.Destroy(1.0f);
 }
 
 void SceneGame::CreateStage()
@@ -154,12 +151,11 @@ void SceneGame::CreateStage()
 
 	GameObject& floor = w.CreateGameObject(Vector3(0.f, -0.5f, 0.f), Vector3::zero(), Vector3(20.f, 0.1f, 20.f));
 	floor.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube);
-	//floor.AddComponent<MeshRenderer>();
+	floor.AddComponent<MeshRenderer>();
 	BoxCollider& collider = floor.AddComponent<BoxCollider>();
 	collider.layer = Layer::Ground;
-	//floor.Destroy(1.0f);
 
-	//Prefab::Instantiate(w, PrefabId::ProtPlay, Vector3(5.f, 0.f, 0.f), Vector3::zero(), Vector3::one());
+	Prefab::Instantiate(w, PrefabId::ProtPlay, Vector3(5.f, 0.f, 0.f), Vector3::zero(), Vector3::one());
 }
 
 void SceneGame::CreateUi()
@@ -168,19 +164,23 @@ void SceneGame::CreateUi()
 
 	GameObject& canvas = w.CreateGameObject();
 	canvas.AddComponent<Canvas>();
+}
 
-	GameObject& sampleUi = w.CreateGameObject();
-	//sampleUi.AddComponent<UiSpriteRenderer>(TextureTag::GaugeEffect, Vector2(0.f, 0.f) , Vector2(320.f, 270.f));
-	//sampleUi.AddComponent<SpriteAnimation>(8, 4, 3, 32, true);
+void SceneGame::CreateGaugeUI()
+{
+	World& w = GetWorld();
 
-	GameObject& sample = w.CreateGameObject();
-	//sample.AddComponent<UiSpriteRenderer>(TextureTag::ScoreNumber, Vector2(400.f, 0.f), Vector2(320.f, 270.f));
+	GameObject& glassGaugeUI = w.CreateGameObject();
+	glassGaugeUI.AddComponent<GlassGaugeUI>();
+}
 
-	GameObject& gaugeUi = w.CreateGameObject();
-	GameObject& gaugeFrameUi = w.CreateGameObject();
-	GameObject& gaugeEffectUi = w.CreateGameObject();
+void SceneGame::CreateTimerUI()
+{
+	World& w = GetWorld();
 
-
+	GameObject& timerUI = w.CreateGameObject();
+	timerUI.SetTag(Tag::TimerUI);
+	timerUI.AddComponent<TimerUI>();
 }
 
 void SceneGame::CreateScoreUI()

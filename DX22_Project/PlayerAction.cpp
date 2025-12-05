@@ -6,6 +6,7 @@
 #include "DebugLog.h"
 #include "InputKeyboard.h"   
 #include "InputGamepad.h"  
+#include "BoxCollider.h"
 #include <cassert>
 
 void PlayerAction::Start()
@@ -178,7 +179,7 @@ void PlayerAction::StopNormalAttack()
 //攻撃中 = 有効化, その他 = 無効
 void PlayerAction::SetHammerActive(bool v)
 {
-	hammer_->gameObject->active = v;
+	hammer_->gameObject->GetComponent<BoxCollider>()->SetEnabled(v);
 }
 
 // ダミー実装

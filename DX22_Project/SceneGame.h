@@ -23,6 +23,8 @@ private:
 	void CreateCameraAndPlayer();
 	void CreateStage();
 	void CreateUi();
+	void CreateGaugeUI();
+	void CreateTimerUI();
 	void CreateScoreUI();
 };
 

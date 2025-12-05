@@ -27,7 +27,8 @@ private:
     DirectX::XMFLOAT4 color = { 1, 1, 1, 1 };
 
 public:
-    UiSpriteRenderer(TextureTag tex, const Vector2& o, const Vector2& s) : texTag(tex), offset(o), size(s) {}
+    UiSpriteRenderer(TextureTag tex, const Vector2& o, const Vector2& s, const Vector2& uvP = Vector2::zero(), const Vector2& uvS = Vector2::one())
+        : texTag(tex), offset(o), size(s), uvPos(uvP), uvScale(uvS) {}
     void Start() override;
     void OnDestroy() override;
 

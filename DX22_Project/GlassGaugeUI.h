@@ -6,12 +6,12 @@ class GlassGaugeManager;
 class GlassGaugeUI : public MonoBehaviour
 {
 private: //éQè∆
-	GlassGaugeManager* ggm_ = nullptr;
-	UiSpriteRenderer* ui_ = nullptr;
-	GameObject* effect_ = nullptr;
-	SpriteAnimation* efAnime_ = nullptr;
+	GlassGaugeManager* manager_ = nullptr;
+	UiSpriteRenderer* empty_ = nullptr;
+	UiSpriteRenderer* max_ = nullptr;
+	SpriteAnimation* effect_ = nullptr;
+	
 public:
-	GlassGaugeUI(GameObject* effect) : effect_(effect) {}
 	void Awake() override;
 	void Start() override;
 	void Update() override;

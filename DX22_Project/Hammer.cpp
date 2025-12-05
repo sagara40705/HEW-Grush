@@ -28,7 +28,8 @@ void Hammer::OnTriggerStay(const TriggerInfo& info)
 	if (info.other->CompareTag(Tag::Glass))
 	{
 		DebugLog::Output("Hammer::OnTriggerStay");
-		info.other->Destroy();
+		Attack(info.other);
+		//info.other->Destroy();
 	}
 }
 
@@ -54,6 +55,7 @@ void Hammer::Attack(GameObject* go)
 	if (CanBrake(glass->GetGrade()))
 	{
 		go->Destroy();
+		DebugLog::Output("Hammer::CanBrake");
 	}
 	else
 	{

@@ -6,14 +6,23 @@
 
 void GlassGaugeUI::Awake()
 {
+	GameObject& gaugeEmpty = gameObject->CreateChild();
+	empty_ = &gaugeEmpty.AddComponent<UiSpriteRenderer>(TextureTag::GaugeEmpty, Vector2::zero(), Vector2(250,250));
+
+	GameObject& gaugeMax = gameObject->CreateChild();
+	max_ = &gaugeMax.AddComponent<UiSpriteRenderer>(TextureTag::GaugeMax , Vector2::zero(), Vector2(250, 250));
+
+	GameObject& gaugeEffect = gameObject->CreateChild();
+	gaugeEffect.AddComponent<UiSpriteRenderer>(TextureTag::GaugeEffect, Vector2::zero(), Vector2(250, 250));
+	effect_ = &gaugeEffect.AddComponent<SpriteAnimation>(8, 4, 3, 32, true);
 }
 
 void GlassGaugeUI::Start()
 {
-	// éQè∆éÊìæ
-	ggm_ = nullptr;
-	ui_ = GetComponent<UiSpriteRenderer>();
-	efAnime_ = effect_->GetComponent<SpriteAnimation>();
+	GameObject* galssGaugeMgr = gameObject->world->FindWithTag(Tag::GaugeManager);
+	manager_ = galssGaugeMgr->GetComponent<GlassGaugeManager>();
+
+
 }
 
 void GlassGaugeUI::Update()
@@ -23,8 +32,8 @@ void GlassGaugeUI::Update()
 
 void GlassGaugeUI::OnDestroy()
 {
-	ggm_ = nullptr;
-	ui_ = nullptr;
+	manager_ = nullptr;
+	empty_ = nullptr;
+	max_ = nullptr;
 	effect_ = nullptr;
-	efAnime_ = nullptr;
 }
