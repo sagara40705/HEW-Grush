@@ -23,7 +23,8 @@ constexpr HammerGrade PrevGrade(HammerGrade g) noexcept{
 	return static_cast<HammerGrade>(prev);
 }
 
-class BoxCollider; class GlassObject; enum class GlassGrade : std::uint8_t;
+class BoxCollider; class CameraShake;
+class GlassObject; enum class GlassGrade : std::uint8_t;
 class GlassGaugeManager; class ScoreManager;
 
 class Hammer : public MonoBehaviour, public TriggerListener
@@ -33,6 +34,7 @@ private:
 private:
 	Transform* tf_ = nullptr;
 	BoxCollider* bc_ = nullptr;
+	CameraShake* shake_ = nullptr;
 	GlassGaugeManager* gauge_ = nullptr;
 	ScoreManager* score_ = nullptr;
 public:
@@ -48,4 +50,8 @@ public:
 private:
 	void Attack(GameObject* go);
 	bool CanBrake(GlassGrade glass);
+private:
+#ifdef _DEBUG
+	void DebugCommand();
+#endif // DEBUG	
 };

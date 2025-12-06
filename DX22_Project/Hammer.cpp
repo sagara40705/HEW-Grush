@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "Transform.h"
 #include "BoxCollider.h"
+#include "CameraShake.h"
 #include "GlassGaugeManager.h"
 #include "ScoreManager.h"
 
@@ -12,6 +13,9 @@ void Hammer::Start()
 { 
 	tf_ = gameObject->GetComponent<Transform>();
 	bc_ = gameObject->GetComponent<BoxCollider>();
+
+	GameObject* camera = gameObject->FindWithTag(Tag::MainCamera);
+	shake_ = camera->GetComponent<CameraShake>();
 
 	GameObject* gauge = gameObject->FindWithTag(Tag::GaugeManager);
 	gauge_ = gauge->GetComponent<GlassGaugeManager>();
@@ -28,12 +32,16 @@ void Hammer::Start()
 
 void Hammer::Update()
 {
+#ifdef _DEBUG
+	DebugCommand();
+#endif // DEBUG	
 }
 
 void Hammer::OnDestroy()
 {
 	tf_ = nullptr;
 	bc_ = nullptr;
+	shake_ = nullptr;
 	gauge_ = nullptr;
 	score_ = nullptr;
 }
@@ -80,6 +88,9 @@ void Hammer::Attack(GameObject* go)
 	DebugLog::OutputValue("Hammer Attack Glass Object, ID", go->id);
 	glass->TakeDamage(0.5f);
 
+	if (!shake_) return;
+	shake_->Play(ShakeType::LEVEL_1);
+
 	//if (CanBrake(glass->GetGrade()))
 	//{
 	//	go->Destroy();
@@ -96,3 +107,15 @@ bool Hammer::CanBrake(GlassGrade glass)
 	return (ToIndex(glass) <= ToIndex(grade_));
 }
 
+#ifdef _DEBUG
+#include "InputKeyboard.h"
+void Hammer::DebugCommand()
+{
+	if (InputKeyboard::GetKeyDown('B'))
+	{
+		if (!shake_) return;
+		shake_->Play(ShakeType::LEVEL_1);
+		DebugLog::Output("DebugCommand Camera Shake");
+	}
+}
+#endif // DEBUG	

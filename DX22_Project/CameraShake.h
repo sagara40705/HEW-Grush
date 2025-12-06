@@ -30,6 +30,7 @@ struct ShakeParam
 class CameraShake final : public MonoBehaviour, public ILateUpdate
 {
 private:
+    Transform* tf_ = nullptr;
     ShakeParam param_;
 public:
     CameraShake() = default;
@@ -45,7 +46,7 @@ public:
     bool IsPlaying() const noexcept { return play_; }
 
     //====================== MonoBehaviour / ILateUpdate ======================
-
+    void Start() override;
     void OnDisable() override;
     void OnDestroy() override;
     void LateUpdate() override;

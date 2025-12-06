@@ -24,6 +24,7 @@ enum class Tag : std::uint8_t
     ScoreManager,
     TimerUI,
     CamreraPivot,
+    MainCamera,
     Player,
     Hammer,
     Enemy,

@@ -3,6 +3,8 @@
 #include "GameObject.h"
 #include "Camera.h"
 #include "Transform.h"
+#include "DebugLog.h"
+#include <cassert>
 #include <cstdlib> 
 #include <cmath>
 
@@ -10,9 +12,9 @@ constexpr size_t kShakeTypeCount = static_cast<size_t>(ShakeType::COUNT);
 
 const ShakeParam kShakeParam[kShakeTypeCount] =
 {
-    { 0.f, 0.f, 0.f , Vector3(0,0,0), Vector3(0,0,0), 0.f },
-    { 0.f, 0.f, 0.f , Vector3(0,0,0), Vector3(0,0,0), 0.f },
-    { 0.f, 0.f, 0.f , Vector3(0,0,0), Vector3(0,0,0), 0.f },
+    { 0.2f, 1.f, 0.f , Vector3(1,1,1), Vector3(0,0,0), 30.f },
+    { 0.3f, 0.f, 0.f , Vector3(0,0,0), Vector3(0,0,0), 30.f },
+    { 0.4f, 0.f, 0.f , Vector3(0,0,0), Vector3(0,0,0), 30.f },
 };
 
 const Vector3 kBaseLocalPos = Camera::kInitPos;
@@ -26,6 +28,7 @@ void CameraShake::Play(ShakeType type)
     param_ = kShakeParam[ToIndex(type)];
     timer_ = 0.0f;
     play_ = true;
+    DebugLog::OutputValue("CameraShake::Play, type", static_cast<int>(type));
 }
 
 void CameraShake::Stop()
@@ -35,6 +38,14 @@ void CameraShake::Stop()
     ClearOffset_();
     play_ = false;
     timer_ = 0.0f;
+    DebugLog::Output("CameraShake::Stop");
+}
+
+void CameraShake::Start()
+{
+    tf_ = gameObject->GetComponent<Transform>();
+
+    assert(tf_ && "CameraShake::Start(),Transformgがnullptr");
 }
 
 void CameraShake::OnDisable()
@@ -45,6 +56,7 @@ void CameraShake::OnDisable()
 void CameraShake::OnDestroy()
 {
     Stop();
+    tf_ = nullptr;
 }
 
 void CameraShake::LateUpdate()
@@ -67,24 +79,22 @@ void CameraShake::LateUpdate()
 
 void CameraShake::ClearOffset_()
 {
-    Transform* tf = (gameObject) ? gameObject->transform : nullptr;
-    if (!tf || !hasOffset_)
+    if (!tf_ || !hasOffset_)
     {
         hasOffset_ = false;
         return;
     }
 
     // 直前フレームで加えたオフセットを打ち消す
-    tf->SetPosition(kBaseLocalPos);
-    tf->SetRotation(kBaseLocalRot);
+    tf_->SetPosition(kBaseLocalPos);
+    tf_->SetRotation(kBaseLocalRot);
 
     hasOffset_ = false;
 }
 
 void CameraShake::StepShake_()
 {
-    Transform* tf = (gameObject) ? gameObject->transform : nullptr;
-    if (!tf)
+    if (!tf_)
     {
         Stop();
         return;
@@ -94,8 +104,8 @@ void CameraShake::StepShake_()
     // まず前フレーム分の揺れを打ち消す
     if (hasOffset_)
     {
-        tf->SetPosition(kBaseLocalPos);
-        tf->SetRotation(kBaseLocalRot) ;
+        tf_->SetPosition(kBaseLocalPos);
+        tf_->SetRotation(kBaseLocalRot) ;
     }
 
     // 減衰係数 0〜1（時間が経つほど 0 に近づく）
@@ -140,8 +150,8 @@ void CameraShake::StepShake_()
     rotOffset = rotOffset * param_.rotationAxisMask;
 
     // 新しいオフセットを適用
-    tf->SetPosition(kBaseLocalPos + posOffset);
-    tf->SetRotation(kBaseLocalRot + rotOffset);
+    tf_->SetPosition(kBaseLocalPos + posOffset);
+    tf_->SetRotation(kBaseLocalRot + rotOffset);
 
     hasOffset_ = true;
 }

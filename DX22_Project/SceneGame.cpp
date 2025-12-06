@@ -122,7 +122,9 @@ void SceneGame::CreateCameraAndPlayer()
 	cameraPivot.AddComponent<CameraControl>();
 
 	GameObject& mainCamera = cameraPivot.CreateChild(Camera::kInitPos, Camera::kInitRotate, Vector3::one());
+	mainCamera.SetTag(Tag::MainCamera);
 	mainCamera.AddComponent<Camera>();
+	mainCamera.AddComponent<CameraShake>();
 
 	GameObject& player = w.CreateGameObject(Vector3(-3.f, 2.f, 0.f), Vector3(0.f, 0.f, 0.f));
 	player.SetTag(Tag::Player);

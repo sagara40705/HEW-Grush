@@ -16,6 +16,7 @@
 #include "Animator.h"
 
 #include "CameraContorol.h"
+#include "CameraShake.h"
 
 #include "TitleManager.h"
 
