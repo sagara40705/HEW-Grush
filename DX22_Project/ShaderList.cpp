@@ -43,7 +43,7 @@ void ShaderList::Init()
 		nullptr
 	};
 	SetMaterial(material);
-	SetLight(DirectX::XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f), DirectX::XMFLOAT3(-1.0f, -1.0f, -1.0f));
+	SetLight(DirectX::XMFLOAT4(1.f, 1.1f, 1.f, 1.f), DirectX::XMFLOAT3(-1.0f, -1.0f, -1.0f));
 	SetCameraPos(DirectX::XMFLOAT3(0.0f, 1.0f, -2.0f));
 	SetFog(DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), 50.0f, 50.0f);
 }

@@ -128,8 +128,8 @@ HRESULT InitDirectX(HWND hWnd, UINT width, UINT height, bool fullscreen)
 		hr = g_pDevice->CreateRasterizerState(&rasterizer, &g_pRasterizerState[i]);
 		if (FAILED(hr)) { return hr; }
 	}
-	SetCullingMode(D3D11_CULL_BACK);
-	//SetCullingMode(D3D11_CULL_NONE);
+	//SetCullingMode(D3D11_CULL_BACK);
+	SetCullingMode(D3D11_CULL_NONE);
 
 	//--- 深度テスト
 	// https://learn.microsoft.com/ja-jp/windows/win32/direct3d11/d3d10-graphics-programming-guide-depth-stencil
