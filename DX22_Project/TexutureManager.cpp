@@ -20,6 +20,8 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
 // 配列のデフォルトパスを使用して登録
 bool TextureManager::Load(TextureTag tag)
 {
+    if (s_textures[static_cast<size_t>(tag)]) return false;
+
     int index = static_cast<int>(tag);
     const char* filePath = kTexturePath[static_cast<size_t>(tag)];
     assert(index >= 0 && index < static_cast<int>(TextureTag::Count));

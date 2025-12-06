@@ -3,6 +3,7 @@
 #include "DebugLog.h"
 #include "Game.h"
 #include "GameState.h"
+#include "SceneTitle.h"
 
 void ScoreManager::UpScore(GlassGrade grade)
 {
@@ -14,6 +15,7 @@ void ScoreManager::UpScore(GlassGrade grade)
 	if (score_ >= Game::GetState()->GetGoalScore())
 	{
 		DebugLog::Output("Score Max");
+		SceneManager::ChangeScene<SceneTitle>();
 	}
 }
 
