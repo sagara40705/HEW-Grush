@@ -46,7 +46,7 @@ void Hammer::OnDestroy()
 	score_ = nullptr;
 }
 
-void Hammer::OnTriggerStay(const TriggerInfo& info)
+void Hammer::OnTriggerEnter(const TriggerInfo& info)
 {
 	//DebugLog::OutputValue("Hammer::OnTriggerStay", info.other->id);
 	if (info.other->CompareTag(Tag::Glass))
@@ -72,10 +72,28 @@ void Hammer::GradeDown()
 
 void Hammer::SetScale()
 {
-	constexpr Vector3 Size[ToIndex(HammerGrade::Count)] = { {0.3f,0.3f,0.3f}, {0.5f,0.5f,0.5f}, {0.8f,0.8f,0.8f} };
+	constexpr Vector3 Size[ToIndex(HammerGrade::Count)] = { {0.3f,0.3f,0.8f}, {0.5f,0.5f,0.8f}, {0.8f,0.8f,0.8f} };
 
 	tf_->SetScale(Size[ToIndex(grade_)]);
 	DebugLog::OutputValue("Hammer::Scale, Grade", static_cast<int>(grade_) + 1);
+}
+
+void Hammer::UpdateNormalAttack(float r)
+{
+	if (!tf_) return;
+	if (r < 0.0f) r = 0.0f;
+	if (r > 1.0f) r = 1.0f;
+
+	constexpr Vector3 START = { -2.f, 0.f, 0.f };
+	constexpr Vector3 END =   { 2.f, 0.f, 0.f };
+
+	const Vector3 OFFSET = Vector3::Lerp(START, END, r);
+	tf_->SetPosition(BasePos + OFFSET);
+}
+
+void Hammer::ResetPos()
+{
+	tf_->SetPosition(BasePos);
 }
 
 void Hammer::Attack(GameObject* go)
@@ -86,7 +104,7 @@ void Hammer::Attack(GameObject* go)
 	if (!glass) return;
 
 	DebugLog::OutputValue("Hammer Attack Glass Object, ID", go->id);
-	glass->TakeDamage(0.5f);
+	glass->TakeDamage(kDamage[ToIndex(grade_)]);
 
 	if (!shake_) return;
 	shake_->Play(ShakeType::LEVEL_1);

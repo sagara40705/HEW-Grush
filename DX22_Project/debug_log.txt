@@ -1,20 +1,509 @@
 [Debug Log Started]
-[22:55:35] GlassGauge Ratio: 0
-[22:55:37] SpinAttack 入力受付
-[22:55:37] アクション実行
-[22:55:37] Hammer Attack Glass Object, ID: 9
-[22:55:37] CameraShake::Play, type: 0
-[22:55:37] Hammer Attack Glass Object, ID: 9
-[22:55:37] GlassGaugeManager::BrakeGlass, Gauhe: 10
-[22:55:37] Up Score: 3
-[22:55:37] Score Max
-[22:55:37] SpawnShards, ID: 27
-[22:55:37] GlassObject Destory, ID: 9
-[22:55:37] CameraShake::Play, type: 0
-[22:55:37] GlassGauge Effect Play
-[22:55:37] GlassGauge Ratio: 0.1
-[22:55:38] CameraShake::Stop
-[22:55:38] アクション終了
-[22:55:39] Animation End OneLoop
-[22:55:43] アクションCT終了
+[01:40:00] GlassGauge Ratio: 0
+[01:40:02] GlassGaugeManager::BrakeGlass, Gauhe: 10
+[01:40:02] DebugCommand GaugeUp 1
+[01:40:02] CameraShake::Play, type: 0
+[01:40:02] DebugCommand Camera Shake
+[01:40:02] GlassGauge Effect Play
+[01:40:02] GlassGauge Ratio: 0.1
+[01:40:03] CameraShake::Stop
+[01:40:03] GlassGaugeManager::BrakeGlass, Gauhe: 20
+[01:40:03] DebugCommand GaugeUp 1
+[01:40:03] CameraShake::Play, type: 0
+[01:40:03] DebugCommand Camera Shake
+[01:40:03] GlassGauge Effect Play
+[01:40:03] GlassGauge Ratio: 0.2
+[01:40:03] GlassGaugeManager::BrakeGlass, Gauhe: 30
+[01:40:03] DebugCommand GaugeUp 1
+[01:40:03] CameraShake::Play, type: 0
+[01:40:03] DebugCommand Camera Shake
+[01:40:03] GlassGauge Effect Play
+[01:40:03] GlassGauge Ratio: 0.3
+[01:40:03] GlassGaugeManager::BrakeGlass, Gauhe: 40
+[01:40:03] DebugCommand GaugeUp 1
+[01:40:03] CameraShake::Play, type: 0
+[01:40:03] DebugCommand Camera Shake
+[01:40:03] GlassGauge Effect Play
+[01:40:03] GlassGauge Ratio: 0.4
+[01:40:03] GlassGaugeManager::BrakeGlass, Gauhe: 50
+[01:40:03] DebugCommand GaugeUp 1
+[01:40:03] CameraShake::Play, type: 0
+[01:40:03] DebugCommand Camera Shake
+[01:40:03] GlassGauge Effect Play
+[01:40:03] GlassGauge Ratio: 0.5
+[01:40:04] CameraShake::Stop
+[01:40:04] GlassGaugeManager::BrakeGlass, Gauhe: 60
+[01:40:04] DebugCommand GaugeUp 1
+[01:40:04] CameraShake::Play, type: 0
+[01:40:04] DebugCommand Camera Shake
+[01:40:04] GlassGauge Effect Play
+[01:40:04] GlassGauge Ratio: 0.6
+[01:40:04] CameraShake::Stop
+[01:40:04] GlassGaugeManager::BrakeGlass, Gauhe: 70
+[01:40:04] DebugCommand GaugeUp 1
+[01:40:04] CameraShake::Play, type: 0
+[01:40:04] DebugCommand Camera Shake
+[01:40:04] GlassGauge Effect Play
+[01:40:04] GlassGauge Ratio: 0.7
+[01:40:04] Animation End OneLoop
+[01:40:04] CameraShake::Stop
+[01:40:04] GlassGaugeManager::BrakeGlass, Gauhe: 80
+[01:40:04] DebugCommand GaugeUp 1
+[01:40:04] CameraShake::Play, type: 0
+[01:40:04] DebugCommand Camera Shake
+[01:40:04] GlassGauge Effect Play
+[01:40:04] GlassGauge Ratio: 0.8
+[01:40:04] CameraShake::Stop
+[01:40:04] GlassGaugeManager::BrakeGlass, Gauhe: 90
+[01:40:04] DebugCommand GaugeUp 1
+[01:40:04] CameraShake::Play, type: 0
+[01:40:04] DebugCommand Camera Shake
+[01:40:04] GlassGauge Effect Play
+[01:40:04] GlassGauge Ratio: 0.9
+[01:40:05] CameraShake::Stop
+[01:40:05] GlassGaugeManager::BrakeGlass, Gauhe: 100
+[01:40:05] DebugCommand GaugeUp 1
+[01:40:05] CameraShake::Play, type: 0
+[01:40:05] DebugCommand Camera Shake
+[01:40:05] GlassGauge Effect Play
+[01:40:05] GlassGauge Ratio: 1
+[01:40:05] CameraShake::Stop
+[01:40:05] GlassGaugeManager::BrakeGlass, Gauhe: 110
+[01:40:05] Hammer::Scale, Grade: 2
+[01:40:05] Hammer::GradeUp, Grade: 2
+[01:40:05] DebugCommand GaugeUp 1
+[01:40:05] CameraShake::Play, type: 0
+[01:40:05] DebugCommand Camera Shake
+[01:40:05] GlassGauge Effect Play
+[01:40:05] GlassGauge Ratio: 0.025
+[01:40:05] CameraShake::Stop
+[01:40:06] Animation End OneLoop
+[01:40:07] GlassGaugeManager::BrakeGlass, Gauhe: 15
+[01:40:07] DebugCommand GaugeUp 1
+[01:40:07] CameraShake::Play, type: 0
+[01:40:07] DebugCommand Camera Shake
+[01:40:07] GlassGauge Effect Play
+[01:40:07] GlassGauge Ratio: 0.075
+[01:40:07] CameraShake::Stop
+[01:40:07] GlassGaugeManager::BrakeGlass, Gauhe: 25
+[01:40:07] DebugCommand GaugeUp 1
+[01:40:07] CameraShake::Play, type: 0
+[01:40:07] DebugCommand Camera Shake
+[01:40:07] GlassGauge Effect Play
+[01:40:07] GlassGauge Ratio: 0.125
+[01:40:08] CameraShake::Stop
+[01:40:08] GlassGaugeManager::BrakeGlass, Gauhe: 35
+[01:40:08] DebugCommand GaugeUp 1
+[01:40:08] CameraShake::Play, type: 0
+[01:40:08] DebugCommand Camera Shake
+[01:40:08] GlassGauge Effect Play
+[01:40:08] GlassGauge Ratio: 0.175
+[01:40:08] CameraShake::Stop
+[01:40:08] GlassGaugeManager::BrakeGlass, Gauhe: 45
+[01:40:08] DebugCommand GaugeUp 1
+[01:40:08] CameraShake::Play, type: 0
+[01:40:08] DebugCommand Camera Shake
+[01:40:08] GlassGauge Effect Play
+[01:40:08] GlassGauge Ratio: 0.225
+[01:40:08] CameraShake::Stop
+[01:40:08] GlassGaugeManager::BrakeGlass, Gauhe: 55
+[01:40:08] DebugCommand GaugeUp 1
+[01:40:08] CameraShake::Play, type: 0
+[01:40:08] DebugCommand Camera Shake
+[01:40:08] GlassGauge Effect Play
+[01:40:08] GlassGauge Ratio: 0.275
+[01:40:08] CameraShake::Stop
+[01:40:08] Animation End OneLoop
+[01:40:08] GlassGaugeManager::BrakeGlass, Gauhe: 65
+[01:40:08] DebugCommand GaugeUp 1
+[01:40:08] CameraShake::Play, type: 0
+[01:40:08] DebugCommand Camera Shake
+[01:40:08] GlassGauge Effect Play
+[01:40:08] GlassGauge Ratio: 0.325
+[01:40:09] CameraShake::Stop
+[01:40:09] GlassGaugeManager::BrakeGlass, Gauhe: 75
+[01:40:09] DebugCommand GaugeUp 1
+[01:40:09] CameraShake::Play, type: 0
+[01:40:09] DebugCommand Camera Shake
+[01:40:09] GlassGauge Effect Play
+[01:40:09] GlassGauge Ratio: 0.375
+[01:40:09] GlassGaugeManager::BrakeGlass, Gauhe: 85
+[01:40:09] DebugCommand GaugeUp 1
+[01:40:09] CameraShake::Play, type: 0
+[01:40:09] DebugCommand Camera Shake
+[01:40:09] GlassGauge Effect Play
+[01:40:09] GlassGauge Ratio: 0.425
+[01:40:09] GlassGaugeManager::BrakeGlass, Gauhe: 95
+[01:40:09] DebugCommand GaugeUp 1
+[01:40:09] CameraShake::Play, type: 0
+[01:40:09] DebugCommand Camera Shake
+[01:40:09] GlassGauge Effect Play
+[01:40:09] GlassGauge Ratio: 0.475
+[01:40:09] CameraShake::Stop
+[01:40:09] GlassGaugeManager::BrakeGlass, Gauhe: 105
+[01:40:09] DebugCommand GaugeUp 1
+[01:40:09] CameraShake::Play, type: 0
+[01:40:09] DebugCommand Camera Shake
+[01:40:09] GlassGauge Effect Play
+[01:40:09] GlassGauge Ratio: 0.525
+[01:40:09] GlassGaugeManager::BrakeGlass, Gauhe: 115
+[01:40:09] DebugCommand GaugeUp 1
+[01:40:09] CameraShake::Play, type: 0
+[01:40:09] DebugCommand Camera Shake
+[01:40:09] GlassGauge Effect Play
+[01:40:09] GlassGauge Ratio: 0.575
+[01:40:10] CameraShake::Stop
+[01:40:10] GlassGaugeManager::BrakeGlass, Gauhe: 125
+[01:40:10] DebugCommand GaugeUp 1
+[01:40:10] CameraShake::Play, type: 0
+[01:40:10] DebugCommand Camera Shake
+[01:40:10] GlassGauge Effect Play
+[01:40:10] GlassGauge Ratio: 0.625
+[01:40:10] CameraShake::Stop
+[01:40:10] GlassGaugeManager::BrakeGlass, Gauhe: 135
+[01:40:10] DebugCommand GaugeUp 1
+[01:40:10] CameraShake::Play, type: 0
+[01:40:10] DebugCommand Camera Shake
+[01:40:10] GlassGauge Effect Play
+[01:40:10] GlassGauge Ratio: 0.675
+[01:40:10] CameraShake::Stop
+[01:40:10] Animation End OneLoop
+[01:40:10] GlassGaugeManager::BrakeGlass, Gauhe: 145
+[01:40:10] DebugCommand GaugeUp 1
+[01:40:10] CameraShake::Play, type: 0
+[01:40:10] DebugCommand Camera Shake
+[01:40:10] GlassGauge Effect Play
+[01:40:10] GlassGauge Ratio: 0.725
+[01:40:10] CameraShake::Stop
+[01:40:11] GlassGaugeManager::BrakeGlass, Gauhe: 155
+[01:40:11] DebugCommand GaugeUp 1
+[01:40:11] CameraShake::Play, type: 0
+[01:40:11] DebugCommand Camera Shake
+[01:40:11] GlassGauge Effect Play
+[01:40:11] GlassGauge Ratio: 0.775
+[01:40:11] CameraShake::Stop
+[01:40:11] GlassGaugeManager::BrakeGlass, Gauhe: 165
+[01:40:11] DebugCommand GaugeUp 1
+[01:40:11] CameraShake::Play, type: 0
+[01:40:11] DebugCommand Camera Shake
+[01:40:11] GlassGauge Effect Play
+[01:40:11] GlassGauge Ratio: 0.825
+[01:40:11] CameraShake::Stop
+[01:40:12] GlassGaugeManager::BrakeGlass, Gauhe: 175
+[01:40:12] DebugCommand GaugeUp 1
+[01:40:12] CameraShake::Play, type: 0
+[01:40:12] DebugCommand Camera Shake
+[01:40:12] GlassGauge Effect Play
+[01:40:12] GlassGauge Ratio: 0.875
+[01:40:12] Animation End OneLoop
+[01:40:12] CameraShake::Stop
+[01:40:12] GlassGaugeManager::BrakeGlass, Gauhe: 185
+[01:40:12] DebugCommand GaugeUp 1
+[01:40:12] CameraShake::Play, type: 0
+[01:40:12] DebugCommand Camera Shake
+[01:40:12] GlassGauge Effect Play
+[01:40:12] GlassGauge Ratio: 0.925
+[01:40:12] CameraShake::Stop
+[01:40:13] GlassGaugeManager::BrakeGlass, Gauhe: 195
+[01:40:13] DebugCommand GaugeUp 1
+[01:40:13] CameraShake::Play, type: 0
+[01:40:13] DebugCommand Camera Shake
+[01:40:13] GlassGauge Effect Play
+[01:40:13] GlassGauge Ratio: 0.975
+[01:40:13] CameraShake::Stop
+[01:40:13] GlassGaugeManager::BrakeGlass, Gauhe: 205
+[01:40:13] Hammer::Scale, Grade: 3
+[01:40:13] Hammer::GradeUp, Grade: 3
+[01:40:13] DebugCommand GaugeUp 1
+[01:40:13] CameraShake::Play, type: 0
+[01:40:13] DebugCommand Camera Shake
+[01:40:13] GlassGauge Effect Play
+[01:40:13] GlassGauge Ratio: 0.0166667
+[01:40:13] CameraShake::Stop
+[01:40:14] Animation End OneLoop
+[01:40:22] SpinAttack 入力受付
+[01:40:22] アクション実行
+[01:40:22] Hammer Attack Glass Object, ID: 17
+[01:40:22] GlassGaugeManager::BrakeGlass, Gauhe: 15
+[01:40:22] Up Score: 3
+[01:40:22] Score Max
+[01:40:22] SpawnShards, ID: 43
+[01:40:22] GlassObject Destory, ID: 17
+[01:40:22] CameraShake::Play, type: 0
+[01:40:22] GlassGauge Effect Play
+[01:40:22] GlassGauge Ratio: 0.05
+[01:40:22] CameraShake::Stop
+[01:40:23] アクション終了
+[01:40:23] NormalAttack 入力受付
+[01:40:23] アクション実行
+[01:40:24] Hammer Attack Glass Object, ID: 20
+[01:40:24] GlassGaugeManager::BrakeGlass, Gauhe: 25
+[01:40:24] Up Score: 6
+[01:40:24] Score Max
+[01:40:24] SpawnShards, ID: 44
+[01:40:24] GlassObject Destory, ID: 20
+[01:40:24] CameraShake::Play, type: 0
+[01:40:24] GlassGauge Effect Play
+[01:40:24] GlassGauge Ratio: 0.0833333
+[01:40:24] CameraShake::Stop
+[01:40:24] Animation End OneLoop
+[01:40:24] アクション終了
+[01:40:24] アクションCT終了
+[01:40:25] NormalAttack 入力受付
+[01:40:25] アクション実行
+[01:40:25] Hammer Attack Glass Object, ID: 21
+[01:40:25] GlassGaugeManager::BrakeGlass, Gauhe: 35
+[01:40:25] Up Score: 9
+[01:40:25] Score Max
+[01:40:25] SpawnShards, ID: 45
+[01:40:25] GlassObject Destory, ID: 21
+[01:40:25] CameraShake::Play, type: 0
+[01:40:25] GlassGauge Effect Play
+[01:40:25] GlassGauge Ratio: 0.116667
+[01:40:25] CameraShake::Stop
+[01:40:25] アクション終了
+[01:40:25] アクションCT終了
+[01:40:27] SpinAttack 入力受付
+[01:40:27] Animation End OneLoop
+[01:40:28] NormalAttack 入力受付
+[01:40:28] アクション実行
+[01:40:28] Hammer Attack Glass Object, ID: 24
+[01:40:28] GlassGaugeManager::BrakeGlass, Gauhe: 45
+[01:40:28] Up Score: 12
+[01:40:28] Score Max
+[01:40:28] SpawnShards, ID: 46
+[01:40:28] GlassObject Destory, ID: 24
+[01:40:28] CameraShake::Play, type: 0
+[01:40:28] GlassGauge Effect Play
+[01:40:28] GlassGauge Ratio: 0.15
+[01:40:28] アクション終了
+[01:40:28] アクションCT終了
+[01:40:28] CameraShake::Stop
+[01:40:28] アクションCT終了
+[01:40:29] NormalAttack 入力受付
+[01:40:29] アクション実行
+[01:40:29] Hammer Attack Glass Object, ID: 11
+[01:40:29] GlassGaugeManager::BrakeGlass, Gauhe: 55
+[01:40:29] Up Score: 18
+[01:40:29] Score Max
+[01:40:29] SpawnShards, ID: 47
+[01:40:29] GlassObject Destory, ID: 11
+[01:40:29] CameraShake::Play, type: 0
+[01:40:29] GlassGauge Effect Play
+[01:40:29] GlassGauge Ratio: 0.183333
+[01:40:29] CameraShake::Stop
+[01:40:29] アクション終了
+[01:40:29] アクションCT終了
+[01:40:30] Animation End OneLoop
+[01:40:30] NormalAttack 入力受付
+[01:40:30] アクション実行
+[01:40:30] Hammer Attack Glass Object, ID: 25
+[01:40:30] GlassGaugeManager::BrakeGlass, Gauhe: 65
+[01:40:30] Up Score: 21
+[01:40:30] Score Max
+[01:40:30] SpawnShards, ID: 48
+[01:40:30] GlassObject Destory, ID: 25
+[01:40:30] CameraShake::Play, type: 0
+[01:40:30] GlassGauge Effect Play
+[01:40:30] GlassGauge Ratio: 0.216667
+[01:40:30] CameraShake::Stop
+[01:40:30] アクション終了
+[01:40:30] アクションCT終了
+[01:40:31] SpinAttack 入力受付
+[01:40:31] アクション実行
+[01:40:31] Hammer Attack Glass Object, ID: 12
+[01:40:31] GlassGaugeManager::BrakeGlass, Gauhe: 75
+[01:40:31] Up Score: 27
+[01:40:31] Score Max
+[01:40:31] SpawnShards, ID: 49
+[01:40:31] GlassObject Destory, ID: 12
+[01:40:31] CameraShake::Play, type: 0
+[01:40:31] GlassGauge Effect Play
+[01:40:31] GlassGauge Ratio: 0.25
+[01:40:32] CameraShake::Stop
+[01:40:32] Animation End OneLoop
+[01:40:32] アクション終了
+[01:40:34] NormalAttack 入力受付
+[01:40:34] アクション実行
+[01:40:34] Hammer Attack Glass Object, ID: 13
+[01:40:34] GlassGaugeManager::BrakeGlass, Gauhe: 85
+[01:40:34] Up Score: 30
+[01:40:34] Score Max
+[01:40:34] SpawnShards, ID: 50
+[01:40:34] GlassObject Destory, ID: 13
+[01:40:34] CameraShake::Play, type: 0
+[01:40:34] GlassGauge Effect Play
+[01:40:34] GlassGauge Ratio: 0.283333
+[01:40:34] CameraShake::Stop
+[01:40:34] アクション終了
+[01:40:35] アクションCT終了
+[01:40:35] NormalAttack 入力受付
+[01:40:35] アクション実行
+[01:40:35] Hammer Attack Glass Object, ID: 14
+[01:40:35] GlassGaugeManager::BrakeGlass, Gauhe: 95
+[01:40:35] Up Score: 33
+[01:40:35] Score Max
+[01:40:35] SpawnShards, ID: 51
+[01:40:35] GlassObject Destory, ID: 14
+[01:40:35] CameraShake::Play, type: 0
+[01:40:35] GlassGauge Effect Play
+[01:40:35] GlassGauge Ratio: 0.316667
+[01:40:35] CameraShake::Stop
+[01:40:35] アクション終了
+[01:40:35] アクションCT終了
+[01:40:36] Animation End OneLoop
+[01:40:37] アクションCT終了
+[01:40:37] SpinAttack 入力受付
+[01:40:37] アクション実行
+[01:40:37] Hammer Attack Glass Object, ID: 16
+[01:40:37] GlassGaugeManager::BrakeGlass, Gauhe: 105
+[01:40:37] Up Score: 36
+[01:40:37] Score Max
+[01:40:37] SpawnShards, ID: 52
+[01:40:37] GlassObject Destory, ID: 16
+[01:40:37] CameraShake::Play, type: 0
+[01:40:37] GlassGauge Effect Play
+[01:40:37] GlassGauge Ratio: 0.35
+[01:40:38] CameraShake::Stop
+[01:40:38] Hammer Attack Glass Object, ID: 10
+[01:40:38] GlassGaugeManager::BrakeGlass, Gauhe: 115
+[01:40:38] Up Score: 42
+[01:40:38] Score Max
+[01:40:38] SpawnShards, ID: 53
+[01:40:38] GlassObject Destory, ID: 10
+[01:40:38] CameraShake::Play, type: 0
+[01:40:38] GlassGauge Effect Play
+[01:40:38] GlassGauge Ratio: 0.383333
+[01:40:38] CameraShake::Stop
+[01:40:38] アクション終了
+[01:40:39] Animation End OneLoop
+[01:40:40] NormalAttack 入力受付
+[01:40:40] アクション実行
+[01:40:41] Hammer Attack Glass Object, ID: 23
+[01:40:41] GlassGaugeManager::BrakeGlass, Gauhe: 125
+[01:40:41] Up Score: 45
+[01:40:41] Score Max
+[01:40:41] SpawnShards, ID: 54
+[01:40:41] GlassObject Destory, ID: 23
+[01:40:41] CameraShake::Play, type: 0
+[01:40:41] GlassGauge Effect Play
+[01:40:41] GlassGauge Ratio: 0.416667
+[01:40:41] アクション終了
+[01:40:41] CameraShake::Stop
+[01:40:41] アクションCT終了
+[01:40:42] NormalAttack 入力受付
+[01:40:42] アクション実行
+[01:40:42] Hammer Attack Glass Object, ID: 9
+[01:40:42] GlassGaugeManager::BrakeGlass, Gauhe: 135
+[01:40:42] Up Score: 55
+[01:40:42] Score Max
+[01:40:42] SpawnShards, ID: 55
+[01:40:42] GlassObject Destory, ID: 9
+[01:40:42] CameraShake::Play, type: 0
+[01:40:42] GlassGauge Effect Play
+[01:40:42] GlassGauge Ratio: 0.45
+[01:40:42] アクション終了
+[01:40:42] CameraShake::Stop
+[01:40:42] アクションCT終了
+[01:40:42] Animation End OneLoop
+[01:40:44] アクションCT終了
+[01:40:45] NormalAttack 入力受付
+[01:40:45] アクション実行
+[01:40:45] アクション終了
+[01:40:45] アクションCT終了
+[01:40:45] NormalAttack 入力受付
+[01:40:45] アクション実行
+[01:40:46] アクション終了
+[01:40:46] アクションCT終了
+[01:40:46] NormalAttack 入力受付
+[01:40:46] アクション実行
+[01:40:47] アクション終了
+[01:40:47] アクションCT終了
+[01:40:47] NormalAttack 入力受付
+[01:40:47] アクション実行
+[01:40:47] Hammer Attack Glass Object, ID: 19
+[01:40:47] GlassGaugeManager::BrakeGlass, Gauhe: 145
+[01:40:47] Up Score: 58
+[01:40:47] Score Max
+[01:40:47] SpawnShards, ID: 56
+[01:40:47] GlassObject Destory, ID: 19
+[01:40:47] CameraShake::Play, type: 0
+[01:40:47] GlassGauge Effect Play
+[01:40:47] GlassGauge Ratio: 0.483333
+[01:40:47] CameraShake::Stop
+[01:40:48] アクション終了
+[01:40:48] アクションCT終了
+[01:40:48] NormalAttack 入力受付
+[01:40:48] アクション実行
+[01:40:48] アクション終了
+[01:40:49] アクションCT終了
+[01:40:49] NormalAttack 入力受付
+[01:40:49] アクション実行
+[01:40:49] Animation End OneLoop
+[01:40:49] アクション終了
+[01:40:49] アクションCT終了
+[01:40:50] NormalAttack 入力受付
+[01:40:50] アクション実行
+[01:40:50] Hammer Attack Glass Object, ID: 15
+[01:40:50] GlassGaugeManager::BrakeGlass, Gauhe: 155
+[01:40:50] Up Score: 61
+[01:40:50] Score Max
+[01:40:50] SpawnShards, ID: 57
+[01:40:50] GlassObject Destory, ID: 15
+[01:40:50] CameraShake::Play, type: 0
+[01:40:50] GlassGauge Effect Play
+[01:40:50] GlassGauge Ratio: 0.516667
+[01:40:50] CameraShake::Stop
+[01:40:50] アクション終了
+[01:40:50] アクションCT終了
+[01:40:50] NormalAttack 入力受付
+[01:40:50] アクション実行
+[01:40:51] Hammer Attack Glass Object, ID: 18
+[01:40:51] GlassGaugeManager::BrakeGlass, Gauhe: 165
+[01:40:51] Up Score: 64
+[01:40:51] Score Max
+[01:40:51] SpawnShards, ID: 58
+[01:40:51] GlassObject Destory, ID: 18
+[01:40:51] CameraShake::Play, type: 0
+[01:40:51] GlassGauge Effect Play
+[01:40:51] GlassGauge Ratio: 0.55
+[01:40:51] CameraShake::Stop
+[01:40:51] アクション終了
+[01:40:51] アクションCT終了
+[01:40:51] Animation End OneLoop
+[01:40:55] SpinAttack 入力受付
+[01:40:55] アクション実行
+[01:40:55] Hammer Attack Glass Object, ID: 22
+[01:40:55] GlassGaugeManager::BrakeGlass, Gauhe: 175
+[01:40:55] Up Score: 67
+[01:40:55] Score Max
+[01:40:55] SpawnShards, ID: 59
+[01:40:55] GlassObject Destory, ID: 22
+[01:40:55] CameraShake::Play, type: 0
+[01:40:55] GlassGauge Effect Play
+[01:40:55] GlassGauge Ratio: 0.583333
+[01:40:56] CameraShake::Stop
+[01:40:56] アクション終了
+[01:40:57] NormalAttack 入力受付
+[01:40:57] アクション実行
+[01:40:57] Animation End OneLoop
+[01:40:57] アクション終了
+[01:40:57] アクションCT終了
+[01:40:59] NormalAttack 入力受付
+[01:40:59] アクション実行
+[01:41:00] アクション終了
+[01:41:00] アクションCT終了
+[01:41:01] アクションCT終了
+[01:41:01] NormalAttack 入力受付
+[01:41:01] アクション実行
+[01:41:02] アクション終了
+[01:41:02] アクションCT終了
+[01:41:03] NormalAttack 入力受付
+[01:41:03] アクション実行
+[01:41:03] アクション終了
+[01:41:03] アクションCT終了
+[01:41:04] NormalAttack 入力受付
+[01:41:04] アクション実行
+[01:41:05] アクション終了
+[01:41:05] アクションCT終了
 [Debug Log End]

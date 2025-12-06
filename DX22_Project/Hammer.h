@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "Vector3.h"
 #include <cstdint>
 
 enum class HammerGrade : std::uint8_t
@@ -29,6 +30,8 @@ class GlassGaugeManager; class ScoreManager;
 
 class Hammer : public MonoBehaviour, public TriggerListener
 {
+public:
+	static constexpr Vector3 BasePos = {0.f, 0.f, -1.5f};
 private:
 	HammerGrade grade_ = HammerGrade::Grade_1;
 private:
@@ -41,12 +44,14 @@ public:
 	void Start() override;
 	void Update() override;
 	void OnDestroy() override;
-	void OnTriggerStay(const TriggerInfo& info) override;
+	void OnTriggerEnter(const TriggerInfo& info) override;
 public:
 	HammerGrade GetGrade() { return grade_; }
 	void GradeUp();
 	void GradeDown();
 	void SetScale();
+	void UpdateNormalAttack(float dt);
+	void ResetPos();
 private:
 	void Attack(GameObject* go);
 	bool CanBrake(GlassGrade glass);

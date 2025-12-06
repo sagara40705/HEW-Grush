@@ -139,7 +139,7 @@ void SceneGame::CreateCameraAndPlayer()
 
 
 	GameObject& hummer = 
-		player.CreateChild(Vector3(0.f, 0.f, -2.f), Vector3::zero(), Vector3(0.3f, 0.3f, 0.3f));
+		player.CreateChild(Hammer::BasePos, Vector3::zero(), Vector3(0.3f, 0.3f, 0.3f));
 	hummer.SetTag(Tag::Hammer);
 	hummer.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube);
 	hummer.AddComponent<MeshRenderer>();
@@ -151,13 +151,37 @@ void SceneGame::CreateStage()
 {
 	World& w = GetWorld();
 
-	GameObject& floor = w.CreateGameObject(Vector3(0.f, -0.5f, 0.f), Vector3::zero(), Vector3(20.f, 0.1f, 20.f));
+	GameObject& floor = w.CreateGameObject(Vector3(0.f, -1.f, 0.f), Vector3::zero(), Vector3(50.f, 0.1f, 50.f));
 	floor.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube);
 	floor.AddComponent<MeshRenderer>();
 	BoxCollider& collider = floor.AddComponent<BoxCollider>();
 	collider.layer = Layer::Ground;
 
-	Prefab::Instantiate(w, PrefabId::ProtPlay, Vector3(5.f, 0.f, 0.f), Vector3::zero(), Vector3::one());
+
+	//UFO
+	Prefab::Instantiate(w, PrefabId::Ufo, Vector3(10, -0.5f, 10), Vector3::zero(), Vector3::one());
+
+	//ベンチ
+	Prefab::Instantiate(w, PrefabId::Benti, Vector3(-10, -0.9f, 10), Vector3::zero(), Vector3(1.2f, 1.2f, 1.2f));
+	Prefab::Instantiate(w, PrefabId::Benti, Vector3(20, -0.9f, -16), Vector3::zero(), Vector3(1.2f, 1.2f, 1.2f));
+	Prefab::Instantiate(w, PrefabId::Benti, Vector3(11, -0.9f, -13), Vector3::zero(), Vector3(1.2f, 1.2f, 1.2f));
+
+	//すぃんぐ
+	Prefab::Instantiate(w, PrefabId::Swing, Vector3(-7, -0.9f, -8), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+	Prefab::Instantiate(w, PrefabId::Swing, Vector3(-12, -0.9f, -2), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+	Prefab::Instantiate(w, PrefabId::Swing, Vector3(-22, -0.9f, -13), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+
+	//プロト
+	Prefab::Instantiate(w, PrefabId::ProtPlay, Vector3(-12, -0.9f, 8), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+	Prefab::Instantiate(w, PrefabId::ProtPlay, Vector3(5, -0.9f, 2), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+	Prefab::Instantiate(w, PrefabId::ProtPlay, Vector3(-20, -0.9f, -20), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+	Prefab::Instantiate(w, PrefabId::ProtPlay, Vector3(-16, -0.9f, -16), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+	Prefab::Instantiate(w, PrefabId::ProtPlay, Vector3(13, -0.9f, 2), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+	Prefab::Instantiate(w, PrefabId::ProtPlay, Vector3(22, -0.9f, 8), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+	Prefab::Instantiate(w, PrefabId::ProtPlay, Vector3(-17, -0.9f, 15), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+	Prefab::Instantiate(w, PrefabId::ProtPlay, Vector3(6, -0.9f, 17), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+	Prefab::Instantiate(w, PrefabId::ProtPlay, Vector3(20, -0.9f, -12), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+	Prefab::Instantiate(w, PrefabId::ProtPlay, Vector3(14, -0.9f, -19), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
 }
 
 void SceneGame::CreateUi()

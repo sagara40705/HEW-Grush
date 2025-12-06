@@ -9,6 +9,9 @@
 #include "BoxCollider.h"
 #include <cassert>
 
+constexpr float kActionTime[ToIndex(ActionId::Count)] = { 0.4f, 1.f, 2.f };
+constexpr float kCoolDown[ToIndex(ActionId::Count)]  = { 0.1f, 5.f, 5.f };
+
 void PlayerAction::Start()
 {
 	tf_ = gameObject->GetComponent<Transform>();
@@ -129,11 +132,12 @@ void PlayerAction::UpdateAction()
 
 	// アクション時間を超えたら終了 + CoolTime設定
 	if (state_->actionTimer[ToIndex(action)]
-		>= state_->kActionTime[ToIndex(action)])
+		>= kActionTime[ToIndex(action)])
 	{
 		DebugLog::Output("アクション終了");
 		SetHammerActive(false);
-		state_->cooltime[ToIndex(action)] = state_->kActionCT[ToIndex(action)];
+		hammer_->ResetPos();
+		state_->cooltime[ToIndex(action)] = kCoolDown[ToIndex(action)];
 		state_->usingAction = ActionId::None;
 		return;
 	}
@@ -174,6 +178,13 @@ void PlayerAction::UpdateActionCT()
 
 void PlayerAction::StopNormalAttack()
 {
+	if (state_->usingAction == ActionId::NormalAttack)
+	{
+		DebugLog::Output("通所攻撃強制終了");
+		SetHammerActive(false);
+		state_->cooltime[ToIndex(ActionId::NormalAttack)] = state_->kActionCT[ToIndex(ActionId::NormalAttack)];
+		state_->usingAction = ActionId::None;
+	}
 }
 
 //攻撃中 = 有効化, その他 = 無効
@@ -185,7 +196,9 @@ void PlayerAction::SetHammerActive(bool v)
 // ダミー実装
 void PlayerAction::UpdateNormalAttack()
 {
+	const float ratio = state_->actionTimer[ToIndex(ActionId::NormalAttack)] / kActionTime[ToIndex(ActionId::NormalAttack)];
 
+	hammer_->UpdateNormalAttack(ratio);
 }
 
 // ダミー実装

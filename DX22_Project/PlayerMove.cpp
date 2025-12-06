@@ -117,7 +117,7 @@ void PlayerMove::ApplyMoveAxis()
 
 	move.Normalize();
 
-	constexpr float moveSpeed = 4.0f;
+	constexpr float moveSpeed = 8.0f;
 
 	// Y 速度は維持（ジャンプや重力用）
 	float vy = rb_->velocity.y;
