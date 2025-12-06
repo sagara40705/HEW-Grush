@@ -53,7 +53,7 @@ void GlassObject::SpawnShards()
 
 	constexpr Vector3 Impulse = { 0.f, 10.f, 0.f };
 	rb_->AddForce(Impulse);
-	shard.Destroy(3.0f);
+	shard.Destroy(10.0f);
 
 	DebugLog::OutputValue("SpawnShards, ID", shard.id);
 }

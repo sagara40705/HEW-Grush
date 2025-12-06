@@ -328,7 +328,7 @@ void PrimitiveMeshManager::CreateGlassShard()
     {{ 0.5f,  0.0f, 0.0f}, {1.0f, 0.0f}},
     {{ 0.0f,  1.0f, 0.0f}, {0.5f, 1.0f}},
     };
-    constexpr unsigned int idx[] = { 0, 1, 2 };
+    constexpr unsigned int idx[] = { 0, 1, 2, 0, 2, 1 };
 
     MeshBuffer::Description desc{};
     desc.pVtx = vtx;

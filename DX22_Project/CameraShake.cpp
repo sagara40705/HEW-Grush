@@ -12,7 +12,7 @@ constexpr size_t kShakeTypeCount = static_cast<size_t>(ShakeType::COUNT);
 
 const ShakeParam kShakeParam[kShakeTypeCount] =
 {
-    { 0.2f, 1.f, 0.f , Vector3(1,1,1), Vector3(0,0,0), 30.f },
+    { 0.2f, 0.5f, 0.f , Vector3(1,1,1), Vector3(0,0,0), 30.f },
     { 0.3f, 0.f, 0.f , Vector3(0,0,0), Vector3(0,0,0), 30.f },
     { 0.4f, 0.f, 0.f , Vector3(0,0,0), Vector3(0,0,0), 30.f },
 };
