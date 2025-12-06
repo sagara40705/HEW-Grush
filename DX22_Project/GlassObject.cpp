@@ -60,7 +60,7 @@ void GlassObject::SpawnShards()
 
 void GlassObject::SetGlassParamPS()
 {
-	DirectX::XMFLOAT4 Tint[ToIndex(GlassGrade::Count)] = { {0.7f, 0.8f, 1.0f, 0.9f}, {0.7f, 1.0f, 0.7f, 0.7f}, {1.0f, 0.7f, 0.7f, 0.7f} };
+	DirectX::XMFLOAT4 Tint[ToIndex(GlassGrade::Count)] = { {0.7f, 0.8f, 1.0f, 0.6f}, {0.7f, 1.0f, 0.7f, 0.6f}, {1.0f, 0.7f, 0.7f, 0.6f} };
 
-	ShaderList::SetGlassParam(Tint[ToIndex(grade_)], 1.0f, 0.3f, 0.8f);
+	ShaderList::SetGlassParam(Tint[ToIndex(grade_)], 3.0f, 0.5f, 1.0f);
 }
