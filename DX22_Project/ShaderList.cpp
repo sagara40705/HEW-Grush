@@ -26,7 +26,7 @@ void ShaderList::Init()
 	MakeToonPS();
 	MakeFogPS();
 	MakeSpritePS();
-	MakeShardPS();
+	MakeGlassPS();
 
 	DirectX::XMFLOAT4X4 mat[250];
 	for (int i = 0; i < 250; ++i)
@@ -122,6 +122,7 @@ void ShaderList::SetCameraPos(const DirectX::XMFLOAT3 pos)
 	};
 	m_pPS[PS_SPECULAR]->WriteBuffer(2, param);
 	m_pPS[PS_TOON]->WriteBuffer(2, param);
+	m_pPS[PS_GLASS]->WriteBuffer(2, param);
 }
 void ShaderList::SetFog(DirectX::XMFLOAT4 color, float start, float range)
 {
@@ -130,6 +131,19 @@ void ShaderList::SetFog(DirectX::XMFLOAT4 color, float start, float range)
 		{start, range, 0.0f, 0.0f}
 	};
 	m_pPS[PS_FOG]->WriteBuffer(3, param);
+}
+void ShaderList::SetGlassParam(const DirectX::XMFLOAT4& tint, float fresnelPower, float reflectionStrength, float transmissionStrength)
+{
+	DirectX::XMFLOAT4 param[2];
+
+	// tint
+	param[0] = tint;  // tint = { r, g, b, a } (a にベースアルファ)
+
+	// glassParams = { fresnelPower, reflectionStrength, transmissionStrength, 0 }
+	param[1] = DirectX::XMFLOAT4(fresnelPower, reflectionStrength, transmissionStrength, 0.0f);
+
+	// b3 に書き込む
+	m_pPS[PS_GLASS]->WriteBuffer(3, param);
 }
 
 void ShaderList::MakePrimVS()
@@ -301,7 +315,6 @@ VS_OUT main(VS_IN vin)
 	m_pVS[VS_SPRITE] = new VertexShader();
 	m_pVS[VS_SPRITE]->Compile(code);
 }
-
 void ShaderList::MakeShardVS()
 {
 }
@@ -313,6 +326,12 @@ struct PS_IN
 {
 	float4 pos : SV_POSITION;
 	float2 uv : TEXCOORD0;
+};
+cbuffer Material : register(b0)
+{
+	float4 objDiffuse;
+	float4 objAmbient;
+	float4 objSpecular;
 };
 float4 main(PS_IN pin) : SV_TARGET0 
 {
@@ -557,7 +576,93 @@ float4 main(PS_IN pin) : SV_TARGET
 	m_pPS[PS_SPRITE] = new PixelShader();
 	m_pPS[PS_SPRITE]->Compile(code);
 }
-
-void ShaderList::MakeShardPS()
+void ShaderList::MakeGlassPS()
 {
+	const char* code = R"EOT(
+struct PS_IN {
+	float4 pos : SV_POSITION;
+	float3 normal : NORMAL0;
+	float2 uv : TEXCOORD0;
+	float4 color : COLOR0;
+	float4 wPos  : POSITION0;
+};
+cbuffer Material : register(b0)
+{
+	float4 objDiffuse;
+	float4 objAmbient;
+	float4 objSpecular;
+
+};
+cbuffer Light : register(b1)
+{
+	float4 lightDiffuse;
+	float4 lightDir;
+};
+cbuffer Camera : register(b2)
+{
+	float4 cameraPos;
+};
+// ガラス固有パラメータ
+cbuffer GlassParam : register(b3)
+{
+    float4 glassTint;        // rgb = ガラスの色, a = ベースアルファ
+    float4 glassParams;  
+};
+Texture2D tex : register(t0);
+SamplerState samp : register(s0);
+float4 main(PS_IN pin) : SV_TARGET
+{
+	float3 N = normalize(pin.normal);
+    float3 L = normalize(-lightDir.xyz);
+    float3 V = normalize(cameraPos.xyz - pin.wPos.xyz);
+
+	float dotNL = saturate(dot(N, L));
+    float minNL = 0.3;
+    dotNL = lerp(minNL, 1.0f, dotNL);
+
+	float3 baseColor    = objDiffuse.rgb * lightDiffuse.rgb;
+    float3 ambientColor = objAmbient.rgb * lightDiffuse.rgb;
+    float3 specColor    = objSpecular.rgb * lightDiffuse.rgb;
+
+	float4 texColor = float4(1,1,1,1);
+    if (objAmbient.a >= 1.0f)
+    {
+        texColor = tex.Sample(samp, pin.uv);
+    }
+
+	float3 lambert = ambientColor + baseColor * dotNL;
+    lambert *= texColor.rgb;
+
+    float3 R = reflect(-L, N);
+    float  dotRV = saturate(dot(R, V));
+    float  gloss = max(0.01f, objSpecular.a);
+    float3 specular = specColor * pow(dotRV, gloss * 4.0f) * 0.5f;
+
+    float3 litColor = lambert + specular;
+
+    float fresnelPower        = glassParams.x;
+    float reflectionStrength  = glassParams.y;
+    float transmissionStrength= glassParams.z;
+
+	float dotNV   = saturate(dot(N, V));
+    float fresnel = pow(1.0f - dotNV, fresnelPower);
+
+    float3 reflectionColor = lightDiffuse.rgb * glassTint.rgb;
+    float3 transmission    = litColor * glassTint.rgb;
+
+    float3 finalRGB = lerp(
+        transmission * transmissionStrength,
+        reflectionColor,
+        saturate(reflectionStrength * fresnel));
+
+	float baseAlpha    = glassTint.a;
+    float alphaFresnel = 0.3 + 0.7 * fresnel;
+    float finalA = saturate(baseAlpha * alphaFresnel);
+
+	return float4(finalRGB, finalA);
+
+})EOT";
+	m_pPS[PS_GLASS] = new PixelShader();
+	m_pPS[PS_GLASS]->Compile(code);
+
 }

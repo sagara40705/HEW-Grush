@@ -15,7 +15,7 @@ public:
 		VS_WORLD, // SetWVP
 		VS_ANIME, // SetWVP,SetBones
 		VS_SPRITE,
-		VS_SHARD,
+		
 		VS_KIND_MAX
 	};
 	enum PSKind
@@ -26,7 +26,7 @@ public:
 		PS_TOON, // SetMaterial, SetLight
 		PS_FOG, // SetMaterial, SetLight,SetFog
 		PS_SPRITE,
-		VS_SHARD,
+		PS_GLASS,
 		PS_KIND_MAX
 	};
 
@@ -49,6 +49,7 @@ public:
 	static void SetLight(DirectX::XMFLOAT4 color, DirectX::XMFLOAT3 dir);
 	static void SetCameraPos(const DirectX::XMFLOAT3 pos);
 	static void SetFog(DirectX::XMFLOAT4 color, float start, float range);
+	static void SetGlassParam(const DirectX::XMFLOAT4& tint, float fresnelPower, float reflectionStrength, float transmissionStrength);
 	
 private:
 	static void MakePrimVS();
@@ -63,7 +64,7 @@ private:
 	static void MakeToonPS();
 	static void MakeFogPS();
 	static void MakeSpritePS();
-	static void MakeShardPS();
+	static void MakeGlassPS();
 
 private:
 	static VertexShader* m_pVS[VS_KIND_MAX];
