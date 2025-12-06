@@ -15,6 +15,7 @@ public:
 		VS_WORLD, // SetWVP
 		VS_ANIME, // SetWVP,SetBones
 		VS_SPRITE,
+		VS_SHARD,
 		VS_KIND_MAX
 	};
 	enum PSKind
@@ -25,6 +26,7 @@ public:
 		PS_TOON, // SetMaterial, SetLight
 		PS_FOG, // SetMaterial, SetLight,SetFog
 		PS_SPRITE,
+		VS_SHARD,
 		PS_KIND_MAX
 	};
 
@@ -53,6 +55,7 @@ private:
 	static void MakeWorldVS();
 	static void MakeAnimeVS();
 	static void MakeSpriteVS();
+	static void MakeShardVS();
 private:
 	static void MakePrimPS();
 	static void MakeLambertPS();
@@ -60,6 +63,7 @@ private:
 	static void MakeToonPS();
 	static void MakeFogPS();
 	static void MakeSpritePS();
+	static void MakeShardPS();
 
 private:
 	static VertexShader* m_pVS[VS_KIND_MAX];

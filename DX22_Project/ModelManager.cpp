@@ -16,6 +16,8 @@ const ModelLoadData ModelManager::kModelData[static_cast<size_t>(ModelTag::Count
 
 bool ModelManager::Load(ModelTag tag)
 {
+    if (s_models[static_cast<size_t>(tag)]) return false;
+
     int index = static_cast<size_t>(tag);
     const ModelLoadData& data = kModelData[static_cast<size_t>(tag)];
 

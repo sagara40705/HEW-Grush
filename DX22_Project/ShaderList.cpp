@@ -18,6 +18,7 @@ void ShaderList::Init()
 	MakeWorldVS();
 	MakeAnimeVS();
 	MakeSpriteVS();
+	MakeShardVS();
 
 	MakePrimPS();
 	MakeLambertPS();
@@ -25,6 +26,7 @@ void ShaderList::Init()
 	MakeToonPS();
 	MakeFogPS();
 	MakeSpritePS();
+	MakeShardPS();
 
 	DirectX::XMFLOAT4X4 mat[250];
 	for (int i = 0; i < 250; ++i)
@@ -300,6 +302,10 @@ VS_OUT main(VS_IN vin)
 	m_pVS[VS_SPRITE]->Compile(code);
 }
 
+void ShaderList::MakeShardVS()
+{
+}
+
 void ShaderList::MakePrimPS()
 {
 	const char* code = R"EOT(
@@ -550,4 +556,8 @@ float4 main(PS_IN pin) : SV_TARGET
 
 	m_pPS[PS_SPRITE] = new PixelShader();
 	m_pPS[PS_SPRITE]->Compile(code);
+}
+
+void ShaderList::MakeShardPS()
+{
 }

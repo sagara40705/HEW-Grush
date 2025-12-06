@@ -18,7 +18,7 @@ struct GameState
 {
     bool hasPlayedIntroMovie = false;
     StageId stage_ = StageId::Stage1;
-    const int kGoalScore[ToIndex(StageId::Count)] = { 1,100,100 };
+    const int kGoalScore[ToIndex(StageId::Count)] = { 100,100,100 };
 
     void Reset()
     {
