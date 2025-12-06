@@ -7,7 +7,7 @@
 #include "Prefab.h"
 #include "PrefabSet.h"
 #include "Rigidbody.h"
-
+#include "ShaderList.h"
 
 void GlassObject::Start()
 {
@@ -56,4 +56,11 @@ void GlassObject::SpawnShards()
 	shard.Destroy(10.0f);
 
 	DebugLog::OutputValue("SpawnShards, ID", shard.id);
+}
+
+void GlassObject::SetGlassParamPS()
+{
+	DirectX::XMFLOAT4 Tint[ToIndex(GlassGrade::Count)] = { {0.7f, 0.8f, 1.0f, 0.9f}, {0.7f, 1.0f, 0.7f, 0.7f}, {1.0f, 0.7f, 0.7f, 0.7f} };
+
+	ShaderList::SetGlassParam(Tint[ToIndex(grade_)], 1.0f, 0.3f, 0.8f);
 }

@@ -31,4 +31,5 @@ public:
 	GlassGrade GetGrade() { return grade_; }
 	void TakeDamage(float damage);
 	void SpawnShards();
+	void SetGlassParamPS();
 };

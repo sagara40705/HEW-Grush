@@ -77,10 +77,9 @@ void MeshRenderer::Render()
     XMStoreFloat4x4(&wvp.proj, P);
     ShaderList::SetWVP(reinterpret_cast<XMFLOAT4X4*>(&wvp));
 
-    if (psKind == ShaderList::PS_GLASS){
-        DirectX::XMFLOAT4 tint = {1.f, 0.5f, 0.5f, 1.f};
-        ShaderList::SetGlassParam(tint, 3.0f, 0.5f, 1.0f);
-
+    if (psKind == ShaderList::PS_GLASS && glass)
+    {
+        glass->SetGlassParamPS();
     }
 
 
