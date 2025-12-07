@@ -27,6 +27,7 @@ public:
 		PS_FOG, // SetMaterial, SetLight,SetFog
 		PS_SPRITE,
 		PS_GLASS,
+		PS_BREAKUI,
 		PS_KIND_MAX
 	};
 
