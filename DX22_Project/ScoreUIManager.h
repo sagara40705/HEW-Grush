@@ -19,6 +19,20 @@ private:
     int currentValue = 0;
     static constexpr int MAX_VALUE = 9999;
 
+    int lastValue = 0;              // 前回の値を保持（増減判定用）
+    float shakeTimer = 0.0f;        // 振動残り時間
+    const float kShakeDuration = 10.0f; // 振動する時間
+    const float kShakePower    = 5.0f; // 振動の激しさ
+    const float kShakeSpeed = 60.0f;   // 
+
+    enum class ShakeType
+    {
+        None,      // 揺れていない
+        Vertical,  // 上下
+        Horizontal // 左右
+    };
+    ShakeType currentShakeType = ShakeType::None;
+
 public:
     // 4つの CanvasUI を受け取るコンストラクタ
     ScoreUIManager(CanvasUI* th, CanvasUI* h, CanvasUI* t, CanvasUI* o);
