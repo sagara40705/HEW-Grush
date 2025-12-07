@@ -167,7 +167,19 @@ void ModelRenderer::Draw()
     m_pPS->Bind();
 
     // マテリアルのテクスチャ自動設定を活かすため meshNo = -1 で全描画
-    model->Draw(-1);
+    //model->Draw(-1);
+    // マテリアル別にメッシュを表示 
+    for (unsigned int i = 0; i < model->GetMeshNum(); ++i) {
+        // モデルのメッシュを取得 
+        const Model::Mesh* mesh = model->GetMesh(i);
+        // メッシュに割り当てられているマテリアルを取得 
+        Model::Material material = *model->GetMaterial(mesh->materialID);
+        // シェーダーへマテリアルを設定 
+        ShaderList::SetMaterial(material);
+        // モデルの描画 
+        model->Draw(i);
+    }
+
 }
 
 void ModelRenderer::OnDestroy()

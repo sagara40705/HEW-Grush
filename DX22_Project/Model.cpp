@@ -248,24 +248,15 @@ void Model::Draw(int meshNo)
 	else
 		meshNo = 0;
 
+	DirectX::XMFLOAT4X4 bones[MAX_BONE];
 
 	// 描画
 	for (UINT i = meshNo; i < drawNum; ++i)
 	{
-		const Mesh& mesh = m_meshes[i];
-		const Material& mat = m_materials[mesh.materialID];
-
-		// メッシュごとにマテリアルを切り替え
-		ShaderList::SetMaterial(mat);
-
-		mesh.pMesh->Draw();
-		/*
-		if (isAutoTexture)
-		{
+		if (isAutoTexture) {
 			m_pPS->SetTexture(0, m_materials[m_meshes[i].materialID].pTexture);
 		}
 		m_meshes[i].pMesh->Draw();
-		*/
 	}
 }
 
