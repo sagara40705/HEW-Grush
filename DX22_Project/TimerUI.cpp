@@ -8,11 +8,11 @@ constexpr Vector2 kNumberUVScale = { 0.2f, 0.5f };
 void TimerUI::Start()
 {
 	constexpr Vector2 kMinutePos[ToIndex(TimerDigits::Count)] = { {1050.f, 0.f}, {1090.f, 0.f} };
-	constexpr Vector2 kColonPos = { 1130.f, 0.f };
+	constexpr Vector2 kColonPos = { 1135.f, 0.f };
 	constexpr Vector2 kSecondPos[ToIndex(TimerDigits::Count)] = { {1160.f, 0.f}, {1200.f, 0.f} };
 
-	constexpr Vector2 kNumberSize = { 40.f, 60.f };
-	constexpr Vector2 kColonSize = { 30.f, 60.f };
+	constexpr Vector2 kNumberSize = { 40.f, 40.f };
+	constexpr Vector2 kColonSize = { 20.f, 40.f };
 
 
 	GameObject& tenMinute = gameObject->CreateChild();

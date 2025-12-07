@@ -129,7 +129,7 @@ void SceneGame::CreateCameraAndPlayer()
 	player.AddComponent<MeshFilter>(ModelTag::Player);
 	player.AddComponent<MeshRenderer>();
 	player.AddComponent<Rigidbody>();
-	player.AddComponent<BoxCollider>();
+	player.AddComponent<BoxCollider>(false, Vector3(0.f, 0.5f, 0.f));
 	player.AddComponent<PlayerState>();
 	player.AddComponent<PlayerMove>();
 	player.AddComponent<PlayerAction>();
