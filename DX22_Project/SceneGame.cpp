@@ -145,14 +145,14 @@ void SceneGame::CreateCameraAndPlayer()
 
 	GameObject& player = w.CreateGameObject(Vector3(-3.f, 2.f, 0.f), Vector3(0.f, 0.f, 0.f));
 	player.SetTag(Tag::Player);
-	player.AddComponent<MeshFilter>(ModelTag::Player);
+	player.AddComponent<MeshFilter>(ModelTag::Swing);
 	player.AddComponent<MeshRenderer>();
 	player.AddComponent<Rigidbody>();
 	player.AddComponent<BoxCollider>();
 	player.AddComponent<PlayerState>();
 	player.AddComponent<PlayerMove>();
 	player.AddComponent<PlayerAction>();
-	player.AddComponent<Animator>();
+	//player.AddComponent<Animator>();
 
 
 	GameObject& hummer = 
@@ -162,6 +162,13 @@ void SceneGame::CreateCameraAndPlayer()
 	hummer.AddComponent<MeshRenderer>();
 	hummer.AddComponent<BoxCollider>();
 	hummer.AddComponent<Hammer>();
+
+
+	GameObject& player0 = w.CreateGameObject(Vector3(0.f, 2.f, 0.f), Vector3(0.f, 0.f, 0.f));
+	player0.AddComponent<MeshFilter>(ModelTag::Player);
+	player0.AddComponent<MeshRenderer>();
+	player0.AddComponent<Animator>();
+
 }
 
 void SceneGame::CreateStage()
@@ -247,72 +254,72 @@ void SceneGame::Update()
 
 void SceneGame::Draw()
 {
-	// 頂点シェーダーに渡す変換行列の変数を宣言 
-	DirectX::XMFLOAT4X4 fWVP[3];    // World,View,Projectionの略  
-	DirectX::XMMATRIX world, view, proj; // 各変換行列の格納先 
+	//// 頂点シェーダーに渡す変換行列の変数を宣言 
+	//DirectX::XMFLOAT4X4 fWVP[3];    // World,View,Projectionの略  
+	//DirectX::XMMATRIX world, view, proj; // 各変換行列の格納先 
 
 
-	// 作成した行列を各変数へ格納 
-	//ワールド座標用
+	//// 作成した行列を各変数へ格納 
+	////ワールド座標用
 
-	world = DirectX::XMMatrixIdentity();
+	//world = DirectX::XMMatrixIdentity();
 
-	//ビュー座標用
+	////ビュー座標用
 
-	view = DirectX::XMLoadFloat4x4(&Camera::Main()->GetView());
+	//view = DirectX::XMLoadFloat4x4(&Camera::Main()->GetView());
 
-	//プロジェクション座標用
-	proj = DirectX::XMLoadFloat4x4(&Camera::Main()->GetProjection());
+	////プロジェクション座標用
+	//proj = DirectX::XMLoadFloat4x4(&Camera::Main()->GetProjection());
 
-	// 計算用のデータから読み取り用のデータに変換 
-	DirectX::XMStoreFloat4x4(&fWVP[0], DirectX::XMMatrixTranspose(world));
-	DirectX::XMStoreFloat4x4(&fWVP[1], DirectX::XMMatrixTranspose(view));
-	DirectX::XMStoreFloat4x4(&fWVP[2], DirectX::XMMatrixTranspose(proj));
-	
-	ShaderList::SetWVP(fWVP);
+	//// 計算用のデータから読み取り用のデータに変換 
+	//DirectX::XMStoreFloat4x4(&fWVP[0], DirectX::XMMatrixTranspose(world));
+	//DirectX::XMStoreFloat4x4(&fWVP[1], DirectX::XMMatrixTranspose(view));
+	//DirectX::XMStoreFloat4x4(&fWVP[2], DirectX::XMMatrixTranspose(proj));
+	//
+	//ShaderList::SetWVP(fWVP);
 
-	//ボーン行列をシェーダーに設定
-	//200はModelクラスの最大ボーン数に合わせる
-	for (unsigned int i = 0; i < g_pModel->GetMeshNum(); ++i)
-	{
-		const Model::Mesh* mesh = g_pModel->GetMesh(i);
-		if (!mesh) continue;
+	////ボーン行列をシェーダーに設定
+	////200はModelクラスの最大ボーン数に合わせる
+	//for (unsigned int i = 0; i < g_pModel->GetMeshNum(); ++i)
+	//{
+	//	const Model::Mesh* mesh = g_pModel->GetMesh(i);
+	//	if (!mesh) continue;
 
-		// ボーン行列をシェーダーに設定
-		DirectX::XMFLOAT4X4 bones[200]; // Model::MAX_BONE を使ってもOK
-		for (int boneIdx = 0; boneIdx < mesh->bones.size(); ++boneIdx)
-		{
-			const Model::Bone& bone = mesh->bones[boneIdx];
-			DirectX::XMStoreFloat4x4(
-				&bones[boneIdx],
-				DirectX::XMMatrixTranspose(
-					bone.invOffset * g_pModel->GetBoneMatrix(bone.nodeIndex)
-				)
-			);
-		}
+	//	// ボーン行列をシェーダーに設定
+	//	DirectX::XMFLOAT4X4 bones[200]; // Model::MAX_BONE を使ってもOK
+	//	for (int boneIdx = 0; boneIdx < mesh->bones.size(); ++boneIdx)
+	//	{
+	//		const Model::Bone& bone = mesh->bones[boneIdx];
+	//		DirectX::XMStoreFloat4x4(
+	//			&bones[boneIdx],
+	//			DirectX::XMMatrixTranspose(
+	//				bone.invOffset * g_pModel->GetBoneMatrix(bone.nodeIndex)
+	//			)
+	//		);
+	//	}
 
-		ShaderList::SetBones(bones);
+	//	ShaderList::SetBones(bones);
 
-		// メッシュ描画（必要ならここで）
-		//g_pModel->Draw(i);
-	}
+	//	// メッシュ描画（必要ならここで）
+	//	//g_pModel->Draw(i);
+	//}
 
-	// モデルに使用する頂点シェーダー、ピクセルシェーダーを設定 
-	g_pModel->SetVertexShader(ShaderList::GetVS(ShaderList::VS_ANIME));
-	g_pModel->SetPixelShader(ShaderList::GetPS(ShaderList::PS_LAMBERT));
+	//// モデルに使用する頂点シェーダー、ピクセルシェーダーを設定 
+	//g_pModel->SetVertexShader(ShaderList::GetVS(ShaderList::VS_ANIME));
+	//g_pModel->SetPixelShader(ShaderList::GetPS(ShaderList::PS_LAMBERT));
 
 
-	// マテリアル別にメッシュを表示 
-	for (unsigned int i = 0; i < g_pModel->GetMeshNum(); ++i) {
-		// モデルのメッシュを取得 
-		const Model::Mesh* mesh = g_pModel->GetMesh(i);
-		// メッシュに割り当てられているマテリアルを取得 
-		Model::Material material = *g_pModel->GetMaterial(mesh->materialID);
-		// シェーダーへマテリアルを設定 
-		ShaderList::SetMaterial(material);
-		// モデルの描画 
-		g_pModel->Draw(i);
-	}
+	//// マテリアル別にメッシュを表示 
+	//for (unsigned int i = 0; i < g_pModel->GetMeshNum(); ++i) {
+	//	// モデルのメッシュを取得 
+	//	const Model::Mesh* mesh = g_pModel->GetMesh(i);
+	//	// メッシュに割り当てられているマテリアルを取得 
+	//	Model::Material material = *g_pModel->GetMaterial(mesh->materialID);
+	//	// シェーダーへマテリアルを設定 
+	//	ShaderList::SetMaterial(material);
+	//	// モデルの描画 
+	//	g_pModel->Draw(i);
+	//}
 }
 
 

@@ -126,6 +126,26 @@ void MeshRenderer::ModelRender()
     Model* model = mf->GetModel();
     if (!model) return;
 
+    for (unsigned int i = 0; i < model->GetMeshNum(); ++i)
+    {
+        const Model::Mesh* mesh = model->GetMesh(i);
+        if (!mesh) continue;
+
+        // ボーン行列をシェーダーに設定
+        DirectX::XMFLOAT4X4 bones[200]; // Model::MAX_BONE を使ってもOK
+        for (int boneIdx = 0; boneIdx < mesh->bones.size(); ++boneIdx)
+        {
+            const Model::Bone& bone = mesh->bones[boneIdx];
+            DirectX::XMStoreFloat4x4(
+                &bones[boneIdx],
+                DirectX::XMMatrixTranspose(
+                    bone.invOffset * model->GetBoneMatrix(bone.nodeIndex)
+                )
+            );
+        }
+        ShaderList::SetBones(bones);
+    }
+    //VS_ANIMにしたらバグル、Playにしなくてもダメ
     //=== VS / PS を取得 ===
     VertexShader* vs = ShaderList::GetVS(vsKind);
     PixelShader* ps = ShaderList::GetPS(psKind);
@@ -135,6 +155,17 @@ void MeshRenderer::ModelRender()
     // ModelRenderer と同じ流れ
     model->SetVertexShader(vs);
     model->SetPixelShader(ps);
-    model->Draw(-1);
+    
+    // マテリアル別にメッシュを表示 
+    for (unsigned int i = 0; i < model->GetMeshNum(); ++i) {
+        // モデルのメッシュを取得 
+        const Model::Mesh* mesh = model->GetMesh(i);
+        // メッシュに割り当てられているマテリアルを取得 
+        Model::Material material = *model->GetMaterial(mesh->materialID);
+        // シェーダーへマテリアルを設定 
+        ShaderList::SetMaterial(material);
+        // モデルの描画 
+        model->Draw(i);
+    }
   
 }

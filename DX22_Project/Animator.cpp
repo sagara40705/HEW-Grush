@@ -15,24 +15,19 @@ void Animator::Start()
     meshFilter = gameObject->GetComponent<MeshFilter>();
     meshRenderer = gameObject->GetComponent<MeshRenderer>();
 
-    /*
+    
     if (meshFilter)
     {
-        if (gameObject->CompareTag(Tag::Player))
-        {
-            model = meshFilter->GetModel();
-            currentAnime = model->AddAnimation("Assets/Model/playerchara_20251202/space_suit_12.fbx");
-            Play(currentAnime, true, 1.0f);
-            DebugLog::Output("Start Player Animation");
-        }
-        
+        model = ModelManager::Get(ModelTag::Player);
+        currentAnime = model->AddAnimation("Assets/Model/playerchara_20251202/space_suit_12.fbx");
+        //Play(currentAnime, true, 1.0f);
+        DebugLog::Output("Start Player Animation");
     }
-    */
 
     // アニメーション付きモデル用 VS を使うようにしておく
     if (meshRenderer)
     {
-        meshRenderer->vsKind = ShaderList::VS_ANIME;
+        //meshRenderer->vsKind = ShaderList::VS_ANIME;
     }
 }
 
