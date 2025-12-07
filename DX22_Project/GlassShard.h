@@ -18,5 +18,7 @@ public:
 	void Update() override;
 	void OnDestroy() override;
 public:
+	void OnActive(const Vector3& pos);
+	void SetGlassGrade(GlassGrade g) { grade_ = g; }
 	void SetGlassParamPS();
 };

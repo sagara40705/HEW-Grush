@@ -1,5 +1,6 @@
 #pragma once
 #include "Component.h"
+#include "Vector3.h"
 
 constexpr int MAX = 256;
 
@@ -10,4 +11,6 @@ public:
 public:
 	void Start() override;
 	void OnDestroy() override;
+public:
+	GameObject* Instantiate(const Vector3& pos);
 };

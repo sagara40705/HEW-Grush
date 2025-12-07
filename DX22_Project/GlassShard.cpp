@@ -48,11 +48,6 @@ void GlassShard::Start()
 {
 	rb_ = gameObject->GetComponent<Rigidbody>();
 	if (!rb_) return;
-
-    constexpr float kImpulsePower = 8.0f; // 元の 10.f をそのまま流用
-    Vector3 dir = RandomUpHemisphere();
-
-    rb_->AddForce(dir * kImpulsePower);
 }
 
 void GlassShard::Update()
@@ -63,6 +58,16 @@ void GlassShard::Update()
 void GlassShard::OnDestroy()
 {
 
+}
+
+void GlassShard::OnActive(const Vector3& pos)
+{
+    gameObject->transform->SetPosition(pos);
+
+    constexpr float kImpulsePower = 8.0f; // 元の 10.f をそのまま流用
+    Vector3 dir = RandomUpHemisphere();
+
+    rb_->AddForce(dir * kImpulsePower);
 }
 
 void GlassShard::SetGlassParamPS()

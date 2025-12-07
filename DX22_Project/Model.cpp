@@ -257,42 +257,24 @@ void Model::Draw(int meshNo)
 
 		// ===== アニメーション設定 =====
 	
-		/*
-		// --- アニメ用ボーン行列をセット ---
-		if (useAnimeVS && !mesh.bones.empty())
-		{
-			DirectX::XMFLOAT4X4 boneMats[MAX_BONE];
 
-			// まず全スロット単位行列で初期化（未使用ボーン用）
-			for (UINT j = 0; j < MAX_BONE; ++j)
-			{
-				DirectX::XMStoreFloat4x4(
-					&boneMats[j],
-					DirectX::XMMatrixIdentity()
-				);
-			}
+		//// --- アニメ用ボーン行列をセット ---
+		//if (useAnimeVS && !mesh.bones.empty())
+		//{
+		//	DirectX::XMFLOAT4X4 boneMats[MAX_BONE];
 
-			const size_t boneCount =
-				std::min(mesh.bones.size(), static_cast<size_t>(MAX_BONE));
+		//	for (int boneIdx = 0; boneIdx < mesh.bones.size(); ++boneIdx)
+		//	{
+		//		const Model::Bone& bone = mesh.bones[boneIdx];
+		//		DirectX::XMStoreFloat4x4(
+		//			mesh.bones[boneIdx],
+		//			DirectX::XMMatrixTranspose(bone.invOffset * GetBone(bone.index))
+		//		);
+		//	}
 
-			for (size_t j = 0; j < boneCount; ++j)
-			{
-				const Bone& b = mesh.bones[j];
-				if (b.index == INDEX_NONE) continue;
-
-				// invOffset * 現在のノード行列 ＝ スキニング行列
-				DirectX::XMMATRIX skin =
-					b.invOffset * m_nodes[b.index].mat;
-
-				// HLSL 側に合わせて転置
-				skin = DirectX::XMMatrixTranspose(skin);
-				DirectX::XMStoreFloat4x4(&boneMats[j], skin);
-			}
-
-			// VS_ANIME の b1 に書き込む
-			ShaderList::SetBones(boneMats);
-		}
-		*/
+		//	// VS_ANIME の b1 に書き込む
+		//	ShaderList::SetBones(boneMats);
+		//}
 
 		// メッシュごとにマテリアルを切り替え
 		ShaderList::SetMaterial(mat);
