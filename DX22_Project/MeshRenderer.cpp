@@ -64,6 +64,9 @@ void MeshRenderer::Render()
 
     // === WVP セット ===
     WVPMatrices wvp{};
+    DirectX::XMFLOAT4X4 fWVP[3];
+    DirectX::XMMATRIX world, view, proj; // 各変換行列の格納先 
+    /*
     XMFLOAT4X4 wMat = tf->GetMatrix();
     const XMFLOAT4X4& vMat = cam->GetView();
     const XMFLOAT4X4& pMat = cam->GetProjection();
@@ -76,6 +79,15 @@ void MeshRenderer::Render()
     XMStoreFloat4x4(&wvp.view, V);
     XMStoreFloat4x4(&wvp.proj, P);
     ShaderList::SetWVP(reinterpret_cast<XMFLOAT4X4*>(&wvp));
+    */
+
+    world = DirectX::XMLoadFloat4x4(&tf->GetMatrix());
+    view = DirectX::XMLoadFloat4x4(&Camera::Main()->GetView());
+    proj = DirectX::XMLoadFloat4x4(&Camera::Main()->GetProjection());
+    DirectX::XMStoreFloat4x4(&fWVP[0], DirectX::XMMatrixTranspose(world));
+    DirectX::XMStoreFloat4x4(&fWVP[1], DirectX::XMMatrixTranspose(view));
+    DirectX::XMStoreFloat4x4(&fWVP[2], DirectX::XMMatrixTranspose(proj));
+    ShaderList::SetWVP(fWVP);
 
     if (psKind == ShaderList::PS_GLASS && glass)
     {

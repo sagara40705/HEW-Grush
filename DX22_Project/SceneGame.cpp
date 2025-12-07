@@ -254,21 +254,14 @@ void SceneGame::Draw()
 
 	// 作成した行列を各変数へ格納 
 	//ワールド座標用
-	//world = DirectX::XMMatrixRotationY(0.0f);
 
 	world = DirectX::XMMatrixIdentity();
 
 	//ビュー座標用
 
-	//view = DirectX::XMMatrixLookAtLH(
-	//	DirectX::XMVectorSet(0.0f, 2.0f, -3.0f, 0.0f),
-	//	DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f),
-	//	DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f)
-	//);
 	view = DirectX::XMLoadFloat4x4(&Camera::Main()->GetView());
 
 	//プロジェクション座標用
-	//proj = DirectX::XMMatrixPerspectiveFovLH(70.0f, 16.0f / 9.0f, 0.1f, 10.0f);
 	proj = DirectX::XMLoadFloat4x4(&Camera::Main()->GetProjection());
 
 	// 計算用のデータから読み取り用のデータに変換 
@@ -276,6 +269,8 @@ void SceneGame::Draw()
 	DirectX::XMStoreFloat4x4(&fWVP[1], DirectX::XMMatrixTranspose(view));
 	DirectX::XMStoreFloat4x4(&fWVP[2], DirectX::XMMatrixTranspose(proj));
 	
+	ShaderList::SetWVP(fWVP);
+
 	//ボーン行列をシェーダーに設定
 	//200はModelクラスの最大ボーン数に合わせる
 	for (unsigned int i = 0; i < g_pModel->GetMeshNum(); ++i)
