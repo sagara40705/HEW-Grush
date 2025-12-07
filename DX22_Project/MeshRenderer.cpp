@@ -1,4 +1,4 @@
-#include "MeshRenderer.h"
+ï»¿#include "MeshRenderer.h"
 #include "MeshFilter.h"
 #include "Transform.h"
 #include "Camera.h"
@@ -62,7 +62,7 @@ void MeshRenderer::Render()
     SetDepthTest(true);
     SetCullingMode(D3D11_CULL_NONE);
 
-    // === WVP ƒZƒbƒg ===
+    // === WVP ã‚»ãƒƒãƒˆ ===
     WVPMatrices wvp{};
     XMFLOAT4X4 wMat = tf->GetMatrix();
     const XMFLOAT4X4& vMat = cam->GetView();
@@ -98,7 +98,7 @@ void MeshRenderer::PrimitiveRender()
     MeshBuffer* mesh = mf->GetPrimitive();
     if (!mesh) return;
 
-    // === VS / PS ‚ðŽæ“¾ ===
+    // === VS / PS ã‚’å–å¾— ===
     VertexShader* vs = ShaderList::GetVS(vsKind);
     PixelShader* ps = ShaderList::GetPS(psKind);
     if (!vs || !ps) return;
@@ -114,13 +114,13 @@ void MeshRenderer::ModelRender()
     Model* model = mf->GetModel();
     if (!model) return;
 
-    //=== VS / PS ‚ðŽæ“¾ ===
+    //=== VS / PS ã‚’å–å¾— ===
     VertexShader* vs = ShaderList::GetVS(vsKind);
     PixelShader* ps = ShaderList::GetPS(psKind);
 
     if (!vs || !ps) return;
 
-    // ModelRenderer ‚Æ“¯‚¶—¬‚ê
+    // ModelRenderer ã¨åŒã˜æµã‚Œ
     model->SetVertexShader(vs);
     model->SetPixelShader(ps);
     model->Draw(-1);
