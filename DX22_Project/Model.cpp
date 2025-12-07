@@ -256,17 +256,10 @@ void Model::Draw(int meshNo)
 		const Material& mat = m_materials[mesh.materialID];
 
 		// ===== アニメーション設定 =====
+	
 		/*
-		if (!mesh.bones.empty())
-		{
-			DirectX::XMFLOAT4X4 bones[MAX_BONE];
-
-			ShaderList::SetBones(bones);
-		}
-		*/
-
 		// --- アニメ用ボーン行列をセット ---
-		/*if (useAnimeVS && !mesh.bones.empty())
+		if (useAnimeVS && !mesh.bones.empty())
 		{
 			DirectX::XMFLOAT4X4 boneMats[MAX_BONE];
 
@@ -298,7 +291,8 @@ void Model::Draw(int meshNo)
 
 			// VS_ANIME の b1 に書き込む
 			ShaderList::SetBones(boneMats);
-		}*/
+		}
+		*/
 
 		// メッシュごとにマテリアルを切り替え
 		ShaderList::SetMaterial(mat);

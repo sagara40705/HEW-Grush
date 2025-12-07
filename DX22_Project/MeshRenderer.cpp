@@ -37,6 +37,7 @@ void MeshRenderer::Start()
     case MeshSource::Model:
         vsKind = ShaderList::VS_WORLD;
         psKind = ShaderList::PS_LAMBERT;
+        if(animator)  vsKind = ShaderList::VS_ANIME;
         break;
     }
 

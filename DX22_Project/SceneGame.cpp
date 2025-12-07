@@ -128,15 +128,17 @@ void SceneGame::CreateCameraAndPlayer()
 
 	GameObject& player = w.CreateGameObject(Vector3(-3.f, 2.f, 0.f), Vector3(0.f, 0.f, 0.f));
 	player.SetTag(Tag::Player);
-	player.AddComponent<MeshFilter>(ModelTag::Swing);
+	player.AddComponent<MeshFilter>(ModelTag::Player);
 	player.AddComponent<MeshRenderer>();
 	player.AddComponent<Rigidbody>();
 	player.AddComponent<BoxCollider>();
 	player.AddComponent<PlayerState>();
 	player.AddComponent<PlayerMove>();
 	player.AddComponent<PlayerAction>();
-	player.AddComponent<Animator>();
-
+	Animator& anime = player.AddComponent<Animator>();
+	Model::AnimeNo animeNo = ModelManager::Get(ModelTag::Player)->AddAnimation("Assets/Model/playerchara_20251202/space_suit_12.fbx");
+	anime.Play(animeNo, true, 1.0f);
+	//ModelManager::Get(ModelTag::Player)->Play(animeNo, true, 1.0f);
 
 	GameObject& hummer = 
 		player.CreateChild(Hammer::BasePos, Vector3::zero(), Vector3(0.3f, 0.3f, 0.3f));
