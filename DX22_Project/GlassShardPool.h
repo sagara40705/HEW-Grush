@@ -1,11 +1,13 @@
 #pragma once
 #include "Component.h"
-#include <vector>
+
+constexpr int MAX = 256;
 
 class GlassShardPool : public Component
 {
 public:
-    std::vector<GameObject*> pool;  // ”j•Ð‚ð“ü‚ê‚Ä‚¨‚­ƒŠƒXƒg
-
-
+	GameObject* pool_[MAX];
+public:
+	void Start() override;
+	void OnDestroy() override;
 };

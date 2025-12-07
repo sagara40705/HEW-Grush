@@ -5,6 +5,7 @@
 #include "Animator.h"
 #include "GameObject.h"
 #include "GlassObject.h"
+#include "GlassShard.h"
 using namespace DirectX;
 
 struct WVPMatrices
@@ -40,10 +41,12 @@ void MeshRenderer::Start()
     }
 
     glass = gameObject->GetComponent<GlassObject>();
-    if (glass)
+    shard = gameObject->GetComponent<GlassShard>();
+    if (glass || shard)
     {
         psKind = ShaderList::PS_GLASS;
     }
+
 }
 
 void MeshRenderer::OnDestroy()
@@ -77,12 +80,6 @@ void MeshRenderer::Render()
     XMStoreFloat4x4(&wvp.proj, P);
     ShaderList::SetWVP(reinterpret_cast<XMFLOAT4X4*>(&wvp));
 
-    if (psKind == ShaderList::PS_GLASS && glass)
-    {
-        glass->SetGlassParamPS();
-    }
-
-
     switch (mf->GetSource())
     {
     case MeshSource::Primitive: PrimitiveRender(); break;
@@ -97,6 +94,12 @@ void MeshRenderer::PrimitiveRender()
 {
     MeshBuffer* mesh = mf->GetPrimitive();
     if (!mesh) return;
+
+    if (psKind == ShaderList::PS_GLASS && shard)
+    {
+        shard->SetGlassParamPS();
+    }
+
 
     // === VS / PS ‚ðŽæ“¾ ===
     VertexShader* vs = ShaderList::GetVS(vsKind);
@@ -113,6 +116,12 @@ void MeshRenderer::ModelRender()
 {
     Model* model = mf->GetModel();
     if (!model) return;
+
+
+    if (psKind == ShaderList::PS_GLASS && glass)
+    {
+        glass->SetGlassParamPS();
+    }
 
     //=== VS / PS ‚ðŽæ“¾ ===
     VertexShader* vs = ShaderList::GetVS(vsKind);

@@ -260,24 +260,6 @@ void Model::Draw(int meshNo)
 		if (!mesh.bones.empty())
 		{
 			DirectX::XMFLOAT4X4 bones[MAX_BONE];
-			//初期化
-			for (int b = 0; b < MAX_BONE; ++b) {
-				DirectX::XMStoreFloat4x4(&bones[b], DirectX::XMMatrixIdentity());
-			}
-			//
-			const size_t boneCount = std::min(mesh.bones.size(), static_cast<size_t>(MAX_BONE));
-
-			for (size_t b = 0; b < boneCount; ++b) {
-				const Bone& bone = mesh.bones[b];
-				if (bone.index == INDEX_NONE) continue;
-
-				// invOffset * 現在のボーン姿勢
-				DirectX::XMMATRIX skin = bone.invOffset * m_nodes[bone.index].mat;
-
-				// 他の行列と同様にトランスポーズして定数バッファへ
-				skin = DirectX::XMMatrixTranspose(skin);
-				DirectX::XMStoreFloat4x4(&bones[b], skin);
-			}
 
 			ShaderList::SetBones(bones);
 		}

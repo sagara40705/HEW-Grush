@@ -8,11 +8,10 @@
 #include "PrefabSet.h"
 #include "Rigidbody.h"
 #include "ShaderList.h"
+#include "GlassShard.h"
 
 void GlassObject::Start()
 {
-	if (isShard) return;
-
 	GameObject* gaugeMgr = gameObject->world->FindWithTag(Tag::GaugeManager);
 	gaude_ = gaugeMgr->GetComponent<GlassGaugeManager>();
 
@@ -34,8 +33,6 @@ void GlassObject::OnDestroy()
 
 void GlassObject::TakeDamage(float damage)
 {
-	if (isShard) return;
-
 	hp_ -= damage;
 	if (hp_ <= 0.f)
 	{
@@ -49,19 +46,23 @@ void GlassObject::TakeDamage(float damage)
 
 void GlassObject::SpawnShards()
 {
-	if (isShard) return;
 
 	World& W = *gameObject->world;
 
-	GameObject& shard = Prefab::Instantiate(W, PrefabId::GlassShard, tf_->GetPosition());
-	Rigidbody* rb_ = shard.GetComponent<Rigidbody>();
-	if (!rb_) return;
+	for (int i = 0; i < 10; ++i)
+	{
+		GameObject& shard = Prefab::Instantiate(W, PrefabId::GlassShard, tf_->GetPosition());
+		Rigidbody* rb_ = shard.GetComponent<Rigidbody>();
+		if (!rb_) return;
 
-	constexpr Vector3 Impulse = { 0.f, 10.f, 0.f };
-	rb_->AddForce(Impulse);
-	shard.Destroy(10.0f);
+		shard.AddComponent<GlassShard>(grade_);
 
-	DebugLog::OutputValue("SpawnShards, ID", shard.id);
+		constexpr Vector3 Impulse = { 0.f, 10.f, 0.f };
+		//rb_->AddForce(Impulse);
+		shard.Destroy(3.0f);
+	}
+
+	//DebugLog::OutputValue("SpawnShards, ID", shard.id);
 }
 
 void GlassObject::SetGlassParamPS()

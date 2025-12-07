@@ -2,7 +2,7 @@
 #include "Component.h"
 #include "ShaderList.h"
 
-class GlassObject;
+class GlassObject; class GlassShard;
 
 class MeshRenderer final : public Renderer
 {
@@ -12,6 +12,7 @@ private:
 	MeshFilter* mf = nullptr;
 	Animator* animator = nullptr;
 	GlassObject* glass = nullptr;
+	GlassShard* shard = nullptr;
 public:
 	ShaderList::VSKind vsKind = ShaderList::VS_WORLD;
 	ShaderList::PSKind psKind = ShaderList::PS_LAMBERT; 
