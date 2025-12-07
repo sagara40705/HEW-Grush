@@ -55,6 +55,8 @@ void MeshRenderer::OnDestroy()
     glass = nullptr;
 }
 
+
+
 void MeshRenderer::Render()
 {
     if (!(tf && cam && mf)) return;
@@ -126,25 +128,34 @@ void MeshRenderer::ModelRender()
     Model* model = mf->GetModel();
     if (!model) return;
 
-    for (unsigned int i = 0; i < model->GetMeshNum(); ++i)
+    //=== ① VS_ANIME のときだけボーン行列を設定 ===
+    if (vsKind == ShaderList::VS_ANIME)
     {
-        const Model::Mesh* mesh = model->GetMesh(i);
-        if (!mesh) continue;
-
-        // ボーン行列をシェーダーに設定
-        DirectX::XMFLOAT4X4 bones[200]; // Model::MAX_BONE を使ってもOK
-        for (int boneIdx = 0; boneIdx < mesh->bones.size(); ++boneIdx)
+        for (unsigned int i = 0; i < model->GetMeshNum(); ++i)
         {
-            const Model::Bone& bone = mesh->bones[boneIdx];
-            DirectX::XMStoreFloat4x4(
-                &bones[boneIdx],
-                DirectX::XMMatrixTranspose(
-                    bone.invOffset * model->GetBoneMatrix(bone.nodeIndex)
-                )
-            );
+            const Model::Mesh* mesh = model->GetMesh(i);
+            if (!mesh) continue;
+
+            // ボーン行列をシェーダーに設定
+            DirectX::XMFLOAT4X4 bones[200]; // Model::MAX_BONE を使ってもOK
+            for (int boneIdx = 0; boneIdx < mesh->bones.size(); ++boneIdx)
+            {
+                const Model::Bone& bone = mesh->bones[boneIdx];
+                DirectX::XMStoreFloat4x4(
+                    &bones[boneIdx],
+                    DirectX::XMMatrixTranspose(
+                        bone.invOffset * model->GetBoneMatrix(bone.nodeIndex)
+                    )
+                );
+            }
+
+            ShaderList::SetBones(bones);
+
+            // メッシュ描画（必要ならここで）
+            //g_pModel->Draw(i);
         }
-        ShaderList::SetBones(bones);
     }
+
     //VS_ANIMにしたらバグル、Playにしなくてもダメ
     //=== VS / PS を取得 ===
     VertexShader* vs = ShaderList::GetVS(vsKind);

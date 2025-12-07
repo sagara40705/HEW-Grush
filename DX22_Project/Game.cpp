@@ -3,8 +3,7 @@
 #include "SceneManager.h"
 #include "SceneGame.h"  
 #include "SceneTitle.h"// 最初のシーン
-
-
+#include "SceneSample.h"// 最初のシーン
 
 void Game::Init()
 {
@@ -13,8 +12,8 @@ void Game::Init()
     SceneManager::Initialize();
 
     // 最初のシーンを予約
-    //SceneManager::ChangeScene<SceneTitle>();
-    SceneManager::ChangeSceneAsync<SceneGame>();
+    SceneManager::ChangeScene<SceneSample>();
+    //SceneManager::ChangeSceneAsync<SceneGame>();
 }
 
 void Game::Uninit()

@@ -200,6 +200,7 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneGame.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="SceneSample.cpp" />
     <ClCompile Include="ScoreManager.cpp" />
     <ClCompile Include="ScoreUI.cpp" />
     <ClCompile Include="Shader.cpp" />
@@ -279,6 +280,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneGame.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="SceneSample.h" />
     <ClInclude Include="ScoreManager.h" />
     <ClInclude Include="ScoreUI.h" />
     <ClInclude Include="Shader.h" />

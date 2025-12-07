@@ -17,8 +17,8 @@ enum class CameraTag : uint8_t
 class Camera : public Component
 {
 public:
-    static constexpr Vector3 kInitPos = { 0.f, 5.f, -8.6f };
-    static constexpr Vector3 kInitRotate = { 30.f, 0.f, 0.f };
+    static constexpr Vector3 kInitPos = { 0.f, 3.f, -6.f };
+    static constexpr Vector3 kInitRotate = { 10.f, 0.f, 0.f };
 
     static constexpr float DEFAULT_FOVY = DirectX::XM_PIDIV4; // 45
     static constexpr float DEFAULT_NEAR_Z = 0.1f;
