@@ -300,6 +300,9 @@
     <ClCompile Include="CameraShake.cpp">
       <Filter>Game\Components\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="SceneSample.cpp">
+      <Filter>Game\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -532,6 +535,9 @@
     </ClInclude>
     <ClInclude Include="CameraShake.h">
       <Filter>Game\Components\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneSmaple.h">
+      <Filter>Game\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

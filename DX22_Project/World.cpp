@@ -99,7 +99,7 @@ void World::Start()
     for (auto& up : starts)
     {
         if (!up) continue;
-        if (!up->active) continue;
+        //if (!up->active) continue;
         up->CallStart();
     }
 
@@ -132,7 +132,7 @@ void World::Update()
         for (auto* go : starts)
         {
             if (!go) continue;
-            if (!go->active) continue;
+            //if (!go->active) continue;
 
             go->CallStart();
         }

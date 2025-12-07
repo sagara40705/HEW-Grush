@@ -1,5 +1,3 @@
-#pragma once
-
 // SceneTitle.h
 #pragma once
 #include "Scene.h"

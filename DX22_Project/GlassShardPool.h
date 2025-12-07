@@ -4,13 +4,17 @@
 
 constexpr int MAX = 256;
 
+enum class GlassGrade : std::uint8_t;
+
 class GlassShardPool : public Component
 {
-public:
+private:
+	static GlassShardPool* s_instance;
 	GameObject* pool_[MAX];
 public:
 	void Start() override;
 	void OnDestroy() override;
 public:
-	GameObject* Instantiate(const Vector3& pos);
+	static GlassShardPool* GetInstanse() { return s_instance; }
+	GameObject* Instantiate(const Vector3& pos, GlassGrade grade);
 };

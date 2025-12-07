@@ -9,6 +9,7 @@
 #include "Rigidbody.h"
 #include "ShaderList.h"
 #include "GlassShard.h"
+#include "GlassShardPool.h"
 
 void GlassObject::Start()
 {
@@ -48,18 +49,12 @@ void GlassObject::SpawnShards()
 {
 
 	World& W = *gameObject->world;
+	GlassShardPool* pool = GlassShardPool::GetInstanse();
+	Vector3 pos = tf_->GetPosition();
 
 	for (int i = 0; i < 10; ++i)
 	{
-		GameObject& shard = Prefab::Instantiate(W, PrefabId::GlassShard, tf_->GetPosition());
-		Rigidbody* rb_ = shard.GetComponent<Rigidbody>();
-		if (!rb_) return;
-
-		shard.AddComponent<GlassShard>(grade_);
-
-		constexpr Vector3 Impulse = { 0.f, 10.f, 0.f };
-		//rb_->AddForce(Impulse);
-		shard.Destroy(3.0f);
+		pool->Instantiate(pos, grade_);
 	}
 
 	//DebugLog::OutputValue("SpawnShards, ID", shard.id);

@@ -74,5 +74,6 @@ void RegisterAllPrefabs()
                 DirectX::XMFLOAT3{ 0.6f, 1.0f, 0.2f });
             bc.SetMask(ToBit(Layer::Ground));                                               (void)bc;
             auto& rb = go.AddComponent<Rigidbody>();                                        (void)rb;
+            auto& shard = go.AddComponent<GlassShard>();                                    (void)shard;
         });
 }

@@ -107,8 +107,6 @@ void SceneGame::CreateManagers()
 	glassGaugeManager.SetTag(Tag::GaugeManager);
 	glassGaugeManager.AddComponent<GlassGaugeManager>();
 
-
-
 	GameObject& timerManager = w.CreateGameObject();
 	timerManager.SetTag(Tag::TimerUI);
 }
@@ -147,6 +145,9 @@ void SceneGame::CreateCameraAndPlayer()
 	hummer.AddComponent<MeshRenderer>();
 	hummer.AddComponent<BoxCollider>();
 	hummer.AddComponent<Hammer>();
+
+	GameObject& glassShardPool = w.CreateGameObject();
+	glassShardPool.AddComponent<GlassShardPool>();
 }
 
 void SceneGame::CreateStage()
@@ -158,7 +159,6 @@ void SceneGame::CreateStage()
 	floor.AddComponent<MeshRenderer>();
 	BoxCollider& collider = floor.AddComponent<BoxCollider>();
 	collider.layer = Layer::Ground;
-
 
 	//UFO
 	Prefab::Instantiate(w, PrefabId::Ufo, Vector3(10, -0.5f, 10), Vector3::zero(), Vector3::one());

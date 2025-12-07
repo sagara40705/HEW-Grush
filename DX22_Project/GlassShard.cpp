@@ -4,6 +4,7 @@
 #include "Rigidbody.h"
 #include <random>
 #include <cmath>
+#include <cassert>
 
 namespace
 {
@@ -46,13 +47,22 @@ void GlassShard::OnDisable()
 
 void GlassShard::Start()
 {
+    tf_ = gameObject->transform;
 	rb_ = gameObject->GetComponent<Rigidbody>();
-	if (!rb_) return;
+    assert(tf_ && rb_ && "GlassShardのRigidbodyがnullptr");
 }
 
 void GlassShard::Update()
 {
+    constexpr float LIFE = 2.f;
+    constexpr float DT = 1.f / 60.f;
 
+    lifeTimer += DT;
+    if (lifeTimer >= LIFE)
+    {
+        gameObject->SetActive(false);
+        lifeTimer = 0.f;
+    }
 }
 
 void GlassShard::OnDestroy()
@@ -62,7 +72,10 @@ void GlassShard::OnDestroy()
 
 void GlassShard::OnActive(const Vector3& pos)
 {
-    gameObject->transform->SetPosition(pos);
+    assert(tf_ && rb_ && "GlassShardのRigidbodyがnullptr");
+    if (!rb_ || !tf_) return;
+
+    tf_->SetPosition(pos);
 
     constexpr float kImpulsePower = 8.0f; // 元の 10.f をそのまま流用
     Vector3 dir = RandomUpHemisphere();

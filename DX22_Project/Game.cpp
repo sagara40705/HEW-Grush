@@ -3,6 +3,7 @@
 #include "SceneManager.h"
 #include "SceneGame.h"  
 #include "SceneTitle.h"// Å‰‚ÌƒV[ƒ“
+#include "SceneSmaple.h"
 
 
 
