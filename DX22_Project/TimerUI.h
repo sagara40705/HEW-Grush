@@ -14,6 +14,7 @@ class TimerUI : public MonoBehaviour
 {
 private:
 	float timer_ = 0.f;
+	static constexpr int MAX_SECONDS = 99 * 60 + 59;
 private:
 	UiSpriteRenderer* uiMinute_[ToIndex(TimerDigits::Count)]{};
 	UiSpriteRenderer* uiColon_ = nullptr;

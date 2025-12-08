@@ -4,6 +4,7 @@
 
 class PlayerState; class Hammer;
 enum class GlassGrade : std::uint8_t;
+enum class HammerGrade : std::uint8_t;
 
 class GlassGaugeManager : public MonoBehaviour
 {
@@ -27,6 +28,7 @@ public:
 	bool dirty_ = true;
 	bool up_ = false;
 	float GetGaugeRatio();
+	HammerGrade GetHammerGrade();
 private:
 #ifdef _DEBUG
 	void DebugCommand();
