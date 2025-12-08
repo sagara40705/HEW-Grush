@@ -18,7 +18,6 @@ public:
 
     void Start() override;
     void Update() override;
-
     void Play(Model::AnimeNo animeNo, bool loop = true, float speed = 1.0f);
 
     Model::AnimeNo GetCurrentAnime() const { return currentAnime; }
@@ -26,6 +25,7 @@ public:
     float          GetSpeed()        const { return speed; }
 
 private:
+    bool playing = false;
     MeshFilter* meshFilter = nullptr;
     MeshRenderer* meshRenderer = nullptr;
     Model* model = nullptr;

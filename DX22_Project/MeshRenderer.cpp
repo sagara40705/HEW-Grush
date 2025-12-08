@@ -5,6 +5,7 @@
 #include "Animator.h"
 #include "GameObject.h"
 #include "GlassObject.h"
+#include "GlassShard.h"
 using namespace DirectX;
 
 struct WVPMatrices
@@ -44,6 +45,12 @@ void MeshRenderer::Start()
     {
         psKind = ShaderList::PS_GLASS;
     }
+    shard = gameObject->GetComponent<GlassShard>();
+    if (shard)
+    {
+        vsKind = ShaderList::VS_SHARD;
+        psKind = ShaderList::PS_GLASS;
+    }
 }
 
 void MeshRenderer::OnDestroy()
@@ -54,8 +61,6 @@ void MeshRenderer::OnDestroy()
     animator = nullptr;
     glass = nullptr;
 }
-
-
 
 void MeshRenderer::Render()
 {
@@ -91,9 +96,14 @@ void MeshRenderer::Render()
     DirectX::XMStoreFloat4x4(&fWVP[2], DirectX::XMMatrixTranspose(proj));
     ShaderList::SetWVP(fWVP);
 
-    if (psKind == ShaderList::PS_GLASS && glass)
+    if (psKind == ShaderList::PS_GLASS)
     {
-        glass->SetGlassParamPS();
+        if (glass) glass->SetGlassParamPS();
+        if (shard)
+        {
+            shard->SetGlassParamPS();
+            shard->SetShardParamVS();
+        }
     }
 
 

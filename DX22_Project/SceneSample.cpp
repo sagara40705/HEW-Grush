@@ -22,26 +22,11 @@ void SceneSample::Load()
 	player.AddComponent<MeshFilter>(ModelTag::Player);
 	player.AddComponent<MeshRenderer>();
 	player.AddComponent<Animator>();
-
-	//g_Model = new Model();
-	//const char* fileName = "Assets/Model/playerchara_20251202/space_suit_12.fbx";
-	//if (!g_Model->Load(fileName, 0.005))
-	//{ // ”{—¦‚Æ”½“]‚ÍÈ—ª‰Â 
-	//	MessageBox(NULL, "“Ç‚Ýž‚ñ‚¾ƒtƒ@ƒCƒ‹–¼", "Error", MB_OK);
-	//}
-
-	//Model::AnimeNo jumpAnim = g_Model->AddAnimation("Assets/Model/animation_taiki1.fbx");
-
-	//g_Model->PlayAnime(jumpAnim, true, 1.0f);
 }
 
 void SceneSample::Unload()
 {
-	//if (g_Model)
-	//{
-	//	delete g_Model;
-	//	g_Model = nullptr;
-	//}
+
 }
 
 void SceneSample::Update()

@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "ShaderList.h"
 #include "Rigidbody.h"
+#include "DirectX.h"
 #include <random>
 #include <cmath>
 #include <cassert>
@@ -33,6 +34,18 @@ namespace
 
         return Vector3(x, y, z); // 長さ ≒1
     }
+    DirectX::XMFLOAT4 MakeShardRandParam()
+    {
+        static thread_local std::mt19937 rng{ std::random_device{}() };
+        static thread_local std::uniform_real_distribution<float> dist(0.0f, 1.0f);
+
+        return DirectX::XMFLOAT4{
+            dist(rng),
+            dist(rng),
+            dist(rng),
+            dist(rng)
+        };
+    }
 }
 
 void GlassShard::OnEnable()
@@ -50,6 +63,8 @@ void GlassShard::Start()
     tf_ = gameObject->transform;
 	rb_ = gameObject->GetComponent<Rigidbody>();
     assert(tf_ && rb_ && "GlassShardのRigidbodyがnullptr");
+
+    randParam_ = MakeShardRandParam();
 }
 
 void GlassShard::Update()
@@ -77,15 +92,25 @@ void GlassShard::OnActive(const Vector3& pos)
 
     tf_->SetPosition(pos);
 
-    constexpr float kImpulsePower = 8.0f; // 元の 10.f をそのまま流用
+    constexpr float kImpulsePower = 8.0f; 
     Vector3 dir = RandomUpHemisphere();
 
     rb_->AddForce(dir * kImpulsePower);
 }
 
+void GlassShard::SetShardParamVS()
+{
+    // VS_SHARD の b1 に書き込む
+    auto vs = ShaderList::GetVS(ShaderList::VS_SHARD);
+    if (vs)
+    {
+        vs->WriteBuffer(1, &randParam_);
+    }
+}
+
 void GlassShard::SetGlassParamPS()
 {
-	DirectX::XMFLOAT4 Tint[ToIndex(GlassGrade::Count)] = { {0.0f, 0.0f, 1.0f, 0.8f}, {0.0f, 1.0f, 0.0f, 0.8f}, {1.0f, 0.0f, 0.0f, 0.8f} };
+	DirectX::XMFLOAT4 Tint[ToIndex(GlassGrade::Count)] = { {0.6f, 0.6f, 1.0f, 0.8f}, {0.6f, 1.0f, 0.6f, 0.8f}, {1.0f, 0.6f, 0.6f, 0.8f} };
 
 	ShaderList::SetGlassParam(Tint[ToIndex(grade_)], 3.0f, 0.5f, 1.0f);
 }

@@ -38,6 +38,7 @@ void Animator::Play(Model::AnimeNo animeNo, bool loop, float spd)
 {
     if (!model) return;
     if (animeNo == Model::ANIME_NONE) return;
+    playing = true;
 
     currentAnime = animeNo;
     loopFlag = loop;

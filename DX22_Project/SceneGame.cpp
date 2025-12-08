@@ -128,7 +128,7 @@ void SceneGame::CreateCameraAndPlayer()
 	GameObject& player = w.CreateGameObject(Vector3(-3.f, 2.f, 0.f), Vector3(0.f, 0.f, 0.f));
 	player.SetTag(Tag::Player);
 	player.AddComponent<MeshFilter>(ModelTag::Player);
-	player.AddComponent<MeshRenderer>();
+	//player.AddComponent<MeshRenderer>();
 	player.AddComponent<Rigidbody>();
 	player.AddComponent<BoxCollider>(false, Vector3(0.f, 0.5f, 0.f));
 	player.AddComponent<PlayerState>();
@@ -139,7 +139,7 @@ void SceneGame::CreateCameraAndPlayer()
 		player.CreateChild(Hammer::BasePos, Vector3::zero(), Vector3(0.3f, 0.3f, 0.3f));
 	hummer.SetTag(Tag::Hammer);
 	hummer.AddComponent<MeshFilter>(ModelTag::Hammer);
-	hummer.AddComponent<MeshRenderer>();
+	//hummer.AddComponent<MeshRenderer>();
 	hummer.AddComponent<BoxCollider>();
 	hummer.AddComponent<Hammer>();
 
@@ -151,7 +151,7 @@ void SceneGame::CreateStage()
 {
 	World& w = GetWorld();
 
-	GameObject& floor = w.CreateGameObject(Vector3(0.f, -1.f, 0.f), Vector3::zero(), Vector3(50.f, 0.1f, 50.f));
+	GameObject& floor = w.CreateGameObject(Vector3(0.f, -1.f, 0.f), Vector3::zero(), Vector3(100.f, 0.1f, 100.f));
 	floor.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube);
 	floor.AddComponent<MeshRenderer>();
 	BoxCollider& collider = floor.AddComponent<BoxCollider>();
@@ -159,6 +159,8 @@ void SceneGame::CreateStage()
 
 	//UFO
 	Prefab::Instantiate(w, PrefabId::Ufo, Vector3(10, -0.5f, 10), Vector3::zero(), Vector3::one());
+	Prefab::Instantiate(w, PrefabId::Ufo, Vector3(-30, -0.5f, -30), Vector3::zero(), Vector3::one());
+	Prefab::Instantiate(w, PrefabId::Ufo, Vector3(40, -0.5f, 10), Vector3::zero(), Vector3::one());
 
 	//ベンチ
 	Prefab::Instantiate(w, PrefabId::Benti, Vector3(-10, -0.9f, 10), Vector3::zero(), Vector3(1.2f, 1.2f, 1.2f));
@@ -169,6 +171,9 @@ void SceneGame::CreateStage()
 	Prefab::Instantiate(w, PrefabId::Swing, Vector3(-7, -0.9f, -8), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
 	Prefab::Instantiate(w, PrefabId::Swing, Vector3(-12, -0.9f, -2), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
 	Prefab::Instantiate(w, PrefabId::Swing, Vector3(-22, -0.9f, -13), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+	Prefab::Instantiate(w, PrefabId::Swing, Vector3(10, -0.9f, 10), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+	Prefab::Instantiate(w, PrefabId::Swing, Vector3(-12, -0.9f, -22), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+	Prefab::Instantiate(w, PrefabId::Swing, Vector3(-22, -0.9f, -43), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
 
 	//プロト
 	Prefab::Instantiate(w, PrefabId::ProtPlay, Vector3(-12, -0.9f, 8), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));

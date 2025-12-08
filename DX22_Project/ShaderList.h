@@ -15,7 +15,7 @@ public:
 		VS_WORLD, // SetWVP
 		VS_ANIME, // SetWVP,SetBones
 		VS_SPRITE,
-		
+		VS_SHARD,
 		VS_KIND_MAX
 	};
 	enum PSKind

@@ -52,17 +52,15 @@ void GlassObject::SpawnShards()
 	GlassShardPool* pool = GlassShardPool::GetInstanse();
 	Vector3 pos = tf_->GetPosition();
 
-	for (int i = 0; i < 20; ++i)
+	for (int i = 0; i < 30; ++i)
 	{
 		pool->Instantiate(pos, grade_);
 	}
-
-	//DebugLog::OutputValue("SpawnShards, ID", shard.id);
 }
 
 void GlassObject::SetGlassParamPS()
 {
-	DirectX::XMFLOAT4 Tint[ToIndex(GlassGrade::Count)] = { {0.7f, 0.7f, 1.0f, 0.6f}, {0.7f, 1.0f, 0.7f, 0.6f}, {1.0f, 0.7f, 0.7f, 0.6f} };
+	DirectX::XMFLOAT4 Tint[ToIndex(GlassGrade::Count)] = { {0.6f, 0.6f, 1.0f, 0.8f}, {0.6f, 1.0f, 0.6f, 0.8f}, {1.0f, 0.6f, 0.6f, 0.8f} };
 
 	ShaderList::SetGlassParam(Tint[ToIndex(grade_)], 3.0f, 0.5f, 1.0f);
 }

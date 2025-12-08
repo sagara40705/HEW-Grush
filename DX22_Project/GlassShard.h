@@ -7,6 +7,7 @@ class GlassShard : public MonoBehaviour
 private:
 	float lifeTimer = 0.f;
 	GlassGrade grade_ = GlassGrade::Grade_1;
+	DirectX::XMFLOAT4 randParam_;
 private:
 	Transform* tf_ = nullptr;
 	Rigidbody* rb_ = nullptr;
@@ -19,5 +20,6 @@ public:
 public:
 	void OnActive(const Vector3& pos);
 	void SetGlassGrade(GlassGrade g) { grade_ = g; }
+	void SetShardParamVS();
 	void SetGlassParamPS();
 };
