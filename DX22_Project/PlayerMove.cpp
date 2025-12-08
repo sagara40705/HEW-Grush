@@ -4,9 +4,14 @@
 #include "PlayerState.h"
 #include "PhysicsSystem.h"
 #include "InputKeyboard.h"
+#include <Effekseer.h>
+#include <EffekseerRendererDX11.h>
+#include <Effekseer.SIMD.h>
+#include <Effekseer.Modules.h>
 
 void PlayerMove::Start()
 {
+	
 	playerTF_ = gameObject->GetComponent<Transform>();
 
 	GameObject* camPivot = gameObject->FindWithTag(Tag::CamreraPivot);
@@ -56,6 +61,9 @@ Ray PlayerMove::GetDownwordRay()
 
 void PlayerMove::Jump()
 {
+	// Create a manager of effects
+	// エフェクトのマネージャーの作成
+	auto efkManager = ::Effekseer::Manager::Create(8000);
 	constexpr float JumpForce = 5.0f;
 	constexpr int JumpKey = VK_SPACE;
 
@@ -64,6 +72,9 @@ void PlayerMove::Jump()
 	if (InputKeyboard::GetKeyDown(JumpKey))
 	{
 		rb_->AddForce(Vector3(0.f, JumpForce, 0.f));
+		// Load an effect
+	// エフェクトの読込
+		auto effect = Effekseer::Effect::Create(efkManager, EFK_EXAMPLE_ASSETS_DIR_U16 "Laser01.efkefc");
 	}
 }
 
