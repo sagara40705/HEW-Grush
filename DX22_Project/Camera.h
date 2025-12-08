@@ -68,6 +68,7 @@ public:
 
 public:
     void DebugDrawFrustum();
+    bool IsVisibleSphere(const Vector3& center, float radius) const;
 private:
     void RebuildViewFromTransform();
     void RebuildProjectionIfDirty();

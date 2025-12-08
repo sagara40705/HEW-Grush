@@ -67,6 +67,23 @@ void MeshRenderer::Render()
 {
     if (!(tf && cam && mf)) return;
 
+    // ==== フラスタムカリング ====
+    const auto& m = tf->GetMatrix();
+    Vector3 center{ m._41, m._42, m._43 };  // ワールド位置
+    center += mf->boundsOffset;             // MeshFilter 側で決めたオフセット
+    const float r = mf->boundsRadius;
+    // 半径が 0 以下ならカリングしない（任意）
+    if (r > 0.0f)
+    {
+        // フラスタム（視錐台）外なら描画スキップ
+        if (!cam->IsVisibleSphere(center, r))
+        {
+            return;
+        }
+    }
+
+
+
     SetDepthTest(true);
     SetCullingMode(D3D11_CULL_NONE);
 

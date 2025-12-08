@@ -85,14 +85,16 @@ void Camera::DebugDrawFrustum()
 
     const float ndcZ[2] = { 0.0f, 1.0f }; // DirectX NDC: near = 0, far = 1
 
+    const float shrink = 0.8f;//デバック用
+
     for (int iz = 0; iz < 2; ++iz)
     {
         for (int iy = 0; iy < 2; ++iy)
         {
             for (int ix = 0; ix < 2; ++ix)
             {
-                float x = (ix == 0 ? -1.0f : 1.0f)  *0.8f; //デバック用
-                float y = (iy == 0 ? -1.0f : 1.0f) * 0.8f; //デバック用
+                float x = (ix == 0 ? -1.0f : 1.0f)  * shrink; //デバック用
+                float y = (iy == 0 ? -1.0f : 1.0f)  * shrink; //デバック用
                 float z = ndcZ[iz];
 
                 XMVECTOR p = XMVectorSet(x, y, z, 1.0f);
@@ -141,6 +143,42 @@ void Camera::DebugDrawFrustum()
     LineManager::AddLine(nRB, fRB, colSide, LG::General);
     LineManager::AddLine(nLT, fLT, colSide, LG::General);
     LineManager::AddLine(nRT, fRT, colSide, LG::General);
+}
+
+bool Camera::IsVisibleSphere(const Vector3& center, float radius) const
+{
+    // view 行列を取得（内部で Transform から再計算される）:contentReference[oaicite:1]{index=1}
+    Camera* self = const_cast<Camera*>(this);
+    const XMFLOAT4X4& viewF = self->GetView();
+    XMMATRIX view = XMLoadFloat4x4(&viewF);
+
+    // ワールド座標の center をビュー空間へ
+    XMVECTOR cWorld = XMVectorSet(center.x, center.y, center.z, 1.0f);
+    XMVECTOR cViewV = XMVector4Transform(cWorld, view);
+    float x = XMVectorGetX(cViewV);
+    float y = XMVectorGetY(cViewV);
+    float z = XMVectorGetZ(cViewV);
+
+    // z がマイナス（カメラの後ろ）なら不可視扱い
+    if (z <= 0.0f)
+        return false;
+
+    // 近平面・遠平面（前後方向）
+    if (z + radius < nearZ) return false;
+    if (z - radius > farZ)  return false;
+
+    // 上下左右（fovY と aspect から算出）
+    float tanY = std::tan(fovY * 0.5f);
+    float tanX = tanY * aspect;
+
+    const float shrink = 0.8f;
+
+    // 左右
+    if (std::fabs(x) - radius > z * tanX * shrink) return false;
+    // 上下
+    if (std::fabs(y) - radius > z * tanY * shrink) return false;
+
+    return true;
 }
 
 void Camera::RebuildViewFromTransform()
