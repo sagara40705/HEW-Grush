@@ -19,10 +19,6 @@ public:
     void Start() override;
     void Update() override;
 
-    // 単純再生:
-    //  - animeNo : Model 内部のアニメ番号（Model::AddAnimation の戻り値など）
-    //  - loop    : ループ再生するか
-    //  - speed   : 再生速度（1.0 が等倍）
     void Play(Model::AnimeNo animeNo, bool loop = true, float speed = 1.0f);
 
     Model::AnimeNo GetCurrentAnime() const { return currentAnime; }

@@ -1,108 +1,121 @@
-ï»¿// SceneTitle.cpp
-#include "SceneSmaple.h"
+// SceneTitle.cpp
+#include "SceneSample.h"
+#include "SceneManager.h"
 #include "GameObject.h"
 #include "AllComponent.h"
 #include "TextureManager.h"
-#include "ModelManager.h"
+#include "Defines.h"
 
-void SceneSmaple::Load()
+Model* g_Model;
+
+void SceneSample::Load()
 {
 	ModelManager::Load(ModelTag::Player);
-	Model* model = ModelManager::Get(ModelTag::Player);
 
 	World& w = GetWorld();
 
-	Model::AnimeNo jumpAnim = model->AddAnimation("Assets/Model/animation_taiki1.fbx");
-	model->Play(jumpAnim, true, 1.0f);
+	GameObject& mainCamera = w.CreateGameObject(Camera::kInitPos, Camera::kInitRotate, Vector3::one());
+	mainCamera.SetTag(Tag::MainCamera);
+	mainCamera.AddComponent<Camera>();
 
+	GameObject& player = w.CreateGameObject(Vector3(0.f, 2.f, 0.f), Vector3(0.f, 0.f, 0.f));
+	player.AddComponent<MeshFilter>(ModelTag::Player);
+	player.AddComponent<MeshRenderer>();
+	player.AddComponent<Animator>();
+
+	g_Model = new Model();
+	const char* fileName = "Assets/Model/playerchara_20251202/space_suit_12.fbx";
+	if (!g_Model->Load(fileName, 0.005))
+	{ // ”{—¦‚Æ”½“]‚ÍÈ—ª‰Â 
+		MessageBox(NULL, "“Ç‚İ‚ñ‚¾ƒtƒ@ƒCƒ‹–¼", "Error", MB_OK);
+	}
+
+	Model::AnimeNo jumpAnim = g_Model->AddAnimation("Assets/Model/animation_taiki1.fbx");
+
+	g_Model->PlayAnime(jumpAnim, true, 1.0f);
 }
 
-void SceneSmaple::Unload()
+void SceneSample::Unload()
 {
-	TextureManager::Clear();
+	if (g_Model)
+	{
+		delete g_Model;
+		g_Model = nullptr;
+	}
 }
 
-void SceneSmaple::Update()
+void SceneSample::Update()
 {
-	Model* model = ModelManager::Get(ModelTag::Player);
-	model->Step(1.f / 60.f);
+	g_Model->Step(1.0f / 60.0f);
 }
 
-void SceneSmaple::Draw()
+void SceneSample::Draw()
 {
-	Model* model = ModelManager::Get(ModelTag::Player);
+	// ’¸“_ƒVƒF[ƒ_[‚É“n‚·•ÏŠ·s—ñ‚Ì•Ï”‚ğéŒ¾ 
+	DirectX::XMFLOAT4X4 fWVP[3];    // World,View,Projection‚Ì—ª  
+	DirectX::XMMATRIX world, view, proj; // Še•ÏŠ·s—ñ‚ÌŠi”[æ 
 
-	// ï¿½ï¿½ï¿½_ï¿½Vï¿½Fï¿½[ï¿½_ï¿½[ï¿½É“nï¿½ï¿½ï¿½ÏŠï¿½ï¿½sï¿½ï¿½Ì•Ïï¿½ï¿½ï¿½éŒ¾ 
-	DirectX::XMFLOAT4X4 fWVP[3];    // World,View,Projectionï¿½Ì—ï¿½  
-	DirectX::XMMATRIX world, view, proj; // ï¿½eï¿½ÏŠï¿½ï¿½sï¿½ï¿½ÌŠiï¿½[ï¿½ï¿½ 
 
-	// ï¿½ì¬ï¿½ï¿½ï¿½ï¿½ï¿½sï¿½ï¿½ï¿½ï¿½eï¿½Ïï¿½ï¿½ÖŠiï¿½[ 
-	//ï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½hï¿½ï¿½ï¿½Wï¿½p
-	world = DirectX::XMMatrixRotationY(0.0f);
-	//ï¿½rï¿½ï¿½ï¿½[ï¿½ï¿½ï¿½Wï¿½p
+	// ì¬‚µ‚½s—ñ‚ğŠe•Ï”‚ÖŠi”[ 
+	//ƒ[ƒ‹ƒhÀ•W—p
 
-	view = DirectX::XMMatrixLookAtLH(
-		DirectX::XMVectorSet(0.0f, 2.0f, -3.0f, 0.0f),
-		DirectX::XMVectorSet(0.0f, 0.0f, 0.0f, 0.0f),
-		DirectX::XMVectorSet(0.0f, 1.0f, 0.0f, 0.0f)
-	);
+	world = DirectX::XMMatrixIdentity();
 
-	//ï¿½vï¿½ï¿½ï¿½Wï¿½Fï¿½Nï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Wï¿½p
-	proj = DirectX::XMMatrixPerspectiveFovLH(70.0f, 16.0f / 9.0f, 0.1f, 10.0f);
+	//ƒrƒ…[À•W—p
 
-	// ï¿½vï¿½Zï¿½pï¿½Ìƒfï¿½[ï¿½^ï¿½ï¿½ï¿½ï¿½Ç‚İï¿½ï¿½pï¿½Ìƒfï¿½[ï¿½^ï¿½É•ÏŠï¿½ 
+	view = DirectX::XMLoadFloat4x4(&Camera::Main()->GetView());
+
+	//ƒvƒƒWƒFƒNƒVƒ‡ƒ“À•W—p
+	proj = DirectX::XMLoadFloat4x4(&Camera::Main()->GetProjection());
+
+	// ŒvZ—p‚Ìƒf[ƒ^‚©‚ç“Ç‚İæ‚è—p‚Ìƒf[ƒ^‚É•ÏŠ· 
 	DirectX::XMStoreFloat4x4(&fWVP[0], DirectX::XMMatrixTranspose(world));
 	DirectX::XMStoreFloat4x4(&fWVP[1], DirectX::XMMatrixTranspose(view));
 	DirectX::XMStoreFloat4x4(&fWVP[2], DirectX::XMMatrixTranspose(proj));
 
+	ShaderList::SetWVP(fWVP);
 
-	// ï¿½Vï¿½Fï¿½[ï¿½_ï¿½[ï¿½Ö•ÏŠï¿½ï¿½sï¿½ï¿½ï¿½İ’ï¿½ 
-	ShaderList::SetWVP(fWVP); // SetWVPï¿½Öï¿½ï¿½Ìˆï¿½ï¿½ï¿½ï¿½É‚ï¿½XMFLOAT4X4ï¿½^ï¿½Å—vï¿½fï¿½ï¿½ï¿½Rï¿½Ì”zï¿½ï¿½ÌƒAï¿½hï¿½ï¿½ï¿½Xï¿½ï¿½nï¿½ï¿½ 
-
-
-	//ï¿½{ï¿½[ï¿½ï¿½ï¿½sï¿½ï¿½ï¿½ï¿½Vï¿½Fï¿½[ï¿½_ï¿½[ï¿½Éİ’ï¿½
-	//200ï¿½ï¿½Modelï¿½Nï¿½ï¿½ï¿½Xï¿½ÌÅ‘ï¿½{ï¿½[ï¿½ï¿½ï¿½ï¿½ï¿½Éï¿½ï¿½í‚¹ï¿½ï¿½
-	for (unsigned int i = 0; i < model->GetMeshNum(); ++i)
+	//ƒ{[ƒ“s—ñ‚ğƒVƒF[ƒ_[‚Éİ’è
+	//200‚ÍModelƒNƒ‰ƒX‚ÌÅ‘åƒ{[ƒ“”‚É‡‚í‚¹‚é
+	for (unsigned int i = 0; i < g_Model->GetMeshNum(); ++i)
 	{
-		const Model::Mesh* mesh = model->GetMesh(i);
+		const Model::Mesh* mesh = g_Model->GetMesh(i);
 		if (!mesh) continue;
 
-		// ï¿½{ï¿½[ï¿½ï¿½ï¿½sï¿½ï¿½ï¿½ï¿½Vï¿½Fï¿½[ï¿½_ï¿½[ï¿½Éİ’ï¿½
-		DirectX::XMFLOAT4X4 bones[200]; // Model::MAX_BONE ï¿½ï¿½ï¿½gï¿½ï¿½ï¿½Ä‚ï¿½OK
+		// ƒ{[ƒ“s—ñ‚ğƒVƒF[ƒ_[‚Éİ’è
+		DirectX::XMFLOAT4X4 bones[200]; // Model::MAX_BONE ‚ğg‚Á‚Ä‚àOK
 		for (int boneIdx = 0; boneIdx < mesh->bones.size(); ++boneIdx)
 		{
 			const Model::Bone& bone = mesh->bones[boneIdx];
 			DirectX::XMStoreFloat4x4(
 				&bones[boneIdx],
 				DirectX::XMMatrixTranspose(
-					bone.invOffset * model->GetBone(bone.index)
+					bone.invOffset * g_Model->GetBoneMatrix(bone.nodeIndex)
 				)
 			);
 		}
 
 		ShaderList::SetBones(bones);
 
-		// ï¿½ï¿½ï¿½bï¿½Vï¿½ï¿½ï¿½`ï¿½ï¿½iï¿½Kï¿½vï¿½È‚ç‚±ï¿½ï¿½ï¿½Åj
-		// m_pModel->Draw(i);
+		// ƒƒbƒVƒ…•`‰æi•K—v‚È‚ç‚±‚±‚Åj
+		//g_pModel->Draw(i);
 	}
 
+	// ƒ‚ƒfƒ‹‚Ég—p‚·‚é’¸“_ƒVƒF[ƒ_[AƒsƒNƒZƒ‹ƒVƒF[ƒ_[‚ğİ’è 
+	g_Model->SetVertexShader(ShaderList::GetVS(ShaderList::VS_ANIME));
+	g_Model->SetPixelShader(ShaderList::GetPS(ShaderList::PS_LAMBERT));
 
-	// ï¿½ï¿½ï¿½fï¿½ï¿½ï¿½Égï¿½pï¿½ï¿½ï¿½é’¸ï¿½_ï¿½Vï¿½Fï¿½[ï¿½_ï¿½[ï¿½Aï¿½sï¿½Nï¿½Zï¿½ï¿½ï¿½Vï¿½Fï¿½[ï¿½_ï¿½[ï¿½ï¿½İ’ï¿½ 
-	model->SetVertexShader(ShaderList::GetVS(ShaderList::VS_ANIME));
-	model->SetPixelShader(ShaderList::GetPS(ShaderList::PS_LAMBERT));
 
-
-	// ï¿½}ï¿½eï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½Ê‚Éƒï¿½ï¿½bï¿½Vï¿½ï¿½ï¿½ï¿½\ï¿½ï¿½ 
-	for (unsigned int i = 0; i < model->GetMeshNum(); ++i) {
-		// ï¿½ï¿½ï¿½fï¿½ï¿½ï¿½Ìƒï¿½ï¿½bï¿½Vï¿½ï¿½ï¿½ï¿½ï¿½æ“¾ 
-		const Model::Mesh* mesh = model->GetMesh(i);
-		// ï¿½ï¿½ï¿½bï¿½Vï¿½ï¿½ï¿½ÉŠï¿½ï¿½è“–ï¿½Ä‚ï¿½ï¿½Ä‚ï¿½ï¿½ï¿½}ï¿½eï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½ï¿½ï¿½æ“¾ 
-		Model::Material material = *model->GetMaterial(mesh->materialID);
-		// ï¿½Vï¿½Fï¿½[ï¿½_ï¿½[ï¿½Öƒ}ï¿½eï¿½ï¿½ï¿½Aï¿½ï¿½ï¿½ï¿½İ’ï¿½ 
+	// ƒ}ƒeƒŠƒAƒ‹•Ê‚ÉƒƒbƒVƒ…‚ğ•\¦ 
+	for (unsigned int i = 0; i < g_Model->GetMeshNum(); ++i) {
+		// ƒ‚ƒfƒ‹‚ÌƒƒbƒVƒ…‚ğæ“¾ 
+		const Model::Mesh* mesh = g_Model->GetMesh(i);
+		// ƒƒbƒVƒ…‚ÉŠ„‚è“–‚Ä‚ç‚ê‚Ä‚¢‚éƒ}ƒeƒŠƒAƒ‹‚ğæ“¾ 
+		Model::Material material = *g_Model->GetMaterial(mesh->materialID);
+		// ƒVƒF[ƒ_[‚Öƒ}ƒeƒŠƒAƒ‹‚ğİ’è 
 		ShaderList::SetMaterial(material);
-		// ï¿½ï¿½ï¿½fï¿½ï¿½ï¿½Ì•`ï¿½ï¿½ 
-		model->Draw(i);
+		// ƒ‚ƒfƒ‹‚Ì•`‰æ 
+		g_Model->Draw(i);
 	}
 }
-
 
