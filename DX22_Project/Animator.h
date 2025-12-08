@@ -5,11 +5,6 @@
 class MeshFilter;
 class MeshRenderer;
 
-//=========================================================
-// 極小機能版 Animator
-//  - Model 内部のアニメをそのまま再生するラッパ
-//  - GameObject ごとに 1 つだけ付ける想定
-//=========================================================
 class Animator final : public MonoBehaviour
 {
 public:
@@ -23,6 +18,7 @@ public:
     Model::AnimeNo GetCurrentAnime() const { return currentAnime; }
     bool           IsLoop()          const { return loopFlag; }
     float          GetSpeed()        const { return speed; }
+    Model* GetModel() const { return  model; }
 
 private:
     bool playing = false;

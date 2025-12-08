@@ -53,8 +53,14 @@ void Animator::Play(Model::AnimeNo animeNo, bool loop, float spd)
 //---------------------------------------------------------
 void Animator::Update()
 {
-    if (!model) return;
+    if (!model || !playing) return;
     if (currentAnime == Model::ANIME_NONE) return;
+
+    if (!model->IsAnimePlay(currentAnime))
+    {
+        playing = false;
+        return;
+    }
 
     constexpr float DT = 1.0f / 60.0f;
 
