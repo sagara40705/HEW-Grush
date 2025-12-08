@@ -133,10 +133,6 @@ void SceneGame::CreateCameraAndPlayer()
 	player.AddComponent<PlayerState>();
 	player.AddComponent<PlayerMove>();
 	player.AddComponent<PlayerAction>();
-	Animator& anime = player.AddComponent<Animator>();
-	Model::AnimeNo animeNo = ModelManager::Get(ModelTag::Player)->AddAnimation("Assets/Model/playerchara_20251202/space_suit_12.fbx");
-	anime.Play(animeNo, true, 1.0f);
-	//ModelManager::Get(ModelTag::Player)->Play(animeNo, true, 1.0f);
 
 	GameObject& hummer = 
 		player.CreateChild(Hammer::BasePos, Vector3::zero(), Vector3(0.3f, 0.3f, 0.3f));
@@ -218,7 +214,6 @@ void SceneGame::CreateScoreUI()
 	GameObject& scoreManager = w.CreateGameObject();
 	scoreManager.SetTag(Tag::ScoreManager);
 	scoreManager.AddComponent<ScoreManager>();
-	//scoreManager.AddComponent<UiSpriteRenderer>(TextureTag::ScoreNumber, Vector2(400.f, 0.f), Vector2(320.f, 270.f));
 
 	GameObject& scoreUI = w.CreateGameObject();
 	scoreUI.AddComponent<ScoreUI>();

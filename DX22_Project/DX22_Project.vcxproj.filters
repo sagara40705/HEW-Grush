@@ -303,6 +303,18 @@
     <ClCompile Include="SceneSample.cpp">
       <Filter>Game\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="Model_anime.cpp">
+      <Filter>Engine\Rendering\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Model_check.cpp">
+      <Filter>Engine\Rendering\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Model_get.cpp">
+      <Filter>Engine\Rendering\Model</Filter>
+    </ClCompile>
+    <ClCompile Include="Model_morph.cpp">
+      <Filter>Engine\Rendering\Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
