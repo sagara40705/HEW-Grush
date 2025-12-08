@@ -12,6 +12,7 @@ enum class ModelTag : uint8_t
 	Ufo,
 	ProtPlay,
 	Player,
+	Hammer,
 	Count
 };
 constexpr size_t ToIndex(ModelTag tag) noexcept

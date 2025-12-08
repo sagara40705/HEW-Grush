@@ -46,6 +46,7 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Ufo); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::ProtPlay); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer); });
 
 	// テクスチャーロード
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Star); });
@@ -137,7 +138,7 @@ void SceneGame::CreateCameraAndPlayer()
 	GameObject& hummer = 
 		player.CreateChild(Hammer::BasePos, Vector3::zero(), Vector3(0.3f, 0.3f, 0.3f));
 	hummer.SetTag(Tag::Hammer);
-	hummer.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube);
+	hummer.AddComponent<MeshFilter>(ModelTag::Hammer);
 	hummer.AddComponent<MeshRenderer>();
 	hummer.AddComponent<BoxCollider>();
 	hummer.AddComponent<Hammer>();

@@ -19,7 +19,7 @@ void Animator::Start()
     if (meshFilter)
     {
         model = ModelManager::Get(ModelTag::Player);
-        currentAnime = model->AddAnimation("Assets/Model/animation_taiki1.fbx");
+        currentAnime = model->AddAnimation("Assets/Model/animation_hashiru.fbx");
         Play(currentAnime, true, 1.0f);
         DebugLog::Output("Start Player Animation");
     }

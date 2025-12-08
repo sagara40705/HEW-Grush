@@ -11,7 +11,8 @@ const ModelLoadData ModelManager::kModelData[static_cast<size_t>(ModelTag::Count
     {"Assets/Model/MD_REbenti_prototype.fbx",                                 0.01f, Model::Flip::ZFlip},
     {"Assets/Model/MD_UFO_prototype.fbx",                                     0.01f, Model::Flip::ZFlip},
     {"Assets/Model/MD_player_prototype.fbx",                                  0.01f, Model::Flip::ZFlip},
-    {"Assets/Model/playerchara_20251202/space_suit_12.fbx",                   0.01f, Model::Flip::ZFlip}
+    {"Assets/Model/playerchara_20251202/space_suit_12.fbx",                   0.01f, Model::Flip::ZFlip},
+    {"Assets/Model/new_hammer_grade1.fbx",                                    0.08f, Model::Flip::ZFlip },
 };
 
 bool ModelManager::Load(ModelTag tag)
