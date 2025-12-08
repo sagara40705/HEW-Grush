@@ -6,6 +6,7 @@
 #include "GameObject.h"
 #include "GlassObject.h"
 #include "GlassShard.h"
+#include "DebugLog.h"
 using namespace DirectX;
 
 struct WVPMatrices
@@ -160,9 +161,6 @@ void MeshRenderer::ModelRender()
             }
 
             ShaderList::SetBones(bones);
-
-            // メッシュ描画（必要ならここで）
-            //g_pModel->Draw(i);
         }
     }
 
@@ -184,6 +182,8 @@ void MeshRenderer::ModelRender()
         Model::Material material = *model->GetMaterial(mesh->materialID);
         // シェーダーへマテリアルを設定 
         ShaderList::SetMaterial(material);
+
+        //if(material.pTexture) DebugLog::OutputValue("pTexture", material.pTexture);
         // モデルの描画 
         model->Draw(i);
     }

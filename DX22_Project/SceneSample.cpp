@@ -10,7 +10,7 @@
 
 void SceneSample::Load()
 {
-	ModelManager::Load(ModelTag::Player);
+	ModelManager::Load(ModelTag::Karubi);
 
 	World& w = GetWorld();
 
@@ -19,9 +19,9 @@ void SceneSample::Load()
 	mainCamera.AddComponent<Camera>();
 
 	GameObject& player = w.CreateGameObject(Vector3(0.f, 2.f, 0.f), Vector3(0.f, 0.f, 0.f));
-	player.AddComponent<MeshFilter>(ModelTag::Player);
+	player.AddComponent<MeshFilter>(ModelTag::Karubi);
 	player.AddComponent<MeshRenderer>();
-	player.AddComponent<Animator>();
+	//player.AddComponent<Animator>();
 }
 
 void SceneSample::Unload()

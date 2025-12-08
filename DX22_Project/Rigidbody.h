@@ -14,7 +14,7 @@ public:
     float   mass = 1.0f;          // 質量
     float   drag = 0.0f;          // 空気抵抗
     float   friction = 0.5f;      // 摩擦
-
+    float   e = 0.f;              // 反発係数
 
     void Start() override;
     void FixedUpdate() override;  // ここが「Integrate フェーズ」

@@ -24,7 +24,7 @@ private:
 	// 
 	static constexpr size_t ToIndex(Type t) noexcept { return static_cast<size_t>(t); }
 private:
-	PlayerState* state = nullptr;	//プレイヤーの状態
+	PlayerState* state_ = nullptr;	//プレイヤーの状態
 	Animator* anime_ = nullptr;		//アニメーター
 public:
 	void Start() override;			// 開始処理
@@ -45,6 +45,9 @@ private:
 	* @brief animation_にAnimeNoを格納
 	*/
 	void AddAllAnimations();
-
-
+	
+	/*
+	* @brief プレイヤーのステートから次のアニメーションをSetする
+	*/
+	void InutNextAnimation();
 };

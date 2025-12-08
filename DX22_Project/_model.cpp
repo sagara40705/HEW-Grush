@@ -2,6 +2,7 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
+#include "DebugLog.h";
 
 void Model::MakeMesh(const void* ptr)
 {
@@ -134,11 +135,13 @@ void Model::MakeMaterial(const void* ptr, std::string directory)
 
 		// そのまま読み込み
 		hr = material.pTexture->Create(path.C_Str());
-		if (SUCCEEDED(hr)) { continue; }
+		if (SUCCEEDED(hr)) { DebugLog::OutputValue("Model::Load, material.pTexture", material.pTexture);  continue; }
 
 		// ディレクトリと連結して探索
 		hr = material.pTexture->Create((directory + path.C_Str()).c_str());
-		if (SUCCEEDED(hr)) { continue; }
+		if (SUCCEEDED(hr)) { DebugLog::OutputValue("Model::Load, material.pTexture", material.pTexture);  continue; }
+
+
 
 		// モデルと同じ階層を探索
 		// パスからファイル名のみ取得
@@ -148,11 +151,12 @@ void Model::MakeMaterial(const void* ptr, std::string directory)
 
 		// テクスチャの読込
 		hr = material.pTexture->Create((directory + fileName).c_str());
-		if (SUCCEEDED(hr)) { continue; }
+		if (SUCCEEDED(hr)) { DebugLog::OutputValue("Model::Load, material.pTexture", material.pTexture);  continue; }
 
 		// テクスチャが見つからなかった
 		delete material.pTexture;
 		material.pTexture = nullptr;
 		SetErrorMessage("Not find texture. [" + fullPath + "]");
+
 	}
 }

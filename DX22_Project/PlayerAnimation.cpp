@@ -2,13 +2,18 @@
 #include "GameObject.h"
 #include "PlayerState.h"
 #include "Animator.h"
+#include <cassert>
 
 /*
 * @brief 初期化処理
 */
 void PlayerAnimation::Start()
 {
+	state_ = gameObject->GetComponent<PlayerState>();
+	anime_ = gameObject->GetComponent<Animator>();
 	AddAllAnimations();
+
+	assert(state_ && anime_ && "PlayerAnimation	で プレイヤーの <PlayerState> か <Animator> が nullptr です");
 }
 
 /*
@@ -49,5 +54,14 @@ void PlayerAnimation::AddAllAnimations()
 
 		animation_[type] = model->AddAnimation(FilePass[type]);
 	}
+
+}
+
+/*
+* @brief プレイヤーのステートから次のアニメーションをSetする
+*/
+void PlayerAnimation::InutNextAnimation()
+{
+	nextType_ = currentType_;
 
 }

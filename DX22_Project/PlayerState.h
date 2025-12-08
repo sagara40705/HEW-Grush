@@ -42,6 +42,11 @@ public:
     bool  canUseAction[static_cast<size_t>(ActionId::Count)]{};   // 今使えるか？
     float actionTimer[static_cast<size_t>(ActionId::Count)]{}; //アクション中のタイマー
     float cooltime[static_cast<size_t>(ActionId::Count)]{}; // 0〜1 (0=準備完了,1=撃った直後) 等
+
+    // --- アニメーション 関係 ---
+    bool isMoveAnime = false;
+    bool isNormalAttackAnime = false;
+
 public:
     static constexpr Vector3 kInitPos = { -3.0f, 0.0f, 0.0f };
     static constexpr Vector3 kSize = { 1.0f, 1.0f, 1.0f };
