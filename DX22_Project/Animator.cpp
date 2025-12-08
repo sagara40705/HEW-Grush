@@ -20,7 +20,7 @@ void Animator::Start()
     {
         model = ModelManager::Get(ModelTag::Player);
         currentAnime = model->AddAnimation("Assets/Model/animation_hashiru.fbx");
-        Play(currentAnime, true, 1.0f);
+        Play(currentAnime, false, 1.0f);
         DebugLog::Output("Start Player Animation");
     }
 

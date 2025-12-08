@@ -34,6 +34,7 @@ namespace
 
         return Vector3(x, y, z); // 長さ ≒1
     }
+
     DirectX::XMFLOAT4 MakeShardRandParam()
     {
         static thread_local std::mt19937 rng{ std::random_device{}() };
