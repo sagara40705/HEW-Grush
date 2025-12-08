@@ -300,6 +300,12 @@
     <ClCompile Include="CameraShake.cpp">
       <Filter>Game\Components\Camera</Filter>
     </ClCompile>
+<<<<<<< Updated upstream
+=======
+    <ClCompile Include="BreakButtonRenderer.cpp">
+      <Filter>Engine\Rendering\UI</Filter>
+    </ClCompile>
+>>>>>>> Stashed changes
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -533,6 +539,12 @@
     <ClInclude Include="CameraShake.h">
       <Filter>Game\Components\Camera</Filter>
     </ClInclude>
+<<<<<<< Updated upstream
+=======
+    <ClInclude Include="BreakButtonRenderer.h">
+      <Filter>Engine\Rendering\UI</Filter>
+    </ClInclude>
+>>>>>>> Stashed changes
   </ItemGroup>
   <ItemGroup>
     <None Include="SceneManager.inl">
