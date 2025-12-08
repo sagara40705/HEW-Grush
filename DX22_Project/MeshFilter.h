@@ -31,7 +31,12 @@ public:
     MeshBuffer* GetPrimitive() const { return primitive; }
     Model* GetModel()     const { return model; }
 
-    float boundsRadius = 30.0f;
+    float boundsRadius = 5.0f;
+    Vector3 boundsOffset = Vector3(0.f, 0.5f, 0.f);
+
+    // color はデフォルト緑 / group は General としておく
+    void SetBoundsOffset(Vector3 offset) { boundsOffset = offset; }
+    void DebugDrawBounds() const;
 
 private:
     MeshSource  source{};

@@ -5,6 +5,7 @@
 #include "RenderSystem.h"
 #include "PhysicsSystem.h"
 #include "BoxCollider.h"
+#include "MeshFilter.h"
 //#include "DebugLog.h"
 
 #include <algorithm>
@@ -312,6 +313,32 @@ void World::DebugDrawColliders() const
 
     // ライン描画（BoxCollider レイヤーのみ）
     LineManager::Draw(LineManager::LineGroup::BoxCollider);
+}
+
+void World::DebugDrawBounds() const
+{
+    // 一旦 Bounds 用にだけクリアしたい場合
+    // LineManager::Clear(LG::General);
+ // すべての GameObject から BoxCollider を探す
+    for (auto& up : objects)
+    {
+        if (!up) continue;
+        GameObject* go = up.get();
+        if (!go) continue;
+
+        // 非アクティブなオブジェクトはスキップ
+        if (!go->IsActiveInHierarchy()) continue;
+
+        // BoxCollider を取得
+        auto* mf = go->GetComponent<MeshFilter>();
+        if (!mf) continue;
+
+        // 無効コンポーネントならスキップ
+        if (!mf->IsEnabled()) continue;  // BoxCollider は Component 継承前提
+
+        // ライン登録
+        mf->DebugDrawBounds();
+    }
 }
 
 //====================== �j��L���[���� ======================

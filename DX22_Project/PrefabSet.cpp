@@ -15,7 +15,7 @@ void RegisterAllPrefabs()
         [](GameObject& go) {
             go.SetTag(Tag::Glass);
 
-            auto& mf = go.AddComponent<MeshFilter>(ModelTag::Swing); (void)mf;
+            auto& mf = go.AddComponent<MeshFilter>(ModelTag::Swing); mf.SetBoundsOffset({ 0.f, 0.5f, 0.15f });    (void)mf;
             auto& mr = go.AddComponent<MeshRenderer>(); (void)mr;
             auto& bc = go.AddComponent<BoxCollider>(
                 true,
@@ -29,7 +29,7 @@ void RegisterAllPrefabs()
     Prefab::Register(P::Benti,
         [](GameObject& go) {
             go.SetTag(Tag::Glass);
-            auto& mf = go.AddComponent<MeshFilter>(ModelTag::Benti); (void)mf;
+            auto& mf = go.AddComponent<MeshFilter>(ModelTag::Benti);  mf.SetBoundsOffset({ 0.f, 1.0f, 0.f });     (void)mf;
             auto& mr = go.AddComponent<MeshRenderer>(); (void)mr;
             auto& bc = go.AddComponent<BoxCollider>(
                 true,
@@ -42,7 +42,7 @@ void RegisterAllPrefabs()
     Prefab::Register(P::Ufo,
         [](GameObject& go) {
             go.SetTag(Tag::Glass);
-            auto& mf = go.AddComponent<MeshFilter>(ModelTag::Ufo); (void)mf;
+            auto& mf = go.AddComponent<MeshFilter>(ModelTag::Ufo); mf.SetBoundsOffset({ 0.f, 1.8f, 0.f });     (void)mf;
             auto& mr = go.AddComponent<MeshRenderer>(); (void)mr;
             auto& bc = go.AddComponent<BoxCollider>(
                 true,
@@ -55,7 +55,7 @@ void RegisterAllPrefabs()
     Prefab::Register(P::ProtPlay,
         [](GameObject& go) {
             go.SetTag(Tag::Glass);
-            auto& mf = go.AddComponent<MeshFilter>(ModelTag::ProtPlay); (void)mf;
+            auto& mf = go.AddComponent<MeshFilter>(ModelTag::ProtPlay); mf.SetBoundsOffset({ -0.2f, 0.8f, 0.f });     (void)mf;
             auto& mr = go.AddComponent<MeshRenderer>(); (void)mr;
             auto& bc = go.AddComponent<BoxCollider>(
                 true,

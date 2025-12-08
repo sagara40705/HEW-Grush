@@ -76,6 +76,7 @@ public:
     const std::vector<Collider*>& GetColliders() const { return colliderList; }
     // ★ 追加: デバッグ用コライダー描画
     void DebugDrawColliders() const;
+    void DebugDrawBounds() const;
 
 private:
     // フェーズごとのリスト

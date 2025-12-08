@@ -65,6 +65,9 @@ public:
     const DirectX::XMFLOAT4X4& GetView();       //View
     const DirectX::XMFLOAT4X4& GetProjection(); //Proj
     DirectX::XMFLOAT4X4 GetViewProjection();    //VP
+
+public:
+    void DebugDrawFrustum();
 private:
     void RebuildViewFromTransform();
     void RebuildProjectionIfDirty();

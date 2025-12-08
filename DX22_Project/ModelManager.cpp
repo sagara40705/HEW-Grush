@@ -2,7 +2,9 @@
 #include <cassert>
 
 std::array<std::unique_ptr<Model>, static_cast<size_t>(ModelTag::Count)> ModelManager::s_models{};
-std::array<float, static_cast<size_t>(ModelTag::Count)> ModelManager::modelBounds{};
+std::array<float, static_cast<size_t>(ModelTag::Count)> ModelManager::modelBounds = {
+    0.f, 0.62f,1.f, 2.2f,1.f, 2.6f,1.f, 0.7f,0.f,0.f
+};
 
 const ModelLoadData ModelManager::kModelData[static_cast<size_t>(ModelTag::Count)] =
 {
