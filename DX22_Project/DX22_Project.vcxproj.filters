@@ -82,6 +82,9 @@
     <Filter Include="Game\Components\Loading">
       <UniqueIdentifier>{47deb2f4-af24-434a-9507-13dda3bcdc76}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Effekseer">
+      <UniqueIdentifier>{cc1ea433-f26c-4418-a79a-6c41c82be483}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectX.cpp">
@@ -466,6 +469,18 @@
     </ClInclude>
     <ClInclude Include="GameState.h">
       <Filter>Game\Entry</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\effekseer\EffekseerForCpp1.7.2.0\src\include\Effekseer.h">
+      <Filter>Game\Effekseer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\effekseer\EffekseerForCpp1.7.2.0\src\include\EffekseerRendererDX11.h">
+      <Filter>Game\Effekseer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\effekseer\EffekseerForCpp1.7.2.0\src\Effekseer\Effekseer.Modules.h">
+      <Filter>Game\Effekseer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\effekseer\EffekseerForCpp1.7.2.0\src\Effekseer\Effekseer.SIMD.h">
+      <Filter>Game\Effekseer</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -12,6 +12,8 @@
 #include "ShaderList.h"
 #include "LineManager.h"
 #include "Game.h"
+#pragma commment(lib,Effekseer.lib)
+#pragma commment(lib,EffekseerRendererDX11.lib)
 
 
 HRESULT Init(HWND hWnd, UINT width, UINT height)

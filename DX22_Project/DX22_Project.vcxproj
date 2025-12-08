@@ -208,6 +208,10 @@
     <ClCompile Include="_model.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\effekseer\EffekseerForCpp1.7.2.0\src\Effekseer\Effekseer.Modules.h" />
+    <ClInclude Include="..\..\..\..\effekseer\EffekseerForCpp1.7.2.0\src\Effekseer\Effekseer.SIMD.h" />
+    <ClInclude Include="..\..\..\..\effekseer\EffekseerForCpp1.7.2.0\src\include\Effekseer.h" />
+    <ClInclude Include="..\..\..\..\effekseer\EffekseerForCpp1.7.2.0\src\include\EffekseerRendererDX11.h" />
     <ClInclude Include="AllComponent.h" />
     <ClInclude Include="Animator.h" />
     <ClInclude Include="AudioListener.h" />
