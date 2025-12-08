@@ -156,7 +156,6 @@ void MeshRenderer::ModelRender()
         }
     }
 
-    //VS_ANIMにしたらバグル、Playにしなくてもダメ
     //=== VS / PS を取得 ===
     VertexShader* vs = ShaderList::GetVS(vsKind);
     PixelShader* ps = ShaderList::GetPS(psKind);
