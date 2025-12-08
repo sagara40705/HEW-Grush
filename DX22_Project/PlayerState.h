@@ -45,7 +45,7 @@ public:
 public:
     static constexpr Vector3 kInitPos = { -3.0f, 0.0f, 0.0f };
     static constexpr Vector3 kSize = { 1.0f, 1.0f, 1.0f };
-    static constexpr float kRadius = 0.5f;
+    static constexpr float kRadius = 0.f;
 public:
     const float kActionTime[ToIndex(ActionId::Count)] = { 0.4f, 1.f, 2.f };
     const float kActionCT[ToIndex(ActionId::Count)] = { 0.1f, 5.f, 5.f };

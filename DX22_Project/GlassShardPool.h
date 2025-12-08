@@ -11,10 +11,13 @@ class GlassShardPool : public Component
 private:
 	static GlassShardPool* s_instance;
 	GameObject* pool_[MAX];
+	Transform* camTf_ = nullptr;
 public:
 	void Start() override;
 	void OnDestroy() override;
 public:
 	static GlassShardPool* GetInstanse() { return s_instance; }
 	GameObject* Instantiate(const Vector3& pos, GlassGrade grade);
+private:
+	Vector3 CalcBillboard(const Vector3& pos);
 };

@@ -61,9 +61,9 @@ void GlassShard::OnDisable()
 
 void GlassShard::Start()
 {
-    tf_ = gameObject->transform;
+    //tf_ = gameObject->transform;
 	rb_ = gameObject->GetComponent<Rigidbody>();
-    assert(tf_ && rb_ && "GlassShardのRigidbodyがnullptr");
+    assert(rb_ && "GlassShardのRigidbodyがnullptr");
 
     randParam_ = MakeShardRandParam();
 }
@@ -74,6 +74,8 @@ void GlassShard::Update()
     constexpr float DT = 1.f / 60.f;
 
     lifeTimer += DT;
+    gameObject->transform->AddRotate(dir_);
+
     if (lifeTimer >= LIFE)
     {
         gameObject->SetActive(false);
@@ -88,13 +90,14 @@ void GlassShard::OnDestroy()
 
 void GlassShard::OnActive(const Vector3& pos)
 {
-    assert(tf_ && rb_ && "GlassShardのRigidbodyがnullptr");
-    if (!rb_ || !tf_) return;
+    assert(rb_ && "GlassShardのRigidbodyがnullptr");
+    if (!rb_) return;
 
-    tf_->SetPosition(pos);
+    gameObject->transform->SetPosition(pos);
 
     constexpr float kImpulsePower = 8.0f; 
     Vector3 dir = RandomUpHemisphere();
+    dir_ = RandomUpHemisphere();
 
     rb_->AddForce(dir * kImpulsePower);
 }
