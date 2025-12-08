@@ -9,7 +9,7 @@ void ScoreManager::UpScore(GlassGrade grade)
 {
 	constexpr int kUpValue[ToIndex(GlassGrade::Count)] = { 3, 6, 10 };
 
-	score_ += kUpValue[ToIndex(grade)];
+	score_ -= kUpValue[ToIndex(grade)];
 	DebugLog::OutputValue("Up Score", score_);
 
 	if (score_ >= Game::GetState()->GetGoalScore())

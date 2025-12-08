@@ -1,39 +1,52 @@
-#include "TimerUI.h"
+﻿#include "TimerUI.h"
 #include "GameObject.h"
 #include "UiSpriteRenderer.h"
 #include "TextureManager.h"
 
-constexpr Vector2 kNumberUVScale = { 0.2f, 0.5f };
+constexpr Vector2 kNumberUVScale = { 0.1f, 1.0f };
 
 void TimerUI::Start()
 {
-	constexpr Vector2 kMinutePos[ToIndex(TimerDigits::Count)] = { {1050.f, 0.f}, {1090.f, 0.f} };
-	constexpr Vector2 kColonPos = { 1135.f, 0.f };
-	constexpr Vector2 kSecondPos[ToIndex(TimerDigits::Count)] = { {1160.f, 0.f}, {1200.f, 0.f} };
+	constexpr Vector2 kMinutePos[ToIndex(TimerDigits::Count)] = { {1115.f, 14.f}, {1140.f, 14.f} };
+	constexpr Vector2 kColonPos = { 1165.f,16.f };
+	constexpr Vector2 kSecondPos[ToIndex(TimerDigits::Count)] = { {1175.f, 14.f}, {1200.f, 14.f} };
 
-	constexpr Vector2 kNumberSize = { 40.f, 40.f };
-	constexpr Vector2 kColonSize = { 20.f, 40.f };
+	constexpr Vector2 kNumberSize = { 25.f, 25.f };
+	constexpr Vector2 kColonSize = { 10.f, 20.f };
 
 
 	GameObject& tenMinute = gameObject->CreateChild();
-	tenMinute.AddComponent<UiSpriteRenderer>(TextureTag::TimerNumber, kMinutePos[ToIndex(TimerDigits::Ten)], kNumberSize, Vector2::zero(), kNumberUVScale);
+	uiMinute_[ToIndex(TimerDigits::Ten)] = &tenMinute.AddComponent<UiSpriteRenderer>(TextureTag::TimerNumber, kMinutePos[ToIndex(TimerDigits::Ten)], kNumberSize, Vector2::zero(), kNumberUVScale);
 
 	GameObject& oneMinute = gameObject->CreateChild();
-	oneMinute.AddComponent<UiSpriteRenderer>(TextureTag::TimerNumber, kMinutePos[ToIndex(TimerDigits::One)], kNumberSize, Vector2::zero(), kNumberUVScale);
+	uiMinute_[ToIndex(TimerDigits::One)] = &oneMinute.AddComponent<UiSpriteRenderer>(TextureTag::TimerNumber, kMinutePos[ToIndex(TimerDigits::One)], kNumberSize, Vector2::zero(), kNumberUVScale);
 
 	GameObject& colon	  = gameObject->CreateChild();
-	colon.AddComponent<UiSpriteRenderer>(TextureTag::TimerColon, kColonPos, kColonSize);
+	uiColon_ = &colon.AddComponent<UiSpriteRenderer>(TextureTag::TimerColon, kColonPos, kColonSize);
 
 	GameObject& tenSecond = gameObject->CreateChild();
-	tenSecond.AddComponent<UiSpriteRenderer>(TextureTag::TimerNumber, kSecondPos[ToIndex(TimerDigits::Ten)], kNumberSize, Vector2::zero(), kNumberUVScale);
+	uiSecond_[ToIndex(TimerDigits::Ten)] = &tenSecond.AddComponent<UiSpriteRenderer>(TextureTag::TimerNumber, kSecondPos[ToIndex(TimerDigits::Ten)], kNumberSize, Vector2::zero(), kNumberUVScale);
 
 	GameObject& oneSecond = gameObject->CreateChild();
-	oneSecond.AddComponent<UiSpriteRenderer>(TextureTag::TimerNumber, kSecondPos[ToIndex(TimerDigits::One)], kNumberSize, Vector2::zero(), kNumberUVScale);
+	uiSecond_[ToIndex(TimerDigits::One)] = &oneSecond.AddComponent<UiSpriteRenderer>(TextureTag::TimerNumber, kSecondPos[ToIndex(TimerDigits::One)], kNumberSize, Vector2::zero(), kNumberUVScale);
 }
 
 void TimerUI::Update()
 {
+	timer_ += 1.f / 60.f;
 
+	// 上限 99:59 でクランプ
+	int totalSec = static_cast<int>(timer_);
+	if (totalSec > MAX_SECONDS) totalSec = MAX_SECONDS;
+
+	// ---- 2) mm:ss に分解 ----
+	int minutes = totalSec / 60;
+	int seconds = totalSec % 60;
+
+	uiMinute_[ToIndex(TimerDigits::Ten)]->SetUVPosX((minutes % 10) * 0.1f);
+	uiMinute_[ToIndex(TimerDigits::One)]->SetUVPosX((minutes / 10) % 10 * 0.1f);
+	uiSecond_[ToIndex(TimerDigits::Ten)]->SetUVPosX((seconds % 10) * 0.1f);
+	uiSecond_[ToIndex(TimerDigits::One)]->SetUVPosX((seconds / 10) % 10 * 0.1f);
 }
 
 void TimerUI::OnDestroy()

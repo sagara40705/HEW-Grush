@@ -128,6 +128,11 @@ float GlassGaugeManager::GetGaugeRatio()
 	return  ratio;
 }
 
+HammerGrade GlassGaugeManager::GetHammerGrade()
+{
+	return hammer_->GetGrade();
+}
+
 #ifdef _DEBUG
 void GlassGaugeManager::DebugCommand()
 {
