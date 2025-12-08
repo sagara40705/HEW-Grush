@@ -7,9 +7,16 @@
 enum class ModelTag : uint8_t
 {
 	Karubi,
+
 	Swing,
+	Isu,
+
 	Benti,
+	Zihanki,
+
 	Ufo,
+	Eiseii,
+
 	ProtPlay,
 	Player,
 	Hammer,
