@@ -7,6 +7,12 @@
 enum class PrefabId : std::uint8_t
 {
     Swing,
+    Akican,
+    Desktop,
+    Gomibukuro,
+    Isu,
+    Kuukseizixyoukii,
+    Ningixyou,
     Benti,
     Ufo,
     ProtPlay,

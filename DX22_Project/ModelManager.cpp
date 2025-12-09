@@ -15,12 +15,12 @@ const ModelLoadData ModelManager::kModelData[static_cast<size_t>(ModelTag::Count
     {"Assets/Ç‹ÇØÇÒéÆê‘å©Ç©ÇÈÇ—ïPàﬂëïMMD/Ç‹ÇØÇÒéÆê‘å©Ç©ÇÈÇ—ïPàﬂëïver1.0.pmx", 0.08f, Model::Flip::ZFlip},
 
     {"Assets/Model/MD_ActionkomuSwing_prototype.fbx",                         0.01f, Model::Flip::ZFlip},
-    {"Assets/Model/Grade_1/MD_akican_251208.fbx",                             0.4f, Model::Flip::ZFlip},
-    {"Assets/Model/Grade_1/MD_desktop_20251205.fbx",                          0.4f, Model::Flip::ZFlip},
-    {"Assets/Model/Grade_1/MD_gomibukuro_251208.fbx",                         0.4f, Model::Flip::ZFlip},
-    {"Assets/Model/Grade_1/MD_isu_251208.fbx",                                0.4f, Model::Flip::ZFlip},
-    {"Assets/Model/Grade_1/MD_kuukseizixyoukii_20251205.fbx",                 0.4f, Model::Flip::ZFlip},
-    {"Assets/Model/Grade_1/MD_ningixyou_20251205.fbx",                        0.4f, Model::Flip::ZFlip},
+    {"Assets/Model/Grade_1/MD_akican_251208.fbx",                             0.01f, Model::Flip::ZFlip},
+    {"Assets/Model/Grade_1/MD_desktop_20251205.fbx",                          0.2f, Model::Flip::ZFlip},
+    {"Assets/Model/Grade_1/MD_gomibukuro_251208.fbx",                         0.01f, Model::Flip::ZFlip},
+    {"Assets/Model/Grade_1/MD_isu_251208.fbx",                                0.01f, Model::Flip::ZFlip},
+    {"Assets/Model/Grade_1/MD_kuukseizixyoukii_20251205.fbx",                 0.15f, Model::Flip::ZFlip},
+    {"Assets/Model/Grade_1/MD_ningixyou_20251205.fbx",                        0.15f, Model::Flip::ZFlip},
 
     {"Assets/Model/MD_REbenti_prototype.fbx",                                 0.01f, Model::Flip::ZFlip},
     {"Assets/Model/Grade_2/MD_zihanki_20251202.fbx",                          0.4f, Model::Flip::ZFlip},

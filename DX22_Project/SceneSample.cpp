@@ -5,7 +5,8 @@
 #include "AllComponent.h"
 #include "TextureManager.h"
 #include "Defines.h"
-
+#include "Prefab.h"
+#include "PrefabSet.h"
 //Model* g_Model;
 
 void SceneSample::Load()
@@ -15,6 +16,8 @@ void SceneSample::Load()
 	ModelManager::Load(ModelTag::Isu);
 	ModelManager::Load(ModelTag::Zihanki);
 	ModelManager::Load(ModelTag::Eiseii);
+
+	RegisterAllPrefabs();
 
 	World& w = GetWorld();
 
@@ -26,9 +29,7 @@ void SceneSample::Load()
 	player1.AddComponent<MeshFilter>(ModelTag::Isu);
 	player1.AddComponent<MeshRenderer>();
 
-	GameObject& player2 = w.CreateGameObject(Vector3(0.f, 1.f, 0.f), Vector3(0.f, 0.f, 0.f));
-	player2.AddComponent<MeshFilter>(ModelTag::Swing);
-	player2.AddComponent<MeshRenderer>();
+	Prefab::Instantiate(w, PrefabId::Swing, Vector3(0.f, 0.f, 0.f), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
 
 	GameObject& player3 = w.CreateGameObject(Vector3(2.5f, 1.f, 0.f), Vector3(0.f, 0.f, 0.f));
 	player3.AddComponent<MeshFilter>(ModelTag::Eiseii);

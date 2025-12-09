@@ -14,7 +14,7 @@ enum class ModelTag : uint8_t
 	Gomibukuro,
 	Isu,
 	Kuukseizixyoukii,
-	ningixyou,
+	Ningixyou,
 
 	Benti,
 	Zihanki,

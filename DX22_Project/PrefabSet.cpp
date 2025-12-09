@@ -25,6 +25,91 @@ void RegisterAllPrefabs()
             auto& gs = go.AddComponent<GlassObject>(GlassGrade::Grade_1);
             (void)gs;
         });
+    Prefab::Register(P::Akican,
+        [](GameObject& go) {
+            go.SetTag(Tag::Glass);
+
+            auto& mf = go.AddComponent<MeshFilter>(ModelTag::Akican); mf.SetBoundsOffset({ 0.f, 0.5f, 0.15f });    (void)mf;
+            auto& mr = go.AddComponent<MeshRenderer>(); (void)mr;
+            auto& bc = go.AddComponent<BoxCollider>(
+                true,
+                DirectX::XMFLOAT3{ 0, 0.7f, 0.2f },
+                DirectX::XMFLOAT3{ 1.5f, 1.5f, 1.5f });
+            (void)bc;
+            auto& gs = go.AddComponent<GlassObject>(GlassGrade::Grade_1);
+            (void)gs;
+        });
+    Prefab::Register(P::Desktop,
+        [](GameObject& go) {
+            go.SetTag(Tag::Glass);
+
+            auto& mf = go.AddComponent<MeshFilter>(ModelTag::Desktop); mf.SetBoundsOffset({ 0.f, 0.5f, 0.15f });    (void)mf;
+            auto& mr = go.AddComponent<MeshRenderer>(); (void)mr;
+            auto& bc = go.AddComponent<BoxCollider>(
+                true,
+                DirectX::XMFLOAT3{ 0, 0.7f, 0.2f },
+                DirectX::XMFLOAT3{ 1.5f, 1.5f, 1.5f });
+            (void)bc;
+            auto& gs = go.AddComponent<GlassObject>(GlassGrade::Grade_1);
+            (void)gs;
+        });
+    Prefab::Register(P::Gomibukuro,
+        [](GameObject& go) {
+            go.SetTag(Tag::Glass);
+
+            auto& mf = go.AddComponent<MeshFilter>(ModelTag::Gomibukuro); mf.SetBoundsOffset({ 0.f, 0.5f, 0.15f });    (void)mf;
+            auto& mr = go.AddComponent<MeshRenderer>(); (void)mr;
+            auto& bc = go.AddComponent<BoxCollider>(
+                true,
+                DirectX::XMFLOAT3{ 0, 0.7f, 0.2f },
+                DirectX::XMFLOAT3{ 1.5f, 1.5f, 1.5f });
+            (void)bc;
+            auto& gs = go.AddComponent<GlassObject>(GlassGrade::Grade_1);
+            (void)gs;
+        });
+    Prefab::Register(P::Isu,
+        [](GameObject& go) {
+            go.SetTag(Tag::Glass);
+
+            auto& mf = go.AddComponent<MeshFilter>(ModelTag::Isu); mf.SetBoundsOffset({ 0.f, 0.5f, 0.15f });    (void)mf;
+            auto& mr = go.AddComponent<MeshRenderer>(); (void)mr;
+            auto& bc = go.AddComponent<BoxCollider>(
+                true,
+                DirectX::XMFLOAT3{ 0, 0.7f, 0.2f },
+                DirectX::XMFLOAT3{ 1.5f, 1.5f, 1.5f });
+            (void)bc;
+            auto& gs = go.AddComponent<GlassObject>(GlassGrade::Grade_1);
+            (void)gs;
+        });
+    Prefab::Register(P::Kuukseizixyoukii,
+        [](GameObject& go) {
+            go.SetTag(Tag::Glass);
+
+            auto& mf = go.AddComponent<MeshFilter>(ModelTag::Kuukseizixyoukii); mf.SetBoundsOffset({ 0.f, 0.5f, 0.15f });    (void)mf;
+            auto& mr = go.AddComponent<MeshRenderer>(); (void)mr;
+            auto& bc = go.AddComponent<BoxCollider>(
+                true,
+                DirectX::XMFLOAT3{ 0, 0.7f, 0.2f },
+                DirectX::XMFLOAT3{ 1.5f, 1.5f, 1.5f });
+            (void)bc;
+            auto& gs = go.AddComponent<GlassObject>(GlassGrade::Grade_1);
+            (void)gs;
+        });
+    Prefab::Register(P::Ningixyou,
+        [](GameObject& go) {
+            go.SetTag(Tag::Glass);
+
+            auto& mf = go.AddComponent<MeshFilter>(ModelTag::Ningixyou); mf.SetBoundsOffset({ 0.f, 0.5f, 0.15f });    (void)mf;
+            auto& mr = go.AddComponent<MeshRenderer>(); (void)mr;
+            auto& bc = go.AddComponent<BoxCollider>(
+                true,
+                DirectX::XMFLOAT3{ 0, 0.7f, 0.2f },
+                DirectX::XMFLOAT3{ 1.5f, 1.5f, 1.5f });
+            (void)bc;
+            auto& gs = go.AddComponent<GlassObject>(GlassGrade::Grade_1);
+            (void)gs;
+        });
+
 
     Prefab::Register(P::Benti,
         [](GameObject& go) {
@@ -55,7 +140,7 @@ void RegisterAllPrefabs()
     Prefab::Register(P::ProtPlay,
         [](GameObject& go) {
             go.SetTag(Tag::Glass);
-            auto& mf = go.AddComponent<MeshFilter>(ModelTag::ProtPlay); mf.SetBoundsOffset({ -0.2f, 0.8f, 0.f });     (void)mf;
+            auto& mf = go.AddComponent<MeshFilter>(ModelTag::Desktop); mf.SetBoundsOffset({ -0.2f, 0.8f, 0.f });     (void)mf;
             auto& mr = go.AddComponent<MeshRenderer>(); (void)mr;
             auto& bc = go.AddComponent<BoxCollider>(
                 true,

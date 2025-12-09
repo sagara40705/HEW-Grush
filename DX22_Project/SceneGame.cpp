@@ -41,7 +41,15 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 
 	// モデルロード
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Karubi); });
+
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Swing); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Akican); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Desktop); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Gomibukuro); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Isu); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Kuukseizixyoukii); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Ningixyou); });
+
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Benti); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Ufo); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::ProtPlay); });
@@ -158,47 +166,25 @@ void SceneGame::CreateStage()
 	collider.layer = Layer::Ground;
 
 	//UFO
-	Prefab::Instantiate(w, PrefabId::Ufo, Vector3(10, -0.5f, 10), Vector3::zero(), Vector3::one());
-	Prefab::Instantiate(w, PrefabId::Ufo, Vector3(-30, -0.5f, -30), Vector3::zero(), Vector3::one());
-	Prefab::Instantiate(w, PrefabId::Ufo, Vector3(40, -0.5f, 10), Vector3::zero(), Vector3::one());
-	Prefab::Instantiate(w, PrefabId::Ufo, Vector3(40, -0.5f, 40), Vector3::zero(), Vector3::one());
+	Prefab::Instantiate(w, PrefabId::Ufo, Vector3(0.f, -0.5f, 15.f), Vector3::zero(), Vector3::one());
 
 	//ベンチ
-	Prefab::Instantiate(w, PrefabId::Benti, Vector3(-10, -0.9f, 10), Vector3::zero(), Vector3(1.2f, 1.2f, 1.2f));
-	Prefab::Instantiate(w, PrefabId::Benti, Vector3(20, -0.9f, -16), Vector3::zero(), Vector3(1.2f, 1.2f, 1.2f));
-	Prefab::Instantiate(w, PrefabId::Benti, Vector3(11, -0.9f, -13), Vector3::zero(), Vector3(1.2f, 1.2f, 1.2f));
-	Prefab::Instantiate(w, PrefabId::Benti, Vector3(-20, -0.9f, 10), Vector3::zero(), Vector3(1.2f, 1.2f, 1.2f));
-	Prefab::Instantiate(w, PrefabId::Benti, Vector3(25, -0.9f, -16), Vector3::zero(), Vector3(1.2f, 1.2f, 1.2f));
-	Prefab::Instantiate(w, PrefabId::Benti, Vector3(11, -0.9f, -23), Vector3::zero(), Vector3(1.2f, 1.2f, 1.2f));
-	Prefab::Instantiate(w, PrefabId::Benti, Vector3(-30, -0.9f, 10), Vector3::zero(), Vector3(1.2f, 1.2f, 1.2f));
-	Prefab::Instantiate(w, PrefabId::Benti, Vector3(30, -0.9f, -16), Vector3::zero(), Vector3(1.2f, 1.2f, 1.2f));
-	Prefab::Instantiate(w, PrefabId::Benti, Vector3(11, -0.9f, -33), Vector3::zero(), Vector3(1.2f, 1.2f, 1.2f));
+	Prefab::Instantiate(w, PrefabId::Benti, Vector3(-5.f, -0.9f, 10.f), Vector3::zero(), Vector3(1.2f, 1.2f, 1.2f));
 
 	//すぃんぐ
-	Prefab::Instantiate(w, PrefabId::Swing, Vector3(-7, -0.9f, -8), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-	Prefab::Instantiate(w, PrefabId::Swing, Vector3(-12, -0.9f, -2), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-	Prefab::Instantiate(w, PrefabId::Swing, Vector3(-22, -0.9f, -13), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-	Prefab::Instantiate(w, PrefabId::Swing, Vector3(10, -0.9f, 10), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-	Prefab::Instantiate(w, PrefabId::Swing, Vector3(-12, -0.9f, -22), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-	Prefab::Instantiate(w, PrefabId::Swing, Vector3(-22, -0.9f, -43), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-	Prefab::Instantiate(w, PrefabId::Swing, Vector3(-7, -0.9f, -40), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-	Prefab::Instantiate(w, PrefabId::Swing, Vector3(-12, -0.9f, -28), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-	Prefab::Instantiate(w, PrefabId::Swing, Vector3(-32, -0.9f, -13), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-	Prefab::Instantiate(w, PrefabId::Swing, Vector3(-17, -0.9f, 30), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-	Prefab::Instantiate(w, PrefabId::Swing, Vector3(-15, -0.9f, 22), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-	Prefab::Instantiate(w, PrefabId::Swing, Vector3(22, -0.9f, -43), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-	Prefab::Instantiate(w, PrefabId::Swing, Vector3(-37, -0.9f, -8), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-	Prefab::Instantiate(w, PrefabId::Swing, Vector3(-12, -0.9f, -42), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-	Prefab::Instantiate(w, PrefabId::Swing, Vector3(-42, -0.9f, 33), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-	Prefab::Instantiate(w, PrefabId::Swing, Vector3(40, -0.9f, 0), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-	Prefab::Instantiate(w, PrefabId::Swing, Vector3(-42, -0.9f, -22), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-	Prefab::Instantiate(w, PrefabId::Swing, Vector3(-22, -0.9f, 43), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-	Prefab::Instantiate(w, PrefabId::Swing, Vector3(-7, -0.9f, 40), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-	Prefab::Instantiate(w, PrefabId::Swing, Vector3(32, -0.9f, -28), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-	Prefab::Instantiate(w, PrefabId::Swing, Vector3(32, -0.9f, -13), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-	Prefab::Instantiate(w, PrefabId::Swing, Vector3(-12, -0.9f, -30), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-	Prefab::Instantiate(w, PrefabId::Swing, Vector3(-19, -0.9f, -22), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-	Prefab::Instantiate(w, PrefabId::Swing, Vector3(-22, -0.9f, 43), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+	Prefab::Instantiate(w, PrefabId::Swing, Vector3(-10.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());
+
+	Prefab::Instantiate(w, PrefabId::Akican, Vector3(-8.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());
+
+	Prefab::Instantiate(w, PrefabId::Desktop, Vector3(-6.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());
+
+	Prefab::Instantiate(w, PrefabId::Gomibukuro, Vector3(-4.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());
+
+	Prefab::Instantiate(w, PrefabId::Isu, Vector3(-2.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());
+
+	Prefab::Instantiate(w, PrefabId::Kuukseizixyoukii, Vector3(-0.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());
+
+	Prefab::Instantiate(w, PrefabId::Ningixyou, Vector3(2.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());
 
 
 	for (int y = 0; y < 1; ++y){
@@ -211,16 +197,7 @@ void SceneGame::CreateStage()
 	}
 
 	//プロト
-	Prefab::Instantiate(w, PrefabId::ProtPlay, Vector3(-12, -0.9f, 8), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-	Prefab::Instantiate(w, PrefabId::ProtPlay, Vector3(5, -0.9f, 2), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-	Prefab::Instantiate(w, PrefabId::ProtPlay, Vector3(-20, -0.9f, -20), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-	Prefab::Instantiate(w, PrefabId::ProtPlay, Vector3(-16, -0.9f, -16), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-	Prefab::Instantiate(w, PrefabId::ProtPlay, Vector3(13, -0.9f, 2), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-	Prefab::Instantiate(w, PrefabId::ProtPlay, Vector3(22, -0.9f, 8), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-	Prefab::Instantiate(w, PrefabId::ProtPlay, Vector3(-17, -0.9f, 15), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-	Prefab::Instantiate(w, PrefabId::ProtPlay, Vector3(6, -0.9f, 17), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-	Prefab::Instantiate(w, PrefabId::ProtPlay, Vector3(20, -0.9f, -12), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-	Prefab::Instantiate(w, PrefabId::ProtPlay, Vector3(14, -0.9f, -19), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+	//Prefab::Instantiate(w, PrefabId::ProtPlay, Vector3(-12, -0.9f, 8), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
 }
 
 void SceneGame::CreateUi()
