@@ -1,9 +1,7 @@
 ﻿#include "ShaderList.h"
 
-
 VertexShader* ShaderList::m_pVS[VS_KIND_MAX];
 PixelShader* ShaderList::m_pPS[PS_KIND_MAX];
-
 
 ShaderList::ShaderList()
 {
@@ -319,13 +317,17 @@ void ShaderList::MakeShardVS()
 {
 	const char* code = R"EOT(
 struct VS_IN {
-    float3 pos : POSITION0;
-    float2 uv  : TEXCOORD0;
+    float3 pos    : POSITION;   // 入力は通常 POSITION
+    float3 normal : NORMAL0;
+    float2 uv     : TEXCOORD0;
 };
 
 struct VS_OUT {
-    float4 pos : SV_POSITION;
-    float2 uv  : TEXCOORD0;
+    float4 pos    : SV_POSITION;
+    float3 normal : NORMAL0;
+    float2 uv     : TEXCOORD0;
+    float4 color  : COLOR0;
+    float4 wPos   : POSITION0;
 };
 
 // WVP（SetWVP から書き込まれる）
@@ -354,7 +356,7 @@ VS_OUT main(VS_IN vin)
 {
     VS_OUT vout;
 
-    // ローカル XY 上で形状をいじる
+    // --- 形状いじり（ローカル XY 平面上） ---
     float2 p = vin.pos.xy;
 
     // 元メッシュ (-0.5,0), (0.5,0), (0,1) を想定して
@@ -384,17 +386,25 @@ VS_OUT main(VS_IN vin)
     // 中心を戻す
     p += center;
 
-    // 厚み 0 のプレートとして Z はそのまま
+    // 厚み 0 のプレートとして Z は元の値を使用
     float3 localPos = float3(p, vin.pos.z);
 
-    // WVP 変換
-    float4 pos = float4(localPos, 1.0f);
-    pos = mul(pos, world);
-    pos = mul(pos, view);
-    pos = mul(pos, proj);
+    // --- ワールド・ビュー・プロジェクション ---
+    float4 wp = mul(float4(localPos, 1.0f), world); // ワールド座標
+    vout.wPos = wp;                                 // GlassPS が使う POSITION0
 
-    vout.pos = pos;
-    vout.uv  = vin.uv;
+    float4 vp = mul(wp, view);
+    vout.pos = mul(vp, proj);                       // クリップ座標
+
+    // --- 法線・UV・カラー ---
+    float3 nWorld = mul(vin.normal, (float3x3)world);
+    vout.normal = normalize(nWorld);
+
+    vout.uv = vin.uv;
+
+    // 頂点カラーを使っていないので白固定
+    vout.color = float4(1.0f, 1.0f, 1.0f, 1.0f);
+
     return vout;
 }
 )EOT";

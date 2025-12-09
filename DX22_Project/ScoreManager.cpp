@@ -12,7 +12,7 @@ void ScoreManager::UpScore(GlassGrade grade)
 	score_ -= kUpValue[ToIndex(grade)];
 	DebugLog::OutputValue("Up Score", score_);
 
-	if (score_ >= Game::GetState()->GetGoalScore())
+	if (score_ <= 0.f)
 	{
 		DebugLog::Output("Score Max");
 		SceneManager::ChangeScene<SceneTitle>();
