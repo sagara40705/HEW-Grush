@@ -3,6 +3,7 @@
 #include "Transform.h"
 #include "InputKeyboard.h"
 #include "InputGamepad.h"
+#include "ShaderList.h"
 
 namespace
 {
@@ -30,6 +31,7 @@ void CameraControl::OnDestroy()
 
 void CameraControl::Update()
 {
+    ShaderList::SetCameraPos(playerTf_->GetWorldPosition());
     RotateByInput();
 	FollowPlayer();
 }
