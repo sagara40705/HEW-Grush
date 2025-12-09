@@ -6,7 +6,7 @@ enum class GlassGrade : std::uint8_t;
 class ScoreManager : public Component
 {
 private:
-	int score_ = 10;
+	int score_ = 500;
 	bool dirty_ = true;
 public:
 	int GetScore() { return score_; }
