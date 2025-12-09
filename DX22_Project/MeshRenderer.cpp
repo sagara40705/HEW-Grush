@@ -201,6 +201,7 @@ void MeshRenderer::ModelRender()
         ShaderList::SetMaterial(material);
 
         //if(material.pTexture) DebugLog::OutputValue("pTexture", material.pTexture);
+        
         // モデルの描画 
         model->Draw(i);
     }

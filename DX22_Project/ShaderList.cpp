@@ -460,6 +460,7 @@ float4 main(PS_IN pin) : SV_TARGET
 	float4 color = float4(1.0f, 1.0f, 1.0f, 1.0f);
 	if(objAmbient.a >= 1.0f)
 		color = tex.Sample(samp, pin.uv);
+	color = tex.Sample(samp, pin.uv);
 	float3 N = normalize(pin.normal);
 	float3 L = normalize(-lightDir);
 	float dotNL = saturate((dot(N, L) + 0.5f) / 1.5f);

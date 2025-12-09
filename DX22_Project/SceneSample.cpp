@@ -10,6 +10,7 @@
 
 void SceneSample::Load()
 {
+	ModelManager::Load(ModelTag::Player);
 	ModelManager::Load(ModelTag::Isu);
 	ModelManager::Load(ModelTag::Zihanki);
 	ModelManager::Load(ModelTag::Eiseii);
@@ -21,17 +22,18 @@ void SceneSample::Load()
 	mainCamera.AddComponent<Camera>();
 
 	GameObject& player1 = w.CreateGameObject(Vector3(-2.5f, 1.f, 0.f), Vector3(0.f, 0.f, 0.f));
-	player1.AddComponent<MeshFilter>(ModelTag::Isu);
+	player1.AddComponent<MeshFilter>(ModelTag::Player);
 	player1.AddComponent<MeshRenderer>();
+	player1.AddComponent<Animator>();
 
-	GameObject& player2 = w.CreateGameObject(Vector3(0.f, 1.f, 0.f), Vector3(0.f, 0.f, 0.f));
-	player2.AddComponent<MeshFilter>(ModelTag::Zihanki);
-	player2.AddComponent<MeshRenderer>();
+	//GameObject& player2 = w.CreateGameObject(Vector3(0.f, 1.f, 0.f), Vector3(0.f, 0.f, 0.f));
+	//player2.AddComponent<MeshFilter>(ModelTag::Zihanki);
+	//player2.AddComponent<MeshRenderer>();
 
-	GameObject& player3 = w.CreateGameObject(Vector3(2.5f, 1.f, 0.f), Vector3(0.f, 0.f, 0.f));
-	player3.AddComponent<MeshFilter>(ModelTag::Eiseii);
-	player3.AddComponent<MeshRenderer>();
-	//player.AddComponent<Animator>();
+	//GameObject& player3 = w.CreateGameObject(Vector3(2.5f, 1.f, 0.f), Vector3(0.f, 0.f, 0.f));
+	//player3.AddComponent<MeshFilter>(ModelTag::Eiseii);
+	//player3.AddComponent<MeshRenderer>();
+	////player.AddComponent<Animator>();
 }
 
 void SceneSample::Unload()
