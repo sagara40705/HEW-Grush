@@ -14,11 +14,11 @@ private:
 	//アニメーションの種類
 	enum class Type : std::uint8_t
 	{
-		Idle = 0,			// 待機アニメーション
-		Move = 1,			// 移動アニメーション
-		NormalAttack = 2,	// 通常攻撃アニメーション
-		SpinAttack = 3,		// 回転攻撃アニメーション
-		Count = 4,			// アニメーションの総数
+		//Idle = ,			// 待機アニメーション
+		Move = 0,			// 移動アニメーション
+		//NormalAttack = ,	// 通常攻撃アニメーション
+		//SpinAttack = ,		// 回転攻撃アニメーション
+		Count = 1,			// アニメーションの総数
 		None = 99			// 未指定状態
 	};
 	// 
@@ -34,6 +34,8 @@ private:
 	Model::AnimeNo animation_[static_cast<int>(Type::Count)]; //アニメーションナンバーの格納先
 	Type currentType_ = Type::None; // 現在のアニメーション
 	Type nextType_	  = Type::None; // 現在のアニメーション
+private:
+	void CheckMoveAnime();
 
 private:
 //========================================
@@ -48,6 +50,19 @@ private:
 	
 	/*
 	* @brief プレイヤーのステートから次のアニメーションをSetする
+	* @return 次のアニメーション Type
 	*/
-	void InutNextAnimation();
+	PlayerAnimation::Type DecideNextTypeFromState() const;
+
+	/*
+	* @brief 次のアニメーションへ遷移する
+	* @param[from] no 現在のアニメーション Type
+	* @param[from] no 次のアニメーション Type
+	*/
+	void ChangeState(Type from, Type to);
+
+	/*
+	* @brief 現在アニメーションの更新処理
+	*/
+	void UpdateCurrentState();
 };

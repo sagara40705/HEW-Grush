@@ -12,6 +12,9 @@ void PlayerAnimation::Start()
 	state_ = gameObject->GetComponent<PlayerState>();
 	anime_ = gameObject->GetComponent<Animator>();
 	AddAllAnimations();
+	anime_->Play(animation_[ToIndex(Type::Move)], false, 1.f);
+	//anime_->Stop();*/
+
 
 	assert(state_ && anime_ && "PlayerAnimation	で プレイヤーの <PlayerState> か <Animator> が nullptr です");
 }
@@ -28,6 +31,31 @@ void PlayerAnimation::OnDestroy()
 */
 void PlayerAnimation::Update()
 {
+	CheckMoveAnime();
+}
+
+/*
+* @brief 移動アニメーションの制御
+*/
+void PlayerAnimation::CheckMoveAnime()
+{
+	const float t = anime_->GetCurrentAnimeTime();
+	constexpr float kLoopStart = 0.5f;
+	constexpr float kLoopEnd = 4.0f;
+	if (t > kLoopEnd && state_->isMoving)
+	{
+		anime_->SetTimeSeconds(kLoopStart);
+	}
+
+	if (state_->moveStartedThisFrame) 
+	{
+		anime_->Play(animation_[ToIndex(Type::Move)], false, 1.f);
+		anime_->SetTimeSeconds(0.3f);
+	}
+	if (state_->moveStoppedThisFrame)
+	{
+		anime_->SetTimeSeconds(4.8f);
+	}
 }
 
 /*
@@ -36,32 +64,36 @@ void PlayerAnimation::Update()
 */
 void PlayerAnimation::AddAllAnimations()
 {
-	//アニメーションファイルパスのリスト
-	const char* FilePass[ToIndex(Type::Count)] = 
-	{
-		"",
-		"",
-		"",
-		"",
-	};
-
 	Model* model = anime_->GetModel();
 	if (!model) return;
 
-	for (size_t type = 0; type < ToIndex(Type::Count); ++type) 
-	{
-		if (FilePass[type] == "") continue;
-
-		animation_[type] = model->AddAnimation(FilePass[type]);
-	}
+	animation_[ToIndex(Type::Move)] = model->AddAnimation("Assets/Model/animation_hashiru.fbx");
 
 }
 
 /*
 * @brief プレイヤーのステートから次のアニメーションをSetする
 */
-void PlayerAnimation::InutNextAnimation()
+PlayerAnimation::Type PlayerAnimation::DecideNextTypeFromState() const
 {
-	nextType_ = currentType_;
+	return Type::None;
+}
+
+/*
+* @brief 次のアニメーションへ遷移する
+* @param[from] no 現在のアニメーション Type
+* @param[from] no 次のアニメーション Type
+*/
+void PlayerAnimation::ChangeState(Type from, Type to)
+{
 
 }
+
+/*
+* @brief 現在アニメーションの更新処理
+*/
+void PlayerAnimation::UpdateCurrentState()
+{
+}
+
+

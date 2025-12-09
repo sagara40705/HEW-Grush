@@ -44,8 +44,9 @@ public:
     float cooltime[static_cast<size_t>(ActionId::Count)]{}; // 0〜1 (0=準備完了,1=撃った直後) 等
 
     // --- アニメーション 関係 ---
-    bool isMoveAnime = false;
-    bool isNormalAttackAnime = false;
+    bool isMoving = false;              // 今動いているか
+    bool moveStartedThisFrame = false;  // このフレームで「止まっていた → 動いた」か
+    bool moveStoppedThisFrame = false;  // このフレームで「動いていた → 止まった」か
 
 public:
     static constexpr Vector3 kInitPos = { -3.0f, 0.0f, 0.0f };
