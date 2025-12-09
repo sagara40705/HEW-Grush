@@ -225,6 +225,18 @@ void SceneGame::CreateScoreUI()
 	scoreUI.AddComponent<ScoreUI>();
 }
 
+void SceneGame::CreateActionUI()
+{
+	World& w = GetWorld();
+
+	GameObject& actionManager = w.CreateGameObject();
+	actionManager.SetTag(Tag::ActionUI);
+	actionManager.AddComponent<ActionUI>();
+
+	GameObject& actionUI = w.CreateGameObject();
+	actionUI.AddComponent<ActionUI>();
+}
+
 void SceneGame::Update()
 {
 }
