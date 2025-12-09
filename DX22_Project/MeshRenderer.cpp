@@ -85,7 +85,7 @@ void MeshRenderer::Render()
 
 
     SetDepthTest(true);
-    SetCullingMode(D3D11_CULL_NONE);
+    SetCullingMode(D3D11_CULL_BACK);
 
     // === WVP セット ===
     WVPMatrices wvp{};
