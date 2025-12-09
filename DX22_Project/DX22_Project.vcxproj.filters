@@ -315,6 +315,9 @@
     <ClCompile Include="Model_morph.cpp">
       <Filter>Engine\Rendering\Model</Filter>
     </ClCompile>
+    <ClCompile Include="ActionUI.cpp">
+      <Filter>Game\Components\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -550,6 +553,9 @@
     </ClInclude>
     <ClInclude Include="SceneSmaple.h">
       <Filter>Game\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionUI.h">
+      <Filter>Game\Components\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
