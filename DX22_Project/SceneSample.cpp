@@ -11,29 +11,29 @@
 
 void SceneSample::Load()
 {
-	ModelManager::Load(ModelTag::Player);
-	ModelManager::Load(ModelTag::Swing);
-	ModelManager::Load(ModelTag::Isu);
-	ModelManager::Load(ModelTag::Zihanki);
-	ModelManager::Load(ModelTag::Eiseii);
+	//ModelManager::Load(ModelTag::Player);
+	//ModelManager::Load(ModelTag::Swing);
+	//ModelManager::Load(ModelTag::Isu);
+	//ModelManager::Load(ModelTag::Jihanki);
+	//ModelManager::Load(ModelTag::Eiseii);
 
-	RegisterAllPrefabs();
+	//RegisterAllPrefabs();
 
-	World& w = GetWorld();
+	//World& w = GetWorld();
 
-	GameObject& mainCamera = w.CreateGameObject(Camera::kInitPos, Camera::kInitRotate, Vector3::one());
-	mainCamera.SetTag(Tag::MainCamera);
-	mainCamera.AddComponent<Camera>();
+	//GameObject& mainCamera = w.CreateGameObject(Camera::kInitPos, Camera::kInitRotate, Vector3::one());
+	//mainCamera.SetTag(Tag::MainCamera);
+	//mainCamera.AddComponent<Camera>();
 
-	GameObject& player1 = w.CreateGameObject(Vector3(-2.5f, 1.f, 0.f), Vector3(0.f, 0.f, 0.f));
-	player1.AddComponent<MeshFilter>(ModelTag::Isu);
-	player1.AddComponent<MeshRenderer>();
+	//GameObject& player1 = w.CreateGameObject(Vector3(-2.5f, 1.f, 0.f), Vector3(0.f, 0.f, 0.f));
+	//player1.AddComponent<MeshFilter>(ModelTag::Isu);
+	//player1.AddComponent<MeshRenderer>();
 
-	Prefab::Instantiate(w, PrefabId::Swing, Vector3(0.f, 0.f, 0.f), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+	//Prefab::Instantiate(w, PrefabId::Swing, Vector3(0.f, 0.f, 0.f), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
 
-	GameObject& player3 = w.CreateGameObject(Vector3(2.5f, 1.f, 0.f), Vector3(0.f, 0.f, 0.f));
-	player3.AddComponent<MeshFilter>(ModelTag::Eiseii);
-	player3.AddComponent<MeshRenderer>();
+	//GameObject& player3 = w.CreateGameObject(Vector3(2.5f, 1.f, 0.f), Vector3(0.f, 0.f, 0.f));
+	//player3.AddComponent<MeshFilter>(ModelTag::Eiseii);
+	//player3.AddComponent<MeshRenderer>();
 
 }
 

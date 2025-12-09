@@ -123,6 +123,42 @@ void RegisterAllPrefabs()
             (void)bc;
             auto& gs = go.AddComponent<GlassObject>(GlassGrade::Grade_2); (void)gs;
         });
+    Prefab::Register(P::Aircon,
+        [](GameObject& go) {
+            go.SetTag(Tag::Glass);
+            auto& mf = go.AddComponent<MeshFilter>(ModelTag::Aircon);  mf.SetBoundsOffset({ 0.f, 1.0f, 0.f });     (void)mf;
+            auto& mr = go.AddComponent<MeshRenderer>(); (void)mr;
+            auto& bc = go.AddComponent<BoxCollider>(
+                true,
+                DirectX::XMFLOAT3{ 0, 1, 0 },
+                DirectX::XMFLOAT3{ 4, 2, 2 });
+            (void)bc;
+            auto& gs = go.AddComponent<GlassObject>(GlassGrade::Grade_2); (void)gs;
+        });
+    Prefab::Register(P::Jihanki,
+        [](GameObject& go) {
+            go.SetTag(Tag::Glass);
+            auto& mf = go.AddComponent<MeshFilter>(ModelTag::Jihanki);  mf.SetBoundsOffset({ 0.f, 1.0f, 0.f });     (void)mf;
+            auto& mr = go.AddComponent<MeshRenderer>(); (void)mr;
+            auto& bc = go.AddComponent<BoxCollider>(
+                true,
+                DirectX::XMFLOAT3{ 0, 1, 0 },
+                DirectX::XMFLOAT3{ 4, 2, 2 });
+            (void)bc;
+            auto& gs = go.AddComponent<GlassObject>(GlassGrade::Grade_2); (void)gs;
+        });
+    Prefab::Register(P::Reizouko,
+        [](GameObject& go) {
+            go.SetTag(Tag::Glass);
+            auto& mf = go.AddComponent<MeshFilter>(ModelTag::Reizouko);  mf.SetBoundsOffset({ 0.f, 1.0f, 0.f });     (void)mf;
+            auto& mr = go.AddComponent<MeshRenderer>(); (void)mr;
+            auto& bc = go.AddComponent<BoxCollider>(
+                true,
+                DirectX::XMFLOAT3{ 0, 1, 0 },
+                DirectX::XMFLOAT3{ 4, 2, 2 });
+            (void)bc;
+            auto& gs = go.AddComponent<GlassObject>(GlassGrade::Grade_2); (void)gs;
+        });
 
     Prefab::Register(P::Ufo,
         [](GameObject& go) {

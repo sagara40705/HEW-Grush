@@ -17,7 +17,9 @@ enum class ModelTag : uint8_t
 	Ningixyou,
 
 	Benti,
-	Zihanki,
+	Aircon,
+	Jihanki,
+	Reizouko,
 
 	Ufo,
 	Eiseii,

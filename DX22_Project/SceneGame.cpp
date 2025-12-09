@@ -51,6 +51,10 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Ningixyou); });
 
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Benti); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Aircon); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Jihanki); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Reizouko); });
+
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Ufo); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::ProtPlay); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player); });
@@ -166,12 +170,15 @@ void SceneGame::CreateStage()
 	collider.layer = Layer::Ground;
 
 	//UFO
-	Prefab::Instantiate(w, PrefabId::Ufo, Vector3(0.f, -0.5f, 15.f), Vector3::zero(), Vector3::one());
+	Prefab::Instantiate(w, PrefabId::Ufo, Vector3(0.f, -0.5f, 20.f), Vector3::zero(), Vector3::one());
 
-	//ƒxƒ“ƒ`
-	Prefab::Instantiate(w, PrefabId::Benti, Vector3(-5.f, -0.9f, 10.f), Vector3::zero(), Vector3(1.2f, 1.2f, 1.2f));
+	//Grade_2
+	Prefab::Instantiate(w, PrefabId::Benti, Vector3(-10.f, -0.9f, 10.f), Vector3::zero(), Vector3::one());
+	Prefab::Instantiate(w, PrefabId::Aircon, Vector3(-5.f, -0.9f, 10.f), Vector3::zero(), Vector3::one());
+	Prefab::Instantiate(w, PrefabId::Jihanki, Vector3(0.f, -0.9f, 10.f), Vector3::zero(), Vector3::one());
+	Prefab::Instantiate(w, PrefabId::Reizouko, Vector3(5.f, -0.9f, 10.f), Vector3::zero(), Vector3::one());
 
-	//‚·‚¡‚ñ‚®
+	//Grade_1
 	Prefab::Instantiate(w, PrefabId::Swing, Vector3(-10.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());
 
 	Prefab::Instantiate(w, PrefabId::Akican, Vector3(-8.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());

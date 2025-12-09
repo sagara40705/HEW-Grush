@@ -13,7 +13,12 @@ enum class PrefabId : std::uint8_t
     Isu,
     Kuukseizixyoukii,
     Ningixyou,
+
     Benti,
+    Aircon,
+    Jihanki,
+    Reizouko,
+
     Ufo,
     ProtPlay,
     GlassShard,
