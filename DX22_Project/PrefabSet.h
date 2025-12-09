@@ -20,6 +20,8 @@ enum class PrefabId : std::uint8_t
     Reizouko,
 
     Ufo,
+    Eisei,
+
     ProtPlay,
     GlassShard,
     Count

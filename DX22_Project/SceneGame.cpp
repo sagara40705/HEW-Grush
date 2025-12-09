@@ -56,6 +56,8 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Reizouko); });
 
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Ufo); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Eiseii); });
+
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::ProtPlay); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer); });
@@ -170,7 +172,8 @@ void SceneGame::CreateStage()
 	collider.layer = Layer::Ground;
 
 	//UFO
-	Prefab::Instantiate(w, PrefabId::Ufo, Vector3(0.f, -0.5f, 20.f), Vector3::zero(), Vector3::one());
+	Prefab::Instantiate(w, PrefabId::Ufo, Vector3(-5.f, -0.5f, 20.f), Vector3::zero(), Vector3::one());
+	Prefab::Instantiate(w, PrefabId::Eisei, Vector3(5.f, -0.5f, 20.f), Vector3::zero(), Vector3::one());
 
 	//Grade_2
 	Prefab::Instantiate(w, PrefabId::Benti, Vector3(-10.f, -0.9f, 10.f), Vector3::zero(), Vector3::one());
