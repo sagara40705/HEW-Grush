@@ -143,9 +143,18 @@ SkyDomeShader::SkyDomeShader()
 //------------------------------------------------------
 SkyDomeShader::~SkyDomeShader()
 {
-    if (m_pVS) { delete m_pVS; m_pVS = nullptr; }
-    if (m_pPS) { delete m_pPS; m_pPS = nullptr; }
-    if (m_pSkyParamCB) { m_pSkyParamCB->Release(); m_pSkyParamCB = nullptr; }
+    // VS / PS 自体の解放（既に書いてあればそれで OK）
+    delete m_pVS;  m_pVS = nullptr;
+    delete m_pPS;  m_pPS = nullptr;
+
+    // gUseTexture 用定数バッファ
+    SAFE_RELEASE(m_pSkyParamCB);
+
+    // サンプラステート
+    SAFE_RELEASE(m_pSampler);
+
+    // SRV は Texture 側が所有しているのでここでは Release しない
+    m_pSkySRV = nullptr;
 }
 
 //------------------------------------------------------
@@ -154,41 +163,43 @@ SkyDomeShader::~SkyDomeShader()
 //------------------------------------------------------
 bool SkyDomeShader::Init()
 {
-    // VS / PS のコンパイル・作成は今まで通り
-
+    // -------------- VS / PS コンパイル --------------
     m_pVS = new VertexShader();
     if (FAILED(m_pVS->Compile(g_SkyVSCode)))
     {
-        return false;
+        return false; // VS のコンパイル失敗
     }
 
     m_pPS = new PixelShader();
     if (FAILED(m_pPS->Compile(g_SkyPSCode)))
     {
-        return false;
+        return false; // PS のコンパイル失敗
     }
 
     ID3D11Device* device = GetDevice();
 
-    // ---- SkyParam 用定数バッファ作成（b1） ----
+    // -------------- gUseTexture 用定数バッファ (b1) --------------
     D3D11_BUFFER_DESC cbd = {};
-    cbd.Usage = D3D11_USAGE_DEFAULT;
+    cbd.Usage = D3D11_USAGE_DEFAULT;          // 毎フレーム書き換えるので DEFAULT
     cbd.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-    cbd.ByteWidth = sizeof(SkyParam);
+    cbd.ByteWidth = sizeof(SkyParam);         // struct SkyParam と同じサイズ
 
     HRESULT hr = device->CreateBuffer(&cbd, nullptr, &m_pSkyParamCB);
     if (FAILED(hr)) return false;
 
-    // ---- サンプラ作成（テクスチャ使用時） ----
+    // -------------- サンプラステート作成 (s0) --------------
+    // テクスチャサンプリングの方法を指定する
     D3D11_SAMPLER_DESC sd = {};
-    sd.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-    sd.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
-    sd.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
+    sd.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;   // 線形フィルタ
+    sd.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;        // U 方向にループ
+    sd.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;        // V 方向にループ
     sd.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
     sd.ComparisonFunc = D3D11_COMPARISON_ALWAYS;
-    sd.MinLOD = 0;
+    sd.MinLOD = 0.0f;
     sd.MaxLOD = D3D11_FLOAT32_MAX;
 
+    // ★ ここが元コードでは抜けていた
+    hr = device->CreateSamplerState(&sd, &m_pSampler);
     if (FAILED(hr)) return false;
 
     return true;
@@ -196,12 +207,14 @@ bool SkyDomeShader::Init()
 
 void SkyDomeShader::SetUseTexture(bool use)
 {
+    // CPU 側フラグ
     m_useTexture = use;
 
     if (!m_pSkyParamCB) return;
 
+    // HLSL 側の cbuffer gSkyParam (b1) へ書き込む値
     SkyParam param = {};
-    param.useTexture = use ? 1 : 0;
+    param.useTexture = use ? 1 : 0;  // int にしておくと HLSL でも扱いやすい
 
     ID3D11DeviceContext* ctx = GetContext();
     ctx->UpdateSubresource(m_pSkyParamCB, 0, nullptr, &param, 0, 0);

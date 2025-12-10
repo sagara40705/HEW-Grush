@@ -32,11 +32,14 @@ private:
 private:
 	void SkyDomeDorw();
 
+	// ここに追加
+	void InitSkyDome();
+
 	// カメラ用の行列など（すでにあればそのまま）
 	DirectX::XMFLOAT4X4 m_world;
 	DirectX::XMFLOAT4X4 m_view;
 	DirectX::XMFLOAT4X4 m_proj;
-	ID3D11DepthStencilState* m_pDepthNoWrite = nullptr; // アウトライン用（書き込まない）
+	ID3D11DepthStencilState* m_pDepthNoWrite = nullptr; // アウトライン用（書き込まない）x
 
 	SkyDomeShader m_skyShader;  // 宇宙スカイドーム用シェーダー
 	SkyDomeMesh   m_skyMesh;    // ★ スカイドーム専用メッシュ

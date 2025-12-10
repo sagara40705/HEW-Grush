@@ -24,6 +24,7 @@ enum class TextureTag : uint8_t
     UI_Frame,       // メニュー UI 枠画像
     UI_Break,       // UI 選択時などのハイライト画像
     UI_BreakID,     //UIのシェーダーアニメーションを作るためのID用画像
+    Background_Game,//ゲームの背景用
     Count           // 列挙数（配列確保のためだけに使用）
 };
 

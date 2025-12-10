@@ -6,22 +6,33 @@
 #include "Prefab.h"
 #include "PrefabSet.h"
 #include "LineManager.h"
+#include "Camera.h"
+#include "Transform.h"
 
 SceneGame::SceneGame()
 {
-	
+	using namespace DirectX;
+
+	// ここでは行列の初期化とポインタ初期化だけにしておくイメージ
+	XMStoreFloat4x4(&m_world, DirectX::XMMatrixIdentity());
+	XMStoreFloat4x4(&m_view, DirectX::XMMatrixIdentity());
+	XMStoreFloat4x4(&m_proj, DirectX::XMMatrixIdentity());
+
+	m_pDepthNoWrite = nullptr;
+	m_pSkyTex = nullptr;
 }
 
 SceneGame::~SceneGame()
 {
-	
+	if (m_pDepthNoWrite)
+	{
+		m_pDepthNoWrite->Release();
+		m_pDepthNoWrite = nullptr;
+	}
 }
 void SceneGame::Load()
 {
-	// 従来の同期ロードが必要なら、タスクを構築して全部回す
-	std::vector<LoadTask> tasks;
-	BuildLoadTasks(tasks);
-	for (auto& t : tasks) t();
+
 }
 
 void SceneGame::Unload()
@@ -68,6 +79,17 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { CreateGaugeUI(); });
 	outTasks.emplace_back([this] { CreateTimerUI(); });
 	outTasks.emplace_back([this] { CreateScoreUI(); });
+
+
+
+	// ★ここでスカイドームを初期化するタスクを挟む
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Background_Game); });
+
+	outTasks.emplace_back([this]
+		{
+			InitSkyDome();
+		});
+
 
 	// 最後に Start を流す
 	outTasks.emplace_back([this] 
@@ -228,40 +250,94 @@ void SceneGame::SkyDomeDorw()
 {
 	using namespace DirectX;
 
-	auto context = GetContext();
+	ID3D11DeviceContext* context = GetContext();
 
-	XMFLOAT3 camPos = m_pCamera->GetPos();
+	// 1. メインカメラから View / Proj 行列と位置を取得
+	Camera* cam = Camera::Main();
+	if (!cam) return;
 
-	//==============================
-	// スカイドーム描画
-	//==============================
+	m_view = cam->GetView();
+	m_proj = cam->GetProjection();
+
+	Transform* tf = cam->gameObject->GetComponent<Transform>();
+	const XMFLOAT4X4& M = tf->GetMatrix();
+	XMFLOAT3 camPos(M._41, M._42, M._43);
+
+	// 2. カメラ中心・大きな半径の球を World 行列として作成
+	float radius = 100.0f;
+	XMMATRIX S = XMMatrixScaling(radius, radius, radius);
+	XMMATRIX T = XMMatrixTranslation(camPos.x, camPos.y, camPos.z);
+	XMMATRIX W = S * T;
+
+	XMFLOAT4X4 worldSky, viewT, projT;
+	XMStoreFloat4x4(&worldSky, XMMatrixTranspose(W));
+	XMStoreFloat4x4(&viewT, XMMatrixTranspose(XMLoadFloat4x4(&m_view)));
+	XMStoreFloat4x4(&projT, XMMatrixTranspose(XMLoadFloat4x4(&m_proj)));
+
+	// 3. スカイドーム用シェーダに行列を渡す
+	m_skyShader.SetWVP(worldSky, viewT, projT);
+
+	// 4. 現在の深度ステートを退避してから、スカイドーム用へ切り替え
+	ID3D11DepthStencilState* oldDS = nullptr;
+	UINT                     oldRef = 0;
+	context->OMGetDepthStencilState(&oldDS, &oldRef);
+
+	context->OMSetDepthStencilState(m_pDepthNoWrite, 1);
+
+	// 5. シェーダをバインドしてメッシュを描画
+	m_skyShader.Bind();
+	context->RSSetState(nullptr);
+	m_skyMesh.Draw(context);
+
+	// 6. 深度ステートを元に戻す
+	context->OMSetDepthStencilState(oldDS, oldRef);
+	if (oldDS)
 	{
-		// 半径の大きな球をカメラ中心に配置する
-		float radius = 1.0f;
-		XMMATRIX S = XMMatrixScaling(radius, radius, radius);
-		XMMATRIX T = XMMatrixTranslation(camPos.x, camPos.y, camPos.z);
-		XMMATRIX W = S * T;
-
-		XMFLOAT4X4 worldSky;
-		XMStoreFloat4x4(&worldSky, XMMatrixTranspose(W));
-
-		// WVP をスカイドームシェーダーへ送る
-		m_skyShader.SetWVP(worldSky, m_view, m_proj);
-
-		// スカイドームシェーダーをバインド
-		m_skyShader.Bind();
-
-		// 球の内側を描きたい時は、カリング設定を調整する
-		// 最初は分かりやすくカリングなしで確認する
-		context->RSSetState(nullptr);
-
-		// 深度は「比べるが書き込まない」が理想だが、
-		// まずは書き込みありで動作確認してから調整する
-		context->OMSetDepthStencilState(m_pDepthNoWrite, 1);
-
-		// ★ スカイドームメッシュの描画
-		m_skyMesh.Draw(context);
+		oldDS->Release();
 	}
+}
+
+void SceneGame::InitSkyDome()
+{
+	using namespace DirectX;
+
+    ID3D11Device* device = GetDevice();
+    if (!device) return;
+
+    // 1) メッシュ初期化
+    m_skyMesh.Init(device, 32, 16, 1.0f);
+
+    // 2) シェーダー初期化
+    m_skyShader.Init();
+
+    // 3) テクスチャ取得 → シェーダへ設定
+    //    ・事前に BuildLoadTasks で Load(TextureTag::Background_Game) しておく前提
+    m_pSkyTex = TextureManager::Get(TextureTag::Background_Game);
+    if (m_pSkyTex)
+    {
+        ID3D11ShaderResourceView* srv = m_pSkyTex->GetResource();
+        m_skyShader.SetTexture(srv);      // t0 に設定
+        m_skyShader.SetUseTexture(true);  // gUseTexture = 1
+    }
+    else
+    {
+        // 読み込み失敗時にだけメッセージを出したいならここで
+        // MessageBox(nullptr, "Background_Game テクスチャが読み込まれていません", "Error", MB_OK);
+        m_skyShader.SetUseTexture(false); // プロシージャルにフォールバック
+    }
+
+    // 4) 深度ステート（深度読み取りのみ）
+    D3D11_DEPTH_STENCIL_DESC dsDesc = {};
+    dsDesc.DepthEnable = TRUE;
+    dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+    dsDesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
+    dsDesc.StencilEnable = FALSE;
+
+    HRESULT hr = device->CreateDepthStencilState(&dsDesc, &m_pDepthNoWrite);
+    if (FAILED(hr))
+    {
+        m_pDepthNoWrite = nullptr;
+    }
 }
 
 void SceneGame::Update()
@@ -270,6 +346,8 @@ void SceneGame::Update()
 
 void SceneGame::Draw()
 {
+	// まずスカイドーム
+	SkyDomeDorw();
 }
 
 

@@ -98,6 +98,8 @@ void ShaderList::SetMaterial(const Model::Material& material)
 	param[1].w = material.pTexture ? 1.0f : 0.0f;
 	for (int i = 0; i < PS_KIND_MAX; ++i)
 	{
+		if (!m_pPS[i]) continue;  // š ’Ç‰Á
+
 		m_pPS[i]->SetTexture(0, material.pTexture);
 		m_pPS[i]->WriteBuffer(0, param);
 	}
@@ -112,6 +114,8 @@ void ShaderList::SetLight(DirectX::XMFLOAT4 color, DirectX::XMFLOAT3 dir)
 	));
 	for (int i = 0; i < PS_KIND_MAX; ++i)
 	{
+		if (!m_pPS[i]) continue;  // š ’Ç‰Á
+
 		m_pPS[i]->WriteBuffer(1, param);
 	}
 }
