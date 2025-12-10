@@ -156,12 +156,11 @@ void SceneGame::CreateCameraAndPlayer()
 	player.AddComponent<Animator>();
 	player.AddComponent<PlayerAnimation>();
 
-	GameObject& hummer = 
-		player.CreateChild(Hammer::BasePos, Vector3::zero(), Vector3(0.3f, 0.3f, 0.3f));
+	GameObject& hummer = player.CreateChild(Hammer::BasePos, Hammer::BaseRota, Vector3(0.2f, 0.2f, 0.2f));
 	hummer.SetTag(Tag::Hammer);
 	hummer.AddComponent<MeshFilter>(ModelTag::Hammer);
-	//hummer.AddComponent<MeshRenderer>();
-	hummer.AddComponent<BoxCollider>(false, Vector3(0.f, 1.f, 0.f));
+	hummer.AddComponent<MeshRenderer>();
+	hummer.AddComponent<BoxCollider>(false, Vector3(-3.f, 2.f, -3.f), Vector3(5.f, 5.f, 2.f));
 	hummer.AddComponent<Hammer>();
 
 	GameObject& glassShardPool = w.CreateGameObject();
