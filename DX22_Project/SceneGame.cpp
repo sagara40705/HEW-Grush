@@ -224,6 +224,46 @@ void SceneGame::CreateScoreUI()
 	scoreUI.AddComponent<ScoreUI>();
 }
 
+void SceneGame::SkyDomeDorw()
+{
+	using namespace DirectX;
+
+	auto context = GetContext();
+
+	XMFLOAT3 camPos = m_pCamera->GetPos();
+
+	//==============================
+	// スカイドーム描画
+	//==============================
+	{
+		// 半径の大きな球をカメラ中心に配置する
+		float radius = 1.0f;
+		XMMATRIX S = XMMatrixScaling(radius, radius, radius);
+		XMMATRIX T = XMMatrixTranslation(camPos.x, camPos.y, camPos.z);
+		XMMATRIX W = S * T;
+
+		XMFLOAT4X4 worldSky;
+		XMStoreFloat4x4(&worldSky, XMMatrixTranspose(W));
+
+		// WVP をスカイドームシェーダーへ送る
+		m_skyShader.SetWVP(worldSky, m_view, m_proj);
+
+		// スカイドームシェーダーをバインド
+		m_skyShader.Bind();
+
+		// 球の内側を描きたい時は、カリング設定を調整する
+		// 最初は分かりやすくカリングなしで確認する
+		context->RSSetState(nullptr);
+
+		// 深度は「比べるが書き込まない」が理想だが、
+		// まずは書き込みありで動作確認してから調整する
+		context->OMSetDepthStencilState(m_pDepthNoWrite, 1);
+
+		// ★ スカイドームメッシュの描画
+		m_skyMesh.Draw(context);
+	}
+}
+
 void SceneGame::Update()
 {
 }

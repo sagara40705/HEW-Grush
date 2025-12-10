@@ -2,6 +2,8 @@
 #define __SCENE_GAME_H__
 
 #include "Scene.h"
+#include"SkyDomeMesh.h"
+#include"SkyDomeShader.h"
 
 class SceneGame : public Scene
 {
@@ -26,6 +28,21 @@ private:
 	void CreateGaugeUI();
 	void CreateTimerUI();
 	void CreateScoreUI();
+
+private:
+	void SkyDomeDorw();
+
+	// カメラ用の行列など（すでにあればそのまま）
+	DirectX::XMFLOAT4X4 m_world;
+	DirectX::XMFLOAT4X4 m_view;
+	DirectX::XMFLOAT4X4 m_proj;
+	ID3D11DepthStencilState* m_pDepthNoWrite = nullptr; // アウトライン用（書き込まない）
+
+	SkyDomeShader m_skyShader;  // 宇宙スカイドーム用シェーダー
+	SkyDomeMesh   m_skyMesh;    // ★ スカイドーム専用メッシュ
+
+	Texture* m_pSkyTex = nullptr; // ★ 追加：スカイドーム用テクスチャ
+
 };
 
 #endif // __SCENE_GAME_H__
