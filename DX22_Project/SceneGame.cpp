@@ -59,10 +59,8 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::TimerNumber); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Spin); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::SpinMono); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::SpinMoji); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Dash); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::DashMono); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::DashMoji); });
 
 	// プレイハブ設定
 	outTasks.emplace_back([this] { RegisterAllPrefabs(); });
@@ -240,8 +238,8 @@ void SceneGame::CreateActionUI()
 	actionManager.SetTag(Tag::ActionUI);
 	actionManager.AddComponent<ActionUI>();
 
-	GameObject& actionUI = w.CreateGameObject();
-	actionUI.AddComponent<ActionUI>();
+	//GameObject& actionUI = w.CreateGameObject();
+	//actionUI.AddComponent<ActionUI>();
 }
 
 void SceneGame::Update()
