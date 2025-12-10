@@ -185,6 +185,7 @@
     <ClCompile Include="MeshRenderer.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="ModelManager.cpp" />
+    <ClCompile Include="OutlineShader.cpp" />
     <ClCompile Include="PhysicsSystem.cpp" />
     <ClCompile Include="PlayerAction.cpp" />
     <ClCompile Include="PlayerAnimation.cpp" />
@@ -201,6 +202,8 @@
     <ClCompile Include="ScoreUI.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderList.cpp" />
+    <ClCompile Include="SkyDomeMesh.cpp" />
+    <ClCompile Include="SkyDomeShader.cpp" />
     <ClCompile Include="SoundBackend.cpp" />
     <ClCompile Include="SoundSystem.cpp" />
     <ClCompile Include="SphereCollider.cpp" />
@@ -263,6 +266,7 @@
     <ClInclude Include="MeshRenderer.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="ModelManager.h" />
+    <ClInclude Include="OutlineShader.h" />
     <ClInclude Include="PhysicsSystem.h" />
     <ClInclude Include="PlayerAction.h" />
     <ClInclude Include="PlayerAnimation.h" />
@@ -281,6 +285,8 @@
     <ClInclude Include="ScoreUI.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderList.h" />
+    <ClInclude Include="SkyDomeMesh.h" />
+    <ClInclude Include="SkyDomeShader.h" />
     <ClInclude Include="SoundBackend.h" />
     <ClInclude Include="SoundSystem.h" />
     <ClInclude Include="SoundType.h" />

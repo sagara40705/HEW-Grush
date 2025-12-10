@@ -1,559 +1,169 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Engine">
-      <UniqueIdentifier>{0b5d9b8e-d48d-426f-8fd6-9af7349b62ab}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game">
-      <UniqueIdentifier>{d6182c99-cf53-4f82-9d7a-e23d7a0ed1c0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Core">
-      <UniqueIdentifier>{1f181f83-1327-45c1-bba4-d838323be555}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Resources">
-      <UniqueIdentifier>{4278c74f-ef90-4b04-856b-598d822ba2f4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Debug">
-      <UniqueIdentifier>{ea770509-0d5f-42a8-aafa-00927f29bda8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Math">
-      <UniqueIdentifier>{b3abd392-69f7-459a-9b68-5d97e9c97146}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Physics">
-      <UniqueIdentifier>{89d535b2-ceda-44e4-8910-c7b250788f18}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Rendering">
-      <UniqueIdentifier>{75982954-c36c-4d65-b735-031fa5792867}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Scenes">
-      <UniqueIdentifier>{0e423795-b753-4de6-aa36-861f7f3c1d9c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Components">
-      <UniqueIdentifier>{8cc0aa6b-3e20-4a5e-89dd-1c814568bf64}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Data">
-      <UniqueIdentifier>{f6ed1e42-797a-4905-bcee-7705a82c5de2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Entry">
-      <UniqueIdentifier>{9d53e54b-8504-42f2-ab07-046e5c92bc05}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Rendering\DirectX">
-      <UniqueIdentifier>{36a071c1-5faa-4aab-876a-ec9bef09e703}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Input">
-      <UniqueIdentifier>{0325ec4f-38f1-4677-affc-8998e33d465f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Scene">
-      <UniqueIdentifier>{e64c7508-96e1-4dc7-bee9-aa52abdf85b9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Physics\Collider">
-      <UniqueIdentifier>{90127bf1-3183-41f6-bd9e-6729b5596298}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Components\Camera">
-      <UniqueIdentifier>{c433523d-062e-40b8-bbda-bec4c50c7123}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Components\Player">
-      <UniqueIdentifier>{22b8d87b-26fd-4b8c-b0a5-dfd80336d15e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Components\UI">
-      <UniqueIdentifier>{4083277b-c671-44ce-97ed-99d247164ba4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Components\Environment">
-      <UniqueIdentifier>{224880f2-b0e7-4294-bed8-b261cda49570}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Sound">
-      <UniqueIdentifier>{ccb55efd-ed15-4705-930b-21f6356e4bcf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Rendering\Effect">
-      <UniqueIdentifier>{8b90d41c-7d25-4a76-ade2-49a5e62f2b47}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Rendering\Animation">
-      <UniqueIdentifier>{9bd8e88a-62f8-472f-949c-2289c407158a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Rendering\UI">
-      <UniqueIdentifier>{d0428491-1d12-47b7-970e-ffe7674ac10b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Engine\Rendering\Model">
-      <UniqueIdentifier>{7ef38ee3-f64f-4530-b184-f75e14f8bbf6}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Components\Title">
-      <UniqueIdentifier>{831b65d8-eb7f-4866-b7ef-f1f23ad136f0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Components\Loading">
-      <UniqueIdentifier>{47deb2f4-af24-434a-9507-13dda3bcdc76}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Game\Components\GameManager">
-      <UniqueIdentifier>{7bfc992f-9fa0-477f-b671-675a90bbe95f}</UniqueIdentifier>
-    </Filter>
+    <ClCompile Include="Animator.cpp" />
+    <ClCompile Include="AudioListener.cpp" />
+    <ClCompile Include="AudioSource.cpp" />
+    <ClCompile Include="BoxCollider.cpp" />
+    <ClCompile Include="BreakButtonRenderer.cpp" />
+    <ClCompile Include="Camera.cpp" />
+    <ClCompile Include="CameraContorol.cpp" />
+    <ClCompile Include="CameraShake.cpp" />
+    <ClCompile Include="Canvas.cpp" />
+    <ClCompile Include="CapsuleCollider.cpp" />
+    <ClCompile Include="Collider.cpp" />
+    <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="Component.cpp" />
+    <ClCompile Include="DirectX.cpp" />
+    <ClCompile Include="EventComponent.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GlassShard.cpp" />
+    <ClCompile Include="GlassShardPool.cpp" />
+    <ClCompile Include="Hammer.cpp" />
+    <ClCompile Include="LoadingGauge.cpp" />
+    <ClCompile Include="OriginalGame.cpp" />
+    <ClCompile Include="Geometory.cpp" />
+    <ClCompile Include="GlassGaugeUI.cpp" />
+    <ClCompile Include="GlassGaugeManager.cpp" />
+    <ClCompile Include="GlassObject.cpp" />
+    <ClCompile Include="Input.cpp" />
+    <ClCompile Include="InputGamepad.cpp" />
+    <ClCompile Include="InputKeyboard.cpp" />
+    <ClCompile Include="InputMouse.cpp" />
+    <ClCompile Include="LineManager.cpp" />
+    <ClCompile Include="LoadingScene.cpp" />
+    <ClCompile Include="OriginalLoading.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MeshBuffer.cpp" />
+    <ClCompile Include="MeshFilter.cpp" />
+    <ClCompile Include="MeshRenderer.cpp" />
+    <ClCompile Include="Model.cpp" />
+    <ClCompile Include="ModelManager.cpp" />
+    <ClCompile Include="PhysicsSystem.cpp" />
+    <ClCompile Include="PlayerAction.cpp" />
+    <ClCompile Include="PlayerAnimation.cpp" />
+    <ClCompile Include="PlayerMove.cpp" />
+    <ClCompile Include="Prefab.cpp" />
+    <ClCompile Include="PrefabSet.cpp" />
+    <ClCompile Include="PrimitiveMeshManager.cpp" />
+    <ClCompile Include="Raycast.cpp" />
+    <ClCompile Include="Rigidbody.cpp" />
+    <ClCompile Include="Scene.cpp" />
+    <ClCompile Include="SceneGame.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="ScoreManager.cpp" />
+    <ClCompile Include="ScoreUI.cpp" />
+    <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="ShaderList.cpp" />
+    <ClCompile Include="SoundBackend.cpp" />
+    <ClCompile Include="SoundSystem.cpp" />
+    <ClCompile Include="SphereCollider.cpp" />
+    <ClCompile Include="Sprite.cpp" />
+    <ClCompile Include="Sprite3DRenderer.cpp" />
+    <ClCompile Include="SpriteAnimation.cpp" />
+    <ClCompile Include="Startup.cpp" />
+    <ClCompile Include="Texture.cpp" />
+    <ClCompile Include="TexutureManager.cpp" />
+    <ClCompile Include="SceneTitle.cpp" />
+    <ClCompile Include="TimerUI.cpp" />
+    <ClCompile Include="TitleManager.cpp" />
+    <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="UiSpriteRenderer.cpp" />
+    <ClCompile Include="World.cpp" />
+    <ClCompile Include="_geometory.cpp" />
+    <ClCompile Include="_model.cpp" />
+    <ClCompile Include="SkyDomeMesh.cpp" />
+    <ClCompile Include="SkyDomeShader.cpp" />
+    <ClCompile Include="OutlineShader.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="DirectX.cpp">
-      <Filter>Engine\Rendering\DirectX</Filter>
-    </ClCompile>
-    <ClCompile Include="MeshBuffer.cpp">
-      <Filter>Engine\Rendering\DirectX</Filter>
-    </ClCompile>
-    <ClCompile Include="Shader.cpp">
-      <Filter>Engine\Rendering\DirectX</Filter>
-    </ClCompile>
-    <ClCompile Include="Texture.cpp">
-      <Filter>Engine\Rendering\DirectX</Filter>
-    </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>Game\Entry</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneGame.cpp">
-      <Filter>Game\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="ShaderList.cpp">
-      <Filter>Engine\Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="Geometory.cpp">
-      <Filter>Engine\Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="Sprite.cpp">
-      <Filter>Engine\Rendering\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="_geometory.cpp">
-      <Filter>Engine\Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="Startup.cpp">
-      <Filter>Game\Entry</Filter>
-    </ClCompile>
-    <ClCompile Include="Component.cpp">
-      <Filter>Engine\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="GameObject.cpp">
-      <Filter>Engine\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="Scene.cpp">
-      <Filter>Engine\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Input.cpp">
-      <Filter>Engine\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
-      <Filter>Engine\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Game.cpp">
-      <Filter>Engine\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="Transform.cpp">
-      <Filter>Engine\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="InputKeyboard.cpp">
-      <Filter>Engine\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="InputGamepad.cpp">
-      <Filter>Engine\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="PrimitiveMeshManager.cpp">
-      <Filter>Engine\Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="ModelManager.cpp">
-      <Filter>Engine\Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="Collider.cpp">
-      <Filter>Engine\Physics\Collider</Filter>
-    </ClCompile>
-    <ClCompile Include="BoxCollider.cpp">
-      <Filter>Engine\Physics\Collider</Filter>
-    </ClCompile>
-    <ClCompile Include="SphereCollider.cpp">
-      <Filter>Engine\Physics\Collider</Filter>
-    </ClCompile>
-    <ClCompile Include="CapsuleCollider.cpp">
-      <Filter>Engine\Physics\Collider</Filter>
-    </ClCompile>
-    <ClCompile Include="Rigidbody.cpp">
-      <Filter>Engine\Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="Collision.cpp">
-      <Filter>Engine\Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="PhysicsSystem.cpp">
-      <Filter>Engine\Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="Sprite3DRenderer.cpp">
-      <Filter>Engine\Rendering\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="TexutureManager.cpp">
-      <Filter>Engine\Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="Canvas.cpp">
-      <Filter>Engine\Rendering\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="UiSpriteRenderer.cpp">
-      <Filter>Engine\Rendering\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="SpriteAnimation.cpp">
-      <Filter>Engine\Rendering\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="EventComponent.cpp">
-      <Filter>Engine\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="Prefab.cpp">
-      <Filter>Engine\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="PrefabSet.cpp">
-      <Filter>Game\Entry</Filter>
-    </ClCompile>
-    <ClCompile Include="GlassGaugeUI.cpp">
-      <Filter>Game\Components\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="GlassObject.cpp">
-      <Filter>Game\Components\Environment</Filter>
-    </ClCompile>
-    <ClCompile Include="CameraContorol.cpp">
-      <Filter>Game\Components\Camera</Filter>
-    </ClCompile>
-    <ClCompile Include="LineManager.cpp">
-      <Filter>Engine\Debug</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerMove.cpp">
-      <Filter>Game\Components\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="Raycast.cpp">
-      <Filter>Engine\Physics</Filter>
-    </ClCompile>
-    <ClCompile Include="InputMouse.cpp">
-      <Filter>Engine\Input</Filter>
-    </ClCompile>
-    <ClCompile Include="Model.cpp">
-      <Filter>Engine\Rendering\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="MeshRenderer.cpp">
-      <Filter>Engine\Rendering\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="MeshFilter.cpp">
-      <Filter>Engine\Rendering\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="_model.cpp">
-      <Filter>Engine\Rendering\Model</Filter>
-    </ClCompile>
-    <ClCompile Include="World.cpp">
-      <Filter>Engine\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="Camera.cpp">
-      <Filter>Engine\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="LoadingScene.cpp">
-      <Filter>Engine\Scene</Filter>
-    </ClCompile>
-    <ClCompile Include="SoundBackend.cpp">
-      <Filter>Engine\Sound</Filter>
-    </ClCompile>
-    <ClCompile Include="SoundSystem.cpp">
-      <Filter>Engine\Sound</Filter>
-    </ClCompile>
-    <ClCompile Include="Animator.cpp">
-      <Filter>Engine\Rendering\Animation</Filter>
-    </ClCompile>
-    <ClCompile Include="AudioListener.cpp">
-      <Filter>Engine\Sound</Filter>
-    </ClCompile>
-    <ClCompile Include="AudioSource.cpp">
-      <Filter>Engine\Sound</Filter>
-    </ClCompile>
-    <ClCompile Include="OriginalLoading.cpp">
-      <Filter>Game\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneTitle.cpp">
-      <Filter>Game\Scenes</Filter>
-    </ClCompile>
-    <ClCompile Include="TitleManager.cpp">
-      <Filter>Game\Components\Title</Filter>
-    </ClCompile>
-    <ClCompile Include="OriginalGame.cpp">
-      <Filter>Game\Entry</Filter>
-    </ClCompile>
-    <ClCompile Include="LoadingGauge.cpp">
-      <Filter>Game\Components\Loading</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerAnimation.cpp">
-      <Filter>Game\Components\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="PlayerAction.cpp">
-      <Filter>Game\Components\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="Hammer.cpp">
-      <Filter>Game\Components\Player</Filter>
-    </ClCompile>
-    <ClCompile Include="GlassGaugeManager.cpp">
-      <Filter>Game\Components\GameManager</Filter>
-    </ClCompile>
-    <ClCompile Include="ScoreManager.cpp">
-      <Filter>Game\Components\GameManager</Filter>
-    </ClCompile>
-    <ClCompile Include="ScoreUI.cpp">
-      <Filter>Game\Components\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="TimerUI.cpp">
-      <Filter>Game\Components\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="GlassShardPool.cpp">
-      <Filter>Game\Components\Environment</Filter>
-    </ClCompile>
-    <ClCompile Include="GlassShard.cpp">
-      <Filter>Game\Components\Environment</Filter>
-    </ClCompile>
-    <ClCompile Include="CameraShake.cpp">
-      <Filter>Game\Components\Camera</Filter>
-    </ClCompile>
-<<<<<<< Updated upstream
-=======
-    <ClCompile Include="BreakButtonRenderer.cpp">
-      <Filter>Engine\Rendering\UI</Filter>
-    </ClCompile>
->>>>>>> Stashed changes
+    <ClInclude Include="AllComponent.h" />
+    <ClInclude Include="Animator.h" />
+    <ClInclude Include="AudioListener.h" />
+    <ClInclude Include="AudioSource.h" />
+    <ClInclude Include="BoxCollider.h" />
+    <ClInclude Include="BreakButtonRenderer.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="CameraContorol.h" />
+    <ClInclude Include="CameraShake.h" />
+    <ClInclude Include="Canvas.h" />
+    <ClInclude Include="CapsuleCollider.h" />
+    <ClInclude Include="Collider.h" />
+    <ClInclude Include="Collision.h" />
+    <ClInclude Include="Component.h" />
+    <ClInclude Include="DebugLog.h" />
+    <ClInclude Include="Defines.h" />
+    <ClInclude Include="DirectX.h" />
+    <ClInclude Include="Event.h" />
+    <ClInclude Include="EventComponent.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameState.h" />
+    <ClInclude Include="Geometory.h" />
+    <ClInclude Include="GlassGaugeUI.h" />
+    <ClInclude Include="GlassGaugeManager.h" />
+    <ClInclude Include="GlassObject.h" />
+    <ClInclude Include="GlassShard.h" />
+    <ClInclude Include="GlassShardPool.h" />
+    <ClInclude Include="Hammer.h" />
+    <ClInclude Include="Input.h" />
+    <ClInclude Include="InputGamepad.h" />
+    <ClInclude Include="InputKeyboard.h" />
+    <ClInclude Include="InputMouse.h" />
+    <ClInclude Include="Layer.h" />
+    <ClInclude Include="LineManager.h" />
+    <ClInclude Include="LoadingGauge.h" />
+    <ClInclude Include="LoadingScene.h" />
+    <ClInclude Include="Main.h" />
+    <ClInclude Include="MeshBuffer.h" />
+    <ClInclude Include="MeshFilter.h" />
+    <ClInclude Include="MeshRenderer.h" />
+    <ClInclude Include="Model.h" />
+    <ClInclude Include="ModelManager.h" />
+    <ClInclude Include="PhysicsSystem.h" />
+    <ClInclude Include="PlayerAction.h" />
+    <ClInclude Include="PlayerAnimation.h" />
+    <ClInclude Include="PlayerMove.h" />
+    <ClInclude Include="PlayerState.h" />
+    <ClInclude Include="Prefab.h" />
+    <ClInclude Include="PrefabSet.h" />
+    <ClInclude Include="PrimitiveMeshManager.h" />
+    <ClInclude Include="Raycast.h" />
+    <ClInclude Include="RenderSystem.h" />
+    <ClInclude Include="Rigidbody.h" />
+    <ClInclude Include="Scene.h" />
+    <ClInclude Include="SceneGame.h" />
+    <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="ScoreManager.h" />
+    <ClInclude Include="ScoreUI.h" />
+    <ClInclude Include="Shader.h" />
+    <ClInclude Include="ShaderList.h" />
+    <ClInclude Include="SoundBackend.h" />
+    <ClInclude Include="SoundSystem.h" />
+    <ClInclude Include="SoundType.h" />
+    <ClInclude Include="SphereCollider.h" />
+    <ClInclude Include="Sprite.h" />
+    <ClInclude Include="Sprite3DRenderer.h" />
+    <ClInclude Include="SpriteAnimation.h" />
+    <ClInclude Include="Texture.h" />
+    <ClInclude Include="TextureManager.h" />
+    <ClInclude Include="SceneTitle.h" />
+    <ClInclude Include="TimerUI.h" />
+    <ClInclude Include="TitleManager.h" />
+    <ClInclude Include="Transform.h" />
+    <ClInclude Include="UiSpriteRenderer.h" />
+    <ClInclude Include="Vector2.h" />
+    <ClInclude Include="Vector3.h" />
+    <ClInclude Include="World.h" />
+    <ClInclude Include="SkyDomeMesh.h" />
+    <ClInclude Include="SkyDomeShader.h" />
+    <ClInclude Include="OutlineShader.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Main.h">
-      <Filter>Game\Entry</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneGame.h">
-      <Filter>Game\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="Defines.h">
-      <Filter>Engine\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="ShaderList.h">
-      <Filter>Engine\Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="DirectX.h">
-      <Filter>Engine\Rendering\DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="MeshBuffer.h">
-      <Filter>Engine\Rendering\DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="Shader.h">
-      <Filter>Engine\Rendering\DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="Texture.h">
-      <Filter>Engine\Rendering\DirectX</Filter>
-    </ClInclude>
-    <ClInclude Include="Geometory.h">
-      <Filter>Engine\Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="Sprite.h">
-      <Filter>Engine\Rendering\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Component.h">
-      <Filter>Engine\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="GameObject.h">
-      <Filter>Engine\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Scene.h">
-      <Filter>Engine\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Input.h">
-      <Filter>Engine\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>Engine\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Game.h">
-      <Filter>Engine\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Vector3.h">
-      <Filter>Engine\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="Transform.h">
-      <Filter>Engine\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="InputKeyboard.h">
-      <Filter>Engine\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="InputGamepad.h">
-      <Filter>Engine\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="AllComponent.h">
-      <Filter>Game\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="PrimitiveMeshManager.h">
-      <Filter>Engine\Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="ModelManager.h">
-      <Filter>Engine\Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="RenderSystem.h">
-      <Filter>Engine\Rendering</Filter>
-    </ClInclude>
-    <ClInclude Include="Collider.h">
-      <Filter>Engine\Physics\Collider</Filter>
-    </ClInclude>
-    <ClInclude Include="BoxCollider.h">
-      <Filter>Engine\Physics\Collider</Filter>
-    </ClInclude>
-    <ClInclude Include="SphereCollider.h">
-      <Filter>Engine\Physics\Collider</Filter>
-    </ClInclude>
-    <ClInclude Include="CapsuleCollider.h">
-      <Filter>Engine\Physics\Collider</Filter>
-    </ClInclude>
-    <ClInclude Include="Rigidbody.h">
-      <Filter>Engine\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="Collision.h">
-      <Filter>Engine\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="PhysicsSystem.h">
-      <Filter>Engine\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="Sprite3DRenderer.h">
-      <Filter>Engine\Rendering\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Vector2.h">
-      <Filter>Engine\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="TextureManager.h">
-      <Filter>Engine\Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="Canvas.h">
-      <Filter>Engine\Rendering\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="UiSpriteRenderer.h">
-      <Filter>Engine\Rendering\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="SpriteAnimation.h">
-      <Filter>Engine\Rendering\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Event.h">
-      <Filter>Engine\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="EventComponent.h">
-      <Filter>Engine\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="Prefab.h">
-      <Filter>Engine\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="PrefabSet.h">
-      <Filter>Game\Entry</Filter>
-    </ClInclude>
-    <ClInclude Include="GlassGaugeUI.h">
-      <Filter>Game\Components\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="GlassObject.h">
-      <Filter>Game\Components\Environment</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraContorol.h">
-      <Filter>Game\Components\Camera</Filter>
-    </ClInclude>
-    <ClInclude Include="LineManager.h">
-      <Filter>Engine\Debug</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerState.h">
-      <Filter>Game\Components\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerMove.h">
-      <Filter>Game\Components\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="Raycast.h">
-      <Filter>Engine\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="Layer.h">
-      <Filter>Engine\Physics</Filter>
-    </ClInclude>
-    <ClInclude Include="InputMouse.h">
-      <Filter>Engine\Input</Filter>
-    </ClInclude>
-    <ClInclude Include="Model.h">
-      <Filter>Engine\Rendering\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="MeshRenderer.h">
-      <Filter>Engine\Rendering\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="MeshFilter.h">
-      <Filter>Engine\Rendering\Model</Filter>
-    </ClInclude>
-    <ClInclude Include="World.h">
-      <Filter>Engine\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="Camera.h">
-      <Filter>Engine\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="LoadingScene.h">
-      <Filter>Engine\Scene</Filter>
-    </ClInclude>
-    <ClInclude Include="SoundType.h">
-      <Filter>Engine\Sound</Filter>
-    </ClInclude>
-    <ClInclude Include="SoundBackend.h">
-      <Filter>Engine\Sound</Filter>
-    </ClInclude>
-    <ClInclude Include="SoundSystem.h">
-      <Filter>Engine\Sound</Filter>
-    </ClInclude>
-    <ClInclude Include="Animator.h">
-      <Filter>Engine\Rendering\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="AudioListener.h">
-      <Filter>Engine\Sound</Filter>
-    </ClInclude>
-    <ClInclude Include="AudioSource.h">
-      <Filter>Engine\Sound</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneTitle.h">
-      <Filter>Game\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="TitleManager.h">
-      <Filter>Game\Components\Title</Filter>
-    </ClInclude>
-    <ClInclude Include="GameState.h">
-      <Filter>Game\Entry</Filter>
-    </ClInclude>
-    <ClInclude Include="LoadingGauge.h">
-      <Filter>Game\Components\Loading</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerAnimation.h">
-      <Filter>Game\Components\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="PlayerAction.h">
-      <Filter>Game\Components\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="DebugLog.h">
-      <Filter>Engine\Debug</Filter>
-    </ClInclude>
-    <ClInclude Include="Hammer.h">
-      <Filter>Game\Components\Player</Filter>
-    </ClInclude>
-    <ClInclude Include="GlassGaugeManager.h">
-      <Filter>Game\Components\GameManager</Filter>
-    </ClInclude>
-    <ClInclude Include="ScoreManager.h">
-      <Filter>Game\Components\GameManager</Filter>
-    </ClInclude>
-    <ClInclude Include="ScoreUI.h">
-      <Filter>Game\Components\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="TimerUI.h">
-      <Filter>Game\Components\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="GlassShardPool.h">
-      <Filter>Game\Components\Environment</Filter>
-    </ClInclude>
-    <ClInclude Include="GlassShard.h">
-      <Filter>Game\Components\Environment</Filter>
-    </ClInclude>
-    <ClInclude Include="CameraShake.h">
-      <Filter>Game\Components\Camera</Filter>
-    </ClInclude>
-<<<<<<< Updated upstream
-=======
-    <ClInclude Include="BreakButtonRenderer.h">
-      <Filter>Engine\Rendering\UI</Filter>
-    </ClInclude>
->>>>>>> Stashed changes
+    <None Include="SceneManager.inl" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="SceneManager.inl">
-      <Filter>Engine\Scene</Filter>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="debug_log.txt">
-      <Filter>Engine\Debug</Filter>
-    </Text>
+    <Text Include="debug_log.txt" />
   </ItemGroup>
 </Project>
