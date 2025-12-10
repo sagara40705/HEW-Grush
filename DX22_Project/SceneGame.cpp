@@ -454,6 +454,7 @@ void SceneGame::Update()
 
 void SceneGame::Draw()
 {
+
 }
 
 

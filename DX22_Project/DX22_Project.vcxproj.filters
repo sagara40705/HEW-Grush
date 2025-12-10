@@ -318,6 +318,9 @@
     <ClCompile Include="ActionUI.cpp">
       <Filter>Game\Components\UI</Filter>
     </ClCompile>
+    <ClCompile Include="EffekseerSystem.cpp">
+      <Filter>Engine\Rendering\Effect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -556,6 +559,9 @@
     </ClInclude>
     <ClInclude Include="ActionUI.h">
       <Filter>Game\Components\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="EffekseerSystem.h">
+      <Filter>Engine\Rendering\Effect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -164,6 +164,7 @@
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="DirectX.cpp" />
+    <ClCompile Include="EffekseerSystem.cpp" />
     <ClCompile Include="EventComponent.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -246,6 +247,7 @@
     <ClInclude Include="DebugLog.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="DirectX.h" />
+    <ClInclude Include="EffekseerSystem.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="EventComponent.h" />
     <ClInclude Include="Game.h" />
