@@ -130,7 +130,7 @@ void ShaderList::SetFog(DirectX::XMFLOAT4 color, float start, float range)
 	};
 	m_pPS[PS_FOG]->WriteBuffer(3, param);
 }
-void ShaderList::SetGlassParam(const DirectX::XMFLOAT4& tint, float fresnelPower, float reflectionStrength, float transmissionStrength)
+void ShaderList::SetGlassParam(const DirectX::XMFLOAT4& tint, float fresnelPower, float reflectionStrength, float transmissionStrength, float v)
 {
 	DirectX::XMFLOAT4 param[2];
 
@@ -138,7 +138,7 @@ void ShaderList::SetGlassParam(const DirectX::XMFLOAT4& tint, float fresnelPower
 	param[0] = tint;  // tint = { r, g, b, a } (a にベースアルファ)
 
 	// glassParams = { fresnelPower, reflectionStrength, transmissionStrength, 0 }
-	param[1] = DirectX::XMFLOAT4(fresnelPower, reflectionStrength, transmissionStrength, 0.5f);
+	param[1] = DirectX::XMFLOAT4(fresnelPower, reflectionStrength, transmissionStrength, v);
 
 	// b3 に書き込む
 	m_pPS[PS_GLASS]->WriteBuffer(3, param);

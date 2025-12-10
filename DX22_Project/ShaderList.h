@@ -49,7 +49,7 @@ public:
 	static void SetLight(DirectX::XMFLOAT4 color, DirectX::XMFLOAT3 dir);
 	static void SetCameraPos(const DirectX::XMFLOAT3 pos);
 	static void SetFog(DirectX::XMFLOAT4 color, float start, float range);
-	static void SetGlassParam(const DirectX::XMFLOAT4& tint, float fresnelPower, float reflectionStrength, float transmissionStrength);
+	static void SetGlassParam(const DirectX::XMFLOAT4& tint, float fresnelPower, float reflectionStrength, float transmissionStrength, float v = 0.5f);
 	
 private:
 	static void MakePrimVS();
