@@ -50,7 +50,7 @@ static bool InitEffekseerForSampleScene()
 
     g_TestEffect = Effekseer::Effect::Create(
         g_EfkManager,
-        (const EFK_CHAR*)L"Effekseer/Sample/square_b.efkefc"
+        (const EFK_CHAR*)L"Effekseer/Sample/Laser01.efkefc"
     );
     if (g_TestEffect.Get() == nullptr) return false;
 
@@ -80,7 +80,7 @@ void SceneSample::Load()
     if (g_EfkManager.Get() && g_TestEffect.Get())
     {
         // 原点少し前あたりに出す（座標は適宜調整）
-        Effekseer::Vector3D pos(0.0f, -2.0f, 5.0f);
+        Effekseer::Vector3D pos(0.0f, -2.0f, 2.0f);
         g_TestHandle = g_EfkManager->Play(g_TestEffect, pos.X, pos.Y, pos.Z);
     }
 }
