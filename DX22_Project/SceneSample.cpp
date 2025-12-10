@@ -50,7 +50,7 @@ static bool InitEffekseerForSampleScene()
 
     g_TestEffect = Effekseer::Effect::Create(
         g_EfkManager,
-        (const EFK_CHAR*)L"Effekseer/Data/Simple_Ring_Shape1.efkefcc"
+        (const EFK_CHAR*)L"Effekseer/Sample/Laser01.efkefc"
     );
     if (g_TestEffect.Get() == nullptr) return false;
 
