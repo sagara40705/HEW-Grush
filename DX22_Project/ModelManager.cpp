@@ -4,9 +4,9 @@
 std::array<std::unique_ptr<Model>, static_cast<size_t>(ModelTag::Count)> ModelManager::s_models{};
 std::array<float, static_cast<size_t>(ModelTag::Count)> ModelManager::modelBounds = {
     0.f,
-    0.62f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f,
-    2.6f,2.6f,
-    1.f, 1.f,
+    0.7f, 0.5f, 0.8f, 0.7f, 0.9f, 0.9f, 0.9f,
+    1.8f, 1.8f, 1.6f, 1.4f,
+    2.4f, 3.f,
     0.7f,0.f,0.f
 };
 
@@ -24,7 +24,7 @@ const ModelLoadData ModelManager::kModelData[static_cast<size_t>(ModelTag::Count
 
     {"Assets/Model/MD_REbenti_prototype.fbx",                                 0.01f, Model::Flip::ZFlip}, //8
     {"Assets/Model/Grade_2/MD_aircon_251208.fbx",                             0.01f, Model::Flip::ZFlip}, //9
-    {"Assets/Model/Grade_2/MD_jihanki_251208.fbx",                            0.01f, Model::Flip::ZFlip}, //10
+    {"Assets/Model/Grade_2/MD_jihanki_251208.fbx",                            0.006f, Model::Flip::ZFlip}, //10
     {"Assets/Model/Grade_2/MD_reizouko_20251205.fbx",                         0.5f, Model::Flip::ZFlip},  //11
 
     {"Assets/Model/MD_UFO_prototype.fbx",                                     0.01f, Model::Flip::ZFlip}, //12

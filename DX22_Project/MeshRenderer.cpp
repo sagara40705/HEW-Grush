@@ -82,29 +82,10 @@ void MeshRenderer::Render()
         }
     }
 
-
-
-    SetDepthTest(true);
-    SetCullingMode(D3D11_CULL_BACK);
-
     // === WVP セット ===
     WVPMatrices wvp{};
     DirectX::XMFLOAT4X4 fWVP[3];
     DirectX::XMMATRIX world, view, proj; // 各変換行列の格納先 
-    /*
-    XMFLOAT4X4 wMat = tf->GetMatrix();
-    const XMFLOAT4X4& vMat = cam->GetView();
-    const XMFLOAT4X4& pMat = cam->GetProjection();
-
-    XMMATRIX W = XMMatrixTranspose(XMLoadFloat4x4(&wMat));
-    XMMATRIX V = XMMatrixTranspose(XMLoadFloat4x4(&vMat));
-    XMMATRIX P = XMMatrixTranspose(XMLoadFloat4x4(&pMat));
-
-    XMStoreFloat4x4(&wvp.world, W);
-    XMStoreFloat4x4(&wvp.view, V);
-    XMStoreFloat4x4(&wvp.proj, P);
-    ShaderList::SetWVP(reinterpret_cast<XMFLOAT4X4*>(&wvp));
-    */
 
     world = DirectX::XMLoadFloat4x4(&tf->GetMatrix());
     view = DirectX::XMLoadFloat4x4(&Camera::Main()->GetView());
@@ -113,17 +94,6 @@ void MeshRenderer::Render()
     DirectX::XMStoreFloat4x4(&fWVP[1], DirectX::XMMatrixTranspose(view));
     DirectX::XMStoreFloat4x4(&fWVP[2], DirectX::XMMatrixTranspose(proj));
     ShaderList::SetWVP(fWVP);
-
-    if (psKind == ShaderList::PS_GLASS)
-    {
-        if (glass) glass->SetGlassParamPS();
-        if (shard)
-        {
-            shard->SetGlassParamPS();
-            shard->SetShardParamVS();
-        }
-    }
-
 
     switch (mf->GetSource())
     {
@@ -137,6 +107,12 @@ void MeshRenderer::Render()
 
 void MeshRenderer::PrimitiveRender()
 {
+    if (shard)
+    {
+        shard->SetGlassParamPS();
+        shard->SetShardParamVS();
+    }
+
     MeshBuffer* mesh = mf->GetPrimitive();
     if (!mesh) return;
 
@@ -153,6 +129,8 @@ void MeshRenderer::PrimitiveRender()
 
 void MeshRenderer::ModelRender()
 {
+    if (glass) glass->SetGlassParamPS();
+
     Model* model = mf->GetModel();
     if (!model) return;
 
@@ -199,8 +177,6 @@ void MeshRenderer::ModelRender()
         Model::Material material = *model->GetMaterial(mesh->materialID);
         // シェーダーへマテリアルを設定 
         ShaderList::SetMaterial(material);
-
-        //if(material.pTexture) DebugLog::OutputValue("pTexture", material.pTexture);
         
         // モデルの描画 
         model->Draw(i);

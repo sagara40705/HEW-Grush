@@ -217,7 +217,7 @@ void SceneGame::CreateStage()
 		PrefabId::Ningixyou
 	};
 
-	Pos positionsGrade_1[] = {
+	const Pos positionsGrade_1[] = {
 		{19,48}, {46,26}, {36,35}, {11,33}, {-4,24}, {20,-37}, {-9,-27}, {14,-43},
 		{-38,-7}, {21,-49}, {-30,33}, {-28,6}, {34,8}, {8,-47}, {-28,29}, {43,40},
 		{-3,-31}, {-47,-13}, {-15,-29}, {-20,-29}, {16,-44}, {42,-14}, {26,28}, {30,5},
@@ -245,7 +245,7 @@ void SceneGame::CreateStage()
 		{30,39}, {39,-21}, {-45,-7}, {-47,-35}, {-15,-40}, {45,-34}, {30,42}, {-39,39}
 	};
 
-	Rot rotationsGrade_1[] = {
+	const Rot rotationsGrade_1[] = {
 		{114,168,160}, {87,149,140}, {75,99,162}, {14,106,100}, {107,151,56}, {60,130,44}, {36,161,51}, {12,76,28},
 		{62,104,114}, {168,81,178}, {180,27,5}, {55,59,10}, {11,20,78}, {169,155,32}, {83,104,91}, {70,158,136},
 		{87,38,45}, {151,27,145}, {100,144,157}, {60,119,83}, {100,152,50}, {103,62,176}, {46,70,82}, {27,167,4},
@@ -273,9 +273,9 @@ void SceneGame::CreateStage()
 		{0,94,128}, {92,169,159}, {137,145,64}, {122,119,94}, {125,63,52}, {40,47,174}, {35,176,118}, {2,76,72}
 	};
 
-	int prefabCount1 = sizeof(prefabOrder1) / sizeof(prefabOrder1[0]);
-	int posCount1 = sizeof(positionsGrade_1) / sizeof(positionsGrade_1[0]);
-	int rotCount1 = sizeof(rotationsGrade_1) / sizeof(rotationsGrade_1[0]);
+	const int prefabCount1 = sizeof(prefabOrder1) / sizeof(prefabOrder1[0]);
+	const int posCount1 = sizeof(positionsGrade_1) / sizeof(positionsGrade_1[0]);
+	const int rotCount1 = sizeof(rotationsGrade_1) / sizeof(rotationsGrade_1[0]);
 
 	for (int i = 0; i < posCount1; i++) {
 		PrefabId id = prefabOrder1[i % prefabCount1];
@@ -301,7 +301,7 @@ void SceneGame::CreateStage()
 		PrefabId::Reizouko,
 	};
 
-	Pos positionsGrade_2[] = {
+	const Pos positionsGrade_2[] = {
 		{-4,-31}, {11,7}, {-18,5}, {-16,-30}, {-31,12}, {-38,2}, {-12,24}, {12,-6},
 		{-14,18}, {-29,-26}, {11,15}, {-36,9}, {17,-31}, {-21,19}, {-22,-11}, {-39,-25},
 		{5,22}, {-2,4}, {-39,18}, {-7,32}, {33,8}, {16,15}, {-13,8}, {3,-33},
@@ -318,7 +318,7 @@ void SceneGame::CreateStage()
 		{7,-47}, {18,-10}, {-23,7}, {-26,14}, {23,23}, {10,36}
 	};
 
-	Rot rotationsGrade_2[] = {
+	const Rot rotationsGrade_2[] = {
 		{116,170,61}, {134,73,100}, {147,91,30}, {56,49,3}, {62,4,12}, {27,100,92}, {165,20,27}, {74,179,47},
 		{39,73,76}, {75,148,1}, {15,13,61}, {171,157,123}, {140,145,124}, {93,38,11}, {60,28,151}, {137,180,82},
 		{139,20,5}, {146,1,121}, {142,177,73}, {53,63,4}, {62,175,22}, {66,35,48}, {148,158,75}, {37,1,5},
@@ -336,9 +336,9 @@ void SceneGame::CreateStage()
 
 	};
 
-	int prefabCount2 = sizeof(prefabOrder2) / sizeof(prefabOrder2[0]);
-	int posCount2 = sizeof(positionsGrade_2) / sizeof(positionsGrade_2[0]);
-	int rotCount2 = sizeof(rotationsGrade_2) / sizeof(rotationsGrade_2[0]);
+	const int prefabCount2 = sizeof(prefabOrder2) / sizeof(prefabOrder2[0]);
+	const int posCount2 = sizeof(positionsGrade_2) / sizeof(positionsGrade_2[0]);
+	const int rotCount2 = sizeof(rotationsGrade_2) / sizeof(rotationsGrade_2[0]);
 
 	for (int i = 0; i < posCount2; i++) {
 		PrefabId id = prefabOrder2[i % prefabCount2];
@@ -362,7 +362,7 @@ void SceneGame::CreateStage()
 		PrefabId::Eisei,
 	};
 
-	Pos positionsGrade_3[] = {
+	const Pos positionsGrade_3[] = {
 		{-40,-25}, {21,0}, {20,8}, {-32,11}, {7,41}, {-6,17}, {-24,-13}, {36,9},
 		{28,-4}, {-10,-40}, {-15,-10}, {-31,-28}, {-12,22}, {-38,1}, {17,-20}, {2,-34},
 		{-22,17}, {10,14}, {-6,-31}, {-40,-10}, {5,20}, {-8,30}, {-38,7}, {-15,7},
@@ -370,7 +370,7 @@ void SceneGame::CreateStage()
 		{-39,17}, {11,-6}, {-2,4}, {31,8}, {-20,4}, {-3,36}, {10,6}, {29,-12}
 	};
 
-	Rot rotationsGrade_3[] = {
+	const Rot rotationsGrade_3[] = {
 		{8,74,158}, {77,127,152}, {4,110,95}, {167,63,116}, {29,107,60}, {3,29,167}, {65,85,50}, {116,33,25},
 		{125,68,113}, {140,135,55}, {160,108,51}, {131,128,142}, {76,26,169}, {51,61,128}, {156,91,77}, {83,59,165},
 		{0,171,53}, {148,43,65}, {47,116,94}, {70,175,44}, {153,129,125}, {115,88,115}, {149,127,19}, {120,154,11},
@@ -378,9 +378,9 @@ void SceneGame::CreateStage()
 		{130,47,7}, {93,86,35}, {31,64,93}, {89,4,153}, {101,48,42}, {14,97,117}, {57,37,94}, {77,154,0}
 	};
 
-	int prefabCount3 = sizeof(prefabOrder3) / sizeof(prefabOrder3[0]);
-	int posCount3 = sizeof(positionsGrade_3) / sizeof(positionsGrade_3[0]);
-	int rotCount3 = sizeof(rotationsGrade_3) / sizeof(rotationsGrade_3[0]);
+	const int prefabCount3 = sizeof(prefabOrder3) / sizeof(prefabOrder3[0]);
+	const int posCount3 = sizeof(positionsGrade_3) / sizeof(positionsGrade_3[0]);
+	const int rotCount3 = sizeof(rotationsGrade_3) / sizeof(rotationsGrade_3[0]);
 
 	for (int i = 0; i < posCount3; i++) {
 		PrefabId id = prefabOrder3[i % prefabCount3];
