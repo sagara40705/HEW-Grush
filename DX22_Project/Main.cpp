@@ -12,6 +12,7 @@
 #include "ShaderList.h"
 #include "LineManager.h"
 #include "Game.h"
+#include "EffekseerSystem.h"
 
 
 HRESULT Init(HWND hWnd, UINT width, UINT height)
@@ -28,6 +29,8 @@ HRESULT Init(HWND hWnd, UINT width, UINT height)
 	InputGamepad::Init();
 	ShaderList::Init();
 	LineManager::Init();
+
+
 	// ÉVÅ[Éì
 	Game::Init();
 
@@ -37,6 +40,7 @@ HRESULT Init(HWND hWnd, UINT width, UINT height)
 void Uninit()
 {
 	Game::Uninit();
+
 
 	LineManager::Uninit();
 	ShaderList::Uninit();

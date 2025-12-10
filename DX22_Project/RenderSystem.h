@@ -6,6 +6,7 @@
 #include "LineManager.h"
 #include "UiSpriteRenderer.h"
 #include "Camera.h"
+#include "EffekseerSystem.h"
 
 inline void Render(const World& w)
 {
@@ -31,6 +32,7 @@ inline void Render(const World& w)
 
         r->Render();
     }
+
 
     // 2) デバッグ線など
     w.DebugDrawColliders();
