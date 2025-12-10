@@ -8,13 +8,13 @@
 void ActionUI::Awake()
 {
 	//ˆÊ’uE‚¨‚¨‚«‚³
-	constexpr Vector2 kSpinPos = { 850.f, 520.f };
-	constexpr Vector2 kDashPos = { 1050.f, 520.f };
-	constexpr Vector2 kSize = { 180.f, 180.f };
-	constexpr Vector2 kSpinMojiPos = { 900.f, 675.f };
-	constexpr Vector2 kDashMojiPos = { 1070.f,675.f };
-	constexpr Vector2 kSpinMojiSize = { 100.f, 36.f };
-	constexpr Vector2 kDashMojiSize = { 150.f, 36.f };
+	constexpr Vector2 kSpinPos = { 920.f, 520.f };
+	constexpr Vector2 kDashPos = { 1100.f, 520.f };
+	constexpr Vector2 kSize = { 150.f, 150.f };
+	constexpr Vector2 kSpinMojiPos = { 950.f, 660.f };
+	constexpr Vector2 kDashMojiPos = { 1100.f,660.f };
+	constexpr Vector2 kSpinMojiSize = {  90.f, 32.f };
+	constexpr Vector2 kDashMojiSize = { 135.f, 32.f };
 
 	//UV
 	constexpr Vector2 kUVSize = { 1.f, 1.f };
@@ -65,8 +65,8 @@ void ActionUI::Update()
 	//if (!state_->canUseAction[ToIndex(ActionId::SpinAttack)] || 1)
 	{
 		ct = 1.0f - state_->GetCoolDownRatio(ActionId::SpinAttack); 
-		spin_->SetOffset({ 850.f,  700 - (180 * ct) });
-		spin_->SetSize({ 180.f , 180.f * ct });
+		spin_->SetOffset({ 920.f,  670 - (150 * ct) });
+		spin_->SetSize({ 150.f , 150.f * ct });
 		spin_->SetUVPos({ 1, 1 - ct });
 		spin_->SetUVScale({ 1, ct });
 	}
@@ -75,8 +75,8 @@ void ActionUI::Update()
 	//if (!state_->canUseAction[ToIndex(ActionId::DashAttack)] || 1)
 	{
 		ct = 1.0f - state_->GetCoolDownRatio(ActionId::DashAttack);
-		dash_->SetOffset({ 1050.f,  700 - (180 * ct) });
-		dash_->SetSize({ 180.f , 180.f * ct });
+		dash_->SetOffset({ 1100.f,  670 - (150 * ct) });
+		dash_->SetSize({ 150.f , 150.f * ct });
 		dash_->SetUVPos({ 1, 1 - ct });
 		dash_->SetUVScale({ 1, ct });
 	}
