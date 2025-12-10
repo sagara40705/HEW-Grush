@@ -11,9 +11,9 @@ void ActionUI::Awake()
 	constexpr Vector2 kSpinPos      = { 850.f, 500.f };
 	constexpr Vector2 kDashPos      = { 1050.f,500.f };
 	constexpr Vector2 kSpinMojiPos  = { 900.f, 675.f };
-	constexpr Vector2 kDashMojiPos  = { 1050.f,675.f };
+	constexpr Vector2 kDashMojiPos  = { 1070.f,675.f };
 	constexpr Vector2 kSize         = { 200.f, 200.f };
-	constexpr Vector2 kSpinMojiSize = { 100.f, 35.f };
+	constexpr Vector2 kSpinMojiSize = { 100.f, 36.f };
 	constexpr Vector2 kDashMojiSize = { 150.f, 36.f };
 
 	//UV
