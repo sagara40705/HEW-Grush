@@ -20,6 +20,8 @@
 
 #include "TitleManager.h"
 
+#include "GroundRenderer.h"
+
 #include "PlayerState.h"
 #include "PlayerMove.h"
 #include "PlayerAction.h"

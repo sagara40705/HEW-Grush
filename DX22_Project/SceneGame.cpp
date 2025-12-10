@@ -64,6 +64,7 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 
 	// テクスチャーロード
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Star); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GroundTile); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GaugeEmpty); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GaugeMax); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GaugeEffect); });
@@ -173,7 +174,8 @@ void SceneGame::CreateStage()
 
 	GameObject& floor = w.CreateGameObject(Vector3(0.f, -1.f, 0.f), Vector3::zero(), Vector3(100.f, 0.1f, 100.f));
 	MeshFilter& mf = floor.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mf.boundsRadius = 0.f;
-	floor.AddComponent<MeshRenderer>();
+	floor.AddComponent<GroundRenderer>();
+	//floor.AddComponent<MeshRenderer>();
 	BoxCollider& collider = floor.AddComponent<BoxCollider>();
 	collider.layer = Layer::Ground;
 

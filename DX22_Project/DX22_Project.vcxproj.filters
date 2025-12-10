@@ -318,6 +318,9 @@
     <ClCompile Include="ActionUI.cpp">
       <Filter>Game\Components\UI</Filter>
     </ClCompile>
+    <ClCompile Include="GroundRenderer.cpp">
+      <Filter>Game\Components\Environment</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -556,6 +559,9 @@
     </ClInclude>
     <ClInclude Include="ActionUI.h">
       <Filter>Game\Components\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="GroundRenderer.h">
+      <Filter>Game\Components\Environment</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
