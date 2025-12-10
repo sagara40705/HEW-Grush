@@ -172,12 +172,22 @@ void SceneGame::CreateStage()
 {
 	World& w = GetWorld();
 
+	constexpr float SIZE = 100.f;
+	constexpr float HALF = 100.f / 2.f;
 	GameObject& floor = w.CreateGameObject(Vector3(0.f, -1.f, 0.f), Vector3::zero(), Vector3(100.f, 0.1f, 100.f));
-	MeshFilter& mf = floor.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mf.boundsRadius = 0.f;
+	MeshFilter& mf = floor.AddComponent<MeshFilter>(PrimitiveMeshTag::Plane); mf.boundsRadius = 0.f;
 	floor.AddComponent<GroundRenderer>();
-	//floor.AddComponent<MeshRenderer>();
 	BoxCollider& collider = floor.AddComponent<BoxCollider>();
 	collider.layer = Layer::Ground;
+
+	GameObject& wallT = w.CreateGameObject(Vector3(0.f, 0.f,  HALF), Vector3::zero(), Vector3(SIZE, 2.f, 0.22f));
+	wallT.AddComponent<BoxCollider>();
+	GameObject& wallB = w.CreateGameObject(Vector3(0.f, 0.f, -HALF), Vector3::zero(), Vector3(SIZE, 2.f, 0.22f));
+	wallB.AddComponent<BoxCollider>();
+	GameObject& wallR = w.CreateGameObject(Vector3( HALF, 0.f, 0.f), Vector3::zero(), Vector3(0.22f, 2.f, SIZE));
+	wallR.AddComponent<BoxCollider>();
+	GameObject& wallL = w.CreateGameObject(Vector3(-HALF, 0.f, 0.f), Vector3::zero(), Vector3(0.22f, 2.f, SIZE));
+	wallL.AddComponent<BoxCollider>();
 
 	////Grade_3
 	//Prefab::Instantiate(w, PrefabId::Ufo, Vector3(-5.f, -0.5f, 20.f), Vector3::zero(), Vector3::one());
