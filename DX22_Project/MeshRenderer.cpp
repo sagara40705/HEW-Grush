@@ -66,6 +66,7 @@ void MeshRenderer::OnDestroy()
 void MeshRenderer::Render()
 {
     if (!(tf && cam && mf)) return;
+    SetCullingMode(D3D11_CULL_BACK);
 
     // ==== フラスタムカリング ====
     const auto& m = tf->GetMatrix();
@@ -129,7 +130,12 @@ void MeshRenderer::PrimitiveRender()
 
 void MeshRenderer::ModelRender()
 {
-    if (glass) glass->SetGlassParamPS();
+    if (glass) 
+    { 
+        glass->SetGlassParamPS(); 
+        SetCullingMode(D3D11_CULL_NONE);
+    }
+
 
     Model* model = mf->GetModel();
     if (!model) return;

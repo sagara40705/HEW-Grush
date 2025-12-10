@@ -16,7 +16,7 @@ inline void Render(const World& w)
 
     // 1) 3D / 通常描画
     SetDepthTest(true);
-    SetCullingMode(D3D11_CULL_BACK);
+    //SetCullingMode(D3D11_CULL_BACK);
 
     for (auto* r : w.GetRenderers())
     {
