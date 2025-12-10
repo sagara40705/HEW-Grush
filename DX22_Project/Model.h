@@ -279,6 +279,11 @@ public:
 	void PlayAnime(AnimeNo no, bool loop, float speed = 1.0f);
 
 	/*
+	* @brief アニメーションの停止
+	*/
+	void StopAnime();
+
+	/*
 	* @brief ブレンド再生
 	* @param[in] no アニメーション番号
 	* @param[in] blendTime ブレンドに掛ける時間

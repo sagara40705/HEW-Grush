@@ -65,6 +65,10 @@ public:
     const DirectX::XMFLOAT4X4& GetView();       //View
     const DirectX::XMFLOAT4X4& GetProjection(); //Proj
     DirectX::XMFLOAT4X4 GetViewProjection();    //VP
+
+public:
+    void DebugDrawFrustum();
+    bool IsVisibleSphere(const Vector3& center, float radius) const;
 private:
     void RebuildViewFromTransform();
     void RebuildProjectionIfDirty();

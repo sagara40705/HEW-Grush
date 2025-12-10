@@ -1,9 +1,7 @@
 ﻿#include "ShaderList.h"
 
-
 VertexShader* ShaderList::m_pVS[VS_KIND_MAX];
 PixelShader* ShaderList::m_pPS[PS_KIND_MAX];
-
 
 ShaderList::ShaderList()
 {
@@ -140,7 +138,7 @@ void ShaderList::SetGlassParam(const DirectX::XMFLOAT4& tint, float fresnelPower
 	param[0] = tint;  // tint = { r, g, b, a } (a にベースアルファ)
 
 	// glassParams = { fresnelPower, reflectionStrength, transmissionStrength, 0 }
-	param[1] = DirectX::XMFLOAT4(fresnelPower, reflectionStrength, transmissionStrength, 0.0f);
+	param[1] = DirectX::XMFLOAT4(fresnelPower, reflectionStrength, transmissionStrength, 0.5f);
 
 	// b3 に書き込む
 	m_pPS[PS_GLASS]->WriteBuffer(3, param);
@@ -319,13 +317,17 @@ void ShaderList::MakeShardVS()
 {
 	const char* code = R"EOT(
 struct VS_IN {
-    float3 pos : POSITION0;
-    float2 uv  : TEXCOORD0;
+    float3 pos    : POSITION;   // 入力は通常 POSITION
+    float3 normal : NORMAL0;
+    float2 uv     : TEXCOORD0;
 };
 
 struct VS_OUT {
-    float4 pos : SV_POSITION;
-    float2 uv  : TEXCOORD0;
+    float4 pos    : SV_POSITION;
+    float3 normal : NORMAL0;
+    float2 uv     : TEXCOORD0;
+    float4 color  : COLOR0;
+    float4 wPos   : POSITION0;
 };
 
 // WVP（SetWVP から書き込まれる）
@@ -354,7 +356,7 @@ VS_OUT main(VS_IN vin)
 {
     VS_OUT vout;
 
-    // ローカル XY 上で形状をいじる
+    // --- 形状いじり（ローカル XY 平面上） ---
     float2 p = vin.pos.xy;
 
     // 元メッシュ (-0.5,0), (0.5,0), (0,1) を想定して
@@ -384,17 +386,25 @@ VS_OUT main(VS_IN vin)
     // 中心を戻す
     p += center;
 
-    // 厚み 0 のプレートとして Z はそのまま
+    // 厚み 0 のプレートとして Z は元の値を使用
     float3 localPos = float3(p, vin.pos.z);
 
-    // WVP 変換
-    float4 pos = float4(localPos, 1.0f);
-    pos = mul(pos, world);
-    pos = mul(pos, view);
-    pos = mul(pos, proj);
+    // --- ワールド・ビュー・プロジェクション ---
+    float4 wp = mul(float4(localPos, 1.0f), world); // ワールド座標
+    vout.wPos = wp;                                 // GlassPS が使う POSITION0
 
-    vout.pos = pos;
-    vout.uv  = vin.uv;
+    float4 vp = mul(wp, view);
+    vout.pos = mul(vp, proj);                       // クリップ座標
+
+    // --- 法線・UV・カラー ---
+    float3 nWorld = mul(vin.normal, (float3x3)world);
+    vout.normal = normalize(nWorld);
+
+    vout.uv = vin.uv;
+
+    // 頂点カラーを使っていないので白固定
+    vout.color = float4(1.0f, 1.0f, 1.0f, 1.0f);
+
     return vout;
 }
 )EOT";
@@ -460,6 +470,7 @@ float4 main(PS_IN pin) : SV_TARGET
 	float4 color = float4(1.0f, 1.0f, 1.0f, 1.0f);
 	if(objAmbient.a >= 1.0f)
 		color = tex.Sample(samp, pin.uv);
+	color = tex.Sample(samp, pin.uv);
 	float3 N = normalize(pin.normal);
 	float3 L = normalize(-lightDir);
 	float dotNL = saturate((dot(N, L) + 0.5f) / 1.5f);
@@ -686,65 +697,93 @@ cbuffer Camera : register(b2)
 {
 	float4 cameraPos;
 };
+
 // ガラス固有パラメータ
 cbuffer GlassParam : register(b3)
 {
-    float4 glassTint;        // rgb = ガラスの色, a = ベースアルファ
-    float4 glassParams;  
+    float4 glassTint;   // rgb = ガラス色, a = ベースアルファ
+    // x = fresnelPower, y = reflectionStrength, z = transmissionStrength, w = tintStrength
+    float4 glassParams;
 };
+
 Texture2D tex : register(t0);
 SamplerState samp : register(s0);
 float4 main(PS_IN pin) : SV_TARGET
 {
-	float3 N = normalize(pin.normal);
+   float3 N = normalize(pin.normal);
     float3 L = normalize(-lightDir.xyz);
     float3 V = normalize(cameraPos.xyz - pin.wPos.xyz);
 
-	float dotNL = saturate(dot(N, L));
-    float minNL = 0.3;
-    dotNL = lerp(minNL, 1.0f, dotNL);
-
-	float3 baseColor    = objDiffuse.rgb * lightDiffuse.rgb;
-    float3 ambientColor = objAmbient.rgb * lightDiffuse.rgb;
-    float3 specColor    = objSpecular.rgb * lightDiffuse.rgb;
-
-	float4 texColor = float4(1,1,1,1);
+    // -----------------------------
+    // 1) Lambert 部分（PS_LAMBERT とほぼ同じ雰囲気）
+    // -----------------------------
+    float4 texColor = float4(1,1,1,1);
     if (objAmbient.a >= 1.0f)
     {
         texColor = tex.Sample(samp, pin.uv);
     }
 
-	float3 lambert = ambientColor + baseColor * dotNL;
-    lambert *= texColor.rgb;
+    float dotNL = saturate((dot(N, L) + 0.5f) / 1.5f);
 
+    float3 diffuseColor  = objDiffuse.rgb * lightDiffuse.rgb;
+    float3 ambientColor  = objAmbient.rgb * lightDiffuse.rgb;
+    float3 specColor     = objSpecular.rgb * lightDiffuse.rgb;
+
+    // LambertPS の計算を流用したベース色
+    float3 lambert = texColor.rgb;
+    lambert *= saturate(lerp(
+        lerp(diffuseColor * ambientColor, diffuseColor + ambientColor, pow(ambientColor, 4.0f)),
+        diffuseColor, dotNL));
+
+    // ほんの少しだけ鏡面（好みに応じて 0〜0.3 程度）
     float3 R = reflect(-L, N);
-    float  dotRV = saturate(dot(R, V));
-    float  gloss = max(0.01f, objSpecular.a);
-    float3 specular = specColor * pow(dotRV, gloss * 4.0f) * 0.5f;
+    float dotRV = saturate(dot(R, V));
+    float gloss = max(0.01f, objSpecular.a);
+    float3 specular = specColor * pow(dotRV, gloss * 4.0f);
+    lambert += specular * 0.2f;  // 強すぎるなら係数を下げる
 
-    float3 litColor = lambert + specular;
-
+    // -----------------------------
+    // 2) ガラスっぽさのパラメータ
+    // -----------------------------
     float fresnelPower        = glassParams.x;
     float reflectionStrength  = glassParams.y;
     float transmissionStrength= glassParams.z;
+    float tintStrength        = glassParams.w; // 0=素の色, 1=tint に寄せる
 
-	float dotNV   = saturate(dot(N, V));
+    float dotNV = saturate(dot(N, V));
     float fresnel = pow(1.0f - dotNV, fresnelPower);
 
-    float3 reflectionColor = lightDiffuse.rgb * glassTint.rgb;
-    float3 transmission    = litColor * glassTint.rgb;
+    // -----------------------------
+    // 3) 透過色 / 反射色
+    // -----------------------------
 
+    // 透過側: 元の Lambert から、どれくらいガラス色に寄せるかを lerp で調整
+    float3 transmissionColor = lerp(
+        lambert,                    // 元の Lambert 色
+        lambert * glassTint.rgb,    // ガラス色を乗せた色
+        tintStrength);
+    transmissionColor *= transmissionStrength;
+
+    // 反射側: 少し明るめに寄せる（完全に glassTint * lightDiffuse だと暗い）
+    float3 reflectionColor = lerp(
+        lambert,                         // ベースを少し残す
+        lightDiffuse.rgb * glassTint.rgb,// ガラス色のハイライト
+        0.7f);                           // 好みに応じて 0.5〜0.8
+
+    // Fresnel で 透過 ↔ 反射 をブレンド
     float3 finalRGB = lerp(
-        transmission * transmissionStrength,
+        transmissionColor,
         reflectionColor,
         saturate(reflectionStrength * fresnel));
 
-	float baseAlpha    = glassTint.a;
-    float alphaFresnel = 0.3 + 0.7 * fresnel;
+    // -----------------------------
+    // 4) アルファ（必要ならここも弱める）
+    // -----------------------------
+    float baseAlpha   = glassTint.a;
+    float alphaFresnel = 0.5 + 0.5 * fresnel;
     float finalA = saturate(baseAlpha * alphaFresnel);
 
-	return float4(finalRGB, finalA);
-
+    return float4(finalRGB, finalA);
 })EOT";
 	m_pPS[PS_GLASS] = new PixelShader();
 	m_pPS[PS_GLASS]->Compile(code);

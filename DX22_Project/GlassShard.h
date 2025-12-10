@@ -7,9 +7,10 @@ class GlassShard : public MonoBehaviour
 private:
 	float lifeTimer = 0.f;
 	GlassGrade grade_ = GlassGrade::Grade_1;
+	Vector3 dir_;
 	DirectX::XMFLOAT4 randParam_;
 private:
-	Transform* tf_ = nullptr;
+	//Transform* tf_ = nullptr;
 	Rigidbody* rb_ = nullptr;
 public:
 	void OnEnable() override;

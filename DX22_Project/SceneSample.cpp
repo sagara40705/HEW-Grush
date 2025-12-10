@@ -5,23 +5,36 @@
 #include "AllComponent.h"
 #include "TextureManager.h"
 #include "Defines.h"
-
+#include "Prefab.h"
+#include "PrefabSet.h"
 //Model* g_Model;
 
 void SceneSample::Load()
 {
-	ModelManager::Load(ModelTag::Player);
+	//ModelManager::Load(ModelTag::Player);
+	//ModelManager::Load(ModelTag::Swing);
+	//ModelManager::Load(ModelTag::Isu);
+	//ModelManager::Load(ModelTag::Jihanki);
+	//ModelManager::Load(ModelTag::Eiseii);
 
-	World& w = GetWorld();
+	//RegisterAllPrefabs();
 
-	GameObject& mainCamera = w.CreateGameObject(Camera::kInitPos, Camera::kInitRotate, Vector3::one());
-	mainCamera.SetTag(Tag::MainCamera);
-	mainCamera.AddComponent<Camera>();
+	//World& w = GetWorld();
 
-	GameObject& player = w.CreateGameObject(Vector3(0.f, 2.f, 0.f), Vector3(0.f, 0.f, 0.f));
-	player.AddComponent<MeshFilter>(ModelTag::Player);
-	player.AddComponent<MeshRenderer>();
-	player.AddComponent<Animator>();
+	//GameObject& mainCamera = w.CreateGameObject(Camera::kInitPos, Camera::kInitRotate, Vector3::one());
+	//mainCamera.SetTag(Tag::MainCamera);
+	//mainCamera.AddComponent<Camera>();
+
+	//GameObject& player1 = w.CreateGameObject(Vector3(-2.5f, 1.f, 0.f), Vector3(0.f, 0.f, 0.f));
+	//player1.AddComponent<MeshFilter>(ModelTag::Isu);
+	//player1.AddComponent<MeshRenderer>();
+
+	//Prefab::Instantiate(w, PrefabId::Swing, Vector3(0.f, 0.f, 0.f), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+
+	//GameObject& player3 = w.CreateGameObject(Vector3(2.5f, 1.f, 0.f), Vector3(0.f, 0.f, 0.f));
+	//player3.AddComponent<MeshFilter>(ModelTag::Eiseii);
+	//player3.AddComponent<MeshRenderer>();
+
 }
 
 void SceneSample::Unload()

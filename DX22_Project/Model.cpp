@@ -5,6 +5,7 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
+#include "DebugLog.h"
 
 #if _MSC_VER >= 1930
 #ifdef _DEBUG
@@ -190,8 +191,6 @@ void Model::Draw(int meshNo)
 		drawNum = meshNo + 1;
 	else
 		meshNo = 0;
-
-	DirectX::XMFLOAT4X4 bones[MAX_BONE];
 
 	// •`‰æ
 	for (UINT i = meshNo; i < drawNum; ++i)

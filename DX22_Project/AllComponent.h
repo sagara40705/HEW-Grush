@@ -25,6 +25,7 @@
 #include "PlayerAction.h"
 #include "ActionUI.h"
 #include "Hammer.h"
+#include "PlayerAnimation.h"
 
 #include "GlassObject.h"
 #include "GlassGaugeManager.h"

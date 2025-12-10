@@ -5,6 +5,7 @@
 #include "GameObject.h"
 #include "LineManager.h"
 #include "UiSpriteRenderer.h"
+#include "Camera.h"
 
 inline void Render(const World& w)
 {
@@ -15,6 +16,8 @@ inline void Render(const World& w)
 
     // 1) 3D / 通常描画
     SetDepthTest(true);
+    SetCullingMode(D3D11_CULL_BACK);
+
     for (auto* r : w.GetRenderers())
     {
         if (!r) continue;
@@ -31,10 +34,13 @@ inline void Render(const World& w)
 
     // 2) デバッグ線など
     w.DebugDrawColliders();
-    LineManager::Draw(LineManager::LineGroup::General);
+    //if(Camera::Main()) Camera::Main()->DebugDrawFrustum();
+    //w.DebugDrawBounds();
+    //LineManager::Draw(LineManager::LineGroup::General);
 
     // 3) UI のみ（深度 OFF）
     SetDepthTest(false);
+    SetCullingMode(D3D11_CULL_NONE);
     for (auto* r : w.GetRenderers())
     {
         auto* ui = dynamic_cast<UiSpriteRenderer*>(r);
@@ -50,8 +56,6 @@ inline void Render(const World& w)
         ui->Render();
     }
 
-    // 後始末
-    SetDepthTest(false);
 }
 
 

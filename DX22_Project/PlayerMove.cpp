@@ -8,7 +8,11 @@
 #include "Animator.h"
 #include "ModelManager.h"
 #include <cmath>
+#include "DebugLog.h"
 
+/*
+* @brief 初期化処理
+*/
 void PlayerMove::Start()
 {
 	playerTF_ = gameObject->GetComponent<Transform>();
@@ -21,14 +25,21 @@ void PlayerMove::Start()
 	animator_ = gameObject->GetComponent<Animator>();
 }
 
+/*
+* @brief 更新処理
+*/
 void PlayerMove::Update()
 {
 	CheckGround();
 	Jump();
 	InputMoveAxis();
 	ApplyMoveAxis();
+	UpdateAnimationState();
 }
 
+/*
+* @brief 終了処理
+*/
 void PlayerMove::OnDestroy()
 {
 	animator_ = nullptr;
@@ -37,6 +48,9 @@ void PlayerMove::OnDestroy()
 	camTF_ = nullptr;
 }
 
+/*
+* @brief 地面に着いているか判定
+*/
 void PlayerMove::CheckGround()
 {
 	constexpr float kGroundCheckDistance = 0.01f;
@@ -50,6 +64,10 @@ void PlayerMove::CheckGround()
 			ray, &hit, kGroundCheckDistance, ToBit(Layer::Ground));
 }
 
+/*
+* @brief 接地判定用のRayを返す関数
+* @return 下方向の光線
+*/
 Ray PlayerMove::GetDownwordRay()
 {
 	Vector3 pos = playerTF_->GetPosition() - Vector3(0.f, PlayerState::kRadius, 0.f);
@@ -58,6 +76,9 @@ Ray PlayerMove::GetDownwordRay()
 	return { pos , down };
 }
 
+/*
+* @brief ジャンプ
+*/
 void PlayerMove::Jump()
 {
 	constexpr float JumpForce = 5.0f;
@@ -71,8 +92,9 @@ void PlayerMove::Jump()
 	}
 }
 
-
-//WASDとRステックで前後左右移動
+/*
+* @brief 移動の入力を判定する
+*/
 void PlayerMove::InputMoveAxis()
 {
 	//if (state_->usingAction != ActionId::None) return;
@@ -91,6 +113,9 @@ void PlayerMove::InputMoveAxis()
 	state_->moveAxis = axis;
 }
 
+/*
+* @brief 入力値から実際に移動する
+*/
 void PlayerMove::ApplyMoveAxis()
 {
 	if (!state_->canMove || !state_->canControl) return;
@@ -175,4 +200,33 @@ void PlayerMove::AlignRotationToCamera()
 	Vector3 rot = playerTF_->GetRotation(); // (pitch, yaw, roll) = (x,y,z) [度]
 	rot.y = yawDeg;
 	playerTF_->SetRotation(rot);
+}
+
+//アニメーション用の変数を更新する
+void PlayerMove::UpdateAnimationState()
+{
+	if (!state_) return;
+
+	// 前フレームの移動状態
+	const bool wasMoving = state_->isMoving;
+
+	// 今フレーム「移動している」とみなすかどうか
+	// 定義：操作可能 && 移動許可 && 入力ベクトルの長さがしきい値以上
+	constexpr float kMoveAxisEps = 0.01f;
+
+	const bool isMovingNow = state_->canMove && state_->canControl && (state_->moveAxis.Length() > kMoveAxisEps);
+
+	// 継続状態
+	state_->isMoving = isMovingNow;
+
+	// 一瞬だけ立つトリガー
+	state_->moveStartedThisFrame = (!wasMoving && isMovingNow);
+	state_->moveStoppedThisFrame = (wasMoving && !isMovingNow);
+
+	if (state_->moveStartedThisFrame) {
+		DebugLog::Output("moveStartedThisFrame");
+	}
+	if (state_->moveStoppedThisFrame) {
+		DebugLog::Output("moveStoppedThisFrame");
+	}
 }
