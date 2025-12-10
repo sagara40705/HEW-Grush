@@ -139,6 +139,8 @@ void SceneGame::CreateCameraAndPlayer()
 	player.AddComponent<PlayerState>();
 	player.AddComponent<PlayerMove>();
 	player.AddComponent<PlayerAction>();
+	player.AddComponent<Animator>();
+	player.AddComponent<PlayerAnimation>();
 
 	GameObject& hummer = 
 		player.CreateChild(Hammer::BasePos,Hammer::BaseRota, Vector3(0.3f, 0.3f, 0.3f));
