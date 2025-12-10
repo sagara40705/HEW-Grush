@@ -554,14 +554,14 @@
     <ClInclude Include="CameraShake.h">
       <Filter>Game\Components\Camera</Filter>
     </ClInclude>
-    <ClInclude Include="SceneSmaple.h">
-      <Filter>Game\Scenes</Filter>
-    </ClInclude>
     <ClInclude Include="ActionUI.h">
       <Filter>Game\Components\UI</Filter>
     </ClInclude>
     <ClInclude Include="EffekseerSystem.h">
       <Filter>Engine\Rendering\Effect</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneSample.h">
+      <Filter>Game\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
