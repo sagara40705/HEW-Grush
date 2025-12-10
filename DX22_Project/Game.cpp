@@ -12,8 +12,8 @@ void Game::Init()
     SceneManager::Initialize();
 
     // Å‰‚ÌƒV[ƒ“‚ğ—\–ñ
-    //SceneManager::ChangeScene<SceneSample>();
-    SceneManager::ChangeSceneAsync<SceneGame>();
+    SceneManager::ChangeScene<SceneSample>();
+    //SceneManager::ChangeSceneAsync<SceneGame>();
 }
 
 void Game::Uninit()
