@@ -18,8 +18,10 @@ enum class TextureTag : uint8_t
     TimerNumber,
     Spin,
     SpinMono,
+    SpinMoji,
     Dash,
     DashMono,
+    DashMoji,
     Count
 };
 

@@ -9,7 +9,7 @@
 void GlassGaugeUI::Awake()
 {
 	GameObject& gaugeEmpty = gameObject->CreateChild();
-	empty_ = &gaugeEmpty.AddComponent<UiSpriteRenderer>(TextureTag::DashMono, Vector2::zero(), Vector2(200,200));
+	empty_ = &gaugeEmpty.AddComponent<UiSpriteRenderer>(TextureTag::GaugeEmpty, Vector2::zero(), Vector2(200,200));
 
 	GameObject& gaugeMax = gameObject->CreateChild();
 	max_ = &gaugeMax.AddComponent<UiSpriteRenderer>(TextureTag::GaugeMax , Vector2::zero(), Vector2(200, 200));
