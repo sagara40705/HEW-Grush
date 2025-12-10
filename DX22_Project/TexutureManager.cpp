@@ -15,6 +15,10 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     "Assets/Texture/count_font_ss.png",
     "Assets/Texture/time_colon.png",
     "Assets/Texture/time_count_ss.png",
+    "Assets/Texture/UI_rotation_color.png",
+    "Assets/Texture/UI_rotation.png",
+    "Assets/Texture/UI_dush_color.png",
+    "Assets/Texture/UI_dush.png",
 };
 
 // 配列のデフォルトパスを使用して登録

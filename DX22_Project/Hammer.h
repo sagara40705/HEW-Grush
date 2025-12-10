@@ -32,6 +32,7 @@ class Hammer : public MonoBehaviour, public TriggerListener
 {
 public:
 	static constexpr Vector3 BasePos = {0.f, 0.f, -1.5f};
+	static constexpr Vector3 BaseRota = { 0.f, 0.f, 0.f };
 private:
 	HammerGrade grade_ = HammerGrade::Grade_1;
 private:

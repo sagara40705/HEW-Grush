@@ -146,6 +146,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ActionUI.cpp" />
     <ClCompile Include="Animator.cpp" />
     <ClCompile Include="AudioListener.cpp" />
     <ClCompile Include="AudioSource.cpp" />
@@ -224,6 +225,7 @@
     <ClCompile Include="_model.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ActionUI.h" />
     <ClInclude Include="AllComponent.h" />
     <ClInclude Include="Animator.h" />
     <ClInclude Include="AudioListener.h" />

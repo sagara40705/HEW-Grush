@@ -41,23 +41,9 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 
 	// モデルロード
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Karubi); });
-
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Swing); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Akican); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Desktop); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Gomibukuro); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Isu); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Kuukseizixyoukii); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Ningixyou); });
-
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Benti); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Aircon); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Jihanki); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Reizouko); });
-
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Ufo); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Eiseii); });
-
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::ProtPlay); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer); });
@@ -71,6 +57,10 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ScoreNumber); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::TimerColon); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::TimerNumber); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Spin); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::SpinMono); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Dash); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::DashMono); });
 
 	// プレイハブ設定
 	outTasks.emplace_back([this] { RegisterAllPrefabs(); });
@@ -83,6 +73,7 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { CreateGaugeUI(); });
 	outTasks.emplace_back([this] { CreateTimerUI(); });
 	outTasks.emplace_back([this] { CreateScoreUI(); });
+	outTasks.emplace_back([this] { CreateActionUI(); });
 
 	// 最後に Start を流す
 	outTasks.emplace_back([this] 
@@ -148,15 +139,13 @@ void SceneGame::CreateCameraAndPlayer()
 	player.AddComponent<PlayerState>();
 	player.AddComponent<PlayerMove>();
 	player.AddComponent<PlayerAction>();
-	player.AddComponent<Animator>();
-	player.AddComponent<PlayerAnimation>();
 
 	GameObject& hummer = 
-		player.CreateChild(Hammer::BasePos, Vector3::zero(), Vector3(0.3f, 0.3f, 0.3f));
+		player.CreateChild(Hammer::BasePos,Hammer::BaseRota, Vector3(0.3f, 0.3f, 0.3f));
 	hummer.SetTag(Tag::Hammer);
 	hummer.AddComponent<MeshFilter>(ModelTag::Hammer);
-	//hummer.AddComponent<MeshRenderer>();
-	hummer.AddComponent<BoxCollider>(false, Vector3(0.f, 1.f, 0.f));
+	hummer.AddComponent<MeshRenderer>();
+	hummer.AddComponent<BoxCollider>();
 	hummer.AddComponent<Hammer>();
 
 	GameObject& glassShardPool = w.CreateGameObject();
@@ -168,42 +157,40 @@ void SceneGame::CreateStage()
 	World& w = GetWorld();
 
 	GameObject& floor = w.CreateGameObject(Vector3(0.f, -1.f, 0.f), Vector3::zero(), Vector3(100.f, 0.1f, 100.f));
-	MeshFilter& mf = floor.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mf.boundsRadius = 0.f;
+	floor.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube);
 	floor.AddComponent<MeshRenderer>();
 	BoxCollider& collider = floor.AddComponent<BoxCollider>();
 	collider.layer = Layer::Ground;
 
 	//UFO
-	Prefab::Instantiate(w, PrefabId::Ufo, Vector3(-5.f, -0.5f, 20.f), Vector3::zero(), Vector3::one());
-	Prefab::Instantiate(w, PrefabId::Eisei, Vector3(5.f, -0.5f, 20.f), Vector3::zero(), Vector3::one());
+	Prefab::Instantiate(w, PrefabId::Ufo, Vector3(10, -0.5f, 10), Vector3::zero(), Vector3::one());
+	Prefab::Instantiate(w, PrefabId::Ufo, Vector3(-30, -0.5f, -30), Vector3::zero(), Vector3::one());
+	Prefab::Instantiate(w, PrefabId::Ufo, Vector3(40, -0.5f, 10), Vector3::zero(), Vector3::one());
 
-	//Grade_2
-	Prefab::Instantiate(w, PrefabId::Benti, Vector3(-10.f, -0.9f, 10.f), Vector3::zero(), Vector3::one());
-	Prefab::Instantiate(w, PrefabId::Aircon, Vector3(-5.f, -0.9f, 10.f), Vector3::zero(), Vector3::one());
-	Prefab::Instantiate(w, PrefabId::Jihanki, Vector3(0.f, -0.9f, 10.f), Vector3::zero(), Vector3::one());
-	Prefab::Instantiate(w, PrefabId::Reizouko, Vector3(5.f, -0.9f, 10.f), Vector3::zero(), Vector3::one());
+	//ベンチ
+	Prefab::Instantiate(w, PrefabId::Benti, Vector3(-10, -0.9f, 10), Vector3::zero(), Vector3(1.2f, 1.2f, 1.2f));
+	Prefab::Instantiate(w, PrefabId::Benti, Vector3(20, -0.9f, -16), Vector3::zero(), Vector3(1.2f, 1.2f, 1.2f));
+	Prefab::Instantiate(w, PrefabId::Benti, Vector3(11, -0.9f, -13), Vector3::zero(), Vector3(1.2f, 1.2f, 1.2f));
 
-	//Grade_1
-	Prefab::Instantiate(w, PrefabId::Swing, Vector3(-10.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());
-	Prefab::Instantiate(w, PrefabId::Akican, Vector3(-8.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());
-	Prefab::Instantiate(w, PrefabId::Desktop, Vector3(-6.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());
-	Prefab::Instantiate(w, PrefabId::Gomibukuro, Vector3(-4.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());
-	Prefab::Instantiate(w, PrefabId::Isu, Vector3(-2.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());
-	Prefab::Instantiate(w, PrefabId::Kuukseizixyoukii, Vector3(-0.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());
-	Prefab::Instantiate(w, PrefabId::Ningixyou, Vector3(2.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());
-
-
-	for (int y = 0; y < 1; ++y){
-		for (int x = 1; x < 51; ++x) {
-			Prefab::Instantiate(w, PrefabId::Swing, Vector3(-50 + x * 1.5f, -0.9f + y * 1.5f, 50), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-			Prefab::Instantiate(w, PrefabId::Swing, Vector3(-50 + x * 1.5f, -0.9f + y * 1.5f, -50), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-			Prefab::Instantiate(w, PrefabId::Swing, Vector3( 50, -0.9f + y * 1.5f, -50 + x * 1.5f), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-			Prefab::Instantiate(w, PrefabId::Swing, Vector3(-50, -0.9f + y * 1.5f, -50 + x * 1.5f), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-		}
-	}
+	//すぃんぐ
+	Prefab::Instantiate(w, PrefabId::Swing, Vector3(-7, -0.9f, -8), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+	Prefab::Instantiate(w, PrefabId::Swing, Vector3(-12, -0.9f, -2), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+	Prefab::Instantiate(w, PrefabId::Swing, Vector3(-22, -0.9f, -13), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+	Prefab::Instantiate(w, PrefabId::Swing, Vector3(10, -0.9f, 10), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+	Prefab::Instantiate(w, PrefabId::Swing, Vector3(-12, -0.9f, -22), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+	Prefab::Instantiate(w, PrefabId::Swing, Vector3(-22, -0.9f, -43), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
 
 	//プロト
-	//Prefab::Instantiate(w, PrefabId::ProtPlay, Vector3(-12, -0.9f, 8), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+	Prefab::Instantiate(w, PrefabId::ProtPlay, Vector3(-12, -0.9f, 8), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+	Prefab::Instantiate(w, PrefabId::ProtPlay, Vector3(5, -0.9f, 2), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+	Prefab::Instantiate(w, PrefabId::ProtPlay, Vector3(-20, -0.9f, -20), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+	Prefab::Instantiate(w, PrefabId::ProtPlay, Vector3(-16, -0.9f, -16), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+	Prefab::Instantiate(w, PrefabId::ProtPlay, Vector3(13, -0.9f, 2), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+	Prefab::Instantiate(w, PrefabId::ProtPlay, Vector3(22, -0.9f, 8), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+	Prefab::Instantiate(w, PrefabId::ProtPlay, Vector3(-17, -0.9f, 15), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+	Prefab::Instantiate(w, PrefabId::ProtPlay, Vector3(6, -0.9f, 17), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+	Prefab::Instantiate(w, PrefabId::ProtPlay, Vector3(20, -0.9f, -12), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+	Prefab::Instantiate(w, PrefabId::ProtPlay, Vector3(14, -0.9f, -19), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
 }
 
 void SceneGame::CreateUi()
@@ -241,6 +228,18 @@ void SceneGame::CreateScoreUI()
 
 	GameObject& scoreUI = w.CreateGameObject();
 	scoreUI.AddComponent<ScoreUI>();
+}
+
+void SceneGame::CreateActionUI()
+{
+	World& w = GetWorld();
+
+	GameObject& actionManager = w.CreateGameObject();
+	actionManager.SetTag(Tag::ActionUI);
+	actionManager.AddComponent<ActionUI>();
+
+	//GameObject& actionUI = w.CreateGameObject();
+	//actionUI.AddComponent<ActionUI>();
 }
 
 void SceneGame::Update()

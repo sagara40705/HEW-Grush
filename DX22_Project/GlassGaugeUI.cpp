@@ -41,12 +41,12 @@ void GlassGaugeUI::Update()
 	DebugLog::OutputValue("GlassGauge Ratio", r);
 
 	max_->SetOffset({ 0, 200.f * (1 - r) });
-	max_->SetSize({ 200.f , 200.f * r });
+	max_->SetSize({ 220.f , 200.f * r });
 	max_->SetUVPos({ garde / 3.f, 1 - r });
 	max_->SetUVScale({ 1.f / 3.f, r });
 
 	empty_->SetOffset({ 0, 0 });
-	empty_->SetSize({ 200.f , 200.f  });
+	empty_->SetSize({ 220.f , 200.f  });
 	empty_->SetUVPos({ garde / 3.f, 1 });
 	empty_->SetUVScale({ 1.f / 3.f, 1 });
 }
