@@ -8,16 +8,16 @@
 void ActionUI::Awake()
 {
 	//位置・おおきさ
-	constexpr Vector2 kSpinPos = { 900.f, 520.f };
+	constexpr Vector2 kSpinPos = { 850.f, 520.f };
 	constexpr Vector2 kDashPos = { 1050.f, 520.f };
 	constexpr Vector2 kSize = { 200.f, 200.f };
 
 	//UV
 	constexpr Vector2 kUVSize = { 1.f, 1.f };
-	constexpr Vector2 kSpinMonoUVPos = { 1.f, 1.f };
-	constexpr Vector2 kSpinUVPos = { 1.f, 1.f };
-	constexpr Vector2 kDashMonoUVPos = { 1.f, 1.f };
-	constexpr Vector2 kDashUVPos = { 1.f ,1.f };
+	constexpr Vector2 kSpinMonoUVPos = { 0.f, 0.f };
+	constexpr Vector2 kSpinUVPos = { 0.f, 0.f };
+	constexpr Vector2 kDashMonoUVPos = { 0.f, 0.f };
+	constexpr Vector2 kDashUVPos = { 0.f ,0.f };
 
 	// 回転攻撃、モノクロ
 	GameObject& spinMono = gameObject->CreateChild();
@@ -45,13 +45,33 @@ void ActionUI::Start()
 
 void ActionUI::Update()
 {
-
-
+	
 	//現在使ってるアクションを取得
 	ActionId action = state_->usingAction;
 	float ct;
 
-	//
+	if (!state_->canUseAction[ToIndex(ActionId::SpinAttack)] || 1)
+	{
+		ct = state_->GetCoolDownRatio(ActionId::SpinAttack);
+		//spin_->SetOffset(kSpinPos);
+		spin_->SetSize({ 200.f , 200.f * (1 - ct) });
+		//spin_->SetUVPos({ 0, 0 });
+		spin_->SetUVScale({ 1, 1 - ct });
+	}
+
+
+	if (!state_->canUseAction[ToIndex(ActionId::DashAttack)] || 1)
+	{
+		ct = state_->GetCoolDownRatio(ActionId::DashAttack);
+		//dash_->SetOffset({ 1050.f, 520.f * (1 - ct) });
+		dash_->SetSize({ 200.f , 200.f * (1 - ct) });
+		//dash_->SetUVPos({ 0, ct });
+		dash_->SetUVScale({ 1, 1 - ct });
+	}
+
+
+
+	/*
 	switch (action)
 	{
 	case ActionId::SpinAttack:
@@ -73,7 +93,7 @@ void ActionUI::Update()
 	default:
 		break;
 	}
-
+	*/
 
 }
 

@@ -57,6 +57,10 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ScoreNumber); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::TimerColon); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::TimerNumber); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Spin); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::SpinMono); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Dash); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::DashMono); });
 
 	// プレイハブ設定
 	outTasks.emplace_back([this] { RegisterAllPrefabs(); });
@@ -69,6 +73,7 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { CreateGaugeUI(); });
 	outTasks.emplace_back([this] { CreateTimerUI(); });
 	outTasks.emplace_back([this] { CreateScoreUI(); });
+	outTasks.emplace_back([this] { CreateActionUI(); });
 
 	// 最後に Start を流す
 	outTasks.emplace_back([this] 
@@ -233,8 +238,8 @@ void SceneGame::CreateActionUI()
 	actionManager.SetTag(Tag::ActionUI);
 	actionManager.AddComponent<ActionUI>();
 
-	GameObject& actionUI = w.CreateGameObject();
-	actionUI.AddComponent<ActionUI>();
+	//GameObject& actionUI = w.CreateGameObject();
+	//actionUI.AddComponent<ActionUI>();
 }
 
 void SceneGame::Update()
