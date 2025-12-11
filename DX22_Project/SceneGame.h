@@ -2,6 +2,8 @@
 #define __SCENE_GAME_H__
 
 #include "Scene.h"
+#include "SkyDomeMesh.h"
+#include "SkyDomeShader.h"
 
 class SceneGame : public Scene
 {
@@ -31,6 +33,16 @@ private:
 	void InitPlayerTex();
 	void InitSkyDome();
 	void SkyDomeDorw();
+private:
+	DirectX::XMFLOAT4X4 m_world;
+	DirectX::XMFLOAT4X4 m_view;
+	DirectX::XMFLOAT4X4 m_proj;
+	ID3D11DepthStencilState* m_pDepthNoWrite = nullptr;
+	ID3D11DepthStencilState* m_pDepthNoWrite = nullptr;
+
+	SkyDomeShader m_skyShader; 
+	SkyDomeMesh   m_skyMesh; 
+	Texture* m_pSkyTex = nullptr;
 };
 
 #endif // __SCENE_GAME_H__
