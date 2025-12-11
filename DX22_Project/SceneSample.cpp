@@ -21,7 +21,7 @@ void SceneSample::Load()
 
     EffekseerSystem::Init();
 
-    testEffect_ = EffekseerSystem::LoadEffect(u"Effekseer/Sample/Laser01_reload.efkefc");
+    testEffect_ = EffekseerSystem::LoadEffect(u"Effekseer/Sample/TriggerLaser.efkefc");
     EffekseerSystem::Play(testEffect_, Vector3(0.f, 0.f, 40.f));
 
 
