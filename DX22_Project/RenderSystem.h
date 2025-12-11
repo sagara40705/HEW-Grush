@@ -6,6 +6,7 @@
 #include "LineManager.h"
 #include "UiSpriteRenderer.h"
 #include "Camera.h"
+#include "GlassShardRenderer.h"
 
 inline void Render(const World& w)
 {
@@ -14,9 +15,11 @@ inline void Render(const World& w)
             return std::find(w.toDestroy.begin(), w.toDestroy.end(), id) != w.toDestroy.end();
         };
 
+
+
     // 1) 3D / 通常描画
     SetDepthTest(true);
-    SetBlendMode(BLEND_ALPHA);
+    //SetBlendMode(BLEND_ALPHA);
     //SetCullingMode(D3D11_CULL_BACK);
 
     for (auto* r : w.GetRenderers())

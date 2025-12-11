@@ -7,6 +7,7 @@
 #include "DebugLog.h"
 #include "Camera.h"
 #include "Transform.h"
+#include "GlassShardRenderer.h"
 //#include <cmath>          
 //#include <DirectXMath.h> 
 
@@ -34,6 +35,11 @@ void GlassShardPool::Start()
 void GlassShardPool::OnDestroy()
 {
 	s_instance = nullptr;
+}
+
+void GlassShardPool::Update()
+{
+	GlassShardRenderer::Instance()->BeginFrame();
 }
 
 GameObject* GlassShardPool::Instantiate(const Vector3& pos, GlassGrade grade)

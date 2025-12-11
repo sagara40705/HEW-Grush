@@ -2,7 +2,7 @@
 #include "Component.h"
 #include "GlassObject.h"
 
-class GlassShard : public MonoBehaviour
+class GlassShard : public MonoBehaviour, public ILateUpdate
 {
 private:
 	float lifeTimer = 0.f;
@@ -13,14 +13,11 @@ private:
 	//Transform* tf_ = nullptr;
 	Rigidbody* rb_ = nullptr;
 public:
-	void OnEnable() override;
-	void OnDisable() override;
 	void Start() override;
 	void Update() override;
 	void OnDestroy() override;
+	void LateUpdate() override;
 public:
 	void OnActive(const Vector3& pos);
 	void SetGlassGrade(GlassGrade g) { grade_ = g; }
-	void SetShardParamVS();
-	void SetGlassParamPS();
 };

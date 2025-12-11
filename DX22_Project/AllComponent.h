@@ -35,6 +35,7 @@
 #include "GlassGaugeUI.h"
 #include "GlassShard.h"
 #include "GlassShardPool.h"
+#include "GlassShardRenderer.h"
 
 #include "TimerUI.h"
 #include "ScoreManager.h"

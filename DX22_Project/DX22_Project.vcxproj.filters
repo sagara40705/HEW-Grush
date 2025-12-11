@@ -85,6 +85,9 @@
     <Filter Include="Game\Components\GameManager">
       <UniqueIdentifier>{7bfc992f-9fa0-477f-b671-675a90bbe95f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine\Rendering\Instance">
+      <UniqueIdentifier>{103c53e4-bab5-430f-9f0f-eb804a750bad}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectX.cpp">
@@ -325,6 +328,12 @@
     <ClCompile Include="SkyDomeShader.cpp" />
     <ClCompile Include="StageWall.cpp">
       <Filter>Game\Components\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="GlassShardRenderer.cpp">
+      <Filter>Game\Components\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="InstancedRenderer.cpp">
+      <Filter>Engine\Rendering\Instance</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -572,6 +581,12 @@
     <ClInclude Include="SkyDomeShader.h" />
     <ClInclude Include="StageWall.h">
       <Filter>Game\Components\Environment</Filter>
+    </ClInclude>
+    <ClInclude Include="GlassShardRenderer.h">
+      <Filter>Game\Components\Environment</Filter>
+    </ClInclude>
+    <ClInclude Include="InstancedRenderer.h">
+      <Filter>Engine\Rendering\Instance</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

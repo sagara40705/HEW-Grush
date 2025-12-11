@@ -173,6 +173,7 @@ void SceneGame::CreateCameraAndPlayer()
 
 	GameObject& glassShardPool = w.CreateGameObject();
 	glassShardPool.AddComponent<GlassShardPool>();
+	glassShardPool.AddComponent<GlassShardRenderer>();
 }
 
 void SceneGame::CreateStage()

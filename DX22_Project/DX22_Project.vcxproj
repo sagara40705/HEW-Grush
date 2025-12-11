@@ -165,8 +165,10 @@
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GlassShard.cpp" />
     <ClCompile Include="GlassShardPool.cpp" />
+    <ClCompile Include="GlassShardRenderer.cpp" />
     <ClCompile Include="GroundRenderer.cpp" />
     <ClCompile Include="Hammer.cpp" />
+    <ClCompile Include="InstancedRenderer.cpp" />
     <ClCompile Include="LoadingGauge.cpp" />
     <ClCompile Include="Model_anime.cpp" />
     <ClCompile Include="Model_check.cpp" />
@@ -257,12 +259,14 @@
     <ClInclude Include="GlassObject.h" />
     <ClInclude Include="GlassShard.h" />
     <ClInclude Include="GlassShardPool.h" />
+    <ClInclude Include="GlassShardRenderer.h" />
     <ClInclude Include="GroundRenderer.h" />
     <ClInclude Include="Hammer.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="InputGamepad.h" />
     <ClInclude Include="InputKeyboard.h" />
     <ClInclude Include="InputMouse.h" />
+    <ClInclude Include="InstancedRenderer.h" />
     <ClInclude Include="Layer.h" />
     <ClInclude Include="LineManager.h" />
     <ClInclude Include="LoadingGauge.h" />

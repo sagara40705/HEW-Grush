@@ -108,11 +108,11 @@ void MeshRenderer::Render()
 
 void MeshRenderer::PrimitiveRender()
 {
-    if (shard)
-    {
-        shard->SetGlassParamPS();
-        shard->SetShardParamVS();
-    }
+    //if (shard)
+    //{
+    //    shard->SetGlassParamPS();
+    //    shard->SetShardParamVS();
+    //}
 
     MeshBuffer* mesh = mf->GetPrimitive();
     if (!mesh) return;

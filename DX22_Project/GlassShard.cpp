@@ -3,6 +3,7 @@
 #include "ShaderList.h"
 #include "Rigidbody.h"
 #include "DirectX.h"
+#include "GlassShardRenderer.h"
 #include <random>
 #include <cmath>
 #include <cassert>
@@ -49,19 +50,8 @@ namespace
     }
 }
 
-void GlassShard::OnEnable()
-{
-
-}
-
-void GlassShard::OnDisable()
-{
-
-}
-
 void GlassShard::Start()
 {
-    //tf_ = gameObject->transform;
 	rb_ = gameObject->GetComponent<Rigidbody>();
     assert(rb_ && "GlassShardのRigidbodyがnullptr");
 
@@ -74,7 +64,6 @@ void GlassShard::Update()
     constexpr float DT = 1.f / 60.f;
 
     lifeTimer += DT;
-    gameObject->transform->AddRotate(dir_);
 
     if (lifeTimer >= LIFE)
     {
@@ -85,7 +74,19 @@ void GlassShard::Update()
 
 void GlassShard::OnDestroy()
 {
+}
 
+void GlassShard::LateUpdate()
+{
+    GlassShardRenderer* r = GlassShardRenderer::Instance();
+    if (!r) return;
+
+    GlassShardRenderer::ShardDrawData d{};
+    d.world = DirectX::XMLoadFloat4x4(&gameObject->transform->GetMatrix());
+    d.randParam = randParam_;
+    d.grade = grade_;
+
+    GlassShardRenderer::Push(d);
 }
 
 void GlassShard::OnActive(const Vector3& pos)
@@ -101,22 +102,3 @@ void GlassShard::OnActive(const Vector3& pos)
 
     rb_->AddForce(dir * kImpulsePower);
 }
-
-void GlassShard::SetShardParamVS()
-{
-    // VS_SHARD の b1 に書き込む
-    auto vs = ShaderList::GetVS(ShaderList::VS_SHARD);
-    if (vs)
-    {
-        vs->WriteBuffer(1, &randParam_);
-    }
-}
-
-void GlassShard::SetGlassParamPS()
-{
-	DirectX::XMFLOAT4 Tint[ToIndex(GlassGrade::Count)] = { {0.6f, 0.6f, 0.9f, 0.7f}, {0.6f, 0.9f, 0.6f, 0.7f}, {0.9f, 0.6f, 0.6f, 0.7f} };
-
-	ShaderList::SetGlassParam(Tint[ToIndex(grade_)], 3.0f, 5.0f, 5.0f, 0.0f);
-}
-
-
