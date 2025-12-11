@@ -376,6 +376,7 @@ public:
 	* @return マテリアル情報
 	*/
 	const Material* GetMaterial(unsigned int index);
+	Material* GetMaterialNonConst(unsigned int index);
 
 	/*
 	* @brief アニメーション後の変換行列取得
