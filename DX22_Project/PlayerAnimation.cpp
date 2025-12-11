@@ -67,7 +67,7 @@ void PlayerAnimation::AddAllAnimations()
 	Model* model = anime_->GetModel();
 	if (!model) return;
 
-	animation_[ToIndex(Type::Move)] = model->AddAnimation("Assets/Model/animation_hashiru.fbx");
+	animation_[ToIndex(Type::Move)] = model->AddAnimation("Assets/Animation/animation_hashiru_2.fbx");
 
 }
 

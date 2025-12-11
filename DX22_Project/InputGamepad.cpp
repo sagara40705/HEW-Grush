@@ -21,7 +21,8 @@ BYTE  InputGamepad::s_rTriggerDead = XINPUT_GAMEPAD_TRIGGER_THRESHOLD;     // 30
 // SHORT [-32768,32767] Ç [-1,1] Ç…ê≥ãKâªÅBdead ì‡ÇÕ 0ÅB
 float InputGamepad::NormalizeStick(SHORT v, SHORT dead)
 {
-    const SHORT av = static_cast<SHORT>(std::abs(static_cast<int>(v)));
+    //const SHORT av = static_cast<SHORT>(std::abs(static_cast<int>(v)));
+    const int av = std::abs(static_cast<int>(v));
     if (av <= dead) return 0.0f;
 
     const float sign = (v >= 0) ? 1.0f : -1.0f;

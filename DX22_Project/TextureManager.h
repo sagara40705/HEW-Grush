@@ -9,6 +9,7 @@ enum class TextureTag : uint8_t
     Title_BG,
     LoadGauge,
     Star,
+    GroundTile,
     GaugeEmpty,
     GaugeMax,
     GaugeEffect,
