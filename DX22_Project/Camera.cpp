@@ -66,6 +66,23 @@ DirectX::XMFLOAT4X4 Camera::GetViewProjection()
 	return VP;
 }
 
+Ray Camera::GetForwardRay() const
+{
+    // Transform 取得
+    auto* tf = gameObject->GetComponent<Transform>();
+    assert(tf && "Camera requires Transform component");
+
+    // ワールド位置と forward 方向を取得
+    const XMFLOAT3 posF = tf->GetWorldPosition();
+    const XMFLOAT3 fwdF = tf->Forward();
+
+    Vector3 origin{ posF.x, posF.y, posF.z };
+    Vector3 dir{ fwdF.x, fwdF.y, fwdF.z };
+    dir.Normalize(); 
+
+    return { origin, dir };
+}
+
 void Camera::DebugDrawFrustum()
 {
     // ----- 1) view / proj を取得 -----

@@ -4,6 +4,7 @@
 #include <cstdint>
 #include "Vector3.h"
 #include "Component.h"
+#include "Raycast.h"  
 
 enum class CameraTag : uint8_t
 {
@@ -65,7 +66,8 @@ public:
     const DirectX::XMFLOAT4X4& GetView();       //View
     const DirectX::XMFLOAT4X4& GetProjection(); //Proj
     DirectX::XMFLOAT4X4 GetViewProjection();    //VP
-
+public:
+    Ray GetForwardRay() const;
 public:
     void DebugDrawFrustum();
     bool IsVisibleSphere(const Vector3& center, float radius) const;

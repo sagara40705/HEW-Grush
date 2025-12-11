@@ -215,6 +215,7 @@
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Sprite3DRenderer.cpp" />
     <ClCompile Include="SpriteAnimation.cpp" />
+    <ClCompile Include="StageWall.cpp" />
     <ClCompile Include="Startup.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TexutureManager.cpp" />
@@ -300,6 +301,7 @@
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Sprite3DRenderer.h" />
     <ClInclude Include="SpriteAnimation.h" />
+    <ClInclude Include="StageWall.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="SceneTitle.h" />

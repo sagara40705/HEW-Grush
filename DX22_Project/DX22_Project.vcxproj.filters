@@ -321,6 +321,11 @@
     <ClCompile Include="GroundRenderer.cpp">
       <Filter>Game\Components\Environment</Filter>
     </ClCompile>
+    <ClCompile Include="SkyDomeMesh.cpp" />
+    <ClCompile Include="SkyDomeShader.cpp" />
+    <ClCompile Include="StageWall.cpp">
+      <Filter>Game\Components\Environment</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -561,6 +566,11 @@
       <Filter>Game\Components\UI</Filter>
     </ClInclude>
     <ClInclude Include="GroundRenderer.h">
+      <Filter>Game\Components\Environment</Filter>
+    </ClInclude>
+    <ClInclude Include="SkyDomeMesh.h" />
+    <ClInclude Include="SkyDomeShader.h" />
+    <ClInclude Include="StageWall.h">
       <Filter>Game\Components\Environment</Filter>
     </ClInclude>
   </ItemGroup>

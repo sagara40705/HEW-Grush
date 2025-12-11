@@ -21,6 +21,7 @@
 #include "TitleManager.h"
 
 #include "GroundRenderer.h"
+#include "StageWall.h"
 
 #include "PlayerState.h"
 #include "PlayerMove.h"
