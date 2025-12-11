@@ -9,6 +9,7 @@
 #include "ModelManager.h"
 #include <cmath>
 #include "DebugLog.h"
+#include"InputGamepad.h"
 
 /*
 * @brief ‰Šú‰»ˆ—
@@ -106,6 +107,9 @@ void PlayerMove::InputMoveAxis()
 	if (InputKeyboard::GetKey('S')) axis.y -= 1.f;
 	if (InputKeyboard::GetKey('D')) axis.x += 1.f;
 	if (InputKeyboard::GetKey('A')) axis.x -= 1.f;
+
+	axis.x += InputGamepad::GetLStickX();
+	axis.y += InputGamepad::GetLStickY();
 
 	// ’·‚³ 1 ‚ð’´‚¦‚éê‡‚Í³‹K‰»
 	if (axis.Length() > 1.f) axis = axis.Normalized();
