@@ -29,6 +29,8 @@ private:
 	void CreateActionUI();
 
 	void InitPlayerTex();
+	void InitSkyDome();
+	void SkyDomeDorw();
 };
 
 #endif // __SCENE_GAME_H__
