@@ -65,6 +65,7 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	// テクスチャーロード
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Star); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GroundTile); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Stage); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GaugeEmpty); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GaugeMax); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GaugeEffect); });
