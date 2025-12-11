@@ -9,6 +9,8 @@ private: //éQè∆
 	PlayerState* state_ = nullptr;
 	UiSpriteRenderer* spin_ = nullptr;
 	UiSpriteRenderer* dash_ = nullptr;
+	UiSpriteRenderer* spFlash_ = nullptr;
+	UiSpriteRenderer* daFlash_ = nullptr;
 	UiSpriteRenderer* spinMoji_ = nullptr;
 	UiSpriteRenderer* dashMoji_ = nullptr;
 

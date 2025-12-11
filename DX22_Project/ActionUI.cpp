@@ -23,6 +23,7 @@ void ActionUI::Awake()
 	constexpr Vector2 kDashMonoUVPos = { 1.f, 1.f };
 	constexpr Vector2 kDashUVPos = { 1.f ,1.f };
 
+
 	// 回転攻撃、モノクロ
 	GameObject& spinMono = gameObject->CreateChild();
 	spinMono.AddComponent<UiSpriteRenderer>(TextureTag::SpinMono, kSpinPos, kSize, kSpinMonoUVPos, kUVSize);
@@ -30,6 +31,11 @@ void ActionUI::Awake()
 	// 回転攻撃、色付き
 	GameObject& spin = gameObject->CreateChild();
 	spin_ = &spin.AddComponent<UiSpriteRenderer>(TextureTag::Spin, kSpinPos, kSize, kSpinUVPos, kUVSize);
+
+	// 回転攻撃、色付き(光らせる用)
+	GameObject& spinF = gameObject->CreateChild();
+	spFlash_ = &spinF.AddComponent<UiSpriteRenderer>(TextureTag::Spin, kSpinPos, kSize, kSpinUVPos, kUVSize);
+	spFlash_->SetColor({ 2.5f, 2.5f, 2.5f, 0.f }); 
 
 	// 回転攻撃、文字
 	GameObject& spinMojiMono = gameObject->CreateChild();
@@ -46,6 +52,10 @@ void ActionUI::Awake()
 	// ダッシュ、色付き
 	GameObject& dash = gameObject->CreateChild();
 	dash_ = &dash.AddComponent<UiSpriteRenderer>(TextureTag::Dash, kDashPos, kSize, kDashUVPos, kUVSize);
+
+	// ダッシュ、色付き
+	GameObject& dashF = gameObject->CreateChild();
+	daFlash_ = &dashF.AddComponent<UiSpriteRenderer>(TextureTag::Dash, kDashPos, kSize, kDashUVPos, kUVSize);
 
 	// ダッシュ、文字
 	GameObject& dashMojiMono = gameObject->CreateChild();
@@ -70,18 +80,26 @@ void ActionUI::Update()
 	//現在使ってるアクションを取得
 	//ActionId action = state_->usingAction;
 	float ct;
-
+	int a;
+	
+	if (!state_->canUseAction[ToIndex(ActionId::SpinAttack)] || 1)
 	{
 		ct = 1.0f - state_->GetCoolDownRatio(ActionId::SpinAttack);
+		a = static_cast<int>(ct);
 		spin_->SetOffset({ 950.f,  700 - (150 * ct) });
 		spin_->SetSize({ 150.f , 150.f * ct });
 		spin_->SetUVPos({ 1, 1 - ct });
 		spin_->SetUVScale({ 1, ct });
 
-		spinMoji_->SetOffset({ 980.f,  722 - (32 * ct) });
-		spinMoji_->SetSize({ 90.f , 32.f * ct });
-		spinMoji_->SetUVPos({ 1, 1 - ct });
-		spinMoji_->SetUVScale({ 1, ct });
+		if (a <= 0)
+		{
+			spinMoji_->SetSize({ 0.f , 0.f});
+		}
+		else
+		spinMoji_->SetSize({ 90.f , 32.f});
+
+
+		
 	}
 	
 	//if (!state_->canUseAction[ToIndex(ActionId::DashAttack)] || 1)
@@ -132,6 +150,8 @@ void ActionUI::OnDestroy()
 	state_ = nullptr;
 	spin_  = nullptr;
 	dash_  = nullptr;
+	spFlash_ = nullptr;
+	daFlash_ = nullptr;
 	spinMoji_ = nullptr;
 	dashMoji_ = nullptr;
 }
