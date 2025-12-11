@@ -32,8 +32,12 @@ void ActionUI::Awake()
 	spin_ = &spin.AddComponent<UiSpriteRenderer>(TextureTag::Spin, kSpinPos, kSize, kSpinUVPos, kUVSize);
 
 	// 回転攻撃、文字
+	GameObject& spinMojiMono = gameObject->CreateChild();
+	spinMojiMono.AddComponent<UiSpriteRenderer>(TextureTag::SpinMojiMono, kSpinMojiPos, kSpinMojiSize, kSpinUVPos, kUVSize);
+
+	// 回転攻撃、文字、色付き
 	GameObject& spinMoji = gameObject->CreateChild();
-	spinMoji.AddComponent<UiSpriteRenderer>(TextureTag::SpinMoji, kSpinMojiPos, kSpinMojiSize, kSpinUVPos, kUVSize);
+	spinMoji_= &spinMoji.AddComponent<UiSpriteRenderer>(TextureTag::SpinMoji, kSpinMojiPos, kSpinMojiSize, kSpinUVPos, kUVSize);
 
 	// ダッシュ攻撃、モノクロ
 	GameObject& dashMono = gameObject->CreateChild();
@@ -44,8 +48,13 @@ void ActionUI::Awake()
 	dash_ = &dash.AddComponent<UiSpriteRenderer>(TextureTag::Dash, kDashPos, kSize, kDashUVPos, kUVSize);
 
 	// ダッシュ、文字
+	GameObject& dashMojiMono = gameObject->CreateChild();
+	dashMojiMono.AddComponent<UiSpriteRenderer>(TextureTag::DashMojiMono, kDashMojiPos, kDashMojiSize, kDashUVPos, kUVSize);
+	
+	// ダッシュ、文字、色付き
 	GameObject& dashMoji = gameObject->CreateChild();
-	dashMoji.AddComponent<UiSpriteRenderer>(TextureTag::DashMoji, kDashMojiPos, kDashMojiSize, kDashUVPos, kUVSize);
+	dashMoji_ = &dashMoji.AddComponent<UiSpriteRenderer>(TextureTag::DashMoji, kDashMojiPos, kDashMojiSize, kDashUVPos, kUVSize);
+
 }
 
 void ActionUI::Start()
@@ -69,6 +78,11 @@ void ActionUI::Update()
 		spin_->SetSize({ 150.f , 150.f * ct });
 		spin_->SetUVPos({ 1, 1 - ct });
 		spin_->SetUVScale({ 1, ct });
+
+		spinMoji_->SetOffset({ 950.f,  692 - (32 * ct) });
+		spinMoji_->SetSize({ 90.f , 32.f * ct });
+		spinMoji_->SetUVPos({ 1, 1 - ct });
+		spinMoji_->SetUVScale({ 1, ct });
 	}
 
 
@@ -79,6 +93,11 @@ void ActionUI::Update()
 		dash_->SetSize({ 150.f , 150.f * ct });
 		dash_->SetUVPos({ 1, 1 - ct });
 		dash_->SetUVScale({ 1, ct });
+
+		dashMoji_->SetOffset({ 1100.f,  692 - (32 * ct) });
+		dashMoji_->SetSize({ 135.f , 32.f * ct });
+		dashMoji_->SetUVPos({ 1, 1 - ct });
+		dashMoji_->SetUVScale({ 1, ct });
 	}
 
 
@@ -114,4 +133,6 @@ void ActionUI::OnDestroy()
 	state_ = nullptr;
 	spin_  = nullptr;
 	dash_  = nullptr;
+	spinMoji_ = nullptr;
+	dashMoji_ = nullptr;
 }

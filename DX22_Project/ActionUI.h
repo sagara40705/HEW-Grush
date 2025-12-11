@@ -9,6 +9,9 @@ private: //éQè∆
 	PlayerState* state_ = nullptr;
 	UiSpriteRenderer* spin_ = nullptr;
 	UiSpriteRenderer* dash_ = nullptr;
+	UiSpriteRenderer* spinMoji_ = nullptr;
+	UiSpriteRenderer* dashMoji_ = nullptr;
+
 
 public:
 	void Awake() override;

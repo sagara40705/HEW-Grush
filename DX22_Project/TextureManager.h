@@ -19,9 +19,11 @@ enum class TextureTag : uint8_t
     Spin,
     SpinMono,
     SpinMoji,
+    SpinMojiMono,
     Dash,
     DashMono,
     DashMoji,
+    DashMojiMono,
     Count
 };
 
