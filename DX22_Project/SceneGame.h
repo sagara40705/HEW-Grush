@@ -30,6 +30,7 @@ private:
 	void CreateScoreUI();
 
 private:
+	void InitPlayerTex();
 	void SkyDomeDorw();
 
 	// ‚±‚±‚É’Ç‰Á

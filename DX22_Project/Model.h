@@ -149,6 +149,11 @@ public:
 	uint32_t GetMeshNum();
 	const Material* GetMaterial(unsigned int index);
 	uint32_t GetMaterialNum();
+
+	//’Ç‰Á‚µ‚½•ª
+	Material* GetMaterialNonConst(unsigned int idx) { return &m_materials[idx]; }
+
+
 	DirectX::XMMATRIX GetBone(NodeIndex index);
 	uint32_t    GetBoneNum() const;
 
