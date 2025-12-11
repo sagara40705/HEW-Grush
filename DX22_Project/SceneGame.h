@@ -30,6 +30,8 @@ private:
 	void CreateScoreUI();
 	void CreateActionUI();
 
+	void CreateWarp();
+
 	void InitPlayerTex();
 	void InitSkyDome();
 	void SkyDomeDorw();

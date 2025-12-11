@@ -224,6 +224,7 @@
     <ClCompile Include="TitleManager.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="UiSpriteRenderer.cpp" />
+    <ClCompile Include="WarpPoint .cpp" />
     <ClCompile Include="World.cpp" />
     <ClCompile Include="_geometory.cpp" />
     <ClCompile Include="_model.cpp" />
@@ -311,6 +312,7 @@
     <ClInclude Include="UiSpriteRenderer.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vector3.h" />
+    <ClInclude Include="WarpPoint.h" />
     <ClInclude Include="World.h" />
   </ItemGroup>
   <ItemGroup>

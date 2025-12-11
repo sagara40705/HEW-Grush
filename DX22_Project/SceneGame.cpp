@@ -88,11 +88,15 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { CreateManagers(); });
 	outTasks.emplace_back([this] { CreateCameraAndPlayer(); });
 	outTasks.emplace_back([this] { CreateStage(); });
+
 	outTasks.emplace_back([this] { CreateUi(); });
 	outTasks.emplace_back([this] { CreateGaugeUI(); });
 	outTasks.emplace_back([this] { CreateTimerUI(); });
 	outTasks.emplace_back([this] { CreateScoreUI(); });
 	outTasks.emplace_back([this] { CreateActionUI(); });
+
+	outTasks.emplace_back([this] { CreateWarp(); });
+
 	outTasks.emplace_back([this] { InitPlayerTex(); });
 	outTasks.emplace_back([this] { InitSkyDome(); });
 
@@ -484,6 +488,14 @@ void SceneGame::CreateActionUI()
 	GameObject& actionManager = w.CreateGameObject();
 	actionManager.SetTag(Tag::ActionUI);
 	actionManager.AddComponent<ActionUI>();
+}
+
+void SceneGame::CreateWarp()
+{
+	World& w = GetWorld();
+
+	GameObject& warpAtoB = w.CreateGameObject(Vector3(-5.f, 0.f, 33.f));
+	BoxCollider& colAtoB = warpAtoB.AddComponent<BoxCollider>(); colAtoB.isTrigger = true;
 }
 
 void SceneGame::InitPlayerTex()
