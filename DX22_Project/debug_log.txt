@@ -1,56 +1,59 @@
 [Debug Log Started]
-[10:03:07] Model::Load, material.pTexture: 000002222585D940
-[10:03:07] Model::Load, material.pTexture: 000002222585DF40
-[10:03:07] Model::Load, material.pTexture: 000002222585DEE0
-[10:03:07] Model::Load, material.pTexture: 000002222585D640
-[10:03:07] Start Player Animation
-[10:03:09] GlassGauge Ratio: 0
-[10:03:09] moveStartedThisFrame
-[10:03:09] NormalAttack 入力受付
-[10:03:09] アクション実行
-[10:03:10] moveStoppedThisFrame
-[10:03:10] Hammer Attack Glass Object, ID: 209
-[10:03:10] GlassGaugeManager::BrakeGlass, Gauhe: 10
-[10:03:10] Up Score: 497
-[10:03:10] GlassShardPool::Instantiate: 0
-[10:03:10] GlassShardPool::Instantiate: 1
-[10:03:10] GlassShardPool::Instantiate: 2
-[10:03:10] GlassShardPool::Instantiate: 3
-[10:03:10] GlassShardPool::Instantiate: 4
-[10:03:10] GlassShardPool::Instantiate: 5
-[10:03:10] GlassShardPool::Instantiate: 6
-[10:03:10] GlassShardPool::Instantiate: 7
-[10:03:10] GlassObject Destory, ID: 209
-[10:03:10] CameraShake::Play, type: 0
-[10:03:10] GlassGauge Effect Play
-[10:03:10] GlassGauge Ratio: 0.1
-[10:03:10] CameraShake::Stop
-[10:03:10] アクション終了
-[10:03:10] アクションCT終了
-[10:03:11] Animation End OneLoop
-[10:03:11] moveStartedThisFrame
-[10:03:12] SpinAttack 入力受付
-[10:03:12] アクション実行
-[10:03:12] Hammer Attack Glass Object, ID: 123
-[10:03:12] GlassGaugeManager::BrakeGlass, Gauhe: 20
-[10:03:12] Up Score: 494
-[10:03:12] GlassShardPool::Instantiate: 0
-[10:03:12] GlassShardPool::Instantiate: 1
-[10:03:12] GlassShardPool::Instantiate: 2
-[10:03:12] GlassShardPool::Instantiate: 3
-[10:03:12] GlassShardPool::Instantiate: 4
-[10:03:12] GlassShardPool::Instantiate: 5
-[10:03:12] GlassShardPool::Instantiate: 6
-[10:03:12] GlassShardPool::Instantiate: 7
-[10:03:12] GlassObject Destory, ID: 123
-[10:03:12] CameraShake::Play, type: 0
-[10:03:12] GlassGauge Effect Play
-[10:03:12] GlassGauge Ratio: 0.2
-[10:03:12] CameraShake::Stop
-[10:03:12] moveStoppedThisFrame
-[10:03:13] アクション終了
-[10:03:13] moveStartedThisFrame
-[10:03:13] Animation End OneLoop
-[10:03:14] moveStoppedThisFrame
-[10:03:18] アクションCT終了
+[11:08:44] Model::Load, material.pTexture: 000002596D820100
+[11:08:44] Model::Load, material.pTexture: 000002596D8200A0
+[11:08:44] Model::Load, material.pTexture: 000002596D820760
+[11:08:44] Model::Load, material.pTexture: 000002596D820340
+[11:08:44] Start Player Animation
+[11:08:45] GlassGauge Ratio: 0
+[11:08:46] SpinAttack 入力受付
+[11:08:46] アクション実行
+[11:08:46] Hammer Attack Glass Object, ID: 87
+[11:08:46] GlassGaugeManager::BrakeGlass, Gauhe: 10
+[11:08:46] Up Score: 497
+[11:08:46] GlassShardPool::Instantiate: 0
+[11:08:46] GlassShardPool::Instantiate: 1
+[11:08:46] GlassShardPool::Instantiate: 2
+[11:08:46] GlassShardPool::Instantiate: 3
+[11:08:46] GlassShardPool::Instantiate: 4
+[11:08:46] GlassShardPool::Instantiate: 5
+[11:08:46] GlassShardPool::Instantiate: 6
+[11:08:46] GlassShardPool::Instantiate: 7
+[11:08:46] GlassObject Destory, ID: 87
+[11:08:46] CameraShake::Play, type: 0
+[11:08:46] GlassGauge Effect Play
+[11:08:46] GlassGauge Ratio: 0.1
+[11:08:47] CameraShake::Stop
+[11:08:47] アクション終了
+[11:08:48] moveStartedThisFrame
+[11:08:48] moveStoppedThisFrame
+[11:08:48] Animation End OneLoop
+[11:08:49] moveStartedThisFrame
+[11:08:49] moveStoppedThisFrame
+[11:08:49] moveStartedThisFrame
+[11:08:49] moveStoppedThisFrame
+[11:08:50] DashAttack 入力受付
+[11:08:50] アクション実行
+[11:08:50] Hammer Attack Glass Object, ID: 209
+[11:08:50] GlassGaugeManager::BrakeGlass, Gauhe: 20
+[11:08:50] Up Score: 494
+[11:08:50] GlassShardPool::Instantiate: 0
+[11:08:50] GlassShardPool::Instantiate: 1
+[11:08:50] GlassShardPool::Instantiate: 2
+[11:08:50] GlassShardPool::Instantiate: 3
+[11:08:50] GlassShardPool::Instantiate: 4
+[11:08:50] GlassShardPool::Instantiate: 5
+[11:08:50] GlassShardPool::Instantiate: 6
+[11:08:50] GlassShardPool::Instantiate: 7
+[11:08:50] GlassObject Destory, ID: 209
+[11:08:50] CameraShake::Play, type: 0
+[11:08:50] GlassGauge Effect Play
+[11:08:50] GlassGauge Ratio: 0.2
+[11:08:50] CameraShake::Stop
+[11:08:51] moveStartedThisFrame
+[11:08:51] moveStoppedThisFrame
+[11:08:51] Animation End OneLoop
+[11:08:52] アクション終了
+[11:08:52] moveStartedThisFrame
+[11:08:52] アクションCT終了
+[11:08:53] moveStoppedThisFrame
 [Debug Log End]
