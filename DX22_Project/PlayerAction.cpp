@@ -7,6 +7,7 @@
 #include "InputKeyboard.h"   
 #include "InputGamepad.h"  
 #include "BoxCollider.h"
+#include "Rigidbody.h"
 #include <cassert>
 
 constexpr float kActionTime[ToIndex(ActionId::Count)] = { 0.4f, 1.f, 2.f };
@@ -213,4 +214,31 @@ void PlayerAction::UpdateSpinAttack()
 // ダミー実装
 void PlayerAction::UpdateDashAttack()
 {
+	hammer_->UpdateSpinAttack();
+	// Rigidbody を取得（なければ何もしない）
+	auto* rb = gameObject->GetComponent<Rigidbody>();
+	if (!rb) return;
+
+	// プレイヤーの「前方向」からダッシュ方向を決定（水平成分のみ）
+	const auto f = tf_->Forward();  // XMFLOAT3
+	Vector3 dir{ f.x, 0.0f, - f.z };  // Y 成分は無視して水平だけ使う
+
+	if (dir.SqrLength() <= 1e-6f)
+	{
+		// ほぼゼロ方向なら何もしない
+		return;
+	}
+	dir.Normalize();
+
+	// ダッシュ距離と速度
+	// ここでは「攻撃 1 回で dashDistance だけ進む」ようにしている
+	constexpr float dashDistance = 20.0f; // 好みで調整
+	const float dashTime = kActionTime[ToIndex(ActionId::DashAttack)];
+	const float dashSpeed = dashDistance / dashTime;
+
+	// Y 方向の速度は維持（ジャンプ／重力用）
+	const float vy = rb->velocity.y;
+
+	// ダッシュ中は常に同じ方向へ一定速度で突き進む
+	rb->velocity = Vector3(dir.x * dashSpeed, vy, dir.z * dashSpeed);
 }

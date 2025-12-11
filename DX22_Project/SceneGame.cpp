@@ -179,33 +179,33 @@ void SceneGame::CreateStage()
 {
 	World& w = GetWorld();
 
-	constexpr float SIZE = 100.f;
-	constexpr float HALF = 100.f / 2.f;
+	constexpr float SIZE = 80.f;
+	constexpr float HALF = 80.f / 2.f;
 	GameObject& floor = w.CreateGameObject(Vector3(0.f, -1.f, 0.f), Vector3::zero(), Vector3(80.f, 0.1f, 80.f));
 	MeshFilter& mf = floor.AddComponent<MeshFilter>(PrimitiveMeshTag::Plane); mf.boundsRadius = 0.f;
 	floor.AddComponent<GroundRenderer>();
 	BoxCollider& collider = floor.AddComponent<BoxCollider>();
 	collider.layer = Layer::Ground;
 
-	//GameObject& wallT = w.CreateGameObject(Vector3(0.f, 0.f,  HALF), Vector3::zero(), Vector3(SIZE, 2.f, 0.22f));
-	//MeshFilter& mfT = wallT.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mfT.boundsRadius = 0.f;
-	//wallT.AddComponent<GroundRenderer>();
-	//wallT.AddComponent<BoxCollider>();
+	GameObject& wT = w.CreateGameObject(Vector3(0.f, 0.f,  HALF), Vector3::zero(), Vector3(SIZE, 2.f, 0.6f));
+	MeshFilter& mfT = wT.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mfT.boundsRadius = 0.f;
+	wT.AddComponent<GroundRenderer>();
+	wT.AddComponent<BoxCollider>();
 
-	//GameObject& wallB = w.CreateGameObject(Vector3(0.f, 0.f, -HALF), Vector3::zero(), Vector3(SIZE, 2.f, 0.22f));
-	//MeshFilter& mfB = wallT.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mfB.boundsRadius = 0.f;
-	//wallB.AddComponent<GroundRenderer>();
-	//wallB.AddComponent<BoxCollider>();
+	GameObject& wB = w.CreateGameObject(Vector3(0.f, 0.f, -HALF), Vector3::zero(), Vector3(SIZE, 2.f, 0.2f));
+	MeshFilter& mfB = wB.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mfB.boundsRadius = 0.f;
+	wB.AddComponent<GroundRenderer>();
+	wB.AddComponent<BoxCollider>();
 
-	//GameObject& wallR = w.CreateGameObject(Vector3( HALF, 0.f, 0.f), Vector3::zero(), Vector3(0.22f, 2.f, SIZE));
-	//MeshFilter& mfR = wallR.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mfR.boundsRadius = 0.f;
-	//wallR.AddComponent<GroundRenderer>();
-	//wallR.AddComponent<BoxCollider>();
+	GameObject& wR = w.CreateGameObject(Vector3( HALF, 0.f, 0.f), Vector3::zero(), Vector3(0.2f, 2.f, SIZE));
+	MeshFilter& mfR = wR.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mfR.boundsRadius = 0.f;
+	wR.AddComponent<GroundRenderer>();
+	wR.AddComponent<BoxCollider>();
 
-	//GameObject& wallL = w.CreateGameObject(Vector3(-HALF, 0.f, 0.f), Vector3::zero(), Vector3(0.22f, 2.f, SIZE));
-	//MeshFilter& mfL = wallL.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mfL.boundsRadius = 0.f;
-	//wallL.AddComponent<GroundRenderer>();
-	//wallL.AddComponent<BoxCollider>();
+	GameObject& wL = w.CreateGameObject(Vector3(-HALF, 0.f, 0.f), Vector3::zero(), Vector3(0.2f, 2.f, SIZE));
+	MeshFilter& mfL = wL.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mfL.boundsRadius = 0.f;
+	wL.AddComponent<GroundRenderer>();
+	wL.AddComponent<BoxCollider>();
 
 	////Grade_3
 	//Prefab::Instantiate(w, PrefabId::Ufo, Vector3(-5.f, -0.5f, 20.f), Vector3::zero(), Vector3::one());
@@ -247,8 +247,8 @@ void SceneGame::CreateStage()
 		PrefabId::Swing,
 		//PrefabId::Akican,
 		//PrefabId::Desktop,
-		//PrefabId::Gomibukuro,
-		//PrefabId::Isu,
+		PrefabId::Gomibukuro,
+		PrefabId::Isu,
 		//PrefabId::Kuukseizixyoukii,
 		//PrefabId::Ningixyou
 	};
