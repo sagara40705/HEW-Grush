@@ -8,11 +8,11 @@
 void ActionUI::Awake()
 {
 	//ˆÊ’uE‚¨‚¨‚«‚³
-	constexpr Vector2 kSpinPos = { 920.f, 520.f };
-	constexpr Vector2 kDashPos = { 1100.f, 520.f };
+	constexpr Vector2 kSpinPos = { 950.f, 550.f };
+	constexpr Vector2 kDashPos = { 1130.f, 550.f };
 	constexpr Vector2 kSize = { 150.f, 150.f };
-	constexpr Vector2 kSpinMojiPos = { 950.f, 660.f };
-	constexpr Vector2 kDashMojiPos = { 1100.f,660.f };
+	constexpr Vector2 kSpinMojiPos = { 980.f, 690.f };
+	constexpr Vector2 kDashMojiPos = { 1130.f,690.f };
 	constexpr Vector2 kSpinMojiSize = {  90.f, 32.f };
 	constexpr Vector2 kDashMojiSize = { 135.f, 32.f };
 
@@ -73,37 +73,30 @@ void ActionUI::Update()
 
 	{
 		ct = 1.0f - state_->GetCoolDownRatio(ActionId::SpinAttack);
-		spin_->SetOffset({ 920.f,  670 - (150 * ct) });
+		spin_->SetOffset({ 950.f,  700 - (150 * ct) });
 		spin_->SetSize({ 150.f , 150.f * ct });
 		spin_->SetUVPos({ 1, 1 - ct });
 		spin_->SetUVScale({ 1, ct });
 
-		if (!state_->canUseAction[ToIndex(ActionId::SpinAttack)])
-		{
-
-			spinMoji_->SetOffset({ 950.f,  692 - (32 * ct) });
-			spinMoji_->SetSize({ 90.f , 32.f * ct });
-			spinMoji_->SetUVPos({ 1, 1 - ct });
-			spinMoji_->SetUVScale({ 1, ct });
-		}
-		
+		spinMoji_->SetOffset({ 980.f,  722 - (32 * ct) });
+		spinMoji_->SetSize({ 90.f , 32.f * ct });
+		spinMoji_->SetUVPos({ 1, 1 - ct });
+		spinMoji_->SetUVScale({ 1, ct });
 	}
 	
 	//if (!state_->canUseAction[ToIndex(ActionId::DashAttack)] || 1)
 	{
 		ct = 1.0f - state_->GetCoolDownRatio(ActionId::DashAttack);
-		dash_->SetOffset({ 1100.f,  670 - (150 * ct) });
+		dash_->SetOffset({ 1130.f,  700 - (150 * ct) });
 		dash_->SetSize({ 150.f , 150.f * ct });
 		dash_->SetUVPos({ 1, 1 - ct });
 		dash_->SetUVScale({ 1, ct });
 
-		if (!state_->canUseAction[ToIndex(ActionId::DashAttack)])
-		{
-			dashMoji_->SetOffset({ 1100.f,  692 - (32 * ct) });
-			dashMoji_->SetSize({ 135.f , 32.f * ct });
-			dashMoji_->SetUVPos({ 1, 1 - ct });
-			dashMoji_->SetUVScale({ 1, ct });
-		}
+		dashMoji_->SetOffset({ 1130.f,  722 - (32 * ct) });
+		dashMoji_->SetSize({ 135.f , 32.f * ct });
+		dashMoji_->SetUVPos({ 1, 1 - ct });
+		dashMoji_->SetUVScale({ 1, ct });
+
 	}
 
 
