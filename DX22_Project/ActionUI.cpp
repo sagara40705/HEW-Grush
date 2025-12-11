@@ -50,7 +50,7 @@ void ActionUI::Awake()
 	// ダッシュ、文字
 	GameObject& dashMojiMono = gameObject->CreateChild();
 	dashMojiMono.AddComponent<UiSpriteRenderer>(TextureTag::DashMojiMono, kDashMojiPos, kDashMojiSize, kDashUVPos, kUVSize);
-	
+
 	// ダッシュ、文字、色付き
 	GameObject& dashMoji = gameObject->CreateChild();
 	dashMoji_ = &dashMoji.AddComponent<UiSpriteRenderer>(TextureTag::DashMoji, kDashMojiPos, kDashMojiSize, kDashUVPos, kUVSize);
@@ -71,21 +71,24 @@ void ActionUI::Update()
 	//ActionId action = state_->usingAction;
 	float ct;
 
-	//if (!state_->canUseAction[ToIndex(ActionId::SpinAttack)] || 1)
 	{
-		ct = 1.0f - state_->GetCoolDownRatio(ActionId::SpinAttack); 
+		ct = 1.0f - state_->GetCoolDownRatio(ActionId::SpinAttack);
 		spin_->SetOffset({ 920.f,  670 - (150 * ct) });
 		spin_->SetSize({ 150.f , 150.f * ct });
 		spin_->SetUVPos({ 1, 1 - ct });
 		spin_->SetUVScale({ 1, ct });
 
-		spinMoji_->SetOffset({ 950.f,  692 - (32 * ct) });
-		spinMoji_->SetSize({ 90.f , 32.f * ct });
-		spinMoji_->SetUVPos({ 1, 1 - ct });
-		spinMoji_->SetUVScale({ 1, ct });
+		if (!state_->canUseAction[ToIndex(ActionId::SpinAttack)])
+		{
+
+			spinMoji_->SetOffset({ 950.f,  692 - (32 * ct) });
+			spinMoji_->SetSize({ 90.f , 32.f * ct });
+			spinMoji_->SetUVPos({ 1, 1 - ct });
+			spinMoji_->SetUVScale({ 1, ct });
+		}
+		
 	}
-
-
+	
 	//if (!state_->canUseAction[ToIndex(ActionId::DashAttack)] || 1)
 	{
 		ct = 1.0f - state_->GetCoolDownRatio(ActionId::DashAttack);
@@ -94,10 +97,13 @@ void ActionUI::Update()
 		dash_->SetUVPos({ 1, 1 - ct });
 		dash_->SetUVScale({ 1, ct });
 
-		dashMoji_->SetOffset({ 1100.f,  692 - (32 * ct) });
-		dashMoji_->SetSize({ 135.f , 32.f * ct });
-		dashMoji_->SetUVPos({ 1, 1 - ct });
-		dashMoji_->SetUVScale({ 1, ct });
+		if (!state_->canUseAction[ToIndex(ActionId::DashAttack)])
+		{
+			dashMoji_->SetOffset({ 1100.f,  692 - (32 * ct) });
+			dashMoji_->SetSize({ 135.f , 32.f * ct });
+			dashMoji_->SetUVPos({ 1, 1 - ct });
+			dashMoji_->SetUVScale({ 1, ct });
+		}
 	}
 
 
