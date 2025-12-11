@@ -46,6 +46,19 @@ const Model::Material* Model::GetMaterial(unsigned int index)
 }
 
 /*
+* @brief マテリアル情報を取得
+* @param[in] index 取得するマテリアル番号
+* @return マテリアル情報
+*/
+Model::Material* Model::GetMaterialNonConst(unsigned int index)
+{
+	if (index < GetMaterialNum())
+		return &m_materials[index];
+	return nullptr;
+}
+
+
+/*
 * @brief アニメーション後の変換行列取得
 * @param[in] index ボーン番号
 * @return 該当ボーンの変換行列

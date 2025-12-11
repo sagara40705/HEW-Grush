@@ -740,7 +740,7 @@ float4 main(PS_IN pin) : SV_TARGET
     float dotRV = saturate(dot(R, V));
     float gloss = max(0.01f, objSpecular.a);
     float3 specular = specColor * pow(dotRV, gloss * 4.0f);
-    lambert += specular * 0.2f;  // 強すぎるなら係数を下げる
+    lambert += specular * 0.6f;  // 強すぎるなら係数を下げる
 
     // -----------------------------
     // 2) ガラスっぽさのパラメータ
