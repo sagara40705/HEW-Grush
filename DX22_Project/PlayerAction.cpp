@@ -80,7 +80,7 @@ void PlayerAction::InputWantAction()
 
 	//==================== SpinAttack (Rキー / R1ボタン) =====================
 	if (InputKeyboard::GetKeyDown('R') ||
-		InputGamepad::GetButtonDown(XINPUT_GAMEPAD_RIGHT_SHOULDER))
+		InputGamepad::GetButtonDown(XINPUT_GAMEPAD_LEFT_SHOULDER))
 	{
 		state_->wantUseAction[ToIndex(ActionId::SpinAttack)] = true;
 		DebugLog::Output("SpinAttack 入力受付");
@@ -88,7 +88,7 @@ void PlayerAction::InputWantAction()
 
 	//==================== DashAttack (Fキー / L1ボタン) =====================
 	if (InputKeyboard::GetKeyDown('F') ||
-		InputGamepad::GetButtonDown(XINPUT_GAMEPAD_LEFT_SHOULDER))
+		InputGamepad::GetButtonDown(XINPUT_GAMEPAD_RIGHT_SHOULDER))
 	{
 		state_->wantUseAction[ToIndex(ActionId::DashAttack)] = true;
 		DebugLog::Output("DashAttack 入力受付");
