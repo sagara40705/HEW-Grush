@@ -28,6 +28,9 @@ bool ModelManager::Load(ModelTag tag)
         return false;
 
     s_models[index] = std::move(model);
+
+    
+
     return true;
 }
 
