@@ -2,6 +2,7 @@
 #define __SCENE_GAME_H__
 
 #include "Scene.h"
+#include "CSV.h"
 
 class SceneGame : public Scene
 {
@@ -17,6 +18,7 @@ private:
 	void RegisterTexture();
 	void RegisterModel();
 	void CreateProtStage();
+	void CreateStageFromCSV(const std::string& filename);
 	void CreateGlassModel();
 	void SetPlayerAndHummer();
 	void CreateTimerUi();

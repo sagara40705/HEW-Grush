@@ -1,5 +1,9 @@
 #include "SceneGame.h"
 #include <DirectXMath.h>
+#include <fstream>  // ファイル読み込み用
+#include <sstream>  // 文字列分割用
+#include <vector>   // データ格納用
+#include <string>   // 文字列操作用
 #include "Defines.h"
 #include "AllComponet.h"
 #include "PhysicsSystem.h"
@@ -12,6 +16,8 @@
 #include "TextureManager.h"
 #include "ModelManager.h"
 #include "Prefab.h"
+#include <direct.h>
+#include <algorithm>
 
 World* W = nullptr;
 
@@ -91,7 +97,8 @@ void SceneGame::Load()
     karubi.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0,0.75f,0 }, DirectX::XMFLOAT3{ 1, 1.5, 1 });
     LineManager::AddBoxCollider(&karubi);
 
-    CreateProtStage();
+    //CreateProtStage();
+    CreateStageFromCSV("StageData.csv");
     //CreateGlassModel();
     CreateTimerUi();
     CreateScoreUi();
@@ -144,7 +151,8 @@ void SceneGame::RegisterModel()
 
 void SceneGame::CreateProtStage()
 {
-    Prefab::Instantiate(*W, PrefabId::Ufo, Vector3(10, -0.5f, 10), Vector3::zero(), Vector3::one());
+
+   /* Prefab::Instantiate(*W, PrefabId::Ufo, Vector3(10, -0.5f, 10), Vector3::zero(), Vector3::one());
 
     Prefab::Instantiate(*W, PrefabId::Benti, Vector3(-10, -0.9f, 10), Vector3::zero(), Vector3(1.2f, 1.2f, 1.2f));
     Prefab::Instantiate(*W, PrefabId::Benti, Vector3(20, -0.9f, -16), Vector3::zero(), Vector3(1.2f, 1.2f, 1.2f));
@@ -163,7 +171,97 @@ void SceneGame::CreateProtStage()
     Prefab::Instantiate(*W, PrefabId::ProtPlay, Vector3(-17, -0.9f, 15), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
     Prefab::Instantiate(*W, PrefabId::ProtPlay, Vector3(6, -0.9f, 17), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
     Prefab::Instantiate(*W, PrefabId::ProtPlay, Vector3(20, -0.9f, -12), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-    Prefab::Instantiate(*W, PrefabId::ProtPlay, Vector3(14, -0.9f, -19), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+    Prefab::Instantiate(*W, PrefabId::ProtPlay, Vector3(14, -0.9f, -19), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));*/
+}
+
+std::string CleanString(std::string str)
+{  // 文字列から " とスペースを削除するヘルパー関数
+    str.erase(std::remove(str.begin(), str.end(), '\"'), str.end());
+    return str;
+}
+
+
+void SceneGame::CreateStageFromCSV(const std::string& filename)
+{
+    /*char path[1024];
+    if (_getcwd(path, 1024) != NULL) 
+    {
+        std::string fullPath = std::string(path) + "\\" + filename;
+        OutputDebugStringA("\n========================================\n");
+        OutputDebugStringA("【確認してください】\n");
+        OutputDebugStringA("プログラムはこの場所にあるファイルを探しています:\n");
+        OutputDebugStringA(fullPath.c_str());
+        OutputDebugStringA("\n========================================\n");
+    }*/
+
+    /*std::string debugMsg = "Current Directory: " + std::string(path) + "\n";
+    OutputDebugStringA(debugMsg.c_str());*/
+
+    std::ifstream file(filename);
+    if (!file.is_open())
+    {   // ファイルが見つからない場合のエラー処理
+        OutputDebugStringA("Error: CSVファイルが見つかりません！\n");
+        return;
+    }
+
+    OutputDebugStringA("Success: CSVファイルを開きました！読み込みを開始します...\n");
+
+    std::string line;
+    // ファイルを1行ずつ読み込む
+    while (std::getline(file, line))
+    {   
+        //if (line.empty() || line.length() < 3)continue;
+        //// コメント行スキップ
+        //if (line[0] == '#') continue;
+        
+        // '#'で始まる行はコメントとしてスキップ
+        if (line.empty() || line[0] == '#') continue;
+
+        std::stringstream ss(line);
+        std::string segment;
+        std::vector < std::string > data;
+
+        // カンマ区切りで分解
+        while (std::getline(ss, segment, ','))
+        {
+            data.push_back(CleanString(segment));
+        }
+
+        // データが7つ(ID, PosXYZ, ScaleXYZ)揃っているか確認
+        if (data.size() >= 7)
+        { 
+            try 
+            {
+                // クリーンなデータを使って変換
+                // 文字列を数値に変換
+                int id = std::stoi(data[0]);
+
+               /* std::string log = "Loaded ID: " + std::to_string(id) + "\n";
+                OutputDebugStringA(log.c_str());*/
+                float px = std::stof(data[1]);
+                float py = std::stof(data[2]);
+                float pz = std::stof(data[3]);
+                float rx = std::stof(data[4]);
+                float ry = std::stof(data[5]);
+                float rz = std::stof(data[6]);
+
+                // Prefabを生成
+                Prefab::Instantiate(*W, static_cast<PrefabId>(id),
+                    Vector3(px, py, pz), // 位置
+                    Vector3(rx, ry, rz), // 回転
+                    Vector3(1, 1, 1)     // スケール
+                );
+            }
+            catch (const std::exception& e)
+            {
+                std::string errorMsg = "Error: 変換失敗！ Reason: " + std::string(e.what()) + "\n";
+                if (!data.empty()) errorMsg += "  Bad Data: [" + data[0] + "]\n";
+
+                OutputDebugStringA(errorMsg.c_str());
+            }
+        }
+    }
+    file.close();
 }
 
 void SceneGame::CreateGlassModel()

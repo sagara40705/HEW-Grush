@@ -410,10 +410,16 @@
     <ClInclude Include="GameTimer.h">
       <Filter>システム</Filter>
     </ClInclude>
+    <ClInclude Include="CSV.h">
+      <Filter>システム</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="debug_log.txt">
       <Filter>リソース ファイル</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\x64\Release\StageData.csv" />
   </ItemGroup>
 </Project>

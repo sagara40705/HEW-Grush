@@ -212,6 +212,7 @@
     <ClInclude Include="Collision.h" />
     <ClInclude Include="CollisionListener.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="CSV.h" />
     <ClInclude Include="DebugLog.h" />
     <ClInclude Include="DebugScene.h" />
     <ClInclude Include="Frustum.h" />
@@ -264,6 +265,9 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="debug_log.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\x64\Release\StageData.csv" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
