@@ -41,8 +41,8 @@ void Scene::RootUpdate()
 void Scene::RootDraw()
 {
     // •`‰æ‚ÍƒV[ƒ“‘¤‚É”C‚¹‚é
-    world.Draw();
     Draw();
+    world.Draw();
 }
 
 void Scene::RootUnload()

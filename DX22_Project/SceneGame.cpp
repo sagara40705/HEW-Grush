@@ -66,6 +66,7 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Star); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GroundTile); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Stage); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::SkyDome); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GaugeEmpty); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GaugeMax); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GaugeEffect); });
@@ -93,6 +94,7 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { CreateScoreUI(); });
 	outTasks.emplace_back([this] { CreateActionUI(); });
 	outTasks.emplace_back([this] { InitPlayerTex(); });
+	outTasks.emplace_back([this] { InitSkyDome(); });
 
 
 	// 最後に Start を流す
@@ -554,7 +556,7 @@ void SceneGame::InitSkyDome()
 
 	// 3) テクスチャ取得 → シェーダへ設定
 	//    ・事前に BuildLoadTasks で Load(TextureTag::Background_Game) しておく前提
-	m_pSkyTex = TextureManager::Get(TextureTag::Background_Game);
+	m_pSkyTex = TextureManager::Get(TextureTag::SkyDome);
 	if (m_pSkyTex)
 	{
 		ID3D11ShaderResourceView* srv = m_pSkyTex->GetResource();
