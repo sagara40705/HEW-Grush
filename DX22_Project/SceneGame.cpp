@@ -66,6 +66,7 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Star); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GroundTile); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Stage); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::SkyDome); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GaugeEmpty); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GaugeMax); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GaugeEffect); });
@@ -93,6 +94,7 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { CreateScoreUI(); });
 	outTasks.emplace_back([this] { CreateActionUI(); });
 	outTasks.emplace_back([this] { InitPlayerTex(); });
+	outTasks.emplace_back([this] { InitSkyDome(); });
 
 
 	// 最後に Start を流す
@@ -177,33 +179,33 @@ void SceneGame::CreateStage()
 {
 	World& w = GetWorld();
 
-	constexpr float SIZE = 100.f;
-	constexpr float HALF = 100.f / 2.f;
+	constexpr float SIZE = 80.f;
+	constexpr float HALF = 80.f / 2.f;
 	GameObject& floor = w.CreateGameObject(Vector3(0.f, -1.f, 0.f), Vector3::zero(), Vector3(80.f, 0.1f, 80.f));
 	MeshFilter& mf = floor.AddComponent<MeshFilter>(PrimitiveMeshTag::Plane); mf.boundsRadius = 0.f;
 	floor.AddComponent<GroundRenderer>();
 	BoxCollider& collider = floor.AddComponent<BoxCollider>();
 	collider.layer = Layer::Ground;
 
-	//GameObject& wallT = w.CreateGameObject(Vector3(0.f, 0.f,  HALF), Vector3::zero(), Vector3(SIZE, 2.f, 0.22f));
-	//MeshFilter& mfT = wallT.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mfT.boundsRadius = 0.f;
-	//wallT.AddComponent<GroundRenderer>();
-	//wallT.AddComponent<BoxCollider>();
+	GameObject& wT = w.CreateGameObject(Vector3(0.f, 0.f,  HALF), Vector3::zero(), Vector3(SIZE, 2.f, 0.6f));
+	MeshFilter& mfT = wT.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mfT.boundsRadius = 0.f;
+	wT.AddComponent<GroundRenderer>();
+	wT.AddComponent<BoxCollider>();
 
-	//GameObject& wallB = w.CreateGameObject(Vector3(0.f, 0.f, -HALF), Vector3::zero(), Vector3(SIZE, 2.f, 0.22f));
-	//MeshFilter& mfB = wallT.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mfB.boundsRadius = 0.f;
-	//wallB.AddComponent<GroundRenderer>();
-	//wallB.AddComponent<BoxCollider>();
+	GameObject& wB = w.CreateGameObject(Vector3(0.f, 0.f, -HALF), Vector3::zero(), Vector3(SIZE, 2.f, 0.2f));
+	MeshFilter& mfB = wB.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mfB.boundsRadius = 0.f;
+	wB.AddComponent<GroundRenderer>();
+	wB.AddComponent<BoxCollider>();
 
-	//GameObject& wallR = w.CreateGameObject(Vector3( HALF, 0.f, 0.f), Vector3::zero(), Vector3(0.22f, 2.f, SIZE));
-	//MeshFilter& mfR = wallR.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mfR.boundsRadius = 0.f;
-	//wallR.AddComponent<GroundRenderer>();
-	//wallR.AddComponent<BoxCollider>();
+	GameObject& wR = w.CreateGameObject(Vector3( HALF, 0.f, 0.f), Vector3::zero(), Vector3(0.2f, 2.f, SIZE));
+	MeshFilter& mfR = wR.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mfR.boundsRadius = 0.f;
+	wR.AddComponent<GroundRenderer>();
+	wR.AddComponent<BoxCollider>();
 
-	//GameObject& wallL = w.CreateGameObject(Vector3(-HALF, 0.f, 0.f), Vector3::zero(), Vector3(0.22f, 2.f, SIZE));
-	//MeshFilter& mfL = wallL.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mfL.boundsRadius = 0.f;
-	//wallL.AddComponent<GroundRenderer>();
-	//wallL.AddComponent<BoxCollider>();
+	GameObject& wL = w.CreateGameObject(Vector3(-HALF, 0.f, 0.f), Vector3::zero(), Vector3(0.2f, 2.f, SIZE));
+	MeshFilter& mfL = wL.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mfL.boundsRadius = 0.f;
+	wL.AddComponent<GroundRenderer>();
+	wL.AddComponent<BoxCollider>();
 
 	////Grade_3
 	//Prefab::Instantiate(w, PrefabId::Ufo, Vector3(-5.f, -0.5f, 20.f), Vector3::zero(), Vector3::one());
@@ -245,8 +247,8 @@ void SceneGame::CreateStage()
 		PrefabId::Swing,
 		//PrefabId::Akican,
 		//PrefabId::Desktop,
-		//PrefabId::Gomibukuro,
-		//PrefabId::Isu,
+		PrefabId::Gomibukuro,
+		PrefabId::Isu,
 		//PrefabId::Kuukseizixyoukii,
 		//PrefabId::Ningixyou
 	};
@@ -539,12 +541,108 @@ void SceneGame::InitPlayerTex()
 	}
 }
 
+void SceneGame::InitSkyDome()
+{
+	using namespace DirectX;
+
+	ID3D11Device* device = GetDevice();
+	if (!device) return;
+
+	// 1) メッシュ初期化
+	m_skyMesh.Init(device, 32, 16, 1.0f);
+
+	// 2) シェーダー初期化
+	m_skyShader.Init();
+
+	// 3) テクスチャ取得 → シェーダへ設定
+	//    ・事前に BuildLoadTasks で Load(TextureTag::Background_Game) しておく前提
+	m_pSkyTex = TextureManager::Get(TextureTag::SkyDome);
+	if (m_pSkyTex)
+	{
+		ID3D11ShaderResourceView* srv = m_pSkyTex->GetResource();
+		m_skyShader.SetTexture(srv);      // t0 に設定
+		m_skyShader.SetUseTexture(true);  // gUseTexture = 1
+	}
+	else
+	{
+		// 読み込み失敗時にだけメッセージを出したいならここで
+		// MessageBox(nullptr, "Background_Game テクスチャが読み込まれていません", "Error", MB_OK);
+		m_skyShader.SetUseTexture(false); // プロシージャルにフォールバック
+	}
+
+	// 4) 深度ステート（深度読み取りのみ）
+	D3D11_DEPTH_STENCIL_DESC dsDesc = {};
+	dsDesc.DepthEnable = TRUE;
+	dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+	dsDesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
+	dsDesc.StencilEnable = FALSE;
+
+	HRESULT hr = device->CreateDepthStencilState(&dsDesc, &m_pDepthNoWrite);
+	if (FAILED(hr))
+	{
+		m_pDepthNoWrite = nullptr;
+	}
+
+}
+
+void SceneGame::SkyDomeDorw()
+{
+	using namespace DirectX;
+
+	ID3D11DeviceContext* context = GetContext();
+
+	// 1. メインカメラから View / Proj 行列と位置を取得
+	Camera* cam = Camera::Main();
+	if (!cam) return;
+
+	m_view = cam->GetView();
+	m_proj = cam->GetProjection();
+
+	Transform* tf = cam->gameObject->GetComponent<Transform>();
+	const XMFLOAT4X4& M = tf->GetMatrix();
+	XMFLOAT3 camPos(M._41, M._42, M._43);
+
+	// 2. カメラ中心・大きな半径の球を World 行列として作成
+	float radius = 100.0f;
+	XMMATRIX S = XMMatrixScaling(radius, radius, radius);
+	XMMATRIX T = XMMatrixTranslation(camPos.x, camPos.y, camPos.z);
+	XMMATRIX W = S * T;
+
+	XMFLOAT4X4 worldSky, viewT, projT;
+	XMStoreFloat4x4(&worldSky, XMMatrixTranspose(W));
+	XMStoreFloat4x4(&viewT, XMMatrixTranspose(XMLoadFloat4x4(&m_view)));
+	XMStoreFloat4x4(&projT, XMMatrixTranspose(XMLoadFloat4x4(&m_proj)));
+
+	// 3. スカイドーム用シェーダに行列を渡す
+	m_skyShader.SetWVP(worldSky, viewT, projT);
+
+	// 4. 現在の深度ステートを退避してから、スカイドーム用へ切り替え
+	ID3D11DepthStencilState* oldDS = nullptr;
+	UINT                     oldRef = 0;
+	context->OMGetDepthStencilState(&oldDS, &oldRef);
+
+	context->OMSetDepthStencilState(m_pDepthNoWrite, 1);
+
+	// 5. シェーダをバインドしてメッシュを描画
+	m_skyShader.Bind();
+	context->RSSetState(nullptr);
+	m_skyMesh.Draw(context);
+
+	// 6. 深度ステートを元に戻す
+	context->OMSetDepthStencilState(oldDS, oldRef);
+	if (oldDS)
+	{
+		oldDS->Release();
+	}
+}
+
 void SceneGame::Update()
 {
 }
 
 void SceneGame::Draw()
 {
+	SkyDomeDorw();
 }
 
 

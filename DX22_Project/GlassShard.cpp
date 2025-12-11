@@ -38,7 +38,7 @@ namespace
     DirectX::XMFLOAT4 MakeShardRandParam()
     {
         static thread_local std::mt19937 rng{ std::random_device{}() };
-        static thread_local std::uniform_real_distribution<float> dist(0.0f, 1.0f);
+        static thread_local std::uniform_real_distribution<float> dist(-3.0f, 2.0f);
 
         return DirectX::XMFLOAT4{
             dist(rng),
@@ -116,7 +116,7 @@ void GlassShard::SetGlassParamPS()
 {
 	DirectX::XMFLOAT4 Tint[ToIndex(GlassGrade::Count)] = { {0.6f, 0.6f, 0.9f, 0.7f}, {0.6f, 0.9f, 0.6f, 0.7f}, {0.9f, 0.6f, 0.6f, 0.7f} };
 
-	ShaderList::SetGlassParam(Tint[ToIndex(grade_)], 3.0f, 0.5f, 1.0f, 0.0f);
+	ShaderList::SetGlassParam(Tint[ToIndex(grade_)], 3.0f, 5.0f, 5.0f, 0.0f);
 }
 
 

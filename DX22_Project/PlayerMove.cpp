@@ -5,11 +5,11 @@
 #include "PlayerAction.h"
 #include "PhysicsSystem.h"
 #include "InputKeyboard.h"
+#include "InputGamepad.h"
 #include "Animator.h"
 #include "ModelManager.h"
 #include <cmath>
 #include "DebugLog.h"
-#include"InputGamepad.h"
 
 /*
 * @brief 初期化処理
@@ -98,8 +98,6 @@ void PlayerMove::Jump()
 */
 void PlayerMove::InputMoveAxis()
 {
-	//if (state_->usingAction != ActionId::None) return;
-
 	Vector2 axis = Vector2::zero();
 
 	// --- キーボード WASD ---
@@ -108,11 +106,22 @@ void PlayerMove::InputMoveAxis()
 	if (InputKeyboard::GetKey('D')) axis.x += 1.f;
 	if (InputKeyboard::GetKey('A')) axis.x -= 1.f;
 
-	axis.x += InputGamepad::GetLStickX();
-	axis.y += InputGamepad::GetLStickY();
+	// --- ゲームパッド左スティック ---
+	if (InputGamepad::IsConnected())
+	{
+		float lx = InputGamepad::GetLStickX();  // [-1,1]
+		float ly = InputGamepad::GetLStickY();  // [-1,1]
 
-	// 長さ 1 を超える場合は正規化
-	if (axis.Length() > 1.f) axis = axis.Normalized();
+		// スティックは「上が正」で操作したいので Y を反転（一般的なゲーム操作感）
+		axis.x += lx;
+		axis.y += ly;   // or axis.y -= ly; ※操作感に合わせて
+	}
+
+	// 長さ 1 を超えたら正規化
+	if (axis.Length() > 1.f)
+	{
+		axis = axis.Normalized();
+	}
 
 	state_->moveAxis = axis;
 }

@@ -16,6 +16,7 @@ inline void Render(const World& w)
 
     // 1) 3D / 通常描画
     SetDepthTest(true);
+    SetBlendMode(BLEND_ALPHA);
     //SetCullingMode(D3D11_CULL_BACK);
 
     for (auto* r : w.GetRenderers())
@@ -33,7 +34,7 @@ inline void Render(const World& w)
     }
 
     // 2) デバッグ線など
-    w.DebugDrawColliders();
+    //w.DebugDrawColliders();
     //if(Camera::Main()) Camera::Main()->DebugDrawFrustum();
     //w.DebugDrawBounds();
     //LineManager::Draw(LineManager::LineGroup::General);
