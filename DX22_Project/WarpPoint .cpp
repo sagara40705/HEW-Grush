@@ -31,4 +31,6 @@ void WarpPoint::OnTriggerEnter(const TriggerInfo& info)
 	//プレイヤーのtransformのposを変える
 
 	//将来: エフェクトやサウンドをいれる
+
+	//DebugLog::OutputValue("ワープ起動, 番号", static<int>(point_));
 }

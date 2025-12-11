@@ -332,6 +332,12 @@
     <ClCompile Include="WarpPoint .cpp">
       <Filter>Game\Components\Gimmick</Filter>
     </ClCompile>
+    <ClCompile Include="JumpSki.cpp">
+      <Filter>Game\Components\Gimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="ElectricFan.cpp">
+      <Filter>Game\Components\Gimmick</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -580,6 +586,12 @@
       <Filter>Game\Components\Environment</Filter>
     </ClInclude>
     <ClInclude Include="WarpPoint.h">
+      <Filter>Game\Components\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="JumpSki.h">
+      <Filter>Game\Components\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="ElectricFan.h">
       <Filter>Game\Components\Gimmick</Filter>
     </ClInclude>
   </ItemGroup>

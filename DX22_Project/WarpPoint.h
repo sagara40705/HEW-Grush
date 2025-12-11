@@ -13,6 +13,9 @@ namespace
 	constexpr size_t ToIndex(Point p) noexcept { return static_cast<size_t>(p); }
 }
 
+/*
+* ワープギミック
+*/
 class WarpPoint : public Component, public TriggerListener
 {
 private:

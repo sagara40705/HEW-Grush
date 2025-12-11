@@ -160,6 +160,7 @@
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="DirectX.cpp" />
+    <ClCompile Include="ElectricFan.cpp" />
     <ClCompile Include="EventComponent.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -167,6 +168,7 @@
     <ClCompile Include="GlassShardPool.cpp" />
     <ClCompile Include="GroundRenderer.cpp" />
     <ClCompile Include="Hammer.cpp" />
+    <ClCompile Include="JumpSki.cpp" />
     <ClCompile Include="LoadingGauge.cpp" />
     <ClCompile Include="Model_anime.cpp" />
     <ClCompile Include="Model_check.cpp" />
@@ -247,6 +249,7 @@
     <ClInclude Include="DebugLog.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="DirectX.h" />
+    <ClInclude Include="ElectricFan.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="EventComponent.h" />
     <ClInclude Include="Game.h" />
@@ -264,6 +267,7 @@
     <ClInclude Include="InputGamepad.h" />
     <ClInclude Include="InputKeyboard.h" />
     <ClInclude Include="InputMouse.h" />
+    <ClInclude Include="JumpSki.h" />
     <ClInclude Include="Layer.h" />
     <ClInclude Include="LineManager.h" />
     <ClInclude Include="LoadingGauge.h" />
