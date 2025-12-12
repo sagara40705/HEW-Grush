@@ -6,6 +6,7 @@
 #include "Prefab.h"
 #include "PrefabSet.h"
 #include "LineManager.h"
+#include "GlassObjectSpawner.h"
 
 SceneGame::SceneGame()
 {
@@ -496,6 +497,9 @@ void SceneGame::CreateWarp()
 
 	GameObject& warpAtoB = w.CreateGameObject(Vector3(-5.f, 0.f, 33.f));
 	BoxCollider& colAtoB = warpAtoB.AddComponent<BoxCollider>(); colAtoB.isTrigger = true;
+
+	GameObject& spawner = w.CreateGameObject();
+	spawner.AddComponent<GlassObjectSpawner>();
 }
 
 void SceneGame::InitPlayerTex()

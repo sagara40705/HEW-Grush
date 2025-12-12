@@ -338,6 +338,9 @@
     <ClCompile Include="ElectricFan.cpp">
       <Filter>Game\Components\Gimmick</Filter>
     </ClCompile>
+    <ClCompile Include="GlassObjectSpawnerh.cpp">
+      <Filter>Game\Components\Gimmick</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -592,6 +595,9 @@
       <Filter>Game\Components\Gimmick</Filter>
     </ClInclude>
     <ClInclude Include="ElectricFan.h">
+      <Filter>Game\Components\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="GlassObjectSpawner.h">
       <Filter>Game\Components\Gimmick</Filter>
     </ClInclude>
   </ItemGroup>

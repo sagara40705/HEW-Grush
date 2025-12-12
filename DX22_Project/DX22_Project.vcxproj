@@ -164,6 +164,7 @@
     <ClCompile Include="EventComponent.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GlassObjectSpawnerh.cpp" />
     <ClCompile Include="GlassShard.cpp" />
     <ClCompile Include="GlassShardPool.cpp" />
     <ClCompile Include="GroundRenderer.cpp" />
@@ -259,6 +260,7 @@
     <ClInclude Include="GlassGaugeUI.h" />
     <ClInclude Include="GlassGaugeManager.h" />
     <ClInclude Include="GlassObject.h" />
+    <ClInclude Include="GlassObjectSpawner.h" />
     <ClInclude Include="GlassShard.h" />
     <ClInclude Include="GlassShardPool.h" />
     <ClInclude Include="GroundRenderer.h" />
