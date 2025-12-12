@@ -28,14 +28,14 @@ void ActionUI::Awake()
 	GameObject& spinMono = gameObject->CreateChild();
 	spinMono.AddComponent<UiSpriteRenderer>(TextureTag::SpinMono, kSpinPos, kSize, kSpinMonoUVPos, kUVSize);
 
+	// 回転攻撃、色付き(光らせる用)
+	GameObject& spinF = gameObject->CreateChild();
+	spFlash_ = &spinF.AddComponent<UiSpriteRenderer>(TextureTag::SpinFlash, kSpinPos, kSize, kSpinUVPos, kUVSize);
+	spFlash_->SetColor({ 1.f, 1.f, 1.f, 0.f });
+	
 	// 回転攻撃、色付き
 	GameObject& spin = gameObject->CreateChild();
 	spin_ = &spin.AddComponent<UiSpriteRenderer>(TextureTag::Spin, kSpinPos, kSize, kSpinUVPos, kUVSize);
-
-	// 回転攻撃、色付き(光らせる用)
-	GameObject& spinF = gameObject->CreateChild();
-	spFlash_ = &spinF.AddComponent<UiSpriteRenderer>(TextureTag::Spin, kSpinPos, kSize, kSpinUVPos, kUVSize);
-	spFlash_->SetColor({ 2.5f, 2.5f, 2.5f, 0.f }); 
 
 	// 回転攻撃、文字
 	GameObject& spinMojiMono = gameObject->CreateChild();
@@ -53,9 +53,9 @@ void ActionUI::Awake()
 	GameObject& dash = gameObject->CreateChild();
 	dash_ = &dash.AddComponent<UiSpriteRenderer>(TextureTag::Dash, kDashPos, kSize, kDashUVPos, kUVSize);
 
-	// ダッシュ、色付き
-	GameObject& dashF = gameObject->CreateChild();
-	daFlash_ = &dashF.AddComponent<UiSpriteRenderer>(TextureTag::Dash, kDashPos, kSize, kDashUVPos, kUVSize);
+	//// ダッシュ、色付き
+	//GameObject& dashF = gameObject->CreateChild();
+	//daFlash_ = &dashF.AddComponent<UiSpriteRenderer>(TextureTag::Dash, kDashPos, kSize, kDashUVPos, kUVSize);
 
 	// ダッシュ、文字
 	GameObject& dashMojiMono = gameObject->CreateChild();
@@ -76,13 +76,12 @@ void ActionUI::Start()
 
 void ActionUI::Update()
 {
-	
-	//現在使ってるアクションを取得
-	//ActionId action = state_->usingAction;
+	constexpr float kGlowDuration = 0.3f; // 0.3秒だけ光る
 	float ct;
 	int a;
 	
-	if (!state_->canUseAction[ToIndex(ActionId::SpinAttack)] || 1)
+	// ---回転攻撃
+	if (!state_->canUseAction[ToIndex(ActionId::SpinAttack)])
 	{
 		ct = 1.0f - state_->GetCoolDownRatio(ActionId::SpinAttack);
 		a = static_cast<int>(ct);
@@ -92,56 +91,52 @@ void ActionUI::Update()
 		spin_->SetUVScale({ 1, ct });
 
 		if (a <= 0)
-		{
-			spinMoji_->SetSize({ 0.f , 0.f});
-		}
-		else
-		spinMoji_->SetSize({ 90.f , 32.f});
-
-
-		
+		spinMoji_->SetSize({ 0.f , 0.f });
 	}
-	
-	//if (!state_->canUseAction[ToIndex(ActionId::DashAttack)] || 1)
+	else
+	spinMoji_->SetSize({ 90.f , 32.f });
+
+
+	// ---たまった瞬間光らせる処理(回転攻撃)
+	if (glowTimer > 0.f)
+	{
+		glowTimer -= 1.0f / 60.0f;
+
+		float t = glowTimer / kGlowDuration; // 1.0 → 0.0
+		float alpha = std::sin(t * 3.1415f); // 0→1→0 のカーブ
+
+		spFlash_->SetColor({ 1.f,1.f,1.f, alpha }); // アルファでフェード
+		spFlash_->SetVisible(true);
+	}
+	else
+	{
+		spFlash_->SetVisible(false); // 消す
+	}
+
+	bool isSpinReady = state_->canUseAction[ToIndex(ActionId::SpinAttack)];
+
+	if (isSpinReady && !wasSpinReady)
+	{
+		glowTimer = kGlowDuration; 
+	}
+	wasSpinReady = isSpinReady;
+
+
+	// ---ダッシュ攻撃
+	if (!state_->canUseAction[ToIndex(ActionId::DashAttack)])
 	{
 		ct = 1.0f - state_->GetCoolDownRatio(ActionId::DashAttack);
+		a = static_cast<int>(ct);
 		dash_->SetOffset({ 1130.f,  700 - (150 * ct) });
 		dash_->SetSize({ 150.f , 150.f * ct });
 		dash_->SetUVPos({ 1, 1 - ct });
 		dash_->SetUVScale({ 1, ct });
 
-		dashMoji_->SetOffset({ 1130.f,  722 - (32 * ct) });
-		dashMoji_->SetSize({ 135.f , 32.f * ct });
-		dashMoji_->SetUVPos({ 1, 1 - ct });
-		dashMoji_->SetUVScale({ 1, ct });
-
+		if (a <= 0)
+		dashMoji_->SetSize({ 0.f , 0.f });
 	}
-
-
-
-	/*
-	switch (action)
-	{
-	case ActionId::SpinAttack:
-		ct = state_->GetCoolDownRatio(action);
-		spin_->SetOffset({ 0, 200.f * (1 - ct) });
-		spin_->SetSize({ 220.f , 200.f * ct });
-		spin_->SetUVPos({ 1, 1 - ct });
-		spin_->SetUVScale({ 1, ct });
-		break;
-
-	case ActionId::DashAttack:
-		ct = state_->GetCoolDownRatio(action);
-		dash_->SetOffset({ 0, 200.f * (1 - ct) });
-		dash_->SetSize({ 220.f , 200.f * ct });
-		dash_->SetUVPos({ 1, 1 - ct });
-		dash_->SetUVScale({ 1, ct });
-		break;
-
-	default:
-		break;
-	}
-	*/
+	else
+	dashMoji_->SetSize({ 135.f , 32.f });
 
 }
 
@@ -151,7 +146,7 @@ void ActionUI::OnDestroy()
 	spin_  = nullptr;
 	dash_  = nullptr;
 	spFlash_ = nullptr;
-	daFlash_ = nullptr;
+	//daFlash_ = nullptr;
 	spinMoji_ = nullptr;
 	dashMoji_ = nullptr;
 }
