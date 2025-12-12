@@ -10,13 +10,10 @@
 #include <cmath>
 #include "DebugLog.h"
 
-<<<<<<< Updated upstream
 /*
 * @brief ‰Šú‰»ˆ—
 */
-=======
 
->>>>>>> Stashed changes
 void PlayerMove::Start()
 {
 	playerTF_ = gameObject->GetComponent<Transform>();

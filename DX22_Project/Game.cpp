@@ -16,15 +16,12 @@ void Game::Init()
     SceneManager::Initialize();
 
     // Å‰‚ÌƒV[ƒ“‚ğ—\–ñ
-<<<<<<< Updated upstream
     SceneManager::ChangeScene<SceneSample>();
-    //SceneManager::ChangeSceneAsync<SceneGame>();
-=======
+    //SceneManager::ChangeSceneAsync<SceneGame>()
     //SceneManager::ChangeScene<SceneSample>();
     SceneManager::ChangeSceneAsync<Result>();
    
    
->>>>>>> Stashed changes
 }
 
 void Game::Uninit()

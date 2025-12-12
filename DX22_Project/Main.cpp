@@ -30,10 +30,6 @@ HRESULT Init(HWND hWnd, UINT width, UINT height)
 	ShaderList::Init();
 	LineManager::Init();
 
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
 	// ÉVÅ[Éì
 	Game::Init();
 

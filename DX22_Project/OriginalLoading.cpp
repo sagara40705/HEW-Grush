@@ -17,11 +17,5 @@ void LoadingScene::OriginalLoad()
 	GameObject& loadGauge = w.CreateGameObject();
 	loadGauge.AddComponent<UiSpriteRenderer>(TextureTag::LoadGauge, Vector2(0.f, 0.f), Vector2(500.f, 50.f));
 
-<<<<<<< Updated upstream
-}
-=======
-	
-
 
 }
->>>>>>> Stashed changes
