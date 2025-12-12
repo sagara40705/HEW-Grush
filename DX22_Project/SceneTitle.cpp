@@ -5,6 +5,9 @@
 #include "AllComponent.h"
 #include "TextureManager.h"
 #include "Defines.h"
+#include "SceneManager.h"
+#include "InputKeyboard.h"
+#include "SceneGame.h"
 
 void SceneTitle::Load()
 {
@@ -30,6 +33,9 @@ void SceneTitle::Load()
 	//タイトルマネージャー生成
 	GameObject& manager = w.CreateGameObject();
 	manager.AddComponent<TitleManager>(&player);
+	
+
+	
 }
 
 void SceneTitle::Unload()

@@ -4,16 +4,27 @@
 #include "SceneGame.h"  
 #include "SceneTitle.h"// 最初のシーン
 #include "SceneSample.h"// 最初のシーン
+#include "InputKeyboard.h"
+#include "SceneResult.h"
+
 
 void Game::Init()
 {
+  
     OriginalInit();
 
     SceneManager::Initialize();
 
     // 最初のシーンを予約
+<<<<<<< Updated upstream
     SceneManager::ChangeScene<SceneSample>();
     //SceneManager::ChangeSceneAsync<SceneGame>();
+=======
+    //SceneManager::ChangeScene<SceneSample>();
+    SceneManager::ChangeSceneAsync<Result>();
+   
+   
+>>>>>>> Stashed changes
 }
 
 void Game::Uninit()

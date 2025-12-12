@@ -76,14 +76,14 @@
     <Filter Include="Engine\Rendering\Model">
       <UniqueIdentifier>{7ef38ee3-f64f-4530-b184-f75e14f8bbf6}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Components\Title">
-      <UniqueIdentifier>{831b65d8-eb7f-4866-b7ef-f1f23ad136f0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Game\Components\Loading">
       <UniqueIdentifier>{47deb2f4-af24-434a-9507-13dda3bcdc76}</UniqueIdentifier>
     </Filter>
     <Filter Include="Game\Components\GameManager">
       <UniqueIdentifier>{7bfc992f-9fa0-477f-b671-675a90bbe95f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Components\Manager">
+      <UniqueIdentifier>{831b65d8-eb7f-4866-b7ef-f1f23ad136f0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -262,7 +262,7 @@
       <Filter>Game\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="TitleManager.cpp">
-      <Filter>Game\Components\Title</Filter>
+      <Filter>Game\Components\Manager</Filter>
     </ClCompile>
     <ClCompile Include="OriginalGame.cpp">
       <Filter>Game\Entry</Filter>
@@ -315,11 +315,17 @@
     <ClCompile Include="Model_morph.cpp">
       <Filter>Engine\Rendering\Model</Filter>
     </ClCompile>
+<<<<<<< Updated upstream
     <ClCompile Include="ActionUI.cpp">
       <Filter>Game\Components\UI</Filter>
     </ClCompile>
     <ClCompile Include="EffekseerSystem.cpp">
       <Filter>Engine\Rendering\Effect</Filter>
+=======
+    <ClCompile Include="Result.cpp" />
+    <ClCompile Include="GameManager.cpp">
+      <Filter>Game\Components\Manager</Filter>
+>>>>>>> Stashed changes
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -513,7 +519,7 @@
       <Filter>Game\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="TitleManager.h">
-      <Filter>Game\Components\Title</Filter>
+      <Filter>Game\Components\Manager</Filter>
     </ClInclude>
     <ClInclude Include="GameState.h">
       <Filter>Game\Entry</Filter>
@@ -562,6 +568,10 @@
     </ClInclude>
     <ClInclude Include="SceneSample.h">
       <Filter>Game\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneResult.h" />
+    <ClInclude Include="GameManager.h">
+      <Filter>Game\Components\Manager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

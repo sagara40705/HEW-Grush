@@ -6,6 +6,9 @@
 #include "Prefab.h"
 #include "PrefabSet.h"
 #include "LineManager.h"
+#include "SceneManager.h"
+#include "SceneResult.h"
+
 
 SceneGame::SceneGame()
 {
@@ -450,6 +453,7 @@ void SceneGame::CreateActionUI()
 
 void SceneGame::Update()
 {
+	
 }
 
 void SceneGame::Draw()

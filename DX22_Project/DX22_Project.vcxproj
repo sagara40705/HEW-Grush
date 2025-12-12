@@ -167,6 +167,7 @@
     <ClCompile Include="EffekseerSystem.cpp" />
     <ClCompile Include="EventComponent.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GlassShard.cpp" />
     <ClCompile Include="GlassShardPool.cpp" />
@@ -202,6 +203,7 @@
     <ClCompile Include="PrefabSet.cpp" />
     <ClCompile Include="PrimitiveMeshManager.cpp" />
     <ClCompile Include="Raycast.cpp" />
+    <ClCompile Include="Result.cpp" />
     <ClCompile Include="Rigidbody.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneGame.cpp" />
@@ -251,6 +253,7 @@
     <ClInclude Include="Event.h" />
     <ClInclude Include="EventComponent.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GameManager.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="Geometory.h" />
@@ -284,6 +287,7 @@
     <ClInclude Include="PrimitiveMeshManager.h" />
     <ClInclude Include="Raycast.h" />
     <ClInclude Include="RenderSystem.h" />
+    <ClInclude Include="SceneResult.h" />
     <ClInclude Include="Rigidbody.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneGame.h" />

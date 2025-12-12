@@ -1,0 +1,46 @@
+#include "SceneResult.h"
+#include "SceneManager.h"
+#include "GameObject.h"
+#include "AllComponent.h"
+#include "TextureManager.h"
+#include "Defines.h"
+#include "SceneManager.h"
+#include "InputKeyboard.h"
+#include "SceneGame.h"
+
+void Result::Load()
+{
+	//テクスチャーロード
+	TextureManager::Load(TextureTag::Title_BG);
+	
+	World& w = GetWorld();
+
+	//Canvas
+	GameObject& canvas = w.CreateGameObject();
+	canvas.AddComponent<Canvas>();
+
+	//背景生成
+	GameObject& backGroung = w.CreateGameObject();
+	backGroung.AddComponent<UiSpriteRenderer>(TextureTag::Title_BG, Vector2(0.f, 0.f), Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
+
+	//プレイヤー画像生成
+	
+
+	//タイトルマネージャー生成
+	GameObject& manager = w.CreateGameObject();
+	
+
+
+}
+
+void Result::Update()
+{
+}
+
+void Result::Draw()
+{
+}
+
+void Result::Unload()
+{
+}

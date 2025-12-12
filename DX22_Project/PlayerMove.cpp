@@ -10,9 +10,13 @@
 #include <cmath>
 #include "DebugLog.h"
 
+<<<<<<< Updated upstream
 /*
 * @brief ‰Šú‰»ˆ—
 */
+=======
+
+>>>>>>> Stashed changes
 void PlayerMove::Start()
 {
 	playerTF_ = gameObject->GetComponent<Transform>();
@@ -106,6 +110,9 @@ void PlayerMove::InputMoveAxis()
 	if (InputKeyboard::GetKey('S')) axis.y -= 1.f;
 	if (InputKeyboard::GetKey('D')) axis.x += 1.f;
 	if (InputKeyboard::GetKey('A')) axis.x -= 1.f;
+
+	
+
 
 	// ’·‚³ 1 ‚ð’´‚¦‚éê‡‚Í³‹K‰»
 	if (axis.Length() > 1.f) axis = axis.Normalized();

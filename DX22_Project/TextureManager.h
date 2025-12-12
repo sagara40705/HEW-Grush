@@ -16,11 +16,16 @@ enum class TextureTag : uint8_t
     ScoreNumber,
     TimerColon,
     TimerNumber,
+<<<<<<< Updated upstream
     Spin,
     SpinMono,
     Dash,
     DashMono,
     Count
+=======
+    Count,
+    Result
+>>>>>>> Stashed changes
 };
 
 class TextureManager
