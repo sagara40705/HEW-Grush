@@ -9,10 +9,10 @@
 void GlassGaugeUI::Awake()
 {
 	GameObject& gaugeEmpty = gameObject->CreateChild();
-	empty_ = &gaugeEmpty.AddComponent<UiSpriteRenderer>(TextureTag::GaugeEmpty, Vector2::zero(), Vector2(200,200));
+	empty_ = &gaugeEmpty.AddComponent<UiSpriteRenderer>(TextureTag::GaugeEmpty, Vector2({ 25.f,10.f }) , Vector2(200, 200));
 
 	GameObject& gaugeMax = gameObject->CreateChild();
-	max_ = &gaugeMax.AddComponent<UiSpriteRenderer>(TextureTag::GaugeMax , Vector2::zero(), Vector2(200, 200));
+	max_ = &gaugeMax.AddComponent<UiSpriteRenderer>(TextureTag::GaugeMax , Vector2({ 25.f,10.f }), Vector2(200, 200));
 
 	GameObject& gaugeEffect = gameObject->CreateChild();
 	gaugeEffect.AddComponent<UiSpriteRenderer>(TextureTag::GaugeEffect, Vector2({20.f,40.f}), Vector2(200, 125));
@@ -40,12 +40,12 @@ void GlassGaugeUI::Update()
 
 	DebugLog::OutputValue("GlassGauge Ratio", r);
 
-	max_->SetOffset({ 0, 200.f * (1 - r) });
+	max_->SetOffset({ 25, 200.f * (1 - r) + 10.f });
 	max_->SetSize({ 220.f , 200.f * r });
 	max_->SetUVPos({ garde / 3.f, 1 - r });
 	max_->SetUVScale({ 1.f / 3.f, r });
 
-	empty_->SetOffset({ 0, 0 });
+	empty_->SetOffset({ 25.f, 10.f });
 	empty_->SetSize({ 220.f , 200.f  });
 	empty_->SetUVPos({ garde / 3.f, 1 });
 	empty_->SetUVScale({ 1.f / 3.f, 1 });
