@@ -21,6 +21,7 @@ enum class TextureTag : uint8_t
     SpinMoji,
     SpinMojiMono,
     SpinFlash,
+    SpinFront,
     Dash,
     DashMono,
     DashMoji,

@@ -10,7 +10,7 @@ private: //éQè∆
 	UiSpriteRenderer* spin_ = nullptr;
 	UiSpriteRenderer* dash_ = nullptr;
 	UiSpriteRenderer* spFlash_ = nullptr;
-	//UiSpriteRenderer* daFlash_ = nullptr;
+	UiSpriteRenderer* spFront_  = nullptr;
 	UiSpriteRenderer* spinMoji_ = nullptr;
 	UiSpriteRenderer* dashMoji_ = nullptr;
 	

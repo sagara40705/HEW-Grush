@@ -32,10 +32,15 @@ void ActionUI::Awake()
 	GameObject& spinF = gameObject->CreateChild();
 	spFlash_ = &spinF.AddComponent<UiSpriteRenderer>(TextureTag::SpinFlash, kSpinPos, kSize, kSpinUVPos, kUVSize);
 	spFlash_->SetColor({ 1.f, 1.f, 1.f, 0.f });
-	
+
 	// 回転攻撃、色付き
 	GameObject& spin = gameObject->CreateChild();
 	spin_ = &spin.AddComponent<UiSpriteRenderer>(TextureTag::Spin, kSpinPos, kSize, kSpinUVPos, kUVSize);
+
+	// 回転攻撃、色付き(光らせる用)
+	GameObject& spinFr = gameObject->CreateChild();
+	spFront_ = &spinFr.AddComponent<UiSpriteRenderer>(TextureTag::SpinFront, kSpinPos, kSize, kSpinUVPos, kUVSize);
+	spFront_->SetColor({ 1.f, 1.f, 1.f, 0.f });
 
 	// 回転攻撃、文字
 	GameObject& spinMojiMono = gameObject->CreateChild();
@@ -52,10 +57,6 @@ void ActionUI::Awake()
 	// ダッシュ、色付き
 	GameObject& dash = gameObject->CreateChild();
 	dash_ = &dash.AddComponent<UiSpriteRenderer>(TextureTag::Dash, kDashPos, kSize, kDashUVPos, kUVSize);
-
-	//// ダッシュ、色付き
-	//GameObject& dashF = gameObject->CreateChild();
-	//daFlash_ = &dashF.AddComponent<UiSpriteRenderer>(TextureTag::Dash, kDashPos, kSize, kDashUVPos, kUVSize);
 
 	// ダッシュ、文字
 	GameObject& dashMojiMono = gameObject->CreateChild();
@@ -106,6 +107,7 @@ void ActionUI::Update()
 		float alpha = std::sin(t * 3.1415f); // 0→1→0 のカーブ
 
 		spFlash_->SetColor({ 1.f,1.f,1.f, alpha }); // アルファでフェード
+		spFront_->SetColor({ 1.f,1.f,1.f, alpha }); // アルファでフェード
 		spFlash_->SetVisible(true);
 	}
 	else
