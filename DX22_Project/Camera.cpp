@@ -188,7 +188,7 @@ bool Camera::IsVisibleSphere(const Vector3& center, float radius) const
     float tanY = std::tan(fovY * 0.5f);
     float tanX = tanY * aspect;
 
-    const float shrink = 0.8f;
+    const float shrink = 1.0f;
 
     // 左右
     if (std::fabs(x) - radius > z * tanX * shrink) return false;
