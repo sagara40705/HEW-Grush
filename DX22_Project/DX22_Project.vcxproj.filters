@@ -85,6 +85,9 @@
     <Filter Include="Game\Components\GameManager">
       <UniqueIdentifier>{7bfc992f-9fa0-477f-b671-675a90bbe95f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Components\Gimmick">
+      <UniqueIdentifier>{44d1c6ce-c9cd-4aa6-8a74-78f91fd44392}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectX.cpp">
@@ -325,6 +328,18 @@
     <ClCompile Include="SkyDomeShader.cpp" />
     <ClCompile Include="StageWall.cpp">
       <Filter>Game\Components\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="WarpPoint .cpp">
+      <Filter>Game\Components\Gimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="JumpSki.cpp">
+      <Filter>Game\Components\Gimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="ElectricFan.cpp">
+      <Filter>Game\Components\Gimmick</Filter>
+    </ClCompile>
+    <ClCompile Include="GlassObjectSpawnerh.cpp">
+      <Filter>Game\Components\Gimmick</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -572,6 +587,18 @@
     <ClInclude Include="SkyDomeShader.h" />
     <ClInclude Include="StageWall.h">
       <Filter>Game\Components\Environment</Filter>
+    </ClInclude>
+    <ClInclude Include="WarpPoint.h">
+      <Filter>Game\Components\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="JumpSki.h">
+      <Filter>Game\Components\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="ElectricFan.h">
+      <Filter>Game\Components\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="GlassObjectSpawner.h">
+      <Filter>Game\Components\Gimmick</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

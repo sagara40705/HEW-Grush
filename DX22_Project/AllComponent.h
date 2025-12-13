@@ -36,6 +36,9 @@
 #include "GlassShard.h"
 #include "GlassShardPool.h"
 
+#include "WarpPoint.h"
+#include "JumpSki.h"
+
 #include "TimerUI.h"
 #include "ScoreManager.h"
 #include "ScoreUI.h"
