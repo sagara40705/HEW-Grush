@@ -218,7 +218,7 @@ void SceneGame::CreateStage()
 	World& w = GetWorld();
 
 	//70端
-	constexpr float SIZE = 70.f;
+	constexpr float SIZE = 80.f;
 	constexpr float HALF = SIZE / 2.f;
 	constexpr float OFFSET = HALF + 0.5f;
 
@@ -228,7 +228,7 @@ void SceneGame::CreateStage()
 	constexpr float HALF = 60.f / 2.f;*/
 
 	//70フィールド
-	GameObject& floor = w.CreateGameObject(Vector3(0.f, -1.f, 0.f), Vector3::zero(), Vector3(70.f, 0.1f, 70.f));
+	GameObject& floor = w.CreateGameObject(Vector3(0.f, -1.f, 0.f), Vector3::zero(), Vector3(SIZE, 0.1f, SIZE));
 	
 	//60フィールド
 	//GameObject& floor = w.CreateGameObject(Vector3(0.f, -1.f, 0.f), Vector3::zero(), Vector3(60.f, 0.1f, 60.f));
