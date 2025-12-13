@@ -10,7 +10,7 @@
 #include "Rigidbody.h"
 #include <cassert>
 
-constexpr float kActionTime[ToIndex(ActionId::Count)] = { 0.4f, 1.f, 2.f };
+constexpr float kActionTime[ToIndex(ActionId::Count)] = { 0.4f, 1.f, 1.5f };
 constexpr float kCoolDown[ToIndex(ActionId::Count)]  = { 0.1f, 5.f, 5.f };
 
 void PlayerAction::Start()

@@ -12,8 +12,8 @@ void PlayerAnimation::Start()
 	state_ = gameObject->GetComponent<PlayerState>();
 	anime_ = gameObject->GetComponent<Animator>();
 	AddAllAnimations();
-	//anime_->Play(animation_[ToIndex(Type::Move)], false, 1.f);
-	//anime_->Stop();*/
+	anime_->Play(animation_[Type::Move], false, 1.f);
+	anime_->SetTimeSeconds(4.8f);
 
 	assert(state_ && anime_ && "PlayerAnimation	で プレイヤーの <PlayerState> か <Animator> が nullptr です");
 }
@@ -79,10 +79,10 @@ void PlayerAnimation::CheckDashAttackAnime()
 		const float t = anime_->GetCurrentAnimeTime();
 
 		//アニメーション終了したら移動アニメーションへ
-		if (t > 0.5f && t < 2.0f)
+		if (t > 2.5f)
 		{
-			//currentType_ = Type::None;
-			anime_->SetTimeSeconds(2.2f);
+			anime_->Play(animation_[Type::Move], false, 1.f);
+			anime_->SetTimeSeconds(4.8f);
 		}
 	}
 	else
