@@ -12,17 +12,17 @@ class PlayerAnimation : public MonoBehaviour
 {
 private:
 	//アニメーションの種類
-	enum class Type : std::uint8_t
+	enum Type
 	{
 		//Idle = ,			// 待機アニメーション
 		Move = 0,			// 移動アニメーション
 		//NormalAttack = ,	// 通常攻撃アニメーション
 		//SpinAttack = ,		// 回転攻撃アニメーション
-		Count = 1,			// アニメーションの総数
+		DashAttack = 1,	// 突進攻撃アニメーション
+		Count = 2,			// アニメーションの総数
 		None = 99			// 未指定状態
 	};
-	// 
-	static constexpr size_t ToIndex(Type t) noexcept { return static_cast<size_t>(t); }
+
 private:
 	PlayerState* state_ = nullptr;	//プレイヤーの状態
 	Animator* anime_ = nullptr;		//アニメーター
@@ -31,12 +31,12 @@ public:
 	void OnDestroy() override;		// 終了処理
 	void Update()  override;		// 更新処理
 private:
-	Model::AnimeNo animation_[static_cast<int>(Type::Count)]; //アニメーションナンバーの格納先
+	Model::AnimeNo animation_[Type::Count]; //アニメーションナンバーの格納先
 	Type currentType_ = Type::None; // 現在のアニメーション
 	Type nextType_	  = Type::None; // 現在のアニメーション
 private:
 	void CheckMoveAnime();
-
+	void CheckDashAttackAnime();
 private:
 //========================================
 //     内部処理
@@ -56,10 +56,8 @@ private:
 
 	/*
 	* @brief 次のアニメーションへ遷移する
-	* @param[from] no 現在のアニメーション Type
-	* @param[from] no 次のアニメーション Type
 	*/
-	void ChangeState(Type from, Type to);
+	void ChangeState();
 
 	/*
 	* @brief 現在アニメーションの更新処理

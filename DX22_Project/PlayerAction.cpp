@@ -104,6 +104,9 @@ void PlayerAction::CheckCanAction()
 
 	for (size_t action = 0; action < ToIndex(ActionId::Count); ++action)
 	{
+		//アニメーション用フラグをリセット
+		state_->actionedThisFrame[action] = false;
+
 		// 入力がある + 使用可能なら発動
 		if (state_->wantUseAction[action] && state_->canUseAction[action])
 		{
@@ -116,6 +119,9 @@ void PlayerAction::CheckCanAction()
 			// 使用不可にしておく
 			state_->canUseAction[action] = false;
 			state_->wantUseAction[action] = false;
+
+			//このフレームでアクションを実行したことを記録
+			state_->actionedThisFrame[action] = true;
 			return;
 		}
 	}
@@ -233,7 +239,7 @@ void PlayerAction::UpdateDashAttack()
 
 	// ダッシュ距離と速度
 	// ここでは「攻撃 1 回で dashDistance だけ進む」ようにしている
-	constexpr float dashDistance = 32.0f; // 好みで調整
+	constexpr float dashDistance = 24.0f; // 好みで調整
 	const float dashTime = kActionTime[ToIndex(ActionId::DashAttack)];
 	const float dashSpeed = dashDistance / dashTime;
 
@@ -243,3 +249,4 @@ void PlayerAction::UpdateDashAttack()
 	// ダッシュ中は常に同じ方向へ一定速度で突き進む
 	rb->velocity = Vector3(dir.x * dashSpeed, vy, dir.z * dashSpeed);
 }
+

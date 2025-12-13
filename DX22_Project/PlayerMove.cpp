@@ -31,6 +31,7 @@ void PlayerMove::Start()
 */
 void PlayerMove::Update()
 {
+
 	CheckGround();
 	Jump();
 	InputMoveAxis();
