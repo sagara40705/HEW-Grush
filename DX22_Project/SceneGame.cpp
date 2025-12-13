@@ -93,7 +93,7 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { CreateTimerUI(); });
 	outTasks.emplace_back([this] { CreateScoreUI(); });
 	outTasks.emplace_back([this] { CreateActionUI(); });
-	outTasks.emplace_back([this] { InitPlayerTex(); });
+	//outTasks.emplace_back([this] { InitPlayerTex(); });
 	outTasks.emplace_back([this] { InitSkyDome(); });
 
 
@@ -207,7 +207,8 @@ void SceneGame::CreateStage()
 
 	//70’[
 	constexpr float SIZE = 70.f;
-	constexpr float HALF = 70.f / 2.f;
+	constexpr float HALF = SIZE / 2.f;
+	constexpr float OFFSET = HALF + 0.5f;
 
 
 	//60’[
@@ -226,25 +227,25 @@ void SceneGame::CreateStage()
 	BoxCollider& collider = floor.AddComponent<BoxCollider>();
 	collider.layer = Layer::Ground;
 
-	GameObject& wT = w.CreateGameObject(Vector3(0.f, 0.f,  HALF), Vector3::zero(), Vector3(SIZE, 4.f, 0.6f));
+	GameObject& wT = w.CreateGameObject(Vector3(0.f, 0.f, OFFSET), Vector3(90.f, 0.f, 0.f), Vector3(SIZE, 1.f, 4.f));
 	MeshFilter& mfT = wT.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mfT.boundsRadius = 0.f;
 	wT.AddComponent<GroundRenderer>();
 	BoxCollider& bcT = wT.AddComponent<BoxCollider>(); bcT.layer = Layer::Ground;
 	wT.AddComponent<StageWall>();
 
-	GameObject& wB = w.CreateGameObject(Vector3(0.f, 0.f, -HALF), Vector3::zero(), Vector3(SIZE, 4.f, 0.2f));
+	GameObject& wB = w.CreateGameObject(Vector3(0.f, 0.f, -OFFSET), Vector3(90.f, 0.f, 0.f), Vector3(SIZE, 1.f, 4.0f));
 	MeshFilter& mfB = wB.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mfB.boundsRadius = 0.f;
 	wB.AddComponent<GroundRenderer>();
 	BoxCollider& bcB = wB.AddComponent<BoxCollider>(); bcB.layer = Layer::Ground;
 	wB.AddComponent<StageWall>();
 
-	GameObject& wR = w.CreateGameObject(Vector3( HALF, 0.f, 0.f), Vector3::zero(), Vector3(0.2f, 4.f, SIZE));
+	GameObject& wR = w.CreateGameObject(Vector3(OFFSET, 0.f, 0.f), Vector3(0.f, 0.f, 90.f), Vector3(4.0f, 1.f, SIZE));
 	MeshFilter& mfR = wR.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mfR.boundsRadius = 0.f;
 	wR.AddComponent<GroundRenderer>();
 	BoxCollider& bcR = wR.AddComponent<BoxCollider>(); bcR.layer = Layer::Ground;
 	wR.AddComponent<StageWall>();
 
-	GameObject& wL = w.CreateGameObject(Vector3(-HALF, 0.f, 0.f), Vector3::zero(), Vector3(0.2f, 4.f, SIZE));
+	GameObject& wL = w.CreateGameObject(Vector3(-OFFSET, 0.f, 0.f), Vector3(0.f, 0.f, 90.f), Vector3(4.0f, 1.f, SIZE));
 	MeshFilter& mfL = wL.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mfL.boundsRadius = 0.f;
 	wL.AddComponent<GroundRenderer>();
 	BoxCollider& bcL = wL.AddComponent<BoxCollider>(); bcL.layer = Layer::Ground;

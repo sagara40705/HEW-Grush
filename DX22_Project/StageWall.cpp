@@ -5,11 +5,13 @@
 #include "Raycast.h"
 #include "DebugLog.h"
 #include "GroundRenderer.h"
+#include "TextureManager.h"
 
 void StageWall::Start()
 {
 	cam_ = Camera::Main();
 	render_ = gameObject->GetComponent<GroundRenderer>();
+	//render_->SetTexture(TextureManager::Get(TextureTag::GroundTile));
 }
 
 void StageWall::Update()
