@@ -78,9 +78,14 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Spin); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::SpinMono); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::SpinMoji); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::SpinMojiMono); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::SpinFlash); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::SpinFront); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Dash); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::DashMono); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::DashMoji); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::DashMojiMono); });
+
 
 	// プレイハブ設定
 	outTasks.emplace_back([this] { RegisterAllPrefabs(); });
