@@ -79,7 +79,12 @@ void PlayerAnimation::CheckDashAttackAnime()
 		const float t = anime_->GetCurrentAnimeTime();
 
 		//アニメーション終了したら移動アニメーションへ
-		if (t > 2.5f)
+		if (t > 2.5f && t < 3.f)
+		{
+			//anime_->Play(animation_[Type::Move], false, 1.f);
+			anime_->SetTimeSeconds(4.4f);
+		}
+		if (t > 5.0)
 		{
 			anime_->Play(animation_[Type::Move], false, 1.f);
 			anime_->SetTimeSeconds(4.8f);
