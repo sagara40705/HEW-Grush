@@ -229,10 +229,11 @@ void PlayerAction::UpdateDashAttack()
 		return;
 	}
 	dir.Normalize();
+	dir.x *= -1;  // Z 軸反転を元に戻す
 
 	// ダッシュ距離と速度
 	// ここでは「攻撃 1 回で dashDistance だけ進む」ようにしている
-	constexpr float dashDistance = 20.0f; // 好みで調整
+	constexpr float dashDistance = 32.0f; // 好みで調整
 	const float dashTime = kActionTime[ToIndex(ActionId::DashAttack)];
 	const float dashSpeed = dashDistance / dashTime;
 
