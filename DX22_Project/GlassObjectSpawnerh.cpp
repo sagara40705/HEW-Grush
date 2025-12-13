@@ -39,7 +39,7 @@ void GlassObjectSpawner::Start()
 		GameObject& obj = Prefab::Instantiate(*world, data.id, data.position, data.rotation, data.scale);
 		spawnObjectId[i] = obj.id;
 	}
-	DebugLog::Output("GlassObjectSpawner::Start()");
+	DebugLog::Output("[GlassObjectSpawner] Start()");
 }
 
 void GlassObjectSpawner::Update()
@@ -55,7 +55,7 @@ void GlassObjectSpawner::Update()
 
 	spawnTimer = 0.0f; // タイマーリセット
 	World* world = gameObject->world;
-	DebugLog::Output("GlassObjectSpawner::Update(), SpawnTime");
+	//DebugLog::Output("[GlassObjectSpawner] , SpawnTime");
 
 	for (int i = 0; i < kSpawnDataCount; ++i)
 	{
@@ -80,7 +80,7 @@ void GlassObjectSpawner::Update()
 
 		GameObject& obj = Prefab::Instantiate(*world, data.id, data.position, data.rotation, data.scale);
 		spawnObjectId[i] = obj.id;
-		DebugLog::OutputValue("GlassObjectSpawner::Update(), スポーンします", spawnObjectId[i]);
+		DebugLog::OutputValue("[GlassObjectSpawner] , スポーンします", spawnObjectId[i]);
 	}
 
 

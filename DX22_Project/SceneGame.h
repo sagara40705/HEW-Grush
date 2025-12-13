@@ -30,6 +30,8 @@ private:
 	void CreateScoreUI();
 	void CreateActionUI();
 
+	//ÉMÉ~ÉbÉN	
+	void CreateGlassObjectSpawner();
 	void CreateWarp();
 
 	void InitPlayerTex();

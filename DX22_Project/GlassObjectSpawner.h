@@ -11,7 +11,7 @@ class GlassObjectSpawner : public MonoBehaviour
 {
 private:
 	// メンバ変数
-	const float spawnInterval = 10.0f; // スポーン間隔
+	const float spawnInterval = 12.0f; // スポーン間隔
 	float spawnTimer = 0.0f; // 最後のスポーンからの経過時間(タイマー)
 	Camera* cam_ = nullptr;
 
