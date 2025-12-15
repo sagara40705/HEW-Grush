@@ -8,7 +8,7 @@
 void HitEffkt::Awake()
 {
 	GameObject& spinMono = gameObject->CreateChild();
-	spinMono.AddComponent<UiSpriteRenderer>(TextureTag::Result, 1, 1, 1, 1);
+	spinMono.AddComponent<UiSpriteRenderer>(TextureTag::Result, Vector2(0,0), Vector2(100, 100)); //←コンストラクタが不適だった
 
 	//GameObject&hit = gameObject->CreateChild();
 	//HIt_ = &hit.AddComponent<UiSpriteRenderer>(TextureTag::Spin, 1, 1, 1, 1);

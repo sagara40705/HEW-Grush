@@ -4,17 +4,19 @@
 
 class PlayerState; class Hammer;
 
-class PlayerAction : public MonoBehaviour,Scene
+class PlayerAction : public MonoBehaviour
 {
 private:
 	Transform* tf_ = nullptr;
 	PlayerState* state_ = nullptr;
 	Hammer* hammer_ = nullptr;
+
 	GameObject* Effkseer = nullptr;
 	SpriteAnimation* m_hitEffekt = nullptr;
 
 public:
-	PlayerAction(GameObject* Effkt);
+	PlayerAction();  // ←コンストラクタで情報を受け取る形にしない
+	void Awake() override;
 	void Start() override;
 	void Update() override;
 	void OnDestroy() override;

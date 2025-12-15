@@ -1,7 +1,7 @@
 #pragma once
 #include "Component.h"
 
-	class PlayerState;
+class PlayerState;
 
 class HitEffkt : public MonoBehaviour
 {

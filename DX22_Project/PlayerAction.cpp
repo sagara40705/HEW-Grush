@@ -14,13 +14,25 @@
 constexpr float kActionTime[ToIndex(ActionId::Count)] = { 0.4f, 1.f, 2.f };
 constexpr float kCoolDown[ToIndex(ActionId::Count)]  = { 0.1f, 5.f, 5.f };
 
-PlayerAction::PlayerAction(GameObject* Effkt):Effkseer(Effkt)
+PlayerAction::PlayerAction()
 {
+	// コンストラクタで情報を受け取る形にしない
+
+	// 参照はAwake/Startで取得する
+}
+
+void PlayerAction::Awake()
+{
+	// 子オブジェクトを生成して参照をメンバに保存しておく
+
+	Effkseer = &gameObject->CreateChild();
+	//m_hitEffekt = Effkseer->AddComponent<・・・>
 }
 
 void PlayerAction::Start()
 {
 	
+
 	tf_ = gameObject->GetComponent<Transform>();
 	state_ = gameObject->GetComponent<PlayerState>();
 	for (GameObject* go : gameObject->GetChildren())
@@ -80,7 +92,7 @@ void PlayerAction::InputWantAction()
 	{
 		state_->wantUseAction[i] = false;
 	}
-	World& w = GetWorld();
+	World& w = *gameObject->world;
 	//==================== NormalAttack (Eキー / Xボタン) ====================
 	if (InputKeyboard::GetKeyDown('E') ||
 		InputGamepad::GetButtonDown(XINPUT_GAMEPAD_X))
