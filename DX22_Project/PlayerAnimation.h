@@ -26,10 +26,13 @@ private:
 private:
 	PlayerState* state_ = nullptr;	//プレイヤーの状態
 	Animator* anime_ = nullptr;		//アニメーター
+
+	
 public:
 	void Start() override;			// 開始処理
 	void OnDestroy() override;		// 終了処理
 	void Update()  override;		// 更新処理
+	
 private:
 	Model::AnimeNo animation_[static_cast<int>(Type::Count)]; //アニメーションナンバーの格納先
 	Type currentType_ = Type::None; // 現在のアニメーション

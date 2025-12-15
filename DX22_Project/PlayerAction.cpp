@@ -8,12 +8,19 @@
 #include "InputGamepad.h"  
 #include "BoxCollider.h"
 #include <cassert>
+#include "TextureManager.h"
+#include "SceneManager.h"
 
 constexpr float kActionTime[ToIndex(ActionId::Count)] = { 0.4f, 1.f, 2.f };
 constexpr float kCoolDown[ToIndex(ActionId::Count)]  = { 0.1f, 5.f, 5.f };
 
+PlayerAction::PlayerAction(GameObject* Effkt):Effkseer(Effkt)
+{
+}
+
 void PlayerAction::Start()
 {
+	
 	tf_ = gameObject->GetComponent<Transform>();
 	state_ = gameObject->GetComponent<PlayerState>();
 	for (GameObject* go : gameObject->GetChildren())
@@ -25,6 +32,10 @@ void PlayerAction::Start()
 			break;
 		}
 	}
+
+	//Spriteアニメーションを開始
+	
+
 
 	assert(state_ && tf_ && hammer_ && "参照のどれかがnullptrです");
 	if (!state_ || !tf_ || !hammer_) return;
@@ -69,13 +80,20 @@ void PlayerAction::InputWantAction()
 	{
 		state_->wantUseAction[i] = false;
 	}
-
+	World& w = GetWorld();
 	//==================== NormalAttack (Eキー / Xボタン) ====================
 	if (InputKeyboard::GetKeyDown('E') ||
 		InputGamepad::GetButtonDown(XINPUT_GAMEPAD_X))
 	{
 		state_->wantUseAction[ToIndex(ActionId::NormalAttack)] = true;
 		DebugLog::Output("NormalAttack 入力受付");
+		TextureManager::Load(TextureTag::GaugeEffect);
+		
+
+		// ダッシュ、色付き
+		//GameObject& dash = gameObject->CreateChild();
+		//dash_ = &dash.AddComponent<UiSpriteRenderer>(TextureTag::Dash, 1, 1, 1, 1);
+
 	}
 
 	//==================== SpinAttack (Rキー / R1ボタン) =====================

@@ -20,9 +20,8 @@ enum class TextureTag : uint8_t
     SpinMono,
     Dash,
     DashMono,
-
+    Result,
     Count,
-    Result
 };
 
 class TextureManager

@@ -5,7 +5,6 @@
 #include "AllComponent.h"
 #include "TextureManager.h"
 #include "Defines.h"
-#include "SceneManager.h"
 #include "InputKeyboard.h"
 #include "SceneGame.h"
 

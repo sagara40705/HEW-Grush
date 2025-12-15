@@ -172,6 +172,7 @@
     <ClCompile Include="GlassShard.cpp" />
     <ClCompile Include="GlassShardPool.cpp" />
     <ClCompile Include="Hammer.cpp" />
+    <ClCompile Include="HitEffkt.cpp" />
     <ClCompile Include="LoadingGauge.cpp" />
     <ClCompile Include="Model_anime.cpp" />
     <ClCompile Include="Model_check.cpp" />
@@ -263,6 +264,7 @@
     <ClInclude Include="GlassShard.h" />
     <ClInclude Include="GlassShardPool.h" />
     <ClInclude Include="Hammer.h" />
+    <ClInclude Include="HitEffkt.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="InputGamepad.h" />
     <ClInclude Include="InputKeyboard.h" />

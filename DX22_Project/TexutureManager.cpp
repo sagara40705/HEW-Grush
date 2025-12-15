@@ -19,6 +19,7 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     "Assets/Texture/UI_rotation.png",
     "Assets/Texture/UI_dush_color.png",
     "Assets/Texture/UI_dush.png",
+    "Assets/Texture/sparklingStar03_ss.png",
 };
 
 // 配列のデフォルトパスを使用して登録
