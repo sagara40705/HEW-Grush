@@ -74,7 +74,7 @@ void Hammer::SetScale()
 {
 	constexpr Vector3 Size[ToIndex(HammerGrade::Count)] = { {0.3f,0.3f,0.8f}, {0.5f,0.5f,0.8f}, {0.8f,0.8f,0.8f} };
 
-	tf_->SetScale(Size[ToIndex(grade_)]);
+	//tf_->SetScale(Size[ToIndex(grade_)]);
 	DebugLog::OutputValue("Hammer::Scale, Grade", static_cast<int>(grade_) + 1);
 }
 
@@ -84,16 +84,28 @@ void Hammer::UpdateNormalAttack(float r)
 	if (r < 0.0f) r = 0.0f;
 	if (r > 1.0f) r = 1.0f;
 
-	constexpr Vector3 START = { -2.f, 0.f, 0.f };
-	constexpr Vector3 END =   { 2.f, 0.f, 0.f };
+	constexpr Vector3 START = { -2.f, 0.5f, -2.f };
+	constexpr Vector3 END =   { 2.f, 0.6f, -2.f };
+	constexpr Vector3 ROTATE = { 0.f, -90.f, -45.f };
 
 	const Vector3 OFFSET = Vector3::Lerp(START, END, r);
 	tf_->SetPosition(BasePos + OFFSET);
+	tf_->SetRotation(ROTATE);
+
 }
 
 void Hammer::ResetPos()
 {
 	tf_->SetPosition(BasePos);
+	tf_->SetRotation(BaseRota);
+}
+
+void Hammer::UpdateSpinAttack()
+{
+	constexpr Vector3 OFFSET = { 0.f, 0.5f, -2.f };
+	constexpr Vector3 ROTATE = { 0.f, -90.f, -45.f };
+	tf_->SetPosition(BasePos + OFFSET);
+	tf_->SetRotation(ROTATE);
 }
 
 void Hammer::Attack(GameObject* go)

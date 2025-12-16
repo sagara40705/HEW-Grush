@@ -12,9 +12,8 @@ void PlayerAnimation::Start()
 	state_ = gameObject->GetComponent<PlayerState>();
 	anime_ = gameObject->GetComponent<Animator>();
 	AddAllAnimations();
-	anime_->Play(animation_[ToIndex(Type::Move)], false, 1.f);
-	//anime_->Stop();*/
-
+	anime_->Play(animation_[Type::Move], false, 1.f);
+	anime_->SetTimeSeconds(4.8f);
 
 	assert(state_ && anime_ && "PlayerAnimation	で プレイヤーの <PlayerState> か <Animator> が nullptr です");
 }
@@ -31,7 +30,9 @@ void PlayerAnimation::OnDestroy()
 */
 void PlayerAnimation::Update()
 {
+	//移動を先に判定
 	CheckMoveAnime();
+	CheckDashAttackAnime();
 }
 
 /*
@@ -39,22 +40,66 @@ void PlayerAnimation::Update()
 */
 void PlayerAnimation::CheckMoveAnime()
 {
-	const float t = anime_->GetCurrentAnimeTime();
 	constexpr float kLoopStart = 0.5f;
 	constexpr float kLoopEnd = 4.0f;
-	if (t > kLoopEnd && state_->isMoving)
-	{
-		anime_->SetTimeSeconds(kLoopStart);
-	}
 
-	if (state_->moveStartedThisFrame) 
-	{
-		anime_->Play(animation_[ToIndex(Type::Move)], false, 1.f);
-		anime_->SetTimeSeconds(0.3f);
+	if (currentType_ == Type::Move)
+	{ 
+		const float t = anime_->GetCurrentAnimeTime();
+
+		//ループ範囲外に出たらループ開始位置に戻す
+		if (t > kLoopEnd && state_->isMoving)
+		{
+			anime_->SetTimeSeconds(kLoopStart);
+		}
+
+		//移動停止したら終了位置まで再生
+		if (state_->moveStoppedThisFrame)
+		{
+			anime_->SetTimeSeconds(4.8f);
+		}
 	}
-	if (state_->moveStoppedThisFrame)
+	else
 	{
-		anime_->SetTimeSeconds(4.8f);
+		//移動開始したら移動アニメーションへ
+		if (state_->moveStartedThisFrame)
+		{
+			currentType_ = Type::Move;
+			anime_->Play(animation_[Type::Move], false, 1.f);
+			anime_->SetTimeSeconds(0.3f);
+		}
+	}
+}
+
+void PlayerAnimation::CheckDashAttackAnime()
+{
+
+	if (currentType_ == Type::DashAttack)
+	{
+		const float t = anime_->GetCurrentAnimeTime();
+
+		//アニメーション終了したら移動アニメーションへ
+		if (t > 2.5f && t < 3.f)
+		{
+			//anime_->Play(animation_[Type::Move], false, 1.f);
+			anime_->SetTimeSeconds(4.4f);
+		}
+		if (t > 5.0)
+		{
+			anime_->Play(animation_[Type::Move], false, 1.f);
+			anime_->SetTimeSeconds(4.8f);
+		}
+	}
+	else
+	{
+		//ダッシュ攻撃アクションを実行したらダッシュ攻撃アニメーションへ
+		if (state_->actionedThisFrame[ToIndex(ActionId::DashAttack)])
+		{
+			currentType_ = Type::DashAttack;
+			anime_->Play(animation_[Type::DashAttack], false, 1.0f);
+			anime_->SetTimeSeconds(1.0f);
+		}
+
 	}
 }
 
@@ -67,8 +112,12 @@ void PlayerAnimation::AddAllAnimations()
 	Model* model = anime_->GetModel();
 	if (!model) return;
 
-	animation_[ToIndex(Type::Move)] = model->AddAnimation("Assets/Model/animation_hashiru.fbx");
+	//移動
+	animation_[Type::Move] = model->AddAnimation("Assets/Animation/animation_hashiru_2.fbx");
+	
 
+	//突進攻撃
+	animation_[Type::DashAttack] = model->AddAnimation("Assets/Animation/animation_dashattack.fbx");
 }
 
 /*
@@ -84,7 +133,7 @@ PlayerAnimation::Type PlayerAnimation::DecideNextTypeFromState() const
 * @param[from] no 現在のアニメーション Type
 * @param[from] no 次のアニメーション Type
 */
-void PlayerAnimation::ChangeState(Type from, Type to)
+void PlayerAnimation::ChangeState()
 {
 
 }
@@ -94,6 +143,7 @@ void PlayerAnimation::ChangeState(Type from, Type to)
 */
 void PlayerAnimation::UpdateCurrentState()
 {
+
 }
 
 

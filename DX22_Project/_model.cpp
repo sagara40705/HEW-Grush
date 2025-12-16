@@ -120,6 +120,61 @@ void Model::MakeMaterial(const void* ptr, std::string directory)
 		if (assimpMaterial->Get(AI_MATKEY_SHININESS, shininess) == AI_SUCCESS)
 			material.specular.w = shininess;
 
+		//========================================================
+	   // 2) 透過を読む
+	   //========================================================
+		float opacity = 1.0f;
+		bool foundOpacity = false;
+
+		// (A) Opacity（1=不透明, 0=透明）を最優先
+		float op = 1.0f;
+		if (assimpMaterial->Get(AI_MATKEY_OPACITY, op) == AI_SUCCESS)
+		{
+			op = std::clamp(op, 0.0f, 1.0f);
+
+			// 0/1 しか出ない（未使用で 0 が返る等）ケースを避けるため
+			// “中間値っぽい”ときだけ採用（必要なら条件を緩めてOK）
+			if (op > 0.0f && op < 1.0f)
+			{
+				opacity = op;
+				foundOpacity = true;
+			}
+		}
+		// (B) TransparencyFactor（0=不透明, 1=透明）をフォールバック
+		if (!foundOpacity)
+		{
+			float tf = 0.0f;
+			if (assimpMaterial->Get(AI_MATKEY_TRANSPARENCYFACTOR, tf) == AI_SUCCESS)
+			{
+				tf = std::clamp(tf, 0.0f, 1.0f);
+
+				// 未使用で 1.0 が入ってしまう等の事故を避ける
+				if (tf > 0.0f && tf < 1.0f)
+				{
+					opacity = 1.0f - tf;
+					foundOpacity = true;
+				}
+			}
+		}
+		// (C) TransparentColor（0=不透明, 1=透明っぽい）をさらにフォールバック
+		if (!foundOpacity)
+		{
+			aiColor3D tcol(0, 0, 0);
+			if (assimpMaterial->Get(AI_MATKEY_COLOR_TRANSPARENT, tcol) == AI_SUCCESS)
+			{
+				float t = std::clamp((tcol.r + tcol.g + tcol.b) / 3.0f, 0.0f, 1.0f);
+				if (t > 0.0f && t < 1.0f)
+				{
+					opacity = 1.0f - t;
+					foundOpacity = true;
+				}
+			}
+		}
+		// 最終：Diffuseのalphaに格納（PS側で objDiffuse.a を掛ける）
+		material.diffuse.w = std::clamp(opacity, 0.0f, 1.0f);
+
+
+
 		// テクスチャ読み込み処理
 		HRESULT hr;
 		aiString path;
