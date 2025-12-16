@@ -16,6 +16,9 @@ void ActionUI::Awake()
 	constexpr Vector2 kSpinMojiSize = {  90.f, 32.f };
 	constexpr Vector2 kDashMojiSize = { 135.f, 32.f };
 
+	constexpr Vector2 kSpinFlashPos = { 820.f, 430.f };
+	constexpr Vector2 kFlashSize = { 200.f, 200.f };
+
 	//UV
 	constexpr Vector2 kUVSize = { 1.f, 1.f };
 	constexpr Vector2 kSpinMonoUVPos = { 1.f, 1.f };
@@ -30,7 +33,7 @@ void ActionUI::Awake()
 
 	// 回転攻撃、色付き(光らせる用)
 	GameObject& spinF = gameObject->CreateChild();
-	spFlash_ = &spinF.AddComponent<UiSpriteRenderer>(TextureTag::SpinFlash, kSpinPos, kSize, kSpinUVPos, kUVSize);
+	spFlash_ = &spinF.AddComponent<UiSpriteRenderer>(TextureTag::SpinFlash, kSpinPos, kFlashSize, kSpinUVPos, kUVSize);
 	spFlash_->SetColor({ 1.f, 1.f, 1.f, 0.f });
 
 	// 回転攻撃、色付き
@@ -106,8 +109,8 @@ void ActionUI::Update()
 		float t = glowTimer / kGlowDuration; // 1.0 → 0.0
 		float alpha = std::sin(t * 3.1415f); // 0→1→0 のカーブ
 
-		spFlash_->SetColor({ 1.f,1.f,1.f, alpha }); // アルファでフェード
-		spFront_->SetColor({ 1.f,1.f,1.f, alpha }); // アルファでフェード
+		spFlash_->SetColor({ 2.f,1.2f,2.f, alpha }); // アルファでフェード
+		spFront_->SetColor({ 2.f,1.2f,2.f, alpha }); // アルファでフェード
 		spFlash_->SetVisible(true);
 	}
 	else
