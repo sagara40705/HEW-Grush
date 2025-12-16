@@ -11,6 +11,7 @@
 enum class TextureTag : uint8_t
 {
     Title_BG,       // タイトル背景
+    FadeOut,
     LoadGauge,      // UI ロードゲージ
     Star,           // 星アイコン
     GaugeEmpty,     // ゲージ空状態画像

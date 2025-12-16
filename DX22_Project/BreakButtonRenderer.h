@@ -17,7 +17,8 @@
 // ・Update() で破片アニメの進行度 breakT を進める
 // ・Render() で「割れ専用シェーダー」を使って描画する
 // ================================================================
-class BreakUiRenderer : public Renderer
+class BreakUiRenderer 
+    : public Renderer
 {
 private:
 

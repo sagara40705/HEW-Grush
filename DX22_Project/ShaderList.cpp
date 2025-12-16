@@ -28,6 +28,9 @@ void ShaderList::Init()
 	MakeSpritePS();
 	MakeGlassPS();
 
+	//壊れ追加
+	MakeBreakUiPS();
+
 	DirectX::XMFLOAT4X4 mat[250];
 	for (int i = 0; i < 250; ++i)
 	{
@@ -669,4 +672,41 @@ float4 main(PS_IN pin) : SV_TARGET
 	m_pPS[PS_GLASS] = new PixelShader();
 	m_pPS[PS_GLASS]->Compile(code);
 
+}
+//壊れシェーダー作成
+//壊れシェーダー作成
+void ShaderList::MakeBreakUiPS()
+{
+	const char* code = R"EOT(
+struct PS_IN
+{
+    float4 pos   : SV_POSITION;
+    float2 uv    : TEXCOORD0;
+    float4 color : COLOR0;
+};
+
+Texture2D tex0 : register(t0); // base
+Texture2D tex1 : register(t1); // crack
+Texture2D tex2 : register(t2); // id
+SamplerState samp : register(s0);
+
+cbuffer BreakParam : register(b1)
+{
+    float4 offset_size;
+    float  breakT;
+    float3 pad;
+};
+
+float4 main(PS_IN pin) : SV_TARGET
+{
+    // ★ とりあえず breakT に応じて色を変えるだけ
+    float4 col0 = tex0.Sample(samp, pin.uv);
+    float4 col1 = tex1.Sample(samp, pin.uv);
+
+    return lerp(col0, col1, breakT);
+}
+)EOT";
+
+	m_pPS[PS_BREAKUI] = new PixelShader();
+	m_pPS[PS_BREAKUI]->Compile(code);
 }

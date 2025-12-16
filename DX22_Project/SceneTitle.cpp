@@ -5,7 +5,7 @@
 #include "AllComponent.h"
 #include "TextureManager.h"
 #include "Defines.h"
-#include"BreakButtonRenderer.h"
+#include"InputKeyboard.h"
 
 void SceneTitle::Load()
 {
@@ -15,7 +15,9 @@ void SceneTitle::Load()
 	TextureManager::Load(TextureTag::UI_Frame);
 	TextureManager::Load(TextureTag::UI_Break);
 	TextureManager::Load(TextureTag::GaugeEffect);
+	TextureManager::Load(TextureTag::FadeOut);
 
+	//InputKeyboard* Input = new InputKeyboard();
 
 	World& w = GetWorld();
 
@@ -30,13 +32,12 @@ void SceneTitle::Load()
 
 	//プレイヤー画像生成
 	GameObject& player = w.CreateGameObject();
-	player.AddComponent<UiSpriteRenderer>(TextureTag::GaugeEffect, Vector2(590.f, 310.f), Vector2(320.f, 270.f));
-	player.AddComponent<SpriteAnimation>(8, 4, 6, 5, true);
 
-	//フレーム
+	////フレーム
 	GameObject& CanvasFrame = w.CreateGameObject();
 	CanvasFrame.AddComponent<UiSpriteRenderer>(TextureTag::UI_Frame, Vector2(500.0f, 250.0f), Vector2(200.0f, 100.0f));
 
+	// ★ BreakUiRenderer を追加
 	auto& btn = CanvasFrame.AddComponent<BreakUiRenderer>(
 		Vector2(500, 250),
 		Vector2(200, 100),
@@ -45,16 +46,16 @@ void SceneTitle::Load()
 		TextureTag::UI_BreakID
 	);
 
-	// ボタンが押された瞬間に
-	btn.StartBreak();
+	// ★ Update から触れるように保存
+	m_breakButton = &btn;
 
 	////割れたフレーム
-	//GameObject& CanvasFont = w.CreateGameObject();
-	//CanvasFont.AddComponent<UiSpriteRenderer>(TextureTag::UI_font, Vector2(5.0f, 5.0f), Vector2(100.0f, 100.0f));
+	GameObject& CanvasFont = w.CreateGameObject();
+	CanvasFont.AddComponent<UiSpriteRenderer>(TextureTag::UI_font, Vector2(5.0f, 5.0f), Vector2(100.0f, 100.0f));
 
 	//タイトルマネージャー生成
 	GameObject& manager = w.CreateGameObject();
-	manager.AddComponent<TitleManager>(&player);
+	manager.AddComponent<TitleManager>();
 }
 
 void SceneTitle::Unload()
@@ -64,6 +65,15 @@ void SceneTitle::Unload()
 
 void SceneTitle::Update()
 {
+	// BreakUiRenderer が存在しない場合は何もしない
+	if (!m_breakButton) return;
+
+	// エンターキーが「押された瞬間」
+	if (InputKeyboard::GetKeyDown(VK_RETURN))
+	{
+		// すでに割れていなければ割る
+		m_breakButton->StartBreak();
+	}
 }
 
 void SceneTitle::Draw()

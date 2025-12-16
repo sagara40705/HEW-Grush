@@ -13,6 +13,7 @@ std::array<std::unique_ptr<Texture>, static_cast<size_t>(TextureTag::Count)> Tex
 const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)] =
 {
     "Assets/Texture/Title_BackGround.png",            // Title の背景画像
+    "Assets/Texture/fead_in_2_ss.png",                //フェードアウト
     "Assets/Texture/UIGauge.png",                     // UI のゲージ画像
     "Assets/Texture/Star.png",                        // 星アイコン
     "Assets/Texture/lv1_0_b.png",                     // レベル1 (0状態)
@@ -26,7 +27,7 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     "Assets/Texture/option/UI_sigotonimodoru_waku.png",// UI 枠
     "Assets/Texture/option/UI_sigotonimodoru_sentaku.png",// 選択状態 UI
     "Assets/Texture/option/UI_sigotonimodoru_sentakuBreakID.png",//壊すためのID画像
-    "Assets/Texture/proto.png"
+    "Assets/Texture/proto.png"                           //（仮）スカイドームの画像
 };
 
 // Load: 指定された TextureTag のテクスチャを読み込む。

@@ -67,6 +67,9 @@ private:
 	static void MakeSpritePS();
 	static void MakeGlassPS();
 
+private://壊れるシェーダーの塚点
+	static void MakeBreakUiPS();
+
 private:
 	static VertexShader* m_pVS[VS_KIND_MAX];
 	static PixelShader* m_pPS[PS_KIND_MAX];
