@@ -15,8 +15,8 @@ void GlassGaugeUI::Awake()
 	max_ = &gaugeMax.AddComponent<UiSpriteRenderer>(TextureTag::GaugeMax , Vector2({ 25.f,10.f }), Vector2(200, 200));
 
 	GameObject& gaugeEffect = gameObject->CreateChild();
-	gaugeEffect.AddComponent<UiSpriteRenderer>(TextureTag::GaugeEffect, Vector2({20.f,40.f}), Vector2(200, 125));
-	effect_ = &gaugeEffect.AddComponent<SpriteAnimation>(8, 4, 3, 32, false);
+	gaugeEffect.AddComponent<UiSpriteRenderer>(TextureTag::GaugeEffect, Vector2({20.f,20.f}), Vector2(200, 200));
+	effect_ = &gaugeEffect.AddComponent<SpriteAnimation>(8, 4, 5, 32, false);
 }
 
 void GlassGaugeUI::Start()
@@ -49,6 +49,8 @@ void GlassGaugeUI::Update()
 	empty_->SetSize({ 220.f , 200.f  });
 	empty_->SetUVPos({ garde / 3.f, 1 });
 	empty_->SetUVScale({ 1.f / 3.f, 1 });
+
+	
 
 }
 
