@@ -29,6 +29,7 @@ void GlassGaugeManager::Update()
 	DebugCommand();
 #endif // DEBUG	
 
+	// ゲージが空なら処理しない
 	if (isGaugeEmpty) return;
 
 	// ゲージ減衰中
@@ -47,8 +48,8 @@ void GlassGaugeManager::Update()
 	else
 	{
 		// 減衰までの時間を計る
-		constexpr float DT = 0.1f / 60.f;
-		constexpr float kGaugeDecayDelayTime = 10.f; //ゲージ減衰までの時間
+		constexpr float DT = 1.f / 60.f;
+		constexpr float kGaugeDecayDelayTime = 5.f; //ゲージ減衰までの時間
 		gaugeDecayDelayTimer += DT;
 		if (gaugeDecayDelayTimer >=  kGaugeDecayDelayTime)
 		{
@@ -127,6 +128,7 @@ float GlassGaugeManager::GetGaugeRatio()
 
 	return  ratio;
 }
+
 
 HammerGrade GlassGaugeManager::GetHammerGrade()
 {

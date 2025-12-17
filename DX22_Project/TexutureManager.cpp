@@ -12,6 +12,7 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     "Assets/Texture/stage.png",
     "Assets/Texture/SkyDome.png",
     "Assets/Texture/lv1_0_b.png",
+    "Assets/Texture/lv1_0_g.png",
     "Assets/Texture/lv1_max_b.png",
     "Assets/Texture/sparklingStar03_ss.png",
     "Assets/Texture/ato_kg.png",

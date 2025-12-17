@@ -13,6 +13,7 @@ enum class TextureTag : uint8_t
     Stage,
     SkyDome,
     GaugeEmpty,
+    GaugeFlash,
     GaugeMax,
     GaugeEffect,
     ScoreAtoKg,
