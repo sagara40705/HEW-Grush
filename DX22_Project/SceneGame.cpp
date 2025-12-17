@@ -85,6 +85,7 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::DashMono); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::DashMoji); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::DashMojiMono); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::UIFrostNoise); });
 
 
 	// プレイハブ設定

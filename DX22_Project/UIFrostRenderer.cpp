@@ -1,4 +1,17 @@
 ﻿#include "UIFrostRenderer.h"
+#include "Sprite.h"
+#include "Canvas.h"
+#include "DirectX.h"
+#include <cassert>
+using namespace DirectX;
+
+struct SpriteParamCB
+{
+    XMFLOAT4 offset_size;   // xy=offset(px), zw=size(px)
+    XMFLOAT4 uvPos_uvScale; // xy=uvPos,    zw=uvScale
+    XMFLOAT4 color;         // RGBA
+};
+
 
 std::unique_ptr<VertexShader>  UIFrostRenderer::vs_ = nullptr;
 std::unique_ptr<PixelShader>   UIFrostRenderer::ps_ = nullptr;
@@ -9,6 +22,7 @@ void UIFrostRenderer::Start()
 {
 	if (!vs_) CreateVS();
 	if (!ps_) CreatePS();
+    canvas = Canvas::GetMain();
 }
 
 void UIFrostRenderer::OnDestroy()
@@ -19,25 +33,100 @@ void UIFrostRenderer::OnDestroy()
 
 void UIFrostRenderer::Render()
 {
+    if (!vs_ || !ps_ || !tex_ || !canvas) return;
+    if (!IsVisible()) return;
+
+    // 1) WVP を構築
+    XMMATRIX W = XMMatrixIdentity();
+    XMMATRIX V = XMMatrixIdentity();
+    XMMATRIX P = XMLoadFloat4x4(&canvas->GetProjMatrix());
+    W = XMMatrixTranspose(W);
+    V = XMMatrixTranspose(V);
+    P = XMMatrixTranspose(P);
+    struct WVP_CB
+    {
+        XMFLOAT4X4 world;
+        XMFLOAT4X4 view;
+        XMFLOAT4X4 proj;
+    } wvp;
+    XMStoreFloat4x4(&wvp.world, W);
+    XMStoreFloat4x4(&wvp.view, V);
+    XMStoreFloat4x4(&wvp.proj, P);
+    vs_->WriteBuffer(0, &wvp);
+
+    // 2) SpriteParam(b1)
+    const float screenW = 1920.0f; 
+    const float screenH = 1080.0f; 
+    SpriteParamCB sp{};
+    sp.offset_size = { 0.0f, 0.0f, screenW, screenH };
+    sp.uvPos_uvScale = { 0.0f, 0.0f, 1.0f, 1.0f };
+    sp.color = { 1.0f, 1.0f, 1.0f, 1.0f };
+    vs_->WriteBuffer(1, &sp);
+
+    // 3) UIFrostParam(b0)（PS側）
+    timeSec_ += (1.0f / 60.0f); // TODO: 実deltaTimeに
+    params_.noise.w = timeSec_;
+    ps_->WriteBuffer(0, &params_);
+
+	// 4) シェーダー設定＆テクスチャ設定
+    vs_->Bind();
+	ps_->Bind();
+	ps_->SetTexture(0, tex_);
+
+	// 5) スプライト描画
+    Sprite::Draw();
 }
 
 void UIFrostRenderer::CreateVS()
 {
     const char* code = R"EOT(
 struct VS_IN {
-    float3 pos : POSITION0;  // クリップ空間の -1..+1 を入れる
+    float3 pos : POSITION0;
     float2 uv  : TEXCOORD0;
 };
+
 struct VS_OUT {
-    float4 pos : SV_POSITION;
-    float2 uv  : TEXCOORD0;
+    float4 pos   : SV_POSITION;
+    float2 uv    : TEXCOORD0;
+    float4 color : COLOR0;
 };
+
+// 既存の SetWVP と同じ cbuffer(b0) を利用
+cbuffer WVP : register(b0)
+{
+    float4x4 world;
+    float4x4 view;
+    float4x4 proj;
+    // world/view/proj だけ使う。残りの要素があっても無視される前提
+};
+
+// Sprite 専用パラメータ（b1）
+cbuffer SpriteParam : register(b1)
+{
+    float4 offset_size;   // xy = offset(px), zw = size(px)
+    float4 uvPos_uvScale; // xy = uvPos,    zw = uvScale
+    float4 color;         // RGBA
+};
+
 VS_OUT main(VS_IN vin)
 {
-    VS_OUT o;
-    o.pos = float4(vin.pos.xy, 0.0f, 1.0f);
-    o.uv  = vin.uv;
-    return o;
+    VS_OUT vout;
+
+    // 頂点位置（ローカル [-0.5,0.5] など）に size を掛けて offset を足す
+    float2 p = vin.pos.xy * offset_size.zw + offset_size.xy;
+
+    float4 pos = float4(p, 0.0f, 1.0f);
+    pos = mul(pos, world);
+    pos = mul(pos, view);
+    pos = mul(pos, proj);
+    vout.pos = pos;
+
+    // UV は uvScale / uvPos で調整
+    float2 uv = vin.uv * uvPos_uvScale.zw + uvPos_uvScale.xy;
+    vout.uv = uv;
+
+    vout.color = color;
+    return vout;
 }
 )EOT";
 	vs_ = std::make_unique<VertexShader>();
