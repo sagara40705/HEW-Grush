@@ -1,6 +1,7 @@
 ﻿#include "UIFrostRenderer.h"
 #include "Sprite.h"
 #include "Canvas.h"
+#include "TextureManager.h"
 #include "DirectX.h"
 #include <cassert>
 using namespace DirectX;
@@ -22,6 +23,7 @@ void UIFrostRenderer::Start()
 {
 	if (!vs_) CreateVS();
 	if (!ps_) CreatePS();
+    tex_ = TextureManager::Get(TextureTag::UIFrostNoise);
     canvas = Canvas::GetMain();
 }
 
@@ -35,6 +37,7 @@ void UIFrostRenderer::Render()
 {
     if (!vs_ || !ps_ || !tex_ || !canvas) return;
     if (!IsVisible()) return;
+    //SetDepthTest(false);
 
     // 1) WVP を構築
     XMMATRIX W = XMMatrixIdentity();

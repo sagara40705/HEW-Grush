@@ -711,6 +711,9 @@ void SceneGame::CreateGlassObjectSpawner()
 
 	GameObject& glassObjectSpawner = w.CreateGameObject();
 	glassObjectSpawner.AddComponent<GlassObjectSpawner>();
+
+	GameObject& uiFrost = w.CreateGameObject();
+	uiFrost.AddComponent<UIFrostRenderer>();
 }
 
 void SceneGame::CreateWarp()
@@ -818,6 +821,7 @@ void SceneGame::InitSkyDome()
 	{
 		m_pDepthNoWrite = nullptr;
 	}
+
 
 }
 
