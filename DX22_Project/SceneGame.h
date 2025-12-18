@@ -12,6 +12,7 @@ public:
 	void Draw() final;
 
 private:
+	void LoadSound();
 	void RegisterTexture();
 	void RegisterModel();
 	void CreateProtStage();
