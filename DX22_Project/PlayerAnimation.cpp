@@ -32,6 +32,8 @@ void PlayerAnimation::Update()
 {
 	//移動を先に判定
 	CheckMoveAnime();
+	CheckNormalAttackAnime();
+	CheckSpinAttackAnime();
 	CheckDashAttackAnime();
 }
 
@@ -69,6 +71,70 @@ void PlayerAnimation::CheckMoveAnime()
 			anime_->SetTimeSeconds(0.3f);
 		}
 	}
+}
+
+void PlayerAnimation::CheckNormalAttackAnime()
+{
+	if (currentType_ == Type::NormalAttack)
+	{
+		const float t = anime_->GetCurrentAnimeTime();
+
+		//アニメーション終了したら移動アニメーションへ
+		//if (t > 2.5f && t < 3.f)
+		//{
+		//	//anime_->Play(animation_[Type::Move], false, 1.f);
+		//	anime_->SetTimeSeconds(4.4f);
+		//}
+		if (t > 2.3)
+		{
+			anime_->Play(animation_[Type::Move], false, 1.f);
+			anime_->SetTimeSeconds(4.7f);
+			currentType_ = Type::Move;
+		}
+	}
+	else
+	{
+		//ダッシュ攻撃アクションを実行したらダッシュ攻撃アニメーションへ
+		if (state_->actionedThisFrame[ToIndex(ActionId::NormalAttack)])
+		{
+			currentType_ = Type::NormalAttack;
+			anime_->Play(animation_[Type::NormalAttack], false, 2.0f);
+			anime_->SetTimeSeconds(1.2f);
+		}
+
+	}
+}
+
+void PlayerAnimation::CheckSpinAttackAnime()
+{
+	if (currentType_ == Type::SpinAttack)
+	{
+		const float t = anime_->GetCurrentAnimeTime();
+
+		//アニメーション終了したら移動アニメーションへ
+		//if (t > 2.5f && t < 3.f)
+		//{
+		//	//anime_->Play(animation_[Type::Move], false, 1.f);
+		//	anime_->SetTimeSeconds(4.4f);
+		//}
+		if (t > 4.0)
+		{
+			anime_->Play(animation_[Type::Move], false, 1.f);
+			anime_->SetTimeSeconds(4.8f);
+		}
+	}
+	else
+	{
+		//ダッシュ攻撃アクションを実行したらダッシュ攻撃アニメーションへ
+		if (state_->actionedThisFrame[ToIndex(ActionId::SpinAttack)])
+		{
+			currentType_ = Type::SpinAttack;
+			anime_->Play(animation_[Type::SpinAttack], false, 1.0f);
+			//anime_->SetTimeSeconds(1.0f);
+		}
+
+	}
+
 }
 
 void PlayerAnimation::CheckDashAttackAnime()
@@ -114,7 +180,12 @@ void PlayerAnimation::AddAllAnimations()
 
 	//移動
 	animation_[Type::Move] = model->AddAnimation("Assets/Animation/animation_hashiru_2.fbx");
+
+	// 通常攻撃
+	animation_[Type::NormalAttack] = model->AddAnimation("Assets/Animation/animation_rotateattack.fbx");
 	
+	// 回転攻撃
+	animation_[Type::SpinAttack] = model->AddAnimation("Assets/Animation/animation_rotateattack.fbx");
 
 	//突進攻撃
 	animation_[Type::DashAttack] = model->AddAnimation("Assets/Animation/animation_dashattack.fbx");
