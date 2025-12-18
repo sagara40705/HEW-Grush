@@ -5,6 +5,8 @@ using namespace DirectX;
 
 // static メンバ定義
 std::unique_ptr<MeshBuffer> Sprite::s_quad;
+std::unique_ptr<VertexShader> Sprite::s_3dVS;
+std::unique_ptr<PixelShader> Sprite::s_3dPS;
 
 void Sprite::Init()
 {
@@ -46,4 +48,12 @@ void Sprite::Uninit()
 void Sprite::Draw()
 {
     s_quad->Draw();
+}
+
+void Sprite::Create3dVS()
+{
+}
+
+void Sprite::Create3dPS()
+{
 }
