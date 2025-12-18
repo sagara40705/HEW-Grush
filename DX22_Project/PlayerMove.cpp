@@ -13,11 +13,11 @@
 #include <Xinput.h>
 #pragma comment(lib, "Xinput.lib")
 using namespace DirectX;
+#include"Sound.h"
 
-#define CONIOEX
-#include"conioex.h"
-
-INT_PTR g_WalkSE;
+XAUDIO2_BUFFER* g_pWalkSE;
+IXAudio2SourceVoice* pSpeaker;
+bool play = true;
 
 static inline float Sign(bool pos, bool neg) { return (pos ? 1.0f : 0.0f) - (neg ? 1.0f : 0.0f); }
 static inline float Rad2Deg(float r) { return r * (180.0f / 3.14159265358979323846f); }
@@ -57,17 +57,17 @@ constexpr float ResetPosY = -20.0f;
 
 PlayerMove::PlayerMove()
 {
- 
+    g_pWalkSE = LoadSound("Sound/walk.mp3",true);
+
 }
 
 PlayerMove::~PlayerMove()
 {
-    closesound(g_WalkSE);
+
 }
 
 void PlayerMove::Start()
 {
-    g_WalkSE = opensound("Sound/walk.mp3");
     t_ = Parent->TryGetComponent<Transform>();
     rb_ = Parent->TryGetComponent<Rigidbody>();
     col_ = nullptr;
@@ -80,6 +80,9 @@ void PlayerMove::Start()
 
     assert(t_ && rb_ && col_ && "PlayerMove requires Transform/Rigidbody/Collider");
     facingYawDeg_ = 0.0f; // 初期yaw（最初の入力で正対）
+
+//    pSpeaker = PlaySound(g_pWalkSE);
+//    pSpeaker->Stop();
 }
 
 void PlayerMove::Update()
@@ -192,15 +195,35 @@ void PlayerMove::ApplyHorizontal(float dt, bool grounded)
         v.z += (targetVz - v.z) * a;
     }
 
-    if (HorizontalSpeed() > 0.1f && grounded) {
-        if (!checksound(g_WalkSE))
-            playsound(g_WalkSE, 1); // 1回再生 or ループ開始
-    }
-    else {
-        if(checksound(g_WalkSE))
-            stopsound(g_WalkSE); // 移動していないときは停止
-    }
+    //if (HorizontalSpeed() > 0.1f && grounded) {
+    //    if (!checksound(g_WalkSE))
+    //        playsound(g_WalkSE, 1); // 1回再生 or ループ開始
+    //}
+    //else {
+    //    if(checksound(g_WalkSE))
+    
+    //        stopsound(g_WalkSE); // 移動していないときは停止
+    //}
 
+
+
+    if (HorizontalSpeed() > 0.1f && grounded)
+    {
+//        if (!IsPlaying(pSpeaker))
+        if(play)
+        {
+        pSpeaker = PlaySound(g_pWalkSE);
+        play = false;
+        }
+    }
+    else
+    {
+        if(pSpeaker){
+ //           if (IsPlaying(pSpeaker))
+            pSpeaker->Stop();
+            play = true;
+        }
+    }
 }
 
 void PlayerMove::FaceToWish(const Vector3& wishDir)

@@ -7,14 +7,13 @@
 #include <cmath>
 #include "DebugLog.h"
 #include "GlassScript.h"
+#include"Sound.h"
 
-#define CONIOEX
-#include"conioex.h"
 
-INT_PTR g_GradeUpSE;
-INT_PTR g_GradeDownSE;
-INT_PTR g_GlassbreakSE;
-INT_PTR g_GaugeDownSE;
+XAUDIO2_BUFFER* g_pGradeUpSE;
+XAUDIO2_BUFFER* g_pGradeDownSE;
+XAUDIO2_BUFFER* g_pGlassbreakSE;
+XAUDIO2_BUFFER* g_pGaugeDownSE;
 
 static inline Vector3 Lerp(const Vector3& a, const Vector3& b, float t)
 {
@@ -28,18 +27,15 @@ HummerScript::HummerScript()
 
 HummerScript::~HummerScript()
 {
-	if (g_GradeUpSE) closesound(g_GradeUpSE);
-	if (g_GradeDownSE) closesound(g_GradeDownSE);
-	if (g_GlassbreakSE)closesound(g_GlassbreakSE);
-	if (g_GaugeDownSE) closesound(g_GaugeDownSE);
+
 }
 
 void HummerScript::Start()
 {
-	g_GradeUpSE = opensound("Sound/start.wav");
-	g_GradeDownSE = opensound("Sound/batu.wav");
-	g_GlassbreakSE = opensound("Sound/glassbreak.mp3");
-	g_GaugeDownSE = opensound("Sound/GaugeDown.mp3");
+	g_pGradeUpSE = LoadSound("Sound/start.wav");
+	g_pGradeDownSE = LoadSound("Sound/batu.wav");
+	g_pGlassbreakSE = LoadSound("Sound/glassbreak.mp3");
+	g_pGaugeDownSE = LoadSound("Sound/GaugeDown.mp3");
 
 	t = Parent->TryGetComponent<Transform>();
 	col = Parent->TryGetComponent<Collider>();
@@ -74,7 +70,7 @@ void HummerScript::Update()
 			isGaugeDecaying = true;
 			timerGaugeDecayDelay = 0.f;
 			Debug::Log(" HummerScript::Update - StartGaugeDecay");
-			playsound(g_GaugeDownSE,0);
+//			PlaySound(g_pGaugeDownSE);
 		}
 	}
 }
@@ -98,7 +94,7 @@ void HummerScript::OnTriggerStay(const TriggerInfo& c)
 		{
 			c.other->Destroy();
 			//Debug::LogValue(" HummerScript::Destroy id", c.other->id);
-			playsound(g_GlassbreakSE,0);
+			PlaySound(g_pGlassbreakSE);
 			GaugeUp(c.other);
 			
 			// ゲージ減衰中なら止める& Delayタイマーを初期化
@@ -152,7 +148,8 @@ void HummerScript::GaugeUp(GameObject* glass)
 		if (grade == HummerGrade::Grade_3) gauge = kMaxGaugeValue[ToInt(HummerGrade::Grade_3)];
 		else
 		{
-			playsound(g_GradeUpSE, 0);
+
+			PlaySound(g_pGradeUpSE);
 			GradeUp();
 		}
 	}
@@ -178,7 +175,7 @@ void HummerScript::GaugeDecay()
 		if (grade == HummerGrade::Grade_1) gauge = 0.f;
 		else 
 		{
-			playsound(g_GradeDownSE, 0);
+			PlaySound(g_pGradeDownSE);
 			GradeDown();
 		}
 			

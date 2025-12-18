@@ -11,11 +11,10 @@
 #include "Game.h"
 #include "TextureManager.h"
 #include "ModelManager.h"
-//#define CONIOEX
-#include"conioex.h"
+#include"Sound.h"
 
 World* W = nullptr;
-INT_PTR g_GameBGM;
+XAUDIO2_BUFFER* g_pGameBGM;
 
 namespace
 {
@@ -64,12 +63,9 @@ namespace
 
 SceneGame::SceneGame()
 {
+    g_pGameBGM = LoadSound("Sound/maou_bgm_cyber41.mp3", true);
+//    PlaySound(g_pGameBGM);
 
-   g_GameBGM = opensound("Sound/maou_bgm_cyber41.mp3");    // ƒI[ƒvƒ“•‰Šú‰»
-   if (g_GameBGM)
-   {
-       playsound(g_GameBGM, 1);
-   }
 
     W = &Game::GetWorld();
 
@@ -148,14 +144,9 @@ SceneGame::~SceneGame()
     W->ClearAll();
     W = nullptr;
     TextureManager::Clear();
-    closesound(g_GameBGM);
 }
 void SceneGame::Update()
 {
-  /*  if (g_GameBGM)
-    {
-        updatesound(g_GameBGM);
-    }*/
     W->Update();
 }
 void SceneGame::Draw()

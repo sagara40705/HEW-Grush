@@ -11,7 +11,7 @@
 #include "LineManager.h"
 #include "Timer.h"
 #include "Game.h"
-
+#include"Sound.h"
 
 //--- グローバル変数
 
@@ -28,9 +28,12 @@ HRESULT Init(HWND hWnd, UINT width, UINT height)
 	InitInput();
 	ShaderList::Init();
 	Timer::Init();
+//	Sound::Init();
+	InitSound();
 
 	// シーン
 	Game::Init(new SceneGame());
+
 
 	return hr;
 }
@@ -44,6 +47,8 @@ void Uninit()
 	Geometory::Uninit();
 	LineManager::Term();
 	Timer::Uninit();
+//	Sound::Uninit();
+	UninitSound();
 	UninitDirectX();
 
 }
@@ -53,6 +58,7 @@ void Update()
 	Timer::Update();
 	UpdateInput();
 	Game::Update();
+//	Sound::Update();
 }
 
 void Draw()
