@@ -20,6 +20,7 @@ void GlassGaugeUI::Awake()
 	GameObject& gaugeEffect = gameObject->CreateChild();
 	gaugeEffect.AddComponent<UiSpriteRenderer>(TextureTag::GaugeEffect, Vector2({20.f,20.f}), Vector2(230, 230));
 	effect_ = &gaugeEffect.AddComponent<SpriteAnimation>(8, 4, 5, 32, false);
+
 }
 
 void GlassGaugeUI::Start()
