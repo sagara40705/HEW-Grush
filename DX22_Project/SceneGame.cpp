@@ -92,7 +92,7 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 
 
 	// ★ここでスカイドームを初期化するタスクを挟む
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Background_Game); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Background_Game3); });
 
 	outTasks.emplace_back([this]
 		{
@@ -381,7 +381,7 @@ void SceneGame::InitSkyDome()
 
     // 3) テクスチャ取得 → シェーダへ設定
     //    ・事前に BuildLoadTasks で Load(TextureTag::Background_Game) しておく前提
-    m_pSkyTex = TextureManager::Get(TextureTag::Background_Game);
+    m_pSkyTex = TextureManager::Get(TextureTag::Background_Game3);
     if (m_pSkyTex)
     {
         ID3D11ShaderResourceView* srv = m_pSkyTex->GetResource();

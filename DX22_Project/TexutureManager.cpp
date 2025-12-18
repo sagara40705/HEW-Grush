@@ -27,7 +27,9 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     "Assets/Texture/option/UI_sigotonimodoru_waku.png",// UI 枠
     "Assets/Texture/option/UI_sigotonimodoru_sentaku.png",// 選択状態 UI
     "Assets/Texture/option/UI_sigotonimodoru_sentakuBreakID.png",//壊すためのID画像
-    "Assets/Texture/proto.png"                           //（仮）スカイドームの画像
+    "Assets/Texture/proto.png",                           //（仮）スカイドームの画像
+    "Assets/Texture/bg_2048_1024.png",//（仮）スカイドームの画像1
+    "Assets/Texture/bg_4096_2048.png"//（仮）スカイドームの画像2
 };
 
 // Load: 指定された TextureTag のテクスチャを読み込む。
