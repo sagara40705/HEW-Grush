@@ -38,6 +38,9 @@ void Sprite::Init()
 
     s_quad = std::make_unique<MeshBuffer>();
     s_quad->Create(desc);
+
+    Create3dVS();
+    Create3dPS();
 }
 
 void Sprite::Uninit()
@@ -52,8 +55,87 @@ void Sprite::Draw()
 
 void Sprite::Create3dVS()
 {
+    const char* code = R"EOT(
+struct VS_IN {
+    float3 pos : POSITION0;
+    float2 uv  : TEXCOORD0;
+};
+
+struct VS_OUT {
+    float4 pos   : SV_POSITION;
+    float2 uv    : TEXCOORD0;
+    float4 color : COLOR0;
+};
+
+cbuffer WVP : register(b0)
+{
+    float4x4 world;
+    float4x4 view;
+    float4x4 proj;
+};
+
+cbuffer SpriteParam : register(b1)
+{
+    float4 offset_size;   // xy=offset(ワールド/ビュー平面単位), zw=size(ワールド/ビュー平面単位)
+    float4 uvPos_uvScale; // xy=uvPos, zw=uvScale
+    float4 color;         // RGBA
+};
+
+VS_OUT main(VS_IN vin)
+{
+    VS_OUT o;
+
+    // Transform の平行移動（原点をworldへ）
+    float4 centerWorld = mul(float4(0,0,0,1), world);
+
+    // center を view 空間へ
+    float4 centerView = mul(centerWorld, view);
+
+    // Quad (0..1) を中心(0.5,0.5)基準にして、size/offset を適用（view平面上に展開）
+    float2 local = (vin.pos.xy - float2(0.5f, 0.5f)) * offset_size.zw + offset_size.xy;
+
+    float4 posView = centerView + float4(local.xy, 0.0f, 0.0f);
+
+    // 射影
+    o.pos = mul(posView, proj);
+
+    // UV
+    o.uv = vin.uv * uvPos_uvScale.zw + uvPos_uvScale.xy;
+
+    o.color = color;
+    return o;
+}
+)EOT";
+    s_3dVS = std::make_unique<VertexShader>();
+    s_3dVS->Compile(code);
 }
 
 void Sprite::Create3dPS()
 {
+    const char* code = R"EOT(
+struct PS_IN {
+    float4 pos   : SV_POSITION;
+    float2 uv    : TEXCOORD0;
+    float4 color : COLOR0;
+};
+
+Texture2D tex     : register(t0);
+SamplerState samp : register(s0);
+
+cbuffer SpriteParam : register(b1)
+{
+    float4 offset_size;
+    float4 uvPos_uvScale;
+    float4 color;
+};
+
+float4 main(PS_IN pin) : SV_TARGET
+{
+    float4 t = tex.Sample(samp, pin.uv);
+    return t * pin.color;
+}
+)EOT";
+
+    s_3dPS = std::make_unique<PixelShader>();
+    s_3dPS->Compile(code);
 }

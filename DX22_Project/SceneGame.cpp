@@ -712,8 +712,8 @@ void SceneGame::CreateGlassObjectSpawner()
 	GameObject& glassObjectSpawner = w.CreateGameObject();
 	glassObjectSpawner.AddComponent<GlassObjectSpawner>();
 
-	GameObject& uiFrost = w.CreateGameObject();
-	//uiFrost.AddComponent<UiSpriteRenderer>(TextureTag::UIFrostNoise, Vector2::zero(), Vector2(1280.f, 720.f));
+	GameObject& Frost = w.CreateGameObject();
+	Frost.AddComponent<Sprite3DRenderer>(TextureTag::UIFrostNoise, Vector2::zero(), Vector2(1280.f, 720.f));
 }
 
 void SceneGame::CreateWarp()

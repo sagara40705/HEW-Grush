@@ -11,8 +11,15 @@ void Sprite3DRenderer::Start()
 {
     tf_ = gameObject->GetComponent<Transform>();
     cam_ = Camera::Main();
+    texture_ = TextureManager::Get(texTag);
 
     assert(tf_ && cam_ && "Sprite3DRenderer‚ÌQÆ‚ªnullptr");
+}
+
+void Sprite3DRenderer::OnDestroy()
+{
+    tf_ = nullptr;
+    cam_ = nullptr;
 }
 
 void Sprite3DRenderer::Render()
