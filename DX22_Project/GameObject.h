@@ -36,7 +36,7 @@ enum class Tag : std::uint8_t
 class Transform;
 
 //=========================================================
-// GameObject
+// GameObject 
 //=========================================================
 class GameObject
 {

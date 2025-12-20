@@ -10,9 +10,15 @@
 #include "ShaderList.h"
 #include "GlassShard.h"
 #include "GlassShardPool.h"
+#include "UiSpriteRenderer.h"
+#include "SpriteAnimation.h"
 
 void GlassObject::Start()
 {
+	// 子オブジェクトを生成して参照をメンバに保存しておく
+	GameObject& Effkseer = gameObject->CreateChild();
+	Effkseer.AddComponent<UiSpriteRenderer>(TextureTag::EffectLv1, Vector2(350,300), Vector2(500, 500));
+	m_hitEffekt = &Effkseer.AddComponent<SpriteAnimation>(5, 5, 5, 26, false);
 	GameObject* gaugeMgr = gameObject->world->FindWithTag(Tag::GaugeManager);
 	gaude_ = gaugeMgr->GetComponent<GlassGaugeManager>();
 
@@ -34,6 +40,10 @@ void GlassObject::OnDestroy()
 
 void GlassObject::TakeDamage(float damage)
 {
+	if (m_hitEffekt)
+	{
+		m_hitEffekt->Play();
+	}
 	hp_ -= damage;
 	if (hp_ <= 0.f)
 	{
@@ -42,6 +52,7 @@ void GlassObject::TakeDamage(float damage)
 		score_->UpScore(grade_);
 		SpawnShards();
 		DebugLog::OutputValue("GlassObject Destory, ID", gameObject->id);
+		
 	}
 }
 

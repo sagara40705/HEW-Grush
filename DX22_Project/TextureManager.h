@@ -20,7 +20,8 @@ enum class TextureTag : uint8_t
     SpinMono,
     Dash,
     DashMono,
-    Result,
+    //Result,
+    EffectLv1,
     Count,
 };
 

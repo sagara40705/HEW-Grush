@@ -11,7 +11,7 @@ private:
 	PlayerState* state_ = nullptr;
 	Hammer* hammer_ = nullptr;
 
-	GameObject* Effkseer = nullptr;
+
 	SpriteAnimation* m_hitEffekt = nullptr;
 
 public:

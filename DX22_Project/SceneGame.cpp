@@ -78,6 +78,7 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::SpinMono); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Dash); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::DashMono); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::EffectLv1); });
 
 	// プレイハブ設定
 	outTasks.emplace_back([this] { RegisterAllPrefabs(); });
@@ -117,6 +118,7 @@ void SceneGame::LoadTextures()
 	TextureManager::Load(TextureTag::ScoreNumber);
 	TextureManager::Load(TextureTag::TimerColon);
 	TextureManager::Load(TextureTag::TimerNumber);
+	//TextureManager::Load(TextureTag::EffectLv1);
 }
 
 void SceneGame::CreateManagers()

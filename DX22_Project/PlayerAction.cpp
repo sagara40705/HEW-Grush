@@ -10,10 +10,13 @@
 #include <cassert>
 #include "TextureManager.h"
 #include "SceneManager.h"
+#include "UiSpriteRenderer.h"
+#include "SpriteAnimation.h"
+#include "PlayerMove.h"
 
 constexpr float kActionTime[ToIndex(ActionId::Count)] = { 0.4f, 1.f, 2.f };
 constexpr float kCoolDown[ToIndex(ActionId::Count)]  = { 0.1f, 5.f, 5.f };
-
+ 
 PlayerAction::PlayerAction()
 {
 	// コンストラクタで情報を受け取る形にしない
@@ -23,15 +26,15 @@ PlayerAction::PlayerAction()
 
 void PlayerAction::Awake()
 {
-	// 子オブジェクトを生成して参照をメンバに保存しておく
-
-	Effkseer = &gameObject->CreateChild();
-	//m_hitEffekt = Effkseer->AddComponent<・・・>
+	//// 子オブジェクトを生成して参照をメンバに保存しておく
+	//GameObject &Effkseer = gameObject->CreateChild();
+	//Effkseer.AddComponent<UiSpriteRenderer>(TextureTag::EffectLv1, Vector2(500,500), Vector2(200, 200));
+	//m_hitEffekt = &Effkseer.AddComponent<SpriteAnimation>(5, 5, 0,30, false);
 }
 
 void PlayerAction::Start()
 {
-	
+	// 参照取得
 
 	tf_ = gameObject->GetComponent<Transform>();
 	state_ = gameObject->GetComponent<PlayerState>();
@@ -45,10 +48,8 @@ void PlayerAction::Start()
 		}
 	}
 
-	//Spriteアニメーションを開始
 	
-
-
+	//　assartで参照が取れているか確認
 	assert(state_ && tf_ && hammer_ && "参照のどれかがnullptrです");
 	if (!state_ || !tf_ || !hammer_) return;
 
@@ -58,6 +59,7 @@ void PlayerAction::Start()
 	}
 	SetHammerActive(false);
 }
+
 
 void PlayerAction::Update()
 {
@@ -78,6 +80,7 @@ void PlayerAction::OnDestroy()
 	hammer_ = nullptr;
 	state_ = nullptr;
 	tf_ = nullptr;
+	m_hitEffekt = nullptr;
 }
 
 // ダミー実装
@@ -99,8 +102,12 @@ void PlayerAction::InputWantAction()
 	{
 		state_->wantUseAction[ToIndex(ActionId::NormalAttack)] = true;
 		DebugLog::Output("NormalAttack 入力受付");
-		TextureManager::Load(TextureTag::GaugeEffect);
-		
+		//TextureManager::Load(TextureTag::GaugeEffect);
+		//Spriteアニメーションを
+		/*if (m_hitEffekt)
+		{
+			m_hitEffekt->Play();
+		}*/
 
 		// ダッシュ、色付き
 		//GameObject& dash = gameObject->CreateChild();
