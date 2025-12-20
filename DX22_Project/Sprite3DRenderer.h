@@ -6,6 +6,8 @@
 #include "Shader.h"
 #include "TextureManager.h"
 
+// 3D用 Sprite描画コンポーネント
+// コンストラクタ (使用する画像タグ, world座標, 描画サイズ)
 class Sprite3DRenderer final : public Renderer
 {
 private:
