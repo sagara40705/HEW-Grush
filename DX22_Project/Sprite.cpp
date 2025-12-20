@@ -60,7 +60,6 @@ struct VS_IN {
     float3 pos : POSITION0;
     float2 uv  : TEXCOORD0;
 };
-
 struct VS_OUT {
     float4 pos   : SV_POSITION;
     float2 uv    : TEXCOORD0;
@@ -76,32 +75,24 @@ cbuffer WVP : register(b0)
 
 cbuffer SpriteParam : register(b1)
 {
-    float4 offset_size;   // xy=offset(ワールド/ビュー平面単位), zw=size(ワールド/ビュー平面単位)
+    float4 offset_size;   // xy=offset, zw=size（※単位はあなたの運用に合わせる）
     float4 uvPos_uvScale; // xy=uvPos, zw=uvScale
-    float4 color;         // RGBA
+    float4 color;
 };
 
 VS_OUT main(VS_IN vin)
 {
     VS_OUT o;
 
-    // Transform の平行移動（原点をworldへ）
-    float4 centerWorld = mul(float4(0,0,0,1), world);
-
-    // center を view 空間へ
-    float4 centerView = mul(centerWorld, view);
-
-    // Quad (0..1) を中心(0.5,0.5)基準にして、size/offset を適用（view平面上に展開）
+    // Quad(0..1) を中心基準にしてサイズ/オフセット適用（ローカル平面上）
     float2 local = (vin.pos.xy - float2(0.5f, 0.5f)) * offset_size.zw + offset_size.xy;
 
-    float4 posView = centerView + float4(local.xy, 0.0f, 0.0f);
+    // ローカル平面( z=0 )を world に乗せる（Transform の回転/スケールも効く）
+    float4 wpos = mul(float4(local.xy, 0.0f, 1.0f), world);
+    float4 vpos = mul(wpos, view);
+    o.pos = mul(vpos, proj);
 
-    // 射影
-    o.pos = mul(posView, proj);
-
-    // UV
     o.uv = vin.uv * uvPos_uvScale.zw + uvPos_uvScale.xy;
-
     o.color = color;
     return o;
 }
