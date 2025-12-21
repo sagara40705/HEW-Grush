@@ -59,7 +59,7 @@ void SceneTitle::Load()
 	GameObject& TiteleFont = w.CreateGameObject();
 	TiteleFont.AddComponent<UiSpriteRenderer>
 		(TextureTag::Title_Font,
-			Vector2(350.0f, 500.0f), Vector2(500.0f, 200.0f));
+			Vector2(450.0f, 530.0f), Vector2(350.0f, 80.0f));
 
 
 	//タイトルマネージャー生成
