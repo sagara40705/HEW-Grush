@@ -348,6 +348,7 @@ void World::ProcessDestroyQueue()
     if (toDestroy.empty()) return;
 
     // �\�[�g���ďd���폜
+	// 重複削除
     std::sort(toDestroy.begin(), toDestroy.end());
     toDestroy.erase(std::unique(toDestroy.begin(), toDestroy.end()), toDestroy.end());
 

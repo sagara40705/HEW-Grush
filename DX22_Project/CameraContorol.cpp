@@ -31,7 +31,7 @@ void CameraControl::OnDestroy()
 
 void CameraControl::Update()
 {
-    ShaderList::SetCameraPos(playerTf_->GetWorldPosition());
+    //ShaderList::SetCameraPos(playerTf_->GetWorldPosition());
     RotateByInput();
 	FollowPlayer();
 }

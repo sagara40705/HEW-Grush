@@ -26,4 +26,5 @@ private:
 	void InputMoveAxis();
 	void ApplyMoveAxis();
 	void AlignRotationToCamera();
+	void UpdateAnimationState();
 };

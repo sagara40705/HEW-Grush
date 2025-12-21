@@ -20,10 +20,15 @@
 
 #include "TitleManager.h"
 
+#include "GroundRenderer.h"
+#include "StageWall.h"
+
 #include "PlayerState.h"
 #include "PlayerMove.h"
 #include "PlayerAction.h"
+#include "ActionUI.h"
 #include "Hammer.h"
+#include "PlayerAnimation.h"
 
 #include "GlassObject.h"
 #include "GlassGaugeManager.h"
@@ -31,6 +36,11 @@
 #include "GlassShard.h"
 #include "GlassShardPool.h"
 
+#include "WarpPoint.h"
+#include "JumpSki.h"
+
 #include "TimerUI.h"
 #include "ScoreManager.h"
 #include "ScoreUI.h"
+
+#include "UIFrostRenderer.h"

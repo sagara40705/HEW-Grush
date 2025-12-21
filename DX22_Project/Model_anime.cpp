@@ -273,6 +273,22 @@ void Model::PlayAnime(AnimeNo no, bool loop, float speed)
 }
 
 /*
+* @brief アニメーションの停止
+*/
+void Model::StopAnime()
+{
+	// 再生アニメ・ブレンド・パラメトリックを全部解除
+	m_playNo = ANIME_NONE;
+	m_blendNo = ANIME_NONE;
+	m_parametric[0] = ANIME_NONE;
+	m_parametric[1] = ANIME_NONE;
+	m_blendTime = 0.0f;
+	m_blendTotalTime = 0.0f;
+	m_parametricBlend = 0.0f;
+}
+
+
+/*
 * @brief ブレンド再生
 * @param[in] no アニメーション番号
 * @param[in] blendTime ブレンドに掛ける時間

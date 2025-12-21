@@ -142,7 +142,7 @@ void Transform::RebuildIfDirty()
     if (!dirty) return;
     dirty = false;
 
-    // ローカル TRS → ローカル行列
+    
     XMVECTOR S = XMVectorSet(scale.x, scale.y, scale.z, 0.0f);
     XMVECTOR Q = GetRotationQuaternionXM();
     XMVECTOR T = XMVectorSet(pos.x, pos.y, pos.z, 1.0f);

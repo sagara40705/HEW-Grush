@@ -76,8 +76,6 @@ void UiSpriteRenderer::Render()
 
     // 5) テクスチャ・サンプラ・ステート
     ps->SetTexture(0, texture_);
-    SetDepthTest(false);
-    SetCullingMode(D3D11_CULL_NONE);
 
     // 6) シェーダを Bind して Quad 描画
     vs->Bind();

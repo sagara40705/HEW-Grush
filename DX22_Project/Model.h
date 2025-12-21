@@ -279,6 +279,11 @@ public:
 	void PlayAnime(AnimeNo no, bool loop, float speed = 1.0f);
 
 	/*
+	* @brief アニメーションの停止
+	*/
+	void StopAnime();
+
+	/*
 	* @brief ブレンド再生
 	* @param[in] no アニメーション番号
 	* @param[in] blendTime ブレンドに掛ける時間
@@ -371,6 +376,7 @@ public:
 	* @return マテリアル情報
 	*/
 	const Material* GetMaterial(unsigned int index);
+	Material* GetMaterialNonConst(unsigned int index);
 
 	/*
 	* @brief アニメーション後の変換行列取得
