@@ -11,4 +11,6 @@ public:
 	static float GetDeltaTime();	//DeltaTime‚ğŠ“¾
 private:
 	static float deltaTime;
+	// ‘O‰ñ‚ÌŠÔ‚ğ•Û‘¶‚·‚é•Ï”
+	static std::chrono::high_resolution_clock::time_point lastTime;
 };

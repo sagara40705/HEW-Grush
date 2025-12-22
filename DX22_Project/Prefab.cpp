@@ -3,6 +3,7 @@
 #include "AllComponet.h"
 #include "ModelManager.h"
 #include "LineManager.h"
+#include "DebugLog.h"
 
 std::unordered_map<PrefabId, Prefab::BuilderFunc> Prefab::s_table{};
 
@@ -21,6 +22,8 @@ GameObject& Prefab::Instantiate(World& world, PrefabId id, const Vector3& pos, c
 
 	// 3) “o˜^Ï‚İ‚Ì Builder ‚ğŒŸõ
 	auto it = s_table.find(id);
+
+	Debug::LogValue("Instantiate PrefabId", static_cast<int>(id));
 	assert(it != s_table.end() && "Prefab not registered");
 
 	// 4) Builder ‚Å\’z‚·‚é

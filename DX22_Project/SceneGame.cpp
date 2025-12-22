@@ -1,9 +1,9 @@
 #include "SceneGame.h"
 #include <DirectXMath.h>
-#include <fstream>  // ファイル読み込み用
-#include <sstream>  // 文字列分割用
-#include <vector>   // データ格納用
-#include <string>   // 文字列操作用
+#include <fstream>     
+#include <sstream>  
+#include <vector>                   
+#include <string>        
 #include "Defines.h"
 #include "AllComponet.h"
 #include "PhysicsSystem.h"
@@ -18,6 +18,10 @@
 #include "Prefab.h"
 #include <direct.h>
 #include <algorithm>
+#include "HummerScript.h"
+#include "Timer.h"
+#include "DebugLog.h"
+#include "DeltaTimeUIManager.h"
 
 World* W = nullptr;
 
@@ -66,8 +70,8 @@ namespace
     }
 }
 
-SceneGame::SceneGame(){}
-SceneGame::~SceneGame(){}
+SceneGame::SceneGame() {}
+SceneGame::~SceneGame() {}
 
 void SceneGame::Load()
 {
@@ -115,12 +119,36 @@ void SceneGame::Load()
 
     GameObject& gaugeUiManagerObj = W->CreateGameObject();
     gaugeUiManagerObj.AddComponent<GlassGauge>(&gaugeFrameUI, &gaugeUI, &gaefUI);
+	Timer::Init();  
+
+    // DeltaTime UI (左下表示)
+    GameObject& dt0 = W->CreateGameObject();
+    CanvasUI& dt0UI = dt0.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Number));
+    GameObject& dt1 = W->CreateGameObject();
+    CanvasUI& dt1UI = dt1.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Number));
+    GameObject& dt2 = W->CreateGameObject();
+    CanvasUI& dt2UI = dt2.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Number));
+    GameObject& dt3 = W->CreateGameObject();
+    CanvasUI& dt3UI = dt3.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Number));
+
+    GameObject& dtManagerObj = W->CreateGameObject();
+    dtManagerObj.AddComponent<DeltaTimeUIManager>(&dt0UI, &dt1UI, &dt2UI, &dt3UI);
 }
 void SceneGame::Update()
 {
+	Timer::Update();
+	float deltaTime = Timer::GetDeltaTime();
+
+	static int frameCounter = 0;
+    if (++frameCounter >= 60)
+    {
+		frameCounter = 0;
+		Debug::LogValue("DeltaTime", deltaTime);
+    }
 }
 void SceneGame::Draw()
 {
+	
 }
 
 void SceneGame::Unload()
@@ -151,27 +179,7 @@ void SceneGame::RegisterModel()
 
 void SceneGame::CreateProtStage()
 {
-
-   /* Prefab::Instantiate(*W, PrefabId::Ufo, Vector3(10, -0.5f, 10), Vector3::zero(), Vector3::one());
-
-    Prefab::Instantiate(*W, PrefabId::Benti, Vector3(-10, -0.9f, 10), Vector3::zero(), Vector3(1.2f, 1.2f, 1.2f));
-    Prefab::Instantiate(*W, PrefabId::Benti, Vector3(20, -0.9f, -16), Vector3::zero(), Vector3(1.2f, 1.2f, 1.2f));
-    Prefab::Instantiate(*W, PrefabId::Benti, Vector3(11, -0.9f, -13), Vector3::zero(), Vector3(1.2f, 1.2f, 1.2f));
-
-    Prefab::Instantiate(*W, PrefabId::Swing, Vector3(-7, -0.9f, -8), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-    Prefab::Instantiate(*W, PrefabId::Swing, Vector3(-12, -0.9f, -2), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-    Prefab::Instantiate(*W, PrefabId::Swing, Vector3(-22, -0.9f, -13), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-
-    Prefab::Instantiate(*W, PrefabId::ProtPlay, Vector3(-12, -0.9f, 8), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-    Prefab::Instantiate(*W, PrefabId::ProtPlay, Vector3(5, -0.9f, 2), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-    Prefab::Instantiate(*W, PrefabId::ProtPlay, Vector3(-20, -0.9f, -20), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-    Prefab::Instantiate(*W, PrefabId::ProtPlay, Vector3(-16, -0.9f, -16), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-    Prefab::Instantiate(*W, PrefabId::ProtPlay, Vector3(13, -0.9f, 2), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-    Prefab::Instantiate(*W, PrefabId::ProtPlay, Vector3(22, -0.9f, 8), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-    Prefab::Instantiate(*W, PrefabId::ProtPlay, Vector3(-17, -0.9f, 15), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-    Prefab::Instantiate(*W, PrefabId::ProtPlay, Vector3(6, -0.9f, 17), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-    Prefab::Instantiate(*W, PrefabId::ProtPlay, Vector3(20, -0.9f, -12), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-    Prefab::Instantiate(*W, PrefabId::ProtPlay, Vector3(14, -0.9f, -19), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));*/
+    
 }
 
 std::string CleanString(std::string str)
@@ -184,7 +192,7 @@ std::string CleanString(std::string str)
 void SceneGame::CreateStageFromCSV(const std::string& filename)
 {
     /*char path[1024];
-    if (_getcwd(path, 1024) != NULL) 
+    if (_getcwd(path, 1024) != NULL)
     {
         std::string fullPath = std::string(path) + "\\" + filename;
         OutputDebugStringA("\n========================================\n");
@@ -193,9 +201,6 @@ void SceneGame::CreateStageFromCSV(const std::string& filename)
         OutputDebugStringA(fullPath.c_str());
         OutputDebugStringA("\n========================================\n");
     }*/
-
-    /*std::string debugMsg = "Current Directory: " + std::string(path) + "\n";
-    OutputDebugStringA(debugMsg.c_str());*/
 
     std::ifstream file(filename);
     if (!file.is_open())
@@ -209,11 +214,7 @@ void SceneGame::CreateStageFromCSV(const std::string& filename)
     std::string line;
     // ファイルを1行ずつ読み込む
     while (std::getline(file, line))
-    {   
-        //if (line.empty() || line.length() < 3)continue;
-        //// コメント行スキップ
-        //if (line[0] == '#') continue;
-        
+    {
         // '#'で始まる行はコメントとしてスキップ
         if (line.empty() || line[0] == '#') continue;
 
@@ -229,21 +230,75 @@ void SceneGame::CreateStageFromCSV(const std::string& filename)
 
         // データが7つ(ID, PosXYZ, ScaleXYZ)揃っているか確認
         if (data.size() >= 7)
-        { 
-            try 
+        {
+            try
             {
                 // クリーンなデータを使って変換
                 // 文字列を数値に変換
                 int id = std::stoi(data[0]);
 
-               /* std::string log = "Loaded ID: " + std::to_string(id) + "\n";
-                OutputDebugStringA(log.c_str());*/
                 float px = std::stof(data[1]);
                 float py = std::stof(data[2]);
                 float pz = std::stof(data[3]);
                 float rx = std::stof(data[4]);
                 float ry = std::stof(data[5]);
                 float rz = std::stof(data[6]);
+
+                if (px == 0.0f && py == -0.9f && pz == 10.0f)
+                {
+                    rx = 45.0f;
+                    ry = 0.0f;
+                    rz = 0.0f;
+                }
+
+                if (px == 9.0f && py == -0.9f && pz == 10.0f)
+                {
+                    rx = -45.0f;
+                    ry = 0.0f;
+                    rz = 0.0f;
+                }
+
+                if (px == 3.0f && py == -1.1f && pz == 10.0f)
+                {
+                    rx = 0.0f;
+                    ry = 0.0f;
+                    rz = 45.0f;
+                }
+
+                if (px == 3.0f && py == -1.1f && pz == 10.0f)
+                {
+                    rx = 0.0f;
+                    ry = 0.0f;
+                    rz = -45.0f;
+                }
+
+                if (px == 12.0f && py == -1.2f && pz == 10.0f)
+                {
+                    rx = 15.0f;
+                    ry = 0.0f;
+                    rz = 15.0f;
+                }
+
+                if (px == 15.0f && py == -1.2f && pz == 10.0f)
+                {
+                    rx = -15.0f;
+                    ry =  0.0f;
+                    rz = -15.0f;
+                }
+
+                if (px == 18.0f && py == -1.1f && pz == 10.0f)
+                {
+                    rx = 30.0f;
+                    ry = 0.0f;
+                    rz = 30.0f;
+                }
+
+                if (px == 21.0f && py == -0.9f && pz == 10.0f)
+                {
+                    rx = 45.0f;
+                    ry = 0.0f;
+                    rz = 0.0f;
+                }
 
                 // Prefabを生成
                 Prefab::Instantiate(*W, static_cast<PrefabId>(id),
@@ -282,7 +337,7 @@ void SceneGame::SetPlayerAndHummer()
     camera.AddComponent<CameraShake>();
 
     GameObject& pivot = W->CreateGameObject();
-    Transform& pivotTf = pivot.AddComponent<Transform>(Vector3(0,1,0), Vector3::zero(), Vector3::one());
+    Transform& pivotTf = pivot.AddComponent<Transform>(Vector3(0, 1, 0), Vector3::zero(), Vector3::one());
     pivot.AddComponent<CameraControl>();
 
     GameObject& player = W->CreateGameObject();
@@ -294,9 +349,14 @@ void SceneGame::SetPlayerAndHummer()
     player.AddComponent<PlayerMove>();
     player.AddComponent<PlayerAction>();
     player.SetTag(Tag::Player);
-  
+
     GameObject& hammer = W->CreateGameObject();
-    Transform& hammerTf = hammer.AddComponent<Transform>(Vector3(0, 0, 1.5f), Vector3::zero(), kDefaultHummerScale);
+    Transform& hammerTf = hammer.AddComponent<Transform>(
+        Vector3(0, 0, 1.5f),
+        Vector3::zero(),
+        Vector3(0.8f, 0.4f, 0.4f) // ← ここを変更しました
+    );
+
     hammer.AddComponent<MeshFilter>(MeshFilter::Type::Cube);
     hammer.AddComponent<MeshRender>(1);
     auto& hbc = hammer.AddComponent<BoxCollider>(false); hbc.isTrigger = true;

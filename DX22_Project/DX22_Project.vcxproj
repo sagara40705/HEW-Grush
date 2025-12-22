@@ -156,6 +156,7 @@
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Component.cpp" />
+    <ClCompile Include="DeltaTimeUIManager.cpp" />
     <ClCompile Include="DirectX.cpp" />
     <ClCompile Include="Frustum.cpp" />
     <ClCompile Include="Game.cpp" />
@@ -215,6 +216,7 @@
     <ClInclude Include="CSV.h" />
     <ClInclude Include="DebugLog.h" />
     <ClInclude Include="DebugScene.h" />
+    <ClInclude Include="DeltaTimeUIManager.h" />
     <ClInclude Include="Frustum.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameTimer.h" />

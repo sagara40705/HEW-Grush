@@ -3,6 +3,8 @@
 #include "CollisionListener.h"
 #include "GameObject.h"
 #include "Vector3.h"
+#include <vector>
+#include <string>
 
 enum class HummerGrade : int
 {
@@ -11,43 +13,49 @@ enum class HummerGrade : int
 	Grade_3 = 2,
 	Count = 3
 };
-constexpr int ToInt(HummerGrade g) {return static_cast<int>(g);}
+constexpr int ToInt(HummerGrade g) { return static_cast<int>(g); }
 
+class Transform; class Collider; // 前方宣言
 
-// グレードごとのゲージの最大値
-constexpr float kMaxGaugeValue[ToInt(HummerGrade::Count)] = {10.f, 20.f, 30.f};
-
-// デフォルトのハンマーの大きさ
-constexpr Vector3 kDefaultHummerScale = Vector3(0.8f, 0.4f, 0.4f);
-// グレードごとの大きさ(倍率)
-constexpr float kHummerScaleRatio[ToInt(HummerGrade::Count)] = { 1.f, 1.5f, 2.25f };
-
-// グレードUp時に貰えるゲージの最低値(全体の割合)
-constexpr float KGradeUpGaugeRatio = 0.2f;
-
-class Transform; class Collider; //前方宣言
+// グレードごとのパラメータ構造体
+struct HummerGradeParam
+{
+	float maxGauge;      // ゲージ最大値
+	float scaleRatio;    // 大きさ倍率
+	float gaugeUpValue;  // このグレードのガラスを割った時のゲージ上昇量
+	float vibPower;      // 振動の強さ
+	float vibDuration;   // 振動の時間
+};
 
 class  HummerScript :public MonoBehaviour, public TriggerListener
 {
 public:
 	// ===== チューニング（通常攻撃） =====
 	Vector3 attackStartLocal = Vector3(-1, 0, 1.5); // 「攻撃開始地点」
-	Vector3 attackEndLocal = Vector3(1, 0, 1.5); // 「攻撃終了地点」
-	Vector3 idleLocal = Vector3(0, 0, 1.5); // 待機位置（子として前方1）
-	float motionTime = 0.3f; // 「モーション時間(0.3)」
-	// ===== ゲージ減衰 =====
-	const float kGaugeDecayValue = 0.01f;
+	Vector3 attackEndLocal = Vector3(1, 0, 1.5);    // 「攻撃終了地点」
+	Vector3 idleLocal = Vector3(0, 0, 1.5);         // 待機位置
+	float motionTime = 0.3f;                        // 「モーション時間」
+
 private:
 	Transform* t = nullptr;
 	Transform* owner = nullptr;
 	Collider* col = nullptr;
 	PlayerAction* pa = nullptr;
+
+	// CSVから読み込んだデータを保持するリスト
+	std::vector<HummerGradeParam> gradeParams;
+
+	// グローバル設定(CSVから読み込む)
+	float loadedGaugeDecayValue = 0.01f;     // 減衰値
+	float loadedGradeUpRatio = 0.2f;         // ランクアップ時の引継ぎ割合
+	float loadedGaugeDecayDelay = 5.0f;      // 減衰開始までの遅延時間
+
 public:
 	HummerGrade grade = HummerGrade::Grade_1;
 	float gauge = 0.f;
+
 private:
 	bool  isGaugeDecaying = false;
-	static constexpr float kGaugeDecayDelay = 5.f;
 	float timerGaugeDecayDelay = 0.f;
 
 	// === 通常攻撃のステート ===
@@ -56,39 +64,40 @@ private:
 
 	// === 当たり判定の有効化管理 ===
 	bool internalHitEnable = false; // 自分（通常攻撃）でのON
-	bool externalHitEnable = false; // プレイヤーの他アクション（回転/ダッシュ）でのON
+	bool externalHitEnable = false; // プレイヤーの他アクションでのON
+
 public:
-	HummerScript(Transform* _o): owner(_o)  {}
+	HummerScript(Transform* _o) : owner(_o) {}
 
 	void Start() override;
 	void Update() override;
 	void OnDestroy() override;
 	void OnTriggerStay(const TriggerInfo& c) override;
+
 public:
-	// === 追加API（プレイヤー側から使う） ===
-	void StartNormalAttack();     // 通常攻撃を開始（クールタイム＝motionTime。多重起動ガードあり）
+	// === 追加API ===
+	void StartNormalAttack();
 	bool IsNormalAttacking() const { return normalAttacking; }
 
-	// プレイヤーの“別アクション”（回転攻撃/ダッシュ）中の当たり判定ON/OFF（OR結合）
+	// プレイヤーの“別アクション”中の当たり判定ON/OFF
 	void SetActionHitEnable(bool on) { externalHitEnable = on; }
-	// 実効（内部攻撃 or 外部アクション）での当たり判定ONか
+	// 実効当たり判定ONか
 	bool IsHitActive() const { return (internalHitEnable || externalHitEnable); }
 
-	// 任意で見た目/コライダーON/OFF切り替えしたい場合のフック
-	//void SetVisualEnabled(bool on);
-
 private:
-	bool CheckGrade(GameObject* glass);	// グレードを比較
-	void GaugeUp(GameObject* glass);	// ゲージをUP
-	void GradeUp();						// グレードをUP
-	void GaugeDecay();					// 時間経過でゲージを減衰
-	void GradeDown();					// グレードをDOWN
-	void ScaleByGrade();				// 大きさを更新
-	// 内部ヘルパ
+	bool CheckGrade(GameObject* glass);
+	void GaugeUp(GameObject* glass);
+	void GradeUp();
+	void GaugeDecay();
+	void GradeDown();
+	void ScaleByGrade();
+
 	void SetInternalHitEnable(bool on) { internalHitEnable = on; }
-	void TickNormalAttack(float dt);    // 位置補間
-	//デバックコマンド
+	void TickNormalAttack(float dt);
 	void DebugCommand();
+
+	void LoadParamsFromCSV(const std::string& filename);
+
 public:
-	float GetGaugeRatio();			//ゲージの割合を取得
+	float GetGaugeRatio();
 };

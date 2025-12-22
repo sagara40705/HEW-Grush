@@ -4,6 +4,7 @@
 
 class ScoreUIManager : public MonoBehaviour
 {
+
 public:
     // 4桁 (最大 9999)
     enum ScoreDigit
@@ -54,7 +55,8 @@ public:
 
 private:
     // 基本配置座標（適当に調整用）
-    const Vector2 kNumberPos[ScoreDigit::Count] = {
+    const Vector2 kNumberPos[ScoreDigit::Count] =
+    {
         { 1020.f, 80.f },   // 千の位
         { 1070.f, 80.f },   // 百の位
         { 1120.f, 80.f },   // 十の位

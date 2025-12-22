@@ -12,6 +12,7 @@
 #include "Timer.h"
 #include "Game.h"
 #include "GameObject.h"
+#include "Timer.h"
 
 
 //--- グローバル変数
@@ -28,7 +29,6 @@ HRESULT Init(HWND hWnd, UINT width, UINT height)
 	Sprite::Init();
 	InitInput();
 	ShaderList::Init();
-	Timer::Init();
 
 	// シーン
 	Game::Init();
