@@ -5084,5 +5084,5 @@ public:
 
 #endif // __EFFEKSEER_CLIENT_H__
 
-#include "Effekseer.Modules.h"
+//#include "Effekseer.Modules.h"
 

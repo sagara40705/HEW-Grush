@@ -11,7 +11,8 @@
 #include "GlassShard.h"
 #include "GlassShardPool.h"
 #include "Sprite3DRenderer.h"
-
+#include "SpriteAnimation.h"
+ 
 void GlassObject::Start()
 {
 
