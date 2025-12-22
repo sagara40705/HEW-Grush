@@ -344,6 +344,9 @@
     <ClCompile Include="UIFrostRenderer.cpp">
       <Filter>Game\Components\Environment</Filter>
     </ClCompile>
+    <ClCompile Include="SceneStageSelect.cpp">
+      <Filter>Game\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -605,6 +608,9 @@
     </ClInclude>
     <ClInclude Include="UIFrostRenderer.h">
       <Filter>Game\Components\Environment</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneStageSelect.h">
+      <Filter>Game\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
