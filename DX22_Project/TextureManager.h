@@ -30,7 +30,8 @@ enum class TextureTag : uint8_t
     DashMoji = 21,
     DashMojiMono = 22,
 	UIFrostNoise = 23,
-    Count = 24
+	EffectLv1 = 24,
+    Count = 25
 };
 
 class TextureManager
