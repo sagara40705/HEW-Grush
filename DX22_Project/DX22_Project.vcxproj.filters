@@ -88,6 +88,9 @@
     <Filter Include="Game\Components\Gimmick">
       <UniqueIdentifier>{44d1c6ce-c9cd-4aa6-8a74-78f91fd44392}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Components\StageSelect">
+      <UniqueIdentifier>{313011ab-2058-419b-bbec-c43b6387d9a3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectX.cpp">

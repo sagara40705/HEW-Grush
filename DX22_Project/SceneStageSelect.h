@@ -8,9 +8,17 @@ public:
     ~SceneStageSelect() override = default;
 
     void Load() override;
+    void Unload() override;
+
+    void BuildLoadTasks(std::vector<LoadTask>& outTasks) override;
+private:
+    void CreateCamera();
+    void CreatePlayer();
+    void CreateGround();
+
+public:
     void Update() override;
     void Draw() override;
-    void Unload() override;
 };
 
 
