@@ -18,7 +18,7 @@ void GlassObject::Start()
 
 	// 子オブジェクトを生成して参照をメンバに保存しておく
 	GameObject& Effkseer = gameObject->CreateChild();
-	Effkseer.AddComponent<Sprite3DRenderer>(TextureTag::EffectLv1, Vector2(350, 300), Vector2(500, 500));
+	Effkseer.AddComponent<Sprite3DRenderer>(TextureTag::GaugeEffect, Vector2(350, 300), Vector2(500, 500));
 	m_hitEffekt = &Effkseer.AddComponent<SpriteAnimation>(5, 5, 5, 26, false);
 	GameObject* gaugeMgr = gameObject->world->FindWithTag(Tag::GaugeManager);
 	gaude_ = gaugeMgr->GetComponent<GlassGaugeManager>();
