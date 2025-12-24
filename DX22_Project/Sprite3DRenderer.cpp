@@ -29,6 +29,8 @@ void Sprite3DRenderer::Render()
     PixelShader* ps = Sprite::Get3dPS();
     if (!vs || !ps);
 
+    assert(tf_ && "Transfrom‚ªnullptr");
+
     // 1) WVP ‚ð\’z
     XMFLOAT4X4 fWVP[3];
     XMMATRIX W = XMLoadFloat4x4(&tf_->GetMatrix());

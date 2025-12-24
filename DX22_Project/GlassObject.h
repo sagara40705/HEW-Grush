@@ -23,9 +23,10 @@ private:
 	GlassGrade grade_ = GlassGrade::Grade_1;
 	float hp_ = 0;
 	Transform* tf_ = nullptr;
-	GameObject* m_hitEffekt = nullptr;
+	SpriteAnimation* m_hitEffekt = nullptr;
 public:
 	GlassObject(GlassGrade g = GlassGrade::Grade_1) : grade_(g) {}
+	void Awake() override;
 	void Start() override;
 	void OnDestroy() override;
 public:
