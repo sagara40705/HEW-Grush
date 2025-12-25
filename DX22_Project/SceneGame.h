@@ -4,6 +4,9 @@
 #include "Scene.h"
 #include "SkyDomeMesh.h"
 #include "SkyDomeShader.h"
+#include <string> 
+#include <vector>
+#include "Prefab.h"
 
 class SceneGame : public Scene
 {
@@ -24,6 +27,8 @@ private:
 	void CreateManagers();
 	void CreateCameraAndPlayer();
 	void CreateStage();
+	void CreateStageFromCSV(const std::string& filename);
+	PrefabId GetPrefabIdFromString(const std::string& rawname);
 	void CreateUi();
 	void CreateGaugeUI();
 	void CreateTimerUI();
@@ -33,10 +38,10 @@ private:
 	//ÉMÉ~ÉbÉN	
 	void CreateGlassObjectSpawner();
 	void CreateWarp();
-
 	void InitPlayerTex();
 	void InitSkyDome();
 	void SkyDomeDorw();
+
 private:
 	DirectX::XMFLOAT4X4 m_world;
 	DirectX::XMFLOAT4X4 m_view;

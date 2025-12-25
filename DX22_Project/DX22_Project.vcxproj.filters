@@ -617,6 +617,7 @@
       <Filter>Game\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="StageSelectSystem.h" />
+    <ClInclude Include="x64\Csv.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SceneManager.inl">
