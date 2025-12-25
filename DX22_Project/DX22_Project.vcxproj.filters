@@ -350,6 +350,7 @@
     <ClCompile Include="SceneStageSelect.cpp">
       <Filter>Game\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="StageSelectSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -615,6 +616,7 @@
     <ClInclude Include="SceneStageSelect.h">
       <Filter>Game\Scenes</Filter>
     </ClInclude>
+    <ClInclude Include="StageSelectSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SceneManager.inl">
