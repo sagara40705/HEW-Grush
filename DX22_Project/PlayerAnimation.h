@@ -16,10 +16,10 @@ private:
 	{
 		//Idle = ,			// 待機アニメーション
 		Move = 0,			// 移動アニメーション
-		//NormalAttack = ,	// 通常攻撃アニメーション
-		//SpinAttack = ,		// 回転攻撃アニメーション
-		DashAttack = 1,	// 突進攻撃アニメーション
-		Count = 2,			// アニメーションの総数
+		NormalAttack = 1,	// 通常攻撃アニメーション
+		SpinAttack = 2,		// 回転攻撃アニメーション
+		DashAttack = 3,	// 突進攻撃アニメーション
+		Count = 4,			// アニメーションの総数
 		None = 99			// 未指定状態
 	};
 
@@ -36,6 +36,8 @@ private:
 	Type nextType_	  = Type::None; // 現在のアニメーション
 private:
 	void CheckMoveAnime();
+	void CheckNormalAttackAnime();
+	void CheckSpinAttackAnime();
 	void CheckDashAttackAnime();
 private:
 //========================================

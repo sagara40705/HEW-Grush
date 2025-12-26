@@ -10,9 +10,16 @@
 #include "ShaderList.h"
 #include "GlassShard.h"
 #include "GlassShardPool.h"
-
+#include "Sprite3DRenderer.h"
+#include "SpriteAnimation.h"
+ 
 void GlassObject::Start()
 {
+
+	// 子オブジェクトを生成して参照をメンバに保存しておく
+	GameObject& Effkseer = gameObject->CreateChild();
+	Effkseer.AddComponent<Sprite3DRenderer>(TextureTag::EffectLv1, Vector2(350, 300), Vector2(500, 500));
+	m_hitEffekt = &Effkseer.AddComponent<SpriteAnimation>(5, 5, 5, 26, false);
 	GameObject* gaugeMgr = gameObject->world->FindWithTag(Tag::GaugeManager);
 	gaude_ = gaugeMgr->GetComponent<GlassGaugeManager>();
 
@@ -52,7 +59,7 @@ void GlassObject::SpawnShards()
 	GlassShardPool* pool = GlassShardPool::GetInstanse();
 	Vector3 pos = tf_->GetPosition();
 
-	const int kSpawnNum = 8 + ToIndex(grade_) * 16;
+	const int kSpawnNum = 4 + ToIndex(grade_) * ToIndex(grade_) * 4;
 
 	for (int i = 0; i < kSpawnNum; ++i)
 	{
