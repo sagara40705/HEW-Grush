@@ -14,12 +14,13 @@ private:
 	//アニメーションの種類
 	enum Type
 	{
-		//Idle = ,			// 待機アニメーション
-		Move = 0,			// 移動アニメーション
+		Idle = 0,			// 待機アニメーション
+		Move = 1,			// 移動アニメーション
 		//NormalAttack = ,	// 通常攻撃アニメーション
-		//SpinAttack = ,		// 回転攻撃アニメーション
-		DashAttack = 1,	// 突進攻撃アニメーション
-		Count = 2,			// アニメーションの総数
+		SpinAttack = 2,		// 回転攻撃アニメーション
+		DashAttack = 3,	    // 突進攻撃アニメーション
+		LeanBack = 4,		// のけぞりアニメーション
+		Count = 5,			// アニメーションの総数
 		None = 99			// 未指定状態
 	};
 
@@ -36,6 +37,7 @@ private:
 	Type nextType_	  = Type::None; // 現在のアニメーション
 private:
 	void CheckMoveAnime();
+	void CheckSpinAttackAnime();
 	void CheckDashAttackAnime();
 private:
 //========================================

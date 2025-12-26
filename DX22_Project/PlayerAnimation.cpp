@@ -12,7 +12,7 @@ void PlayerAnimation::Start()
 	state_ = gameObject->GetComponent<PlayerState>();
 	anime_ = gameObject->GetComponent<Animator>();
 	AddAllAnimations();
-	anime_->Play(animation_[Type::Move], false, 1.f);
+	anime_->Play(animation_[Type::Idle], true, 1.f);
 	anime_->SetTimeSeconds(4.8f);
 
 	assert(state_ && anime_ && "PlayerAnimation	で プレイヤーの <PlayerState> か <Animator> が nullptr です");
@@ -32,6 +32,7 @@ void PlayerAnimation::Update()
 {
 	//移動を先に判定
 	CheckMoveAnime();
+	CheckSpinAttackAnime();
 	CheckDashAttackAnime();
 }
 
@@ -56,7 +57,8 @@ void PlayerAnimation::CheckMoveAnime()
 		//移動停止したら終了位置まで再生
 		if (state_->moveStoppedThisFrame)
 		{
-			anime_->SetTimeSeconds(4.8f);
+			currentType_ = Type::Idle;
+			anime_->Play(animation_[Type::Idle], true, 1.f);
 		}
 	}
 	else
@@ -71,6 +73,32 @@ void PlayerAnimation::CheckMoveAnime()
 	}
 }
 
+void PlayerAnimation::CheckSpinAttackAnime()
+{
+	if (currentType_ == Type::SpinAttack)
+	{
+		const float t = anime_->GetCurrentAnimeTime();
+
+		//アニメーション終了したら移動アニメーションへ
+		if (t > 2.5f)
+		{
+			currentType_ = Type::Idle;
+			anime_->Play(animation_[Type::Idle], true, 1.f);
+		}
+	}
+	else
+	{
+		//回転攻撃アクションを実行したら回転攻撃アニメーションへ
+		if (state_->actionedThisFrame[ToIndex(ActionId::SpinAttack)])
+		{
+			currentType_ = Type::SpinAttack;
+			anime_->Play(animation_[Type::SpinAttack], false, 1.0f);
+			anime_->SetTimeSeconds(1.0f);
+		}
+
+	}
+}
+
 void PlayerAnimation::CheckDashAttackAnime()
 {
 
@@ -78,16 +106,10 @@ void PlayerAnimation::CheckDashAttackAnime()
 	{
 		const float t = anime_->GetCurrentAnimeTime();
 
-		//アニメーション終了したら移動アニメーションへ
-		if (t > 2.5f && t < 3.f)
+		if (t > 2.5)
 		{
-			//anime_->Play(animation_[Type::Move], false, 1.f);
-			anime_->SetTimeSeconds(4.4f);
-		}
-		if (t > 5.0)
-		{
-			anime_->Play(animation_[Type::Move], false, 1.f);
-			anime_->SetTimeSeconds(4.8f);
+			currentType_ = Type::Idle;
+			anime_->Play(animation_[Type::Idle], true, 1.f);
 		}
 	}
 	else
@@ -112,12 +134,16 @@ void PlayerAnimation::AddAllAnimations()
 	Model* model = anime_->GetModel();
 	if (!model) return;
 
+	//待機
+	animation_[Type::Idle] = model->AddAnimation("Assets/Animation/animation_taiki1.fbx");
 	//移動
 	animation_[Type::Move] = model->AddAnimation("Assets/Animation/animation_hashiru_2.fbx");
-	
-
+	//回転攻撃
+	animation_[Type::SpinAttack] = model->AddAnimation("Assets/Animation/animation_rotateattack.fbx");
 	//突進攻撃
 	animation_[Type::DashAttack] = model->AddAnimation("Assets/Animation/animation_dashattack.fbx");
+	//のけぞり
+	animation_[Type::LeanBack] = model->AddAnimation("Assets/Animation/animation_knockback.fbx");
 }
 
 /*
