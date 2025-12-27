@@ -34,6 +34,8 @@ void PlayerAnimation::Update()
 	CheckMoveAnime();
 	CheckSpinAttackAnime();
 	CheckDashAttackAnime();
+
+
 }
 
 /*
@@ -60,6 +62,8 @@ void PlayerAnimation::CheckMoveAnime()
 			currentType_ = Type::Idle;
 			anime_->Play(animation_[Type::Idle], true, 1.f);
 		}
+
+		
 	}
 	else
 	{
@@ -79,12 +83,13 @@ void PlayerAnimation::CheckSpinAttackAnime()
 	{
 		const float t = anime_->GetCurrentAnimeTime();
 
-		//アニメーション終了したら移動アニメーションへ
+		//アニメーション終了したら待機アニメーションへ
 		if (t > 2.5f)
 		{
 			currentType_ = Type::Idle;
 			anime_->Play(animation_[Type::Idle], true, 1.f);
 		}
+
 	}
 	else
 	{
@@ -95,9 +100,9 @@ void PlayerAnimation::CheckSpinAttackAnime()
 			anime_->Play(animation_[Type::SpinAttack], false, 1.0f);
 			anime_->SetTimeSeconds(1.0f);
 		}
-
 	}
 }
+
 
 void PlayerAnimation::CheckDashAttackAnime()
 {
@@ -106,6 +111,7 @@ void PlayerAnimation::CheckDashAttackAnime()
 	{
 		const float t = anime_->GetCurrentAnimeTime();
 
+		//アニメーション終了したら待機アニメーションへ
 		if (t > 2.5)
 		{
 			currentType_ = Type::Idle;
@@ -121,7 +127,6 @@ void PlayerAnimation::CheckDashAttackAnime()
 			anime_->Play(animation_[Type::DashAttack], false, 1.0f);
 			anime_->SetTimeSeconds(1.0f);
 		}
-
 	}
 }
 

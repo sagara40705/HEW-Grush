@@ -35,6 +35,7 @@ private:
 	Model::AnimeNo animation_[Type::Count]; //アニメーションナンバーの格納先
 	Type currentType_ = Type::None; // 現在のアニメーション
 	Type nextType_	  = Type::None; // 現在のアニメーション
+
 private:
 	void CheckMoveAnime();
 	void CheckSpinAttackAnime();
