@@ -5,6 +5,7 @@
 #include "GlassObject.h"
 #include "InputKeyboard.h"
 #include "DebugLog.h"
+#include "SoundManager.h"
 
 constexpr float kMaxGaugeVale[ToIndex(HammerGrade::Count)] 
 				= { 100.f, 200.f, 300.f };
@@ -98,6 +99,8 @@ void GlassGaugeManager::GradeUp()
 
 	hammer_->GradeUp();
 
+	PlaySound(SoundManager::GetSound(GradeUpSE));
+
 	constexpr float kWhenGradeUpMinGauge = 5;
 	gauge_ = kWhenGradeUpMinGauge;
 }
@@ -113,6 +116,7 @@ void GlassGaugeManager::GradeDown()
 	}
 
 	hammer_->GradeDown();
+	PlaySound(SoundManager::GetSound(GradeDownSE));
 
 	gauge_ = kMaxGaugeVale[ToIndex(hammer_->GetGrade())];
 }
