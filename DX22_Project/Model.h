@@ -85,6 +85,7 @@ private:
 		AnimeTime		totalTime;	// 最大再生時間
 		float			speed;		// 再生速度
 		bool			isLoop;		// ループ指定
+		bool			reverse;    // 逆再生指定
 	};
 
 	//===== アニメーション =====
@@ -276,7 +277,7 @@ public:
 	* @param[in] loop ループ再生フラグ
 	* @param[in] speed 再生速度
 	*/
-	void PlayAnime(AnimeNo no, bool loop, float speed = 1.0f);
+	void PlayAnime(AnimeNo no, bool loop, float speed = 1.0f, bool reverse = false);
 
 	/*
 	* @brief アニメーションの停止
