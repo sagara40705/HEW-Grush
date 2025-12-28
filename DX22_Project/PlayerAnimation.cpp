@@ -84,7 +84,7 @@ void PlayerAnimation::CheckSpinAttackAnime()
 		const float t = anime_->GetCurrentAnimeTime();
 
 		//アニメーション終了したら待機アニメーションへ
-		if (t > 2.5f && t < 5.f)
+		if (t > 2.5f)
 		{
 			currentType_ = Type::Idle;
 			anime_->Play(animation_[Type::Idle], true, 1.f);
