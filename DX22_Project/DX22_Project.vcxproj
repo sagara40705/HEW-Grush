@@ -205,6 +205,7 @@
     <ClCompile Include="PrimitiveMeshManager.cpp" />
     <ClCompile Include="Raycast.cpp" />
     <ClCompile Include="Result.cpp" />
+    <ClCompile Include="ResultTimerUI.cpp" />
     <ClCompile Include="Rigidbody.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneGame.cpp" />
@@ -289,6 +290,7 @@
     <ClInclude Include="PrimitiveMeshManager.h" />
     <ClInclude Include="Raycast.h" />
     <ClInclude Include="RenderSystem.h" />
+    <ClInclude Include="ResultTimerUI.h" />
     <ClInclude Include="SceneResult.h" />
     <ClInclude Include="Rigidbody.h" />
     <ClInclude Include="Scene.h" />
