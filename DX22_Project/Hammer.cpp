@@ -5,6 +5,7 @@
 #include "CameraShake.h"
 #include "GlassGaugeManager.h"
 #include "ScoreManager.h"
+#include "PlayerAnimation.h"
 
 #include "GlassObject.h"
 #include "DebugLog.h"
@@ -23,6 +24,10 @@ void Hammer::Start()
 	GameObject* score = gameObject->FindWithTag(Tag::ScoreManager);
 	score_ = score->GetComponent<ScoreManager>();
 
+	GameObject* player = gameObject->FindWithTag(Tag::Player);
+	playerAnim_ = player->GetComponent<PlayerAnimation>();
+
+	
 	assert(tf_ && bc_ && gauge_ && score_ && "参照のどれかがnullptrです");
 	if (!tf_ || !bc_ || !gauge_ || !score_) return;
 
@@ -120,6 +125,15 @@ void Hammer::Attack(GameObject* go)
 
 	if (!shake_) return;
 	shake_->Play(ShakeType::LEVEL_1);
+
+	// グレード比較してガラスの方が強ければプレイヤーをノックバックさせる
+	if (ToIndex(glass->GetGrade()) > ToIndex(grade_))
+	{
+		if (playerAnim_)		
+			playerAnim_->CheckLeanBackAnime(3.f);
+	}
+	
+
 
 	//if (CanBrake(glass->GetGrade()))
 	//{
