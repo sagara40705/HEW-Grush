@@ -428,9 +428,6 @@ for (int i = 0; i < posCount1; i++) {
 			Vector3::one()
 		);
 	}
-
-
-
 }
 
 void SceneGame::CreateUi()
