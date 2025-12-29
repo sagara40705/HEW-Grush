@@ -151,6 +151,7 @@
     <ClCompile Include="AudioSource.cpp" />
     <ClCompile Include="BoxCollider.cpp" />
     <ClCompile Include="BreakButtonRenderer.cpp" />
+    <ClCompile Include="BreakUiRenderer.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraContorol.cpp" />
     <ClCompile Include="CameraShake.cpp" />
@@ -229,6 +230,7 @@
     <ClInclude Include="AudioSource.h" />
     <ClInclude Include="BoxCollider.h" />
     <ClInclude Include="BreakButtonRenderer.h" />
+    <ClInclude Include="BreakUiRenderer.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraContorol.h" />
     <ClInclude Include="CameraShake.h" />

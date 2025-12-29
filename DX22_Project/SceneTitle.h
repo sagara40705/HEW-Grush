@@ -3,7 +3,7 @@
 // SceneTitle.h
 #pragma once
 #include "Scene.h"
-#include"BreakButtonRenderer.h"
+#include"BreakUiRenderer.h"
 
 class SceneTitle : public Scene
 {
@@ -17,6 +17,6 @@ public:
     void Unload() override;
   
 private:
-    // ★ エンターで割る対象のボタン
+    //// ★ エンターで割る対象のボタン
     BreakUiRenderer* m_breakButton = nullptr;
 };

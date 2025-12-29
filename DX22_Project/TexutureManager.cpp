@@ -31,7 +31,9 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     "Assets/Texture/bg_2048_1024.png",//（仮）スカイドームの画像1
     "Assets/Texture/bg_4096_2048.png",//（仮）スカイドームの画像2
     "Assets/Texture/Titele/title_bg.png",//タイトルのメイン画
-    "Assets/Texture/Titele/title_hakaisuru.png"//タイトルの文字
+    "Assets/Texture/Titele/title_hakaisuru.png",//タイトルの文字
+    "Assets/Texture/Titele/fadein.png",//タイトルを割る
+    "Assets/Texture/Titele/fadeinID.png"//タイトルを割るID
 };
 
 // Load: 指定された TextureTag のテクスチャを読み込む。
