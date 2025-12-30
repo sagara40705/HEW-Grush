@@ -249,6 +249,9 @@
     <ClInclude Include="CapsuleCollider.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Collision.h" />
+    <ClInclude Include="SelectPlayerControl.h" />
+    <ClInclude Include="StageMap.h" />
+    <ClInclude Include="StagePoint.h" />
     <ClInclude Include="StageSelectSystem.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="DebugLog.h" />
