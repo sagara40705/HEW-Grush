@@ -12,6 +12,7 @@ public:
 
     void BuildLoadTasks(std::vector<LoadTask>& outTasks) override;
 private:
+	void CreateStageMap();
     void CreateCamera();
     void CreatePlayer();
     void CreateGround();

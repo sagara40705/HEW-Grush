@@ -4,11 +4,12 @@
 
 enum class StageId : std::uint8_t
 {
-    Stage1,
-    Stage2,
-    Stage3,
-    // ...
-    Count
+    Stage1  = 0,
+    Stage2  = 1,
+    Stage3a = 2,
+	Stage3b = 3,
+	Stage3c = 4,
+	Count = 5
 };
 constexpr size_t ToIndex(StageId stage) noexcept {
     return static_cast<size_t>(stage);

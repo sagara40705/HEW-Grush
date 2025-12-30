@@ -1,5 +1,6 @@
 #pragma once
 #include "GameState.h"
+#include "Vector3.h"
 #include <vector>
 
 //方向の列挙型
@@ -23,5 +24,6 @@ struct ConnectedStage
 struct StagePoint
 {
 	StageId stageId;							 //ステージID
+	Vector3 position;							 //ステージポイントの位置
 	std::vector<ConnectedStage> connectedStages; //繋がっているステージの情報
 };

@@ -25,6 +25,7 @@ void SceneStageSelect::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	// テクスチャーロード	
 
 	// ゲームオブジェクト生成
+	outTasks.emplace_back([this] { CreateStageMap(); });
 	outTasks.emplace_back([this] { CreateCamera(); });
 	outTasks.emplace_back([this] { CreatePlayer(); });
 	outTasks.emplace_back([this] { CreateGround(); });
@@ -36,6 +37,15 @@ void SceneStageSelect::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 		});
 }
 
+void SceneStageSelect::CreateStageMap()
+{
+	World& world = GetWorld();
+
+	GameObject& stageMapObj = world.CreateGameObject();
+	stageMapObj.SetTag(Tag::StageMap);
+	stageMapObj.AddComponent<StageMap>();
+}
+
 void SceneStageSelect::CreateCamera()
 {
 
@@ -43,6 +53,11 @@ void SceneStageSelect::CreateCamera()
 
 void SceneStageSelect::CreatePlayer()
 {
+	World& world = GetWorld();
+
+	GameObject& playerObj = world.CreateGameObject();
+	playerObj.SetTag(Tag::Player);
+	playerObj.AddComponent<SelectPlayerControl>();
 }
 
 void SceneStageSelect::CreateGround()

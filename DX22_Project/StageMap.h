@@ -12,4 +12,6 @@ private:
 public:
 	void Start() override;
 	void OnDestroy() override;
+
+	StagePoint* GetStagePoint(StageId stageId) { return &stagePoints[ToIndex(stageId)]; }
 };

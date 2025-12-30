@@ -351,6 +351,12 @@
       <Filter>Game\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="StageSelectSystem.cpp" />
+    <ClCompile Include="SelectPlayerControl.cpp">
+      <Filter>Game\Components\StageSelect</Filter>
+    </ClCompile>
+    <ClCompile Include="StageMap.cpp">
+      <Filter>Game\Components\StageSelect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
