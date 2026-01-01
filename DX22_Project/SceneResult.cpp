@@ -8,15 +8,22 @@
 #include "InputKeyboard.h"
 #include "SceneGame.h"
 #include "ResultTimerUI.h"
+#include "Prefab.h"
+#include "PrefabSet.h"
+#include "LineManager.h"
+#include "Gauge.h"
 
 constexpr Vector2 kNumberUVScale = { 0.1f, 1.0f };
 void Result::Load()
 {
+
 	//テクスチャーロード
 	//TextureManager::Load(TextureTag::Title_BG);
 
 	World& w = GetWorld();
-
+	//Canvas
+	GameObject& canvas = w.CreateGameObject();
+	canvas.AddComponent<Canvas>();
 
 	// 従来の同期ロードが必要なら、タスクを構築して全部回す
 	std::vector<LoadTask> tasks;
@@ -64,7 +71,22 @@ void Result::Load()
 
 void Result::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 {
+	// World の中身を消す
+	outTasks.emplace_back([this]
+		{
+			GetWorld().ClearAll();        // 既存の World API に合わせる
+		});
+	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::TimerColon); });
+	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::TimerNumber); });
 	outTasks.emplace_back([this] { TimerUIDeaw(); });
+//	outTasks.emplace_back([this] { GaugeDraw(); });
+
+	// 最後に Start を流す
+	outTasks.emplace_back([this]
+		{
+			GetWorld().Start();
+		});
+
 }
 
 
@@ -87,5 +109,14 @@ void Result::TimerUIDeaw()
 	GameObject& timerUI = w.CreateGameObject();
 	timerUI.SetTag(Tag::ResultTimerUI);
 	timerUI.AddComponent<ResultTimerUI>();
+}
+
+void Result::GaugeDraw()
+{
+	World& w = GetWorld();
+
+	GameObject& Gauge = w.CreateGameObject();
+	Gauge.SetTag(Tag::GaugeUI);
+	Gauge.AddComponent<GaugeUI>();
 }
 

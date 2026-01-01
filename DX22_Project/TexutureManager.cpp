@@ -20,6 +20,8 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     "Assets/Texture/UI_dush_color.png",      //13
     "Assets/Texture/UI_dush.png",            //14
     "Assets/Texture/effect_lv1_at_long.png", //15
+     "Assets/Texture/UIFrame.png",            //16
+    "Assets/Texture/UIGauge.png",            //17
 };
 
 // 配列のデフォルトパスを使用して登録

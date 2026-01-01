@@ -22,6 +22,8 @@ enum class TextureTag : uint8_t
     DashMono,
     //Result,
     EffectLv1,
+	Frame,
+	Gauge,
     Count,
 };
 

@@ -29,7 +29,8 @@ enum class Tag : std::uint8_t
     Enemy,
     Glass,
     ActionUI,
-    ResultTimerUI
+    ResultTimerUI,
+	GaugeUI,
     // •K—v‚É‰ž‚¶‚Ä’Ç‰Á
 };
 

@@ -54,7 +54,7 @@
     <ClCompile Include="PrefabSet.cpp" />
     <ClCompile Include="PrimitiveMeshManager.cpp" />
     <ClCompile Include="Raycast.cpp" />
-    <ClCompile Include="Result.cpp" />
+    <ClCompile Include="SceneResult.cpp" />
     <ClCompile Include="Rigidbody.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneGame.cpp" />
@@ -83,6 +83,7 @@
     <ClCompile Include="_model.cpp" />
     <ClCompile Include="HitEffkt.cpp" />
     <ClCompile Include="ResultTimerUI.cpp" />
+    <ClCompile Include="Gauge.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ActionUI.h" />
@@ -169,6 +170,7 @@
     <ClInclude Include="World.h" />
     <ClInclude Include="HitEffkt.h" />
     <ClInclude Include="ResultTimerUI.h" />
+    <ClInclude Include="Gauge.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SceneManager.inl" />

@@ -24,6 +24,6 @@ public:
 	void Start() override;
 	void Update() override;
 	void OnDestroy() override;
-	GameObject* gameObject = nullptr;
+	//GameObject* gameObject = nullptr;
 };
 

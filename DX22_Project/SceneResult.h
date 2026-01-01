@@ -1,6 +1,5 @@
 #pragma once
 #include "Scene.h"
-
 #include "Component.h"
 #include <cstdint>
 
@@ -10,12 +9,13 @@ public:
     Result() = default;
     ~Result() override = default;
 	//TimerUI* timerUI_;
-    GameObject* gameObject = nullptr;  // 所有者
+   // GameObject* gameObject = nullptr;  // 所有者
     void Load() override;
     void Update() override;
     void Draw() override;
     void Unload() override;
     void TimerUIDeaw();
+	void GaugeDraw();
     // 非同期ロード用
     void BuildLoadTasks(std::vector<LoadTask>& outTasks) override;
 private:
