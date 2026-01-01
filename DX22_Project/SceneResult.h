@@ -14,6 +14,8 @@ public:
     void Update() override;
     void Draw() override;
     void Unload() override;
+
+	void CreateCanvas();
     void TimerUIDeaw();
 	void GaugeDraw();
     // ”ñ“¯Šúƒ[ƒh—p

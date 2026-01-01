@@ -14,22 +14,17 @@
 #include "Gauge.h"
 
 constexpr Vector2 kNumberUVScale = { 0.1f, 1.0f };
+
 void Result::Load()
 {
-
 	//テクスチャーロード
 	//TextureManager::Load(TextureTag::Title_BG);
 
-	World& w = GetWorld();
-	//Canvas
-	GameObject& canvas = w.CreateGameObject();
-	canvas.AddComponent<Canvas>();
 
 	// 従来の同期ロードが必要なら、タスクを構築して全部回す
 	std::vector<LoadTask> tasks;
 	BuildLoadTasks(tasks);
 	for (auto& t : tasks) t();
-
 
 	//constexpr Vector2 kMinutePos[ToIndex(TimerDigits::Count)] = { {1115.f, 14.f}, {1140.f, 14.f} };
 	//constexpr Vector2 kColonPos = { 1165.f,16.f };
@@ -76,8 +71,9 @@ void Result::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 		{
 			GetWorld().ClearAll();        // 既存の World API に合わせる
 		});
-	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::TimerColon); });
-	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::TimerNumber); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::TimerColon); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::TimerNumber); });
+	outTasks.emplace_back([this] { CreateCanvas(); });
 	outTasks.emplace_back([this] { TimerUIDeaw(); });
 //	outTasks.emplace_back([this] { GaugeDraw(); });
 
@@ -100,6 +96,14 @@ void Result::Draw()
 
 void Result::Unload()
 {
+}
+
+void Result::CreateCanvas()
+{
+	World& w = GetWorld();
+	//Canvas
+	GameObject& canvas = w.CreateGameObject();
+	canvas.AddComponent<Canvas>();
 }
 
 void Result::TimerUIDeaw()
