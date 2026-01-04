@@ -22,10 +22,9 @@ private:
 	UiSpriteRenderer* uiColon_ = nullptr;
 	UiSpriteRenderer* uiSecond_[ToIndex(Timer::Count)]{};
 public:
-	float timer_ = 0.f; //í«â¡
+	float timer_ = 0.f;		//Å©í«â¡
 	void Start() override;
 	void Update() override;
 	void OnDestroy() override;
-	//GameObject* gameObject = nullptr;
 };
 

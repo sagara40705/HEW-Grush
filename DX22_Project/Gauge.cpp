@@ -12,7 +12,7 @@ constexpr Vector2 kNumberUVScale = { 1.f, 1.0f };
 //int ArubaitpLevel = 0;
 void GaugeUI::Start()
 {
-	Update(GaugePoint);
+	UpdateGaugePoint(GaugePoint);
 	constexpr Vector2 kMinutePos[ToIndex(TimerDigits::Count)] = { {1100.f, 140.f}, {600.f, 200.f} };
 	constexpr Vector2 kColonPos = { 1165.f,160.f };
 	constexpr Vector2 kSecondPos[ToIndex(TimerDigits::Count)] = { {1175.f, 140.f}, {1200.f, 140.f} };
@@ -25,10 +25,10 @@ void GaugeUI::Start()
 	TextureManager::Load(TextureTag::GaugeEffect);*/
 
 	GameObject& Gauge = gameObject->CreateChild();
-	uiMinute_[ToIndex(TimerDigits::Ten)] = &Gauge.AddComponent<UiSpriteRenderer>(TextureTag::Gauge, kMinutePos[ToIndex(TimerDigits::Ten)], kNumGaugeberSize, Vector2::zero(), kNumberUVScale);
+	uiGauge_ = &Gauge.AddComponent<UiSpriteRenderer>(TextureTag::Gauge, kMinutePos[ToIndex(TimerDigits::Ten)], kNumGaugeberSize, Vector2::zero(), kNumberUVScale);
 
 	GameObject& Frame = gameObject->CreateChild();
-	uiMinute_[ToIndex(TimerDigits::Ten)] = &Frame.AddComponent<UiSpriteRenderer>(TextureTag::Frame, kMinutePos[ToIndex(TimerDigits::Ten)], kNumFrameberSize, Vector2::zero(), kNumberUVScale);
+	uiFrame_ = &Frame.AddComponent<UiSpriteRenderer>(TextureTag::Frame, kMinutePos[ToIndex(TimerDigits::Ten)], kNumFrameberSize, Vector2::zero(), kNumberUVScale);
 
 	/*if (GaugePoint >= 300)
 	{
@@ -48,7 +48,7 @@ void GaugeUI::Draw()
 
 }
 
-float GaugeUI::Update(float)
+float GaugeUI::UpdateGaugePoint(float)
 {
 	if (timer_ >= 100)
 	{
