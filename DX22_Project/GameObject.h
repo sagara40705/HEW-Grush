@@ -31,6 +31,7 @@ enum class Tag : std::uint8_t
     ActionUI,
     ResultTimerUI,
 	GaugeUI,
+	RankUI,
     // •K—v‚É‰ž‚¶‚Ä’Ç‰Á
 };
 

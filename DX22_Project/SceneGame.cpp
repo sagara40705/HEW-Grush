@@ -79,8 +79,7 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Dash); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::DashMono); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::EffectLv1); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Frame); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Gauge); });
+	
 
 	// プレイハブ設定
 	outTasks.emplace_back([this] { RegisterAllPrefabs(); });

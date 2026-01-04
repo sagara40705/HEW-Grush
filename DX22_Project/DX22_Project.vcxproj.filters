@@ -84,6 +84,7 @@
     <ClCompile Include="HitEffkt.cpp" />
     <ClCompile Include="ResultTimerUI.cpp" />
     <ClCompile Include="Gauge.cpp" />
+    <ClCompile Include="Rank.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ActionUI.h" />
@@ -171,6 +172,7 @@
     <ClInclude Include="HitEffkt.h" />
     <ClInclude Include="ResultTimerUI.h" />
     <ClInclude Include="Gauge.h" />
+    <ClInclude Include="Rank.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SceneManager.inl" />
