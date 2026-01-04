@@ -11,7 +11,8 @@ enum class Timer : std::uint8_t
 };
 constexpr size_t ToIndex(Timer d) noexcept { return static_cast<size_t>(d); }
 
-class ResultTimerUI : public TimerUI
+
+class ResultTimerUI : public MonoBehaviour
 {
 private:
 	static constexpr int MAX_SECONDS = 99 * 60 + 59;
@@ -21,6 +22,7 @@ private:
 	UiSpriteRenderer* uiColon_ = nullptr;
 	UiSpriteRenderer* uiSecond_[ToIndex(Timer::Count)]{};
 public:
+	float timer_ = 0.f; //’Ç‰Á
 	void Start() override;
 	void Update() override;
 	void OnDestroy() override;
