@@ -204,6 +204,7 @@
     <ClCompile Include="Prefab.cpp" />
     <ClCompile Include="PrefabSet.cpp" />
     <ClCompile Include="PrimitiveMeshManager.cpp" />
+    <ClCompile Include="Rank.cpp" />
     <ClCompile Include="Raycast.cpp" />
     <ClCompile Include="SceneResult.cpp" />
     <ClCompile Include="ResultTimerUI.cpp" />
@@ -290,6 +291,7 @@
     <ClInclude Include="Prefab.h" />
     <ClInclude Include="PrefabSet.h" />
     <ClInclude Include="PrimitiveMeshManager.h" />
+    <ClInclude Include="Rank.h" />
     <ClInclude Include="Raycast.h" />
     <ClInclude Include="RenderSystem.h" />
     <ClInclude Include="ResultTimerUI.h" />

@@ -24,6 +24,8 @@ enum class TextureTag : uint8_t
     EffectLv1,
 	Frame,
 	Gauge,
+    ResultUI,
+    RANKS,
     Count,
 };
 

@@ -18,6 +18,8 @@ public:
 	void CreateCanvas();
     void TimerUIDeaw();
 	void GaugeDraw();
+	void CanvasDraw();
+	void RankDraw();
     // ”ñ“¯Šúƒ[ƒh—p
     void BuildLoadTasks(std::vector<LoadTask>& outTasks) override;
 private:

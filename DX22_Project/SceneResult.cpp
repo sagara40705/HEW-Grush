@@ -4,27 +4,30 @@
 #include "AllComponent.h"
 #include "TextureManager.h"
 #include "Defines.h"
-#include "SceneManager.h"
 #include "InputKeyboard.h"
-#include "SceneGame.h"
 #include "ResultTimerUI.h"
-#include "Prefab.h"
-#include "PrefabSet.h"
 #include "LineManager.h"
 #include "Gauge.h"
+#include "Rank.h"
 
 constexpr Vector2 kNumberUVScale = { 0.1f, 1.0f };
-
 void Result::Load()
 {
+
 	//テクスチャーロード
 	//TextureManager::Load(TextureTag::Title_BG);
+	World& w = GetWorld();
+	//Canvas
+	GameObject& canvas = w.CreateGameObject();
+	canvas.AddComponent<Canvas>();
 
 
+	
 	// 従来の同期ロードが必要なら、タスクを構築して全部回す
 	std::vector<LoadTask> tasks;
 	BuildLoadTasks(tasks);
 	for (auto& t : tasks) t();
+
 
 	//constexpr Vector2 kMinutePos[ToIndex(TimerDigits::Count)] = { {1115.f, 14.f}, {1140.f, 14.f} };
 	//constexpr Vector2 kColonPos = { 1165.f,16.f };
@@ -49,8 +52,8 @@ void Result::Load()
 	//GameObject& oneSecond = gameObject->CreateChild();
 	//uiSecond_[ToIndex(TimerDigits::One)] = &oneSecond.AddComponent<UiSpriteRenderer>(TextureTag::TimerNumber, kSecondPos[ToIndex(TimerDigits::One)], kNumberSize, Vector2::zero(), kNumberUVScale);
 	//// 
-	// 
-	// 
+	//// 
+	//// 
 //	timerUI_ = &canvas.AddComponent<UiSpriteRenderer>(TextureTag::Title_BG, Vector2(0.f, 0.f), Vector2(SCREEN_WIDTH, SCREEN_HEIGHT)); 
 	//背景生成
 	/*GameObject& backGroung = w.CreateGameObject();
@@ -71,11 +74,21 @@ void Result::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 		{
 			GetWorld().ClearAll();        // 既存の World API に合わせる
 		});
+
+	
+	
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::TimerColon); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::TimerNumber); });
-	outTasks.emplace_back([this] { CreateCanvas(); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Frame); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Gauge); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ResultUI); });
+
+
+	// 各種オブジェクト生成タスクを追加
+	outTasks.emplace_back([this] { CanvasDraw(); });
 	outTasks.emplace_back([this] { TimerUIDeaw(); });
-//	outTasks.emplace_back([this] { GaugeDraw(); });
+	outTasks.emplace_back([this] { GaugeDraw(); });
+	//outTasks.emplace_back([this] { RankDraw(); });
 
 	// 最後に Start を流す
 	outTasks.emplace_back([this]
@@ -98,14 +111,6 @@ void Result::Unload()
 {
 }
 
-void Result::CreateCanvas()
-{
-	World& w = GetWorld();
-	//Canvas
-	GameObject& canvas = w.CreateGameObject();
-	canvas.AddComponent<Canvas>();
-}
-
 void Result::TimerUIDeaw()
 {
 	World& w = GetWorld();
@@ -113,6 +118,7 @@ void Result::TimerUIDeaw()
 	GameObject& timerUI = w.CreateGameObject();
 	timerUI.SetTag(Tag::ResultTimerUI);
 	timerUI.AddComponent<ResultTimerUI>();
+
 }
 
 void Result::GaugeDraw()
@@ -122,5 +128,27 @@ void Result::GaugeDraw()
 	GameObject& Gauge = w.CreateGameObject();
 	Gauge.SetTag(Tag::GaugeUI);
 	Gauge.AddComponent<GaugeUI>();
+}
+
+void Result::CanvasDraw()
+{
+	World& w = GetWorld();
+	//Canvas
+	GameObject& canvas = w.CreateGameObject();
+	canvas.AddComponent<Canvas>();
+	//背景生成
+	GameObject& backGroung = w.CreateGameObject();
+	backGroung.AddComponent<UiSpriteRenderer>(TextureTag::ResultUI, Vector2(350.f, -50.f), Vector2(600, 300));
+
+
+}
+
+void Result::RankDraw()
+{
+	World& w = GetWorld();
+
+	GameObject& Rank = w.CreateGameObject();
+	Rank.SetTag(Tag::RankUI);
+	Rank.AddComponent<RankUI>();
 }
 
