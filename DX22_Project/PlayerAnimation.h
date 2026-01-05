@@ -36,7 +36,7 @@ public:
 private:
 	Model::AnimeNo animation_[Type::Count]; //アニメーションナンバーの格納先
 	Type currentType_ = Type::None; // 現在のアニメーション
-	Type nextType_	  = Type::None; // 現在のアニメーション
+	Type nextType_	  = Type::None; // 次のアニメーション
 
 	bool isKnockback_ = false;		//のけぞり中かどうか
 	float knockbackTimer_ = 0.0f;	//のけぞり時間

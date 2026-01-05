@@ -130,7 +130,7 @@ void Hammer::Attack(GameObject* go)
 	if (ToIndex(glass->GetGrade()) > ToIndex(grade_))
 	{
 		if (playerAnim_)		
-			playerAnim_->CheckLeanBackAnime(3.f);
+			playerAnim_->CheckLeanBackAnime(1.f);
 	}
 	
 

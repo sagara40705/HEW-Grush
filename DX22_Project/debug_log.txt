@@ -1,198 +1,318 @@
 [Debug Log Started]
-[10:25:22] Model::Load, material.pTexture: 0000021BB5D7BB30
-[10:25:22] Model::Load, material.pTexture: 0000021BB5D7C010
-[10:25:22] Model::Load, material.pTexture: 0000021BB5D7C1F0
-[10:25:22] Model::Load, material.pTexture: 0000021BB5D7B290
-[10:25:23] Start Player Animation
-[10:25:25] [GlassObjectSpawner] Start()
-[10:25:25] GlassGauge Ratio: 0
-[10:25:26] moveStartedThisFrame
-[10:25:26] moveStoppedThisFrame
-[10:25:26] moveStartedThisFrame
-[10:25:26] moveStoppedThisFrame
-[10:25:28] moveStartedThisFrame
-[10:25:28] moveStoppedThisFrame
-[10:25:28] moveStartedThisFrame
-[10:25:28] moveStoppedThisFrame
-[10:25:29] moveStartedThisFrame
-[10:25:29] moveStoppedThisFrame
-[10:25:30] moveStartedThisFrame
-[10:25:30] moveStoppedThisFrame
-[10:25:30] moveStartedThisFrame
-[10:25:31] moveStoppedThisFrame
-[10:25:31] moveStartedThisFrame
-[10:25:31] moveStoppedThisFrame
-[10:25:31] moveStartedThisFrame
-[10:25:32] moveStoppedThisFrame
-[10:25:32] moveStartedThisFrame
-[10:25:32] moveStoppedThisFrame
-[10:25:32] moveStartedThisFrame
-[10:25:32] moveStoppedThisFrame
-[10:25:32] moveStartedThisFrame
-[10:25:33] moveStoppedThisFrame
-[10:25:33] moveStartedThisFrame
-[10:25:33] moveStoppedThisFrame
-[10:25:33] moveStartedThisFrame
-[10:25:33] moveStoppedThisFrame
-[10:25:33] moveStartedThisFrame
-[10:25:34] moveStoppedThisFrame
-[10:25:34] moveStartedThisFrame
-[10:25:34] moveStoppedThisFrame
-[10:26:00] moveStartedThisFrame
-[10:26:00] moveStoppedThisFrame
-[10:26:00] moveStartedThisFrame
-[10:26:00] moveStoppedThisFrame
-[10:26:00] moveStartedThisFrame
-[10:26:00] moveStoppedThisFrame
-[10:26:00] moveStartedThisFrame
-[10:26:00] moveStoppedThisFrame
-[10:26:01] moveStartedThisFrame
-[10:26:01] moveStoppedThisFrame
-[10:26:01] moveStartedThisFrame
-[10:26:01] moveStoppedThisFrame
-[10:26:03] DashAttack 入力受付
-[10:26:03] アクション実行
-[10:26:04] Hammer Attack Glass Object, ID: 112
-[10:26:04] CameraShake::Play, type: 0
-[10:26:04] CameraShake::Stop
-[10:26:05] アクション終了
-[10:26:05] moveStartedThisFrame
-[10:26:06] moveStoppedThisFrame
-[10:26:06] moveStartedThisFrame
-[10:26:06] moveStoppedThisFrame
-[10:26:07] GlassGaugeManager::BrakeGlass, Gauhe: 10
-[10:26:07] DebugCommand GaugeUp 1
-[10:26:07] CameraShake::Play, type: 0
-[10:26:07] DebugCommand Camera Shake
-[10:26:07] GlassGauge Effect Play
-[10:26:07] GlassGauge Ratio: 0.1
-[10:26:08] GlassGaugeManager::BrakeGlass, Gauhe: 20
-[10:26:08] DebugCommand GaugeUp 1
-[10:26:08] CameraShake::Play, type: 0
-[10:26:08] DebugCommand Camera Shake
-[10:26:08] GlassGauge Effect Play
-[10:26:08] GlassGauge Ratio: 0.2
-[10:26:08] CameraShake::Stop
-[10:26:08] GlassGaugeManager::BrakeGlass, Gauhe: 30
-[10:26:08] DebugCommand GaugeUp 1
-[10:26:08] CameraShake::Play, type: 0
-[10:26:08] DebugCommand Camera Shake
-[10:26:08] GlassGauge Effect Play
-[10:26:08] GlassGauge Ratio: 0.3
-[10:26:08] GlassGaugeManager::BrakeGlass, Gauhe: 40
-[10:26:08] DebugCommand GaugeUp 1
-[10:26:08] CameraShake::Play, type: 0
-[10:26:08] DebugCommand Camera Shake
-[10:26:08] GlassGauge Effect Play
-[10:26:08] GlassGauge Ratio: 0.4
-[10:26:08] GlassGaugeManager::BrakeGlass, Gauhe: 50
-[10:26:08] DebugCommand GaugeUp 1
-[10:26:08] CameraShake::Play, type: 0
-[10:26:08] DebugCommand Camera Shake
-[10:26:08] GlassGauge Effect Play
-[10:26:08] GlassGauge Ratio: 0.5
-[10:26:08] GlassGaugeManager::BrakeGlass, Gauhe: 60
-[10:26:08] DebugCommand GaugeUp 1
-[10:26:08] CameraShake::Play, type: 0
-[10:26:08] DebugCommand Camera Shake
-[10:26:08] GlassGauge Effect Play
-[10:26:08] GlassGauge Ratio: 0.6
-[10:26:08] GlassGaugeManager::BrakeGlass, Gauhe: 70
-[10:26:08] DebugCommand GaugeUp 1
-[10:26:08] CameraShake::Play, type: 0
-[10:26:08] DebugCommand Camera Shake
-[10:26:08] GlassGauge Effect Play
-[10:26:08] GlassGauge Ratio: 0.7
-[10:26:09] CameraShake::Stop
-[10:26:09] GlassGaugeManager::BrakeGlass, Gauhe: 80
-[10:26:09] DebugCommand GaugeUp 1
-[10:26:09] CameraShake::Play, type: 0
-[10:26:09] DebugCommand Camera Shake
-[10:26:09] GlassGauge Effect Play
-[10:26:09] GlassGauge Ratio: 0.8
-[10:26:09] GlassGaugeManager::BrakeGlass, Gauhe: 90
-[10:26:09] DebugCommand GaugeUp 1
-[10:26:09] CameraShake::Play, type: 0
-[10:26:09] DebugCommand Camera Shake
-[10:26:09] GlassGauge Effect Play
-[10:26:09] GlassGauge Ratio: 0.9
-[10:26:09] CameraShake::Stop
-[10:26:09] GlassGaugeManager::BrakeGlass, Gauhe: 100
-[10:26:09] DebugCommand GaugeUp 1
-[10:26:09] CameraShake::Play, type: 0
-[10:26:09] DebugCommand Camera Shake
-[10:26:09] GlassGauge Effect Play
-[10:26:09] GlassGauge Ratio: 1
-[10:26:09] CameraShake::Stop
-[10:26:09] GlassGaugeManager::BrakeGlass, Gauhe: 110
-[10:26:09] Hammer::Scale, Grade: 2
-[10:26:09] Hammer::GradeUp, Grade: 2
-[10:26:09] DebugCommand GaugeUp 1
-[10:26:09] CameraShake::Play, type: 0
-[10:26:09] DebugCommand Camera Shake
-[10:26:09] GlassGauge Effect Play
-[10:26:09] GlassGauge Ratio: 0.025
-[10:26:10] CameraShake::Stop
-[10:26:10] アクションCT終了
-[10:26:10] GlassGaugeManager::BrakeGlass, Gauhe: 15
-[10:26:10] DebugCommand GaugeUp 1
-[10:26:10] CameraShake::Play, type: 0
-[10:26:10] DebugCommand Camera Shake
-[10:26:10] Animation End OneLoop
-[10:26:10] GlassGauge Effect Play
-[10:26:10] GlassGauge Ratio: 0.075
-[10:26:10] CameraShake::Stop
-[10:26:12] DashAttack 入力受付
-[10:26:12] アクション実行
-[10:26:12] Hammer Attack Glass Object, ID: 112
-[10:26:12] GlassGaugeManager::BrakeGlass, Gauhe: 25
-[10:26:12] Up Score: 494
-[10:26:12] GlassShardPool::Instantiate: 0
-[10:26:12] GlassShardPool::Instantiate: 1
-[10:26:12] GlassShardPool::Instantiate: 2
-[10:26:12] GlassShardPool::Instantiate: 3
-[10:26:12] GlassShardPool::Instantiate: 4
-[10:26:12] GlassShardPool::Instantiate: 5
-[10:26:12] GlassShardPool::Instantiate: 6
-[10:26:12] GlassShardPool::Instantiate: 7
-[10:26:12] GlassShardPool::Instantiate: 8
-[10:26:12] GlassShardPool::Instantiate: 9
-[10:26:12] GlassShardPool::Instantiate: 10
-[10:26:12] GlassShardPool::Instantiate: 11
-[10:26:12] GlassShardPool::Instantiate: 12
-[10:26:12] GlassShardPool::Instantiate: 13
-[10:26:12] GlassShardPool::Instantiate: 14
-[10:26:12] GlassShardPool::Instantiate: 15
-[10:26:12] GlassObject Destory, ID: 112
-[10:26:12] CameraShake::Play, type: 0
-[10:26:12] GlassGauge Effect Play
-[10:26:12] GlassGauge Ratio: 0.125
-[10:26:12] CameraShake::Stop
-[10:26:13] Animation End OneLoop
-[10:26:13] Hammer Attack Glass Object, ID: 109
-[10:26:13] GlassGaugeManager::BrakeGlass, Gauhe: 35
-[10:26:13] Up Score: 488
-[10:26:13] GlassShardPool::Instantiate: 16
-[10:26:13] GlassShardPool::Instantiate: 17
-[10:26:13] GlassShardPool::Instantiate: 18
-[10:26:13] GlassShardPool::Instantiate: 19
-[10:26:13] GlassShardPool::Instantiate: 20
-[10:26:13] GlassShardPool::Instantiate: 21
-[10:26:13] GlassShardPool::Instantiate: 22
-[10:26:13] GlassShardPool::Instantiate: 23
-[10:26:13] GlassShardPool::Instantiate: 24
-[10:26:13] GlassShardPool::Instantiate: 25
-[10:26:13] GlassShardPool::Instantiate: 26
-[10:26:13] GlassShardPool::Instantiate: 27
-[10:26:13] GlassShardPool::Instantiate: 28
-[10:26:13] GlassShardPool::Instantiate: 29
-[10:26:13] GlassShardPool::Instantiate: 30
-[10:26:13] GlassShardPool::Instantiate: 31
-[10:26:13] GlassObject Destory, ID: 109
-[10:26:13] CameraShake::Play, type: 0
-[10:26:13] GlassGauge Effect Play
-[10:26:13] GlassGauge Ratio: 0.175
-[10:26:13] CameraShake::Stop
-[10:26:13] アクション終了
-[10:26:16] Animation End OneLoop
+[13:45:27] Model::Load, material.pTexture: 000001B1D80CB190
+[13:45:27] Model::Load, material.pTexture: 000001B1D80CB610
+[13:45:27] Model::Load, material.pTexture: 000001B1D80CC030
+[13:45:27] Model::Load, material.pTexture: 000001B1D80CABF0
+[13:45:28] Start Player Animation
+[13:45:30] [GlassObjectSpawner] Start()
+[13:45:30] moveStartedThisFrame
+[13:45:30] GlassGauge Ratio: 0
+[13:45:30] moveStoppedThisFrame
+[13:45:30] moveStartedThisFrame
+[13:45:31] moveStoppedThisFrame
+[13:45:31] DashAttack 入力受付
+[13:45:31] アクション実行
+[13:45:32] Hammer Attack Glass Object, ID: 112
+[13:45:32] CameraShake::Play, type: 0
+[13:45:32] CameraShake::Stop
+[13:45:33] アクション終了
+[13:45:34] moveStartedThisFrame
+[13:45:34] moveStoppedThisFrame
+[13:45:35] moveStartedThisFrame
+[13:45:35] moveStoppedThisFrame
+[13:45:36] NormalAttack 入力受付
+[13:45:36] アクション実行
+[13:45:36] Hammer Attack Glass Object, ID: 112
+[13:45:36] CameraShake::Play, type: 0
+[13:45:36] CameraShake::Stop
+[13:45:36] アクション終了
+[13:45:37] アクションCT終了
+[13:45:37] moveStartedThisFrame
+[13:45:37] moveStoppedThisFrame
+[13:45:38] アクションCT終了
+[13:45:38] DashAttack 入力受付
+[13:45:38] アクション実行
+[13:45:38] Hammer Attack Glass Object, ID: 134
+[13:45:38] CameraShake::Play, type: 0
+[13:45:39] CameraShake::Stop
+[13:45:40] アクション終了
+[13:45:40] moveStartedThisFrame
+[13:45:41] moveStoppedThisFrame
+[13:45:41] moveStartedThisFrame
+[13:45:41] moveStoppedThisFrame
+[13:45:41] moveStartedThisFrame
+[13:45:41] moveStoppedThisFrame
+[13:45:43] moveStartedThisFrame
+[13:45:43] moveStoppedThisFrame
+[13:45:43] moveStartedThisFrame
+[13:45:44] moveStoppedThisFrame
+[13:45:45] moveStartedThisFrame
+[13:45:45] アクションCT終了
+[13:45:46] moveStoppedThisFrame
+[13:45:46] DashAttack 入力受付
+[13:45:46] アクション実行
+[13:45:47] Hammer Attack Glass Object, ID: 431
+[13:45:47] GlassGaugeManager::BrakeGlass, Gauhe: 10
+[13:45:47] Up Score: 497
+[13:45:47] GlassShardPool::Instantiate: 0
+[13:45:47] GlassShardPool::Instantiate: 1
+[13:45:47] GlassShardPool::Instantiate: 2
+[13:45:47] GlassShardPool::Instantiate: 3
+[13:45:47] GlassShardPool::Instantiate: 4
+[13:45:47] GlassShardPool::Instantiate: 5
+[13:45:47] GlassShardPool::Instantiate: 6
+[13:45:47] GlassShardPool::Instantiate: 7
+[13:45:47] GlassShardPool::Instantiate: 8
+[13:45:47] GlassShardPool::Instantiate: 9
+[13:45:47] GlassShardPool::Instantiate: 10
+[13:45:47] GlassShardPool::Instantiate: 11
+[13:45:47] GlassObject Destory, ID: 431
+[13:45:47] CameraShake::Play, type: 0
+[13:45:47] GlassGauge Effect Play
+[13:45:47] GlassGauge Ratio: 0.1
+[13:45:48] CameraShake::Stop
+[13:45:48] アクション終了
+[13:45:48] moveStartedThisFrame
+[13:45:50] Animation End OneLoop
+[13:45:51] moveStoppedThisFrame
+[13:45:52] moveStartedThisFrame
+[13:45:52] moveStoppedThisFrame
+[13:45:52] ゲージ減衰開始
+[13:45:52] GlassGauge Ratio: 0.0999
+[13:45:53] GlassGauge Ratio: 0.0998
+[13:45:53] GlassGauge Ratio: 0.0997
+[13:45:53] GlassGauge Ratio: 0.0996
+[13:45:53] GlassGauge Ratio: 0.0995
+[13:45:53] GlassGauge Ratio: 0.0994
+[13:45:53] GlassGauge Ratio: 0.0993
+[13:45:53] GlassGauge Ratio: 0.0992
+[13:45:53] GlassGauge Ratio: 0.0991
+[13:45:53] GlassGauge Ratio: 0.099
+[13:45:53] GlassGauge Ratio: 0.0989
+[13:45:53] GlassGauge Ratio: 0.0988
+[13:45:53] moveStartedThisFrame
+[13:45:53] GlassGauge Ratio: 0.0987
+[13:45:53] GlassGauge Ratio: 0.0986
+[13:45:53] GlassGauge Ratio: 0.0985
+[13:45:53] GlassGauge Ratio: 0.0984
+[13:45:53] GlassGauge Ratio: 0.0983
+[13:45:53] GlassGauge Ratio: 0.0982
+[13:45:53] GlassGauge Ratio: 0.0981
+[13:45:53] GlassGauge Ratio: 0.098
+[13:45:53] moveStoppedThisFrame
+[13:45:53] GlassGauge Ratio: 0.0979
+[13:45:53] GlassGauge Ratio: 0.0977999
+[13:45:53] GlassGauge Ratio: 0.0976999
+[13:45:53] GlassGauge Ratio: 0.0975999
+[13:45:53] GlassGauge Ratio: 0.0974999
+[13:45:53] アクションCT終了
+[13:45:53] GlassGauge Ratio: 0.0973999
+[13:45:53] GlassGauge Ratio: 0.0972999
+[13:45:53] GlassGauge Ratio: 0.0971999
+[13:45:53] GlassGauge Ratio: 0.0970999
+[13:45:53] GlassGauge Ratio: 0.0969999
+[13:45:53] GlassGauge Ratio: 0.0968999
+[13:45:53] GlassGauge Ratio: 0.0967999
+[13:45:53] GlassGauge Ratio: 0.0966999
+[13:45:53] GlassGauge Ratio: 0.0965999
+[13:45:53] GlassGauge Ratio: 0.0964999
+[13:45:53] GlassGauge Ratio: 0.0963999
+[13:45:53] GlassGauge Ratio: 0.0962999
+[13:45:53] GlassGauge Ratio: 0.0961999
+[13:45:53] GlassGauge Ratio: 0.0960999
+[13:45:53] moveStartedThisFrame
+[13:45:53] GlassGauge Ratio: 0.0959999
+[13:45:53] GlassGauge Ratio: 0.0958999
+[13:45:53] GlassGauge Ratio: 0.0957999
+[13:45:53] GlassGauge Ratio: 0.0956999
+[13:45:53] GlassGauge Ratio: 0.0955999
+[13:45:53] GlassGauge Ratio: 0.0954999
+[13:45:53] GlassGauge Ratio: 0.0953999
+[13:45:53] GlassGauge Ratio: 0.0952999
+[13:45:53] GlassGauge Ratio: 0.0951999
+[13:45:53] GlassGauge Ratio: 0.0950999
+[13:45:53] GlassGauge Ratio: 0.0949999
+[13:45:53] DashAttack 入力受付
+[13:45:53] アクション実行
+[13:45:53] GlassGauge Ratio: 0.0948999
+[13:45:53] GlassGauge Ratio: 0.0947999
+[13:45:53] GlassGauge Ratio: 0.0946999
+[13:45:53] GlassGauge Ratio: 0.0945999
+[13:45:53] GlassGauge Ratio: 0.0944999
+[13:45:53] GlassGauge Ratio: 0.0943999
+[13:45:53] moveStoppedThisFrame
+[13:45:53] GlassGauge Ratio: 0.0942999
+[13:45:53] GlassGauge Ratio: 0.0941999
+[13:45:53] GlassGauge Ratio: 0.0940999
+[13:45:53] GlassGauge Ratio: 0.0939999
+[13:45:54] GlassGauge Ratio: 0.0938999
+[13:45:54] GlassGauge Ratio: 0.0937999
+[13:45:54] GlassGauge Ratio: 0.0936999
+[13:45:54] GlassGauge Ratio: 0.0935999
+[13:45:54] GlassGauge Ratio: 0.0934999
+[13:45:54] GlassGauge Ratio: 0.0933999
+[13:45:54] GlassGauge Ratio: 0.0932998
+[13:45:54] GlassGauge Ratio: 0.0931998
+[13:45:54] GlassGauge Ratio: 0.0930998
+[13:45:54] GlassGauge Ratio: 0.0929998
+[13:45:54] GlassGauge Ratio: 0.0928998
+[13:45:54] GlassGauge Ratio: 0.0927998
+[13:45:54] GlassGauge Ratio: 0.0926998
+[13:45:54] GlassGauge Ratio: 0.0925998
+[13:45:54] Hammer Attack Glass Object, ID: 80
+[13:45:54] CameraShake::Play, type: 0
+[13:45:54] GlassGauge Ratio: 0.0924998
+[13:45:54] GlassGauge Ratio: 0.0923998
+[13:45:54] GlassGauge Ratio: 0.0922998
+[13:45:54] GlassGauge Ratio: 0.0921998
+[13:45:54] GlassGauge Ratio: 0.0920998
+[13:45:54] GlassGauge Ratio: 0.0919998
+[13:45:54] GlassGauge Ratio: 0.0918998
+[13:45:54] GlassGauge Ratio: 0.0917998
+[13:45:54] GlassGauge Ratio: 0.0916998
+[13:45:54] GlassGauge Ratio: 0.0915998
+[13:45:54] GlassGauge Ratio: 0.0914998
+[13:45:54] CameraShake::Stop
+[13:45:54] GlassGauge Ratio: 0.0913998
+[13:45:54] GlassGauge Ratio: 0.0912998
+[13:45:54] GlassGauge Ratio: 0.0911998
+[13:45:54] GlassGauge Ratio: 0.0910998
+[13:45:54] GlassGauge Ratio: 0.0909998
+[13:45:54] GlassGauge Ratio: 0.0908998
+[13:45:54] GlassGauge Ratio: 0.0907998
+[13:45:54] GlassGauge Ratio: 0.0906998
+[13:45:54] GlassGauge Ratio: 0.0905998
+[13:45:54] GlassGauge Ratio: 0.0904998
+[13:45:54] GlassGauge Ratio: 0.0903998
+[13:45:54] GlassGauge Ratio: 0.0902998
+[13:45:54] GlassGauge Ratio: 0.0901998
+[13:45:54] GlassGauge Ratio: 0.0900998
+[13:45:54] GlassGauge Ratio: 0.0899998
+[13:45:54] GlassGauge Ratio: 0.0898998
+[13:45:54] GlassGauge Ratio: 0.0897998
+[13:45:54] GlassGauge Ratio: 0.0896998
+[13:45:54] GlassGauge Ratio: 0.0895998
+[13:45:54] GlassGauge Ratio: 0.0894998
+[13:45:54] GlassGauge Ratio: 0.0893998
+[13:45:54] GlassGauge Ratio: 0.0892998
+[13:45:54] GlassGauge Ratio: 0.0891998
+[13:45:54] GlassGauge Ratio: 0.0890997
+[13:45:54] GlassGauge Ratio: 0.0889997
+[13:45:54] GlassGauge Ratio: 0.0888997
+[13:45:54] GlassGauge Ratio: 0.0887997
+[13:45:54] GlassGauge Ratio: 0.0886997
+[13:45:54] GlassGauge Ratio: 0.0885997
+[13:45:54] GlassGauge Ratio: 0.0884997
+[13:45:54] [GlassObjectSpawner] , スポーンします: 436
+[13:45:54] GlassGauge Ratio: 0.0883997
+[13:45:54] GlassGauge Ratio: 0.0882997
+[13:45:54] GlassGauge Ratio: 0.0881997
+[13:45:54] GlassGauge Ratio: 0.0880997
+[13:45:55] GlassGauge Ratio: 0.0879997
+[13:45:55] GlassGauge Ratio: 0.0878997
+[13:45:55] GlassGauge Ratio: 0.0877997
+[13:45:55] GlassGauge Ratio: 0.0876997
+[13:45:55] GlassGauge Ratio: 0.0875997
+[13:45:55] GlassGauge Ratio: 0.0874997
+[13:45:55] GlassGauge Ratio: 0.0873997
+[13:45:55] GlassGauge Ratio: 0.0872997
+[13:45:55] GlassGauge Ratio: 0.0871997
+[13:45:55] GlassGauge Ratio: 0.0870997
+[13:45:55] GlassGauge Ratio: 0.0869997
+[13:45:55] GlassGauge Ratio: 0.0868997
+[13:45:55] GlassGauge Ratio: 0.0867997
+[13:45:55] GlassGauge Ratio: 0.0866997
+[13:45:55] GlassGauge Ratio: 0.0865997
+[13:45:55] GlassGauge Ratio: 0.0864997
+[13:45:55] GlassGauge Ratio: 0.0863997
+[13:45:55] GlassGauge Ratio: 0.0862997
+[13:45:55] GlassGauge Ratio: 0.0861997
+[13:45:55] GlassGauge Ratio: 0.0860997
+[13:45:55] GlassGauge Ratio: 0.0859997
+[13:45:55] アクション終了
+[13:45:55] GlassGauge Ratio: 0.0858997
+[13:45:55] GlassGauge Ratio: 0.0857997
+[13:45:55] GlassGauge Ratio: 0.0856997
+[13:45:55] GlassGauge Ratio: 0.0855997
+[13:45:55] GlassGauge Ratio: 0.0854997
+[13:45:55] GlassGauge Ratio: 0.0853997
+[13:45:55] GlassGauge Ratio: 0.0852997
+[13:45:55] GlassGauge Ratio: 0.0851997
+[13:45:55] GlassGauge Ratio: 0.0850997
+[13:45:55] GlassGauge Ratio: 0.0849997
+[13:45:55] GlassGauge Ratio: 0.0848997
+[13:45:55] GlassGauge Ratio: 0.0847997
+[13:45:55] GlassGauge Ratio: 0.0846997
+[13:45:55] GlassGauge Ratio: 0.0845996
+[13:45:55] GlassGauge Ratio: 0.0844996
+[13:45:55] GlassGauge Ratio: 0.0843996
+[13:45:55] GlassGauge Ratio: 0.0842996
+[13:45:55] GlassGauge Ratio: 0.0841996
+[13:45:55] GlassGauge Ratio: 0.0840996
+[13:45:55] GlassGauge Ratio: 0.0839996
+[13:45:55] GlassGauge Ratio: 0.0838996
+[13:45:55] GlassGauge Ratio: 0.0837996
+[13:45:55] GlassGauge Ratio: 0.0836996
+[13:45:55] GlassGauge Ratio: 0.0835996
+[13:45:55] GlassGauge Ratio: 0.0834996
+[13:45:55] GlassGauge Ratio: 0.0833996
+[13:45:55] moveStartedThisFrame
+[13:45:55] GlassGauge Ratio: 0.0832996
+[13:45:55] GlassGauge Ratio: 0.0831996
+[13:45:55] GlassGauge Ratio: 0.0830996
+[13:45:55] GlassGauge Ratio: 0.0829996
+[13:45:55] GlassGauge Ratio: 0.0828996
+[13:45:55] GlassGauge Ratio: 0.0827996
+[13:45:55] GlassGauge Ratio: 0.0826996
+[13:45:55] GlassGauge Ratio: 0.0825996
+[13:45:55] GlassGauge Ratio: 0.0824996
+[13:45:55] GlassGauge Ratio: 0.0823996
+[13:45:55] GlassGauge Ratio: 0.0822996
+[13:45:56] GlassGauge Ratio: 0.0821996
+[13:45:56] GlassGauge Ratio: 0.0820996
+[13:45:56] moveStoppedThisFrame
+[13:45:56] GlassGauge Ratio: 0.0819996
+[13:45:56] GlassGauge Ratio: 0.0818996
+[13:45:56] GlassGauge Ratio: 0.0817996
+[13:45:56] GlassGauge Ratio: 0.0816996
+[13:45:56] GlassGauge Ratio: 0.0815996
+[13:45:56] GlassGauge Ratio: 0.0814996
+[13:45:56] GlassGauge Ratio: 0.0813996
+[13:45:56] GlassGauge Ratio: 0.0812996
+[13:45:56] GlassGauge Ratio: 0.0811996
+[13:45:56] GlassGauge Ratio: 0.0810996
+[13:45:56] GlassGauge Ratio: 0.0809996
+[13:45:56] GlassGauge Ratio: 0.0808996
+[13:45:56] GlassGauge Ratio: 0.0807996
+[13:45:56] GlassGauge Ratio: 0.0806996
+[13:45:56] GlassGauge Ratio: 0.0805996
+[13:45:56] GlassGauge Ratio: 0.0804996
+[13:45:56] GlassGauge Ratio: 0.0803996
+[13:45:56] GlassGauge Ratio: 0.0802995
+[13:45:56] GlassGauge Ratio: 0.0801995
+[13:45:56] GlassGauge Ratio: 0.0800995
+[13:45:56] GlassGauge Ratio: 0.0799995
+[13:45:56] GlassGauge Ratio: 0.0798995
+[13:45:56] GlassGauge Ratio: 0.0797995
+[13:45:56] GlassGauge Ratio: 0.0796995
+[13:45:56] GlassGauge Ratio: 0.0795995
+[13:45:56] GlassGauge Ratio: 0.0794995
+[13:45:56] GlassGauge Ratio: 0.0793995
+[13:45:56] GlassGauge Ratio: 0.0792995
+[13:45:56] GlassGauge Ratio: 0.0791995
+[13:45:56] GlassGauge Ratio: 0.0790995
+[13:45:56] GlassGauge Ratio: 0.0789995
+[13:45:56] GlassGauge Ratio: 0.0788995
+[13:45:56] GlassGauge Ratio: 0.0787995
+[13:45:56] GlassGauge Ratio: 0.0786995
+[13:45:56] GlassGauge Ratio: 0.0785995
+[13:45:56] GlassGauge Ratio: 0.0784995
+[13:45:56] GlassGauge Ratio: 0.0783995
+[13:45:56] GlassGauge Ratio: 0.0782995
+[13:45:56] GlassGauge Ratio: 0.0781995
+[13:45:56] GlassGauge Ratio: 0.0780995
+[13:45:56] GlassGauge Ratio: 0.0779995
+[13:45:56] GlassGauge Ratio: 0.0778995
+[13:45:56] GlassGauge Ratio: 0.0777995
+[13:45:56] GlassGauge Ratio: 0.0776995
 [Debug Log End]
