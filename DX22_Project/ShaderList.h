@@ -73,7 +73,15 @@ private://壊れるシェーダーの塚点
 private:
 	static VertexShader* m_pVS[VS_KIND_MAX];
 	static PixelShader* m_pPS[PS_KIND_MAX];
-	
+	//========================
+	//追加点
+	//========================
+public:
+	static void SetSpritePsOverride(PixelShader* ps);
+
+private:
+	static PixelShader* m_spriteOverridePS;
+
 };
 
 #endif // __SHADER_LIST_H__

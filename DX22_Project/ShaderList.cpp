@@ -77,6 +77,10 @@ VertexShader* ShaderList::GetVS(VSKind vs)
 }
 PixelShader* ShaderList::GetPS(PSKind ps)
 {
+	if (ps == PS_SPRITE && m_spriteOverridePS)
+	{
+		return m_spriteOverridePS;
+	}
 	return m_pPS[ps];
 }
 
@@ -678,35 +682,51 @@ float4 main(PS_IN pin) : SV_TARGET
 void ShaderList::MakeBreakUiPS()
 {
 	const char* code = R"EOT(
-struct PS_IN
-{
+struct PS_IN {
     float4 pos   : SV_POSITION;
     float2 uv    : TEXCOORD0;
     float4 color : COLOR0;
 };
 
-Texture2D tex0 : register(t0); // base
-Texture2D tex1 : register(t1); // crack
-Texture2D tex2 : register(t2); // id
+Texture2D tex0 : register(t0);
 SamplerState samp : register(s0);
 
-cbuffer BreakParam : register(b1)
+// UiSpriteRenderer が毎フレーム書いてくるので b1 は残しておく
+cbuffer SpriteParam : register(b1)
 {
     float4 offset_size;
-    float  breakT;
+    float4 uvPos_uvScale;
+    float4 color;
+};
+
+// BreakUiRenderer が書く（b0）
+cbuffer BreakParam : register(b0)
+{
+    float time;
     float3 pad;
 };
 
 float4 main(PS_IN pin) : SV_TARGET
 {
-    // ★ とりあえず breakT に応じて色を変えるだけ
-    float4 col0 = tex0.Sample(samp, pin.uv);
-    float4 col1 = tex1.Sample(samp, pin.uv);
+    float4 baseCol = tex0.Sample(samp, pin.uv) * pin.color;
 
-    return lerp(col0, col1, breakT);
+    // time が 0 より大きい間は赤くする（動作確認用）
+    if (time > 0.0f)
+    {
+        return float4(1,0,0,1);
+    }
+
+    return baseCol;
 }
 )EOT";
 
 	m_pPS[PS_BREAKUI] = new PixelShader();
 	m_pPS[PS_BREAKUI]->Compile(code);
+}
+
+PixelShader* ShaderList::m_spriteOverridePS = nullptr;
+
+void ShaderList::SetSpritePsOverride(PixelShader* ps)
+{
+	m_spriteOverridePS = ps;
 }
