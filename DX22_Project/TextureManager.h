@@ -32,6 +32,7 @@ enum class TextureTag : uint8_t
     Title_Font,     //タイトルの文字
     Title_Break,    //タイトルを割る
     Title_BreakID,  //タイトル割るID
+    Title_Loge,     //タイトルロゴ
     Count           // 列挙数（配列確保のためだけに使用）
 };
 
