@@ -200,7 +200,7 @@ void RegisterAllPrefabs()
         });
     Prefab::Register(P::GlassShard,
         [](GameObject& go) {
-            auto& mf = go.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube);           (void)mf;
+            auto& mf = go.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube);                 (void)mf;
             auto& mr = go.AddComponent<MeshRenderer>();                                     (void)mr;
             auto& bc = go.AddComponent<BoxCollider>(
                 false,

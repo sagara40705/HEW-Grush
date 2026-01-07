@@ -25,6 +25,7 @@ void ShaderList::Init()
 	MakeFogPS();
 	MakeSpritePS();
 	MakeGlassPS();
+	MakeGlassShardPS();
 
 	DirectX::XMFLOAT4X4 mat[250];
 	for (int i = 0; i < 250; ++i)
@@ -142,6 +143,7 @@ void ShaderList::SetGlassParam(const DirectX::XMFLOAT4& tint, float fresnelPower
 
 	// b3 に書き込む
 	m_pPS[PS_GLASS]->WriteBuffer(3, param);
+	m_pPS[PS_GLASS_SHARD]->WriteBuffer(3, param);
 }
 
 void ShaderList::MakePrimVS()
@@ -803,4 +805,96 @@ float4 main(PS_IN pin) : SV_TARGET
 	m_pPS[PS_GLASS] = new PixelShader();
 	m_pPS[PS_GLASS]->Compile(code);
 
+}
+void ShaderList::MakeGlassShardPS()
+{
+	const char* code = R"EOT(
+struct PS_IN {
+    float4 pos : SV_POSITION;
+    float3 normal : NORMAL0;
+    float2 uv : TEXCOORD0;
+    float4 color : COLOR0;
+    float4 wPos  : POSITION0;
+};
+
+cbuffer Light : register(b1)
+{
+    float4 lightDiffuse;
+    float4 lightDir;
+};
+cbuffer Camera : register(b2)
+{
+    float4 cameraPos;
+};
+cbuffer GlassParam : register(b3)
+{
+    float4 glassTint;   // rgb = ガラス色, a = ベースアルファ
+    // x = fresnelPower, y = reflectionStrength, z = transmissionStrength, w = tintStrength
+    float4 glassParams;
+};
+
+Texture2D tex : register(t0);
+SamplerState samp : register(s0);
+
+float4 main(PS_IN pin) : SV_TARGET
+{
+    float4 texColor = tex.Sample(samp, pin.uv);
+
+    float3 N = normalize(pin.normal);
+    float3 L = normalize(-lightDir.xyz);
+    float3 V = normalize(cameraPos.xyz - pin.wPos.xyz);
+
+    // ---- ベース（テクスチャ前提） ----
+    float rawNL = dot(N, L);
+    float dotNL = saturate(rawNL * 0.5f + 0.5f);
+    const float kShadowMin = 0.7f;
+    dotNL = lerp(kShadowMin, 1.0f, dotNL);
+
+    float3 ambient = lightDiffuse.rgb * 0.3f;
+    float3 diffuse = lightDiffuse.rgb;
+
+    float3 base = texColor.rgb * (ambient + diffuse * dotNL);
+
+    // ---- 弱い鏡面 ----
+    float3 R = reflect(-L, N);
+    float dotRV = saturate(dot(R, V));
+    float3 specular = lightDiffuse.rgb * pow(dotRV, 64.0f) * 0.05f;
+    base += specular;
+
+    // ---- ガラス寄せ（PS_GLASS と同系統）----
+    float fresnelPower         = max(glassParams.x, 1.0f);
+    float reflectionStrength   = glassParams.y;
+    float transmissionStrength = glassParams.z;
+    float tintStrength         = glassParams.w;
+
+    float dotNV   = saturate(dot(N, V));
+    float fresnel = pow(1.0f - dotNV, fresnelPower);
+
+    const float kTintBase  = 0.25f;
+    const float kTintExtra = 0.25f;
+    float tintFactor = kTintBase + saturate(tintStrength) * kTintExtra; // ~0.25-0.5
+
+    float3 targetTint = lerp(base, glassTint.rgb, 0.6f);
+    float3 tintedBase = lerp(base, targetTint, tintFactor);
+
+    float transFactor = lerp(1.0f, transmissionStrength, 0.1f);
+    tintedBase *= transFactor;
+
+    float3 reflectionColor = lightDiffuse.rgb * glassTint.rgb;
+    const float kReflMax = 0.2f;
+    float reflFactor = kReflMax * reflectionStrength * fresnel;
+
+    float3 finalRGB = tintedBase + reflectionColor * reflFactor;
+
+    // ---- Alpha（テクスチャ前提：tex.a を活かす）----
+    float baseAlpha = glassTint.a * texColor.a;
+    float fresnelAlpha = lerp(0.9f, 1.0f, fresnel);
+    float finalA = saturate(baseAlpha * fresnelAlpha);
+
+    return float4(finalRGB, finalA);
+}
+)EOT";
+
+	m_pPS[PS_GLASS_SHARD] = new PixelShader();
+	m_pPS[PS_GLASS_SHARD]->Compile(code);
 }

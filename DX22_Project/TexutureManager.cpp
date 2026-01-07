@@ -29,7 +29,8 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     "Assets/Texture/UI_dush_moji_color.png",    //21
     "Assets/Texture/UI_dush_moji.png",    //22
     "Assets/Texture/UIFrostNoise08B.png",    //23
-     "Assets/Texture/effect_lv1_at_long.png",    //24
+    "Assets/Texture/effect_lv1_at_long.png",    //24
+	"Assets/Texture/Glass_Shard.png",    //25
 };
 
 // 配列のデフォルトパスを使用して登録

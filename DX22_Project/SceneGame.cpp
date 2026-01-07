@@ -87,6 +87,7 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::DashMojiMono); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::UIFrostNoise); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::EffectLv1); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GlassShard); });
 
 
 	// プレイハブ設定
@@ -431,6 +432,53 @@ for (int i = 0; i < posCount1; i++) {
 	}
 }
 
+void SceneGame::CreateStage2()
+{
+	World& w = GetWorld();
+
+	//80 * 50 フィールド1
+	GameObject& floor1 = w.CreateGameObject(Vector3(0.f, -1.f, 0.f), Vector3::zero(), Vector3(80.f, 0.1f, 50.f));
+	MeshFilter& mf1 = floor1.AddComponent<MeshFilter>(PrimitiveMeshTag::Plane); mf1.boundsRadius = 0.f;
+	floor1.AddComponent<GroundRenderer>();
+	BoxCollider& collider1 = floor1.AddComponent<BoxCollider>();
+	collider1.layer = Layer::Ground;
+
+	//80 * 50 フィールド1
+	GameObject& floor2 = w.CreateGameObject(Vector3(90.f, -1.f, 0.f), Vector3::zero(), Vector3(80.f, 0.1f, 50.f));
+	MeshFilter& mf2 = floor2.AddComponent<MeshFilter>(PrimitiveMeshTag::Plane); mf2.boundsRadius = 0.f;
+	floor2.AddComponent<GroundRenderer>();
+	BoxCollider& collider2 = floor2.AddComponent<BoxCollider>();
+	collider2.layer = Layer::Ground;
+
+	CreateWarp();
+}
+
+void SceneGame::CreateStage3()
+{
+	World& w = GetWorld();
+
+	//80 * 50 フィールド
+	GameObject& floor1 = w.CreateGameObject(Vector3(0.f, -1.f, 0.f), Vector3::zero(), Vector3(80.f, 0.1f, 50.f));
+	MeshFilter& mf1 = floor1.AddComponent<MeshFilter>(PrimitiveMeshTag::Plane); mf1.boundsRadius = 0.f;
+	floor1.AddComponent<GroundRenderer>();
+	BoxCollider& collider1 = floor1.AddComponent<BoxCollider>();
+	collider1.layer = Layer::Ground;
+
+	//50 * 50 フィールド1
+	GameObject& floor2 = w.CreateGameObject(Vector3(0.f, -1.f, -60.f), Vector3::zero(), Vector3(50.f, 0.1f, 50.f));
+	MeshFilter& mf2 = floor2.AddComponent<MeshFilter>(PrimitiveMeshTag::Plane); mf2.boundsRadius = 0.f;
+	floor2.AddComponent<GroundRenderer>();
+	BoxCollider& collider2 = floor2.AddComponent<BoxCollider>();
+	collider2.layer = Layer::Ground;
+
+	//50 * 50 フィールド2
+	GameObject& floor3 = w.CreateGameObject(Vector3(0.f, -1.f, 60.f), Vector3::zero(), Vector3(50.f, 0.1f, 50.f));
+	MeshFilter& mf3 = floor3.AddComponent<MeshFilter>(PrimitiveMeshTag::Plane); mf3.boundsRadius = 0.f;
+	floor3.AddComponent<GroundRenderer>();
+	BoxCollider& collider3 = floor3.AddComponent<BoxCollider>();
+	collider3.layer = Layer::Ground;
+}
+
 void SceneGame::CreateUi()
 {
 	World& w = GetWorld();
@@ -490,6 +538,20 @@ void SceneGame::CreateGlassObjectSpawner()
 
 void SceneGame::CreateWarp()
 {
+	World& w = GetWorld();
+
+	GameObject& warpA = w.CreateGameObject(Vector3(37.f, 0.f, 0.f), Vector3::zero(), Vector3::one());
+	warpA.AddComponent< MeshFilter > (PrimitiveMeshTag::Sphere);
+	warpA.AddComponent<MeshRenderer>();
+	BoxCollider& bcA = warpA.AddComponent<BoxCollider>(true); bcA.isTrigger = true;
+	warpA.AddComponent<WarpPoint>(Point::AtoB);
+
+	GameObject& warpB = w.CreateGameObject(Vector3(53.f, 0.f, 0.f), Vector3::zero(), Vector3::one());
+	warpB.AddComponent< MeshFilter >(PrimitiveMeshTag::Sphere);
+	warpB.AddComponent<MeshRenderer>();
+	BoxCollider& bcB = warpB.AddComponent<BoxCollider>(true); bcB.isTrigger = true;
+	warpB.AddComponent<WarpPoint>(Point::BtoA);
+
 }
 
 void SceneGame::InitPlayerTex()

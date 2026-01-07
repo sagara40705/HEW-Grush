@@ -27,6 +27,7 @@ public:
 		PS_FOG, // SetMaterial, SetLight,SetFog
 		PS_SPRITE,
 		PS_GLASS,
+		PS_GLASS_SHARD,
 		PS_KIND_MAX
 	};
 
@@ -65,6 +66,7 @@ private:
 	static void MakeFogPS();
 	static void MakeSpritePS();
 	static void MakeGlassPS();
+	static void MakeGlassShardPS();
 
 private:
 	static VertexShader* m_pVS[VS_KIND_MAX];

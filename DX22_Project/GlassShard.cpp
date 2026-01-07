@@ -3,6 +3,7 @@
 #include "ShaderList.h"
 #include "Rigidbody.h"
 #include "DirectX.h"
+#include "TextureManager.h"
 #include <random>
 #include <cmath>
 #include <cassert>
@@ -114,9 +115,19 @@ void GlassShard::SetShardParamVS()
 
 void GlassShard::SetGlassParamPS()
 {
-	DirectX::XMFLOAT4 Tint[ToIndex(GlassGrade::Count)] = { {0.2f, 0.5f, 0.7f, 0.7f}, {0.2f, 0.7f, 0.4f, 0.7f}, {0.6f, 0.2f, 0.2f, 0.7f} };
+    DirectX::XMFLOAT4 Tint[ToIndex(GlassGrade::Count)] = {
+       {0.2f, 0.5f, 0.7f, 0.7f},
+       {0.2f, 0.7f, 0.4f, 0.7f},
+       {0.6f, 0.2f, 0.2f, 0.7f}
+    };
 
-	ShaderList::SetGlassParam(Tint[ToIndex(grade_)], 5.0f, 3.0f, 1.0f, 1.0f);
+    ShaderList::SetGlassParam(Tint[ToIndex(grade_)], 5.0f, 3.0f, 1.0f, 1.0f);
+
+    Texture* tex = TextureManager::Get(TextureTag::GlassShard);
+
+    auto ps = ShaderList::GetPS(ShaderList::PS_GLASS_SHARD);
+    ps->SetTexture(0, tex);
+
 }
 
 

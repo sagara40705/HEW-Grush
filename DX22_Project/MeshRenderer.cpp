@@ -50,7 +50,7 @@ void MeshRenderer::Start()
     if (shard)
     {
         vsKind = ShaderList::VS_SHARD;
-        psKind = ShaderList::PS_GLASS;
+		psKind = ShaderList::PS_GLASS_SHARD;
     }
 }
 
