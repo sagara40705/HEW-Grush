@@ -14,7 +14,7 @@ enum class Type : std::uint8_t
 
 constexpr static size_t ToIndex(Type d) noexcept { return static_cast<size_t>(d); }
 
-class RankUI:public GaugeUI
+class RankUI: public MonoBehaviour
 {
 public:
 	

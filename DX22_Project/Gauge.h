@@ -10,7 +10,7 @@ enum class Gauge : std::uint8_t
 };
 constexpr size_t ToIndex(Gauge d) noexcept { return static_cast<size_t>(d); }
 
-class GaugeUI : public TimerUI
+class GaugeUI : public MonoBehaviour
 {
 public:
 	GaugeUI() = default;
@@ -20,6 +20,7 @@ public:
 	float Update(float);
 	void Draw()override;
 	float GetGaugePoint() { return GaugePoint; }
+	float timer_ = 0.f;
 private:
 	UiSpriteRenderer* uiMinute_[ToIndex(Gauge::Count)]{};
 	UiSpriteRenderer* uiColon_ = nullptr;

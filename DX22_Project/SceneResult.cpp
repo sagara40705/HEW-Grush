@@ -82,13 +82,14 @@ void Result::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Frame); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Gauge); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ResultUI); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::RANKS); });
 
 
 	// 各種オブジェクト生成タスクを追加
 	outTasks.emplace_back([this] { CanvasDraw(); });
 	outTasks.emplace_back([this] { TimerUIDeaw(); });
 	outTasks.emplace_back([this] { GaugeDraw(); });
-	//outTasks.emplace_back([this] { RankDraw(); });
+	outTasks.emplace_back([this] { RankDraw(); });
 
 	// 最後に Start を流す
 	outTasks.emplace_back([this]

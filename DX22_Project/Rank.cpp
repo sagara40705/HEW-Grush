@@ -3,14 +3,14 @@
 #include "UiSpriteRenderer.h"
 #include "TextureManager.h"
 
-constexpr Vector2 kNumberUVScale = { 0.1f, 1.0f };
+constexpr Vector2 kNumberUVScale = { 1.f, 1.0f };
 void RankUI::Start()
 {
-	constexpr Vector2 kMinutePos[ToIndex(TimerDigits::Count)] = { {500.f, 400.f}, {590.f, 400.f} };
+	constexpr Vector2 kMinutePos[ToIndex(TimerDigits::Count)] = { {300.f, 400.f}, {300.f, 200.f} };
 	constexpr Vector2 kColonPos = { 700.f,430.f };
 	constexpr Vector2 kSecondPos[ToIndex(TimerDigits::Count)] = { {750.f, 400.f}, {840.f, 400.f} };
 
-	constexpr Vector2 kNumberSize = { 100.f,100.f };
+	constexpr Vector2 kNumberSize = { 200.f,200.f };
 	constexpr Vector2 kColonSize = { 40.f, 40.f };
 
 
