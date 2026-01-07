@@ -67,7 +67,7 @@ void SceneTitle::Load()
 		TitleBreak.AddComponent<BreakUiRenderer>(
 			TextureTag::Title_BreakID // š ID—p
 		);
-
+	
 	// Update ‚©‚çG‚ê‚é‚æ‚¤‚É•Û‘¶
 	m_breakButton = &breakUi;
 
