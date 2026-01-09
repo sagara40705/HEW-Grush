@@ -17,6 +17,6 @@ public:
     void Unload() override;
   
 private:
-    //// ★ エンターで割る対象のボタン
+    // ★ エンターで割る対象のボタン
     BreakUiRenderer* m_breakButton = nullptr;
 };

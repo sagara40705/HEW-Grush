@@ -504,6 +504,7 @@ float4 main(PS_IN pin) : SV_TARGET
 	m_pPS[PS_TOON] = new PixelShader();
 	m_pPS[PS_TOON]->Compile(code);
 }
+
 void ShaderList::MakeFogPS()
 {
 	const char* code = R"EOT(
@@ -565,22 +566,41 @@ struct PS_IN {
     float4 color : COLOR0;
 };
 
-Texture2D tex    : register(t0);
-SamplerState samp: register(s0);
+Texture2D tex     : register(t0); // base (UiSpriteRendererがセットする)
+Texture2D crackTx : register(t1); // crack (BreakUiRendererがセットする)
+Texture2D idTx    : register(t2); // id    (BreakUiRendererがセットする)
+SamplerState samp : register(s0);
 
-// VS と同じ SpriteParam（b1）を定義（color を使う）
+// UiSpriteRenderer が使っている b1 はそのまま維持
 cbuffer SpriteParam : register(b1)
 {
-    float4 offset_size;   // 未使用だが VS とレイアウトを合わせておく
+    float4 offset_size;
     float4 uvPos_uvScale;
     float4 color;
 };
 
+// 追加：割れ用パラメータは b2 にする（b1と衝突させない）
+cbuffer BreakParam : register(b2)
+{
+    float breakT;   // 0..1
+    float3 pad;
+};
+
 float4 main(PS_IN pin) : SV_TARGET
 {
-    float4 texCol = tex.Sample(samp, pin.uv);
-    // 単純なテクスチャ × 色
-    return texCol * pin.color;
+    float4 baseCol = tex.Sample(samp, pin.uv);
+
+    // デバッグ：breakTが少しでも入ったら赤っぽくする（まずこれで動作確認）
+    if (breakT > 0.001f)
+    {
+        baseCol.rgb = lerp(baseCol.rgb, float3(1.0f, 0.0f, 0.0f), 0.7f);
+    }
+
+    // crack が入っているなら lerp（無くても上の赤で確認できる）
+    float4 crackCol = crackTx.Sample(samp, pin.uv);
+    baseCol = lerp(baseCol, crackCol, saturate(breakT));
+
+    return baseCol * pin.color;
 }
 )EOT";
 

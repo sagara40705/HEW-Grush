@@ -1,43 +1,40 @@
+// BreakUiRenderer.h
 #pragma once
+#include "Component.h"
 #include "TextureManager.h"
 #include "ShaderList.h"
-#include <DirectXMath.h>
 
-class BreakUiRenderer 
-    //public MonoBehaviour
+class BreakUiRenderer : public MonoBehaviour
 {
 public:
     BreakUiRenderer() = default;
 
-    // B案：TextureTag を受け取るコンストラクタ
-    explicit BreakUiRenderer(TextureTag idTag)
-        : m_idTag(idTag)
-    {
-    }
+    // B案：コンストラクタでタグを渡す
+    BreakUiRenderer(TextureTag crackTag, TextureTag idTag)
+        : m_crackTag(crackTag), m_idTag(idTag) {}
 
-    void Start() ;
-    void Updete();
+    void Start() override;
+    void Update() override;
 
     void StartBreak();
 
 private:
-    struct CB_BreakUi
+    struct CB_BreakParam
     {
-        float time;
-        DirectX::XMFLOAT2 pad0;
-        float dummy0;
-        float dummy1;
+        float breakT;
+        float pad[3];
     };
 
-private:
-    void ApplyToPixelShader();
+    void ApplyToSpritePS();
 
 private:
-    bool  m_isBreaking = false;
-    float m_time = 0.0f;
+    TextureTag m_crackTag = TextureTag::Title_Break;    // 例
+    TextureTag m_idTag = TextureTag::Title_BreakID;  // 例
 
-    TextureTag m_idTag = TextureTag::Title_BreakID;
+    Texture* m_crackTex = nullptr;
     Texture* m_idTex = nullptr;
 
-    float m_fadeEnd = 0.90f;
+    bool  m_isBreaking = false;
+    float m_breakT = 0.0f;
+    float m_speed = 1.0f; // 1秒で0->1にしたいなら 1.0f
 };

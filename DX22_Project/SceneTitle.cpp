@@ -30,15 +30,15 @@ void SceneTitle::Load()
 	canvas.AddComponent<Canvas>();
 
 	//”wŒi¶¬
-	//GameObject& backGroung = w.CreateGameObject();
-	//backGroung.AddComponent<UiSpriteRenderer>(TextureTag::Title_Main , Vector2(0.f, 0.f), Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
+	GameObject& backGroung = w.CreateGameObject();
+	backGroung.AddComponent<UiSpriteRenderer>(TextureTag::Title_Main , Vector2(0.f, 0.f), Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
 
 	//•¶š¶¬
-	GameObject& player = w.CreateGameObject();
+	//GameObject& player = w.CreateGameObject();
 
-	////===================
-	////•¶š‚ğo—Í‚·‚é
-	////===================
+	//////===================
+	//////•¶š‚ğo—Í‚·‚é
+	//////===================
 	//GameObject& titleFont = w.CreateGameObject();
 
 	//titleFont.AddComponent<UiSpriteRenderer>(
@@ -49,9 +49,9 @@ void SceneTitle::Load()
 
 	GameObject& TitleBreak = w.CreateGameObject();
 
-	/////==========================
-	////‚±‚±‚©‚çƒƒS
-	////==========================
+	///////==========================
+	//////‚±‚±‚©‚çƒƒS
+	//////==========================
 	//GameObject&TitleLogo= w.CreateGameObject();
 
 	//TitleLogo.AddComponent<UiSpriteRenderer>(
@@ -60,9 +60,9 @@ void SceneTitle::Load()
 	//	Vector2(720.0f, 660.0f)
 	//);
 
-	//====================
-	//‰æ–Ê‚ğŠ„‚éˆ—‚ğs‚¤
-	//====================
+	/*====================
+	‰æ–Ê‚ğŠ„‚éˆ—‚ğs‚¤
+	====================*/
 	auto& breakUi =
 		TitleBreak.AddComponent<BreakUiRenderer>(
 			TextureTag::Title_BreakID // š ID—p
