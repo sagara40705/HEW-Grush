@@ -10,11 +10,11 @@ public:
     BreakUiRenderer() = default;
 
     // B案：コンストラクタでタグを渡す
-    BreakUiRenderer(TextureTag crackTag, TextureTag idTag)
-        : m_crackTag(crackTag), m_idTag(idTag) {}
+    explicit BreakUiRenderer(TextureTag idTag);
 
     void Start() override;
     void Update() override;
+    void Render();
 
     void StartBreak();
 

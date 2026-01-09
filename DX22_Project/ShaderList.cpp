@@ -566,12 +566,9 @@ struct PS_IN {
     float4 color : COLOR0;
 };
 
-Texture2D tex     : register(t0); // base (UiSpriteRendererがセットする)
-Texture2D crackTx : register(t1); // crack (BreakUiRendererがセットする)
-Texture2D idTx    : register(t2); // id    (BreakUiRendererがセットする)
-SamplerState samp : register(s0);
+Texture2D tex    : register(t0);
+SamplerState samp: register(s0);
 
-// UiSpriteRenderer が使っている b1 はそのまま維持
 cbuffer SpriteParam : register(b1)
 {
     float4 offset_size;
@@ -579,28 +576,25 @@ cbuffer SpriteParam : register(b1)
     float4 color;
 };
 
-// 追加：割れ用パラメータは b2 にする（b1と衝突させない）
+// ★ 追加：BreakUiRenderer が送る値（b2）
 cbuffer BreakParam : register(b2)
 {
-    float breakT;   // 0..1
-    float3 pad;
+    float breakT;     // 0 なら通常、>0 なら割れ中
+    float3 pad;       // 16byte境界合わせ
 };
 
 float4 main(PS_IN pin) : SV_TARGET
 {
-    float4 baseCol = tex.Sample(samp, pin.uv);
+    float4 texCol = tex.Sample(samp, pin.uv);
+    float4 outCol = texCol * pin.color;
 
-    // デバッグ：breakTが少しでも入ったら赤っぽくする（まずこれで動作確認）
+    // ★ 動作確認用：breakT が 0 より大きい時だけ赤
     if (breakT > 0.001f)
     {
-        baseCol.rgb = lerp(baseCol.rgb, float3(1.0f, 0.0f, 0.0f), 0.7f);
+        outCol = float4(1, 0, 0, 1);
     }
 
-    // crack が入っているなら lerp（無くても上の赤で確認できる）
-    float4 crackCol = crackTx.Sample(samp, pin.uv);
-    baseCol = lerp(baseCol, crackCol, saturate(breakT));
-
-    return baseCol * pin.color;
+    return outCol;
 }
 )EOT";
 
