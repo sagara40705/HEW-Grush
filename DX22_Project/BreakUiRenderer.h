@@ -27,7 +27,9 @@ private:
 
     void ApplyToSpritePS();
 
-private:
+private://ここでシェーダーを切り替える
+    UiSpriteRenderer* m_sprite = nullptr; // ★ 追加
+private://色々な変数
     TextureTag m_crackTag = TextureTag::Title_Break;    // 例
     TextureTag m_idTag = TextureTag::Title_BreakID;  // 例
 

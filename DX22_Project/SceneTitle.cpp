@@ -34,18 +34,18 @@ void SceneTitle::Load()
 	backGroung.AddComponent<UiSpriteRenderer>(TextureTag::Title_Main , Vector2(0.f, 0.f), Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
 
 	//文字生成
-	//GameObject& player = w.CreateGameObject();
+	GameObject& player = w.CreateGameObject();
 
-	//////===================
-	//////文字を出力する
-	//////===================
-	//GameObject& titleFont = w.CreateGameObject();
+	////===================
+	////文字を出力する
+	////===================
+	GameObject& titleFont = w.CreateGameObject();
 
-	//titleFont.AddComponent<UiSpriteRenderer>(
-	//	TextureTag::Title_Font,
-	//	Vector2(700.0f, 60.0f),
-	//	Vector2(550.0f, 550.0f)
-	//);
+	titleFont.AddComponent<UiSpriteRenderer>(
+		TextureTag::Title_Font,
+		Vector2(700.0f, 60.0f),
+		Vector2(550.0f, 550.0f)
+	);
 
 	GameObject& TitleBreak = w.CreateGameObject();
 
@@ -64,13 +64,9 @@ void SceneTitle::Load()
 	画面を割る処理を行う
 	====================*/
 	auto& breakUi =
-		TitleBreak.AddComponent<BreakUiRenderer>(
-			TextureTag::Title_BreakID // ★ ID用
-		);
+		titleFont.AddComponent<BreakUiRenderer>
+		(TextureTag::Title_BreakID);
 	
-	// Update から触れるように保存
-	m_breakButton = &breakUi;
-
 	// Update から触れるように保存
 	m_breakButton = &breakUi;
 

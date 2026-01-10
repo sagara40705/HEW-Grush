@@ -569,6 +569,7 @@ struct PS_IN {
 Texture2D tex    : register(t0);
 SamplerState samp: register(s0);
 
+// 既存
 cbuffer SpriteParam : register(b1)
 {
     float4 offset_size;
@@ -576,25 +577,22 @@ cbuffer SpriteParam : register(b1)
     float4 color;
 };
 
-// ★ 追加：BreakUiRenderer が送る値（b2）
+// ★ 追加：Break 用パラメータ（BreakUiRenderer が b2 に書いている）
 cbuffer BreakParam : register(b2)
 {
-    float breakT;     // 0 なら通常、>0 なら割れ中
-    float3 pad;       // 16byte境界合わせ
+    float4 breakParam; // x = breakT
 };
 
 float4 main(PS_IN pin) : SV_TARGET
 {
     float4 texCol = tex.Sample(samp, pin.uv);
-    float4 outCol = texCol * pin.color;
+    float4 baseCol = texCol * pin.color;
 
-    // ★ 動作確認用：breakT が 0 より大きい時だけ赤
-    if (breakT > 0.001f)
-    {
-        outCol = float4(1, 0, 0, 1);
-    }
+    float breakT = saturate(breakParam.x);
 
-    return outCol;
+    // ★ テスト：breakT で赤くする（割れ実装前の確認）
+    float4 red = float4(1, 0, 0, 1);
+    return lerp(baseCol, red, breakT);
 }
 )EOT";
 
