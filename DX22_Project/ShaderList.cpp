@@ -3,7 +3,7 @@
 
 VertexShader* ShaderList::m_pVS[VS_KIND_MAX];
 PixelShader* ShaderList::m_pPS[PS_KIND_MAX];
-
+float ShaderList::m_spriteBreakT = 0.0f;
 
 ShaderList::ShaderList()
 {
