@@ -81,7 +81,12 @@ public:
 
 private:
 	static PixelShader* m_spriteOverridePS;
+public:
+	static void SetSpriteBreakT(float t);
+	static float GetSpriteBreakT();
 
+private:
+	static float m_spriteBreakT;
 };
 
 #endif // __SHADER_LIST_H__

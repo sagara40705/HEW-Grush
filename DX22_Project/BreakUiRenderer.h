@@ -3,6 +3,8 @@
 #include "Component.h"
 #include "TextureManager.h"
 #include "ShaderList.h"
+#include "UiSpriteRenderer.h"
+#include "GameObject.h"
 
 class BreakUiRenderer : public MonoBehaviour
 {
@@ -26,6 +28,7 @@ private:
     };
 
     void ApplyToSpritePS();
+    void SetBreakParam(float t) { m_breakT = t; }
 
 private://ここでシェーダーを切り替える
     UiSpriteRenderer* m_sprite = nullptr; // ★ 追加

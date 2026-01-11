@@ -7,6 +7,7 @@ PixelShader* ShaderList::m_pPS[PS_KIND_MAX];
 
 ShaderList::ShaderList()
 {
+	
 }
 ShaderList::~ShaderList()
 {
@@ -741,4 +742,14 @@ PixelShader* ShaderList::m_spriteOverridePS = nullptr;
 void ShaderList::SetSpritePsOverride(PixelShader* ps)
 {
 	m_spriteOverridePS = ps;
+}
+
+void ShaderList::SetSpriteBreakT(float t)
+{
+	m_spriteBreakT = t;
+}
+
+float ShaderList::GetSpriteBreakT()
+{
+	return m_spriteBreakT;
 }

@@ -10,7 +10,6 @@ void BreakUiRenderer::Start()
 {
     m_idTex = TextureManager::Get(m_idTag);
 
-    // b2 初期化（breakT=0）
     m_breakT = 0.0f;
     ApplyToSpritePS();
 }
@@ -19,13 +18,14 @@ void BreakUiRenderer::StartBreak()
 {
     m_isBreaking = true;
     m_breakT = 0.0f;
+    ApplyToSpritePS();
 }
 
 void BreakUiRenderer::Update()
 {
     if (!m_isBreaking) return;
 
-    m_breakT += m_speed * (1.0f / 60.0f);
+    m_breakT += 1.0f / 60.0f;
     if (m_breakT >= 1.0f)
     {
         m_breakT = 1.0f;
@@ -37,28 +37,24 @@ void BreakUiRenderer::Update()
 
 void BreakUiRenderer::Render()
 {
-    auto* ps = ShaderList::GetPS(ShaderList::PS_SPRITE);
-    ps->Bind();
+    //// UiSpriteRenderer.cpp の Render() 内の、Draw する直前あたり
+    //auto* ps = ShaderList::GetPS(ShaderList::PS_SPRITE);
+    //if (ps)
+    //{
+    //    struct CB_BreakParam2
+    //    {
+    //        float breakParam[4]; // x = breakT
+    //    };
 
-    // ここで b2 を毎回セット（テスト）
-    struct CB_BreakParam2 { float breakParam[4]; };
-    CB_BreakParam2 cb{};
-    cb.breakParam[0] = 1.0f; // 強制で赤
-    ps->WriteBuffer(2, &cb);
+    //    CB_BreakParam2 cb{};
+    //    cb.breakParam[0] = m_breakT;
+
+    //    ps->WriteBuffer(2, &cb); // b2
+    //}
 }
 
 void BreakUiRenderer::ApplyToSpritePS()
 {
-    auto* ps = ShaderList::GetPS(ShaderList::PS_SPRITE);
-    if (!ps) return;
-
-    struct CB_BreakParam2
-    {
-        float breakParam[4]; // x=breakT
-    };
-
-    CB_BreakParam2 cb{};
-    cb.breakParam[0] = m_breakT;
-
-    ps->WriteBuffer(2, &cb); // b2 に書く
+    // ShaderList 側に breakT を保持させる（あなたの方針のまま）
+    ShaderList::SetSpriteBreakT(m_breakT);
 }
