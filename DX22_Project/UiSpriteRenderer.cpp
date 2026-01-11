@@ -41,12 +41,11 @@ void UiSpriteRenderer::Render()
         if (!texture_) return;
     }
 
-    // 1) get shaders
     auto* vs = ShaderList::GetVS(ShaderList::VS_SPRITE);
     auto* ps = ShaderList::GetPS(ShaderList::PS_SPRITE);
     if (!vs || !ps) return;
 
-    // 2) build WVP
+    // 1) build WVP
     XMMATRIX W = XMMatrixTranspose(XMMatrixIdentity());
     XMMATRIX V = XMMatrixTranspose(XMMatrixIdentity());
     XMMATRIX P = XMMatrixTranspose(XMLoadFloat4x4(&canvas->GetProjMatrix()));
@@ -62,30 +61,29 @@ void UiSpriteRenderer::Render()
     XMStoreFloat4x4(&wvp.view, V);
     XMStoreFloat4x4(&wvp.proj, P);
 
-    // 3) sprite param
+    // 2) sprite params
     Sprite::ParamCB param = GetSpriteParamCB();
 
-    // 4) write cbuffers
+    // 3) write buffers
     vs->WriteBuffer(0, &wvp);
     vs->WriteBuffer(1, &param);
     ps->WriteBuffer(1, &param);
 
-    // 5) write break param (b2)
+    // 4) write break param (b2)
     struct CB_BreakParam2
     {
-        float breakParam[4]; // x = breakT
+        float breakParam[4];
     };
-
-    CB_BreakParam2 cb = {};
-    cb.breakParam[0] = ShaderList::GetSpriteBreakT(); // 0..1
+    CB_BreakParam2 cb{};
+    cb.breakParam[0] = ShaderList::GetSpriteBreakT();
     ps->WriteBuffer(2, &cb);
 
-    // 6) set texture & states
+    // 5) state + texture
     ps->SetTexture(0, texture_);
     SetDepthTest(false);
     SetCullingMode(D3D11_CULL_NONE);
 
-    // 7) draw
+    // 6) draw
     vs->Bind();
     ps->Bind();
     Sprite::Draw();

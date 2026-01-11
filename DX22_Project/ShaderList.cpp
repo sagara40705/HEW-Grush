@@ -7,7 +7,8 @@ PixelShader* ShaderList::m_pPS[PS_KIND_MAX];
 
 ShaderList::ShaderList()
 {
-	
+	// ShaderList.cpp（どこでも良いが、staticメンバ定義が並んでいる場所が安全）
+	m_spriteBreakT = 0.0f;
 }
 ShaderList::~ShaderList()
 {
