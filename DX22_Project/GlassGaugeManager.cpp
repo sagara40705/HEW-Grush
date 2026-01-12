@@ -31,6 +31,35 @@ void GlassGaugeManager::Update()
 
 	if (isGaugeEmpty) return;
 
+	if (isLimitBreak_)
+	{
+		limitBreakDurationTimer_ += 0.1f / 60.f;
+		if (limitBreakDurationTimer_ >= kLimitBreakDuration)
+		{
+			isLimitBreak_ = false;
+			limitBreakDurationTimer_ = 0.f;
+			DebugLog::Output("ŒÀŠE“Ë”jI—¹");
+		}
+		return;
+	}
+	else
+	{
+		if (!IsMaxGauge())
+		{
+			limitBreakTimer_ = 0.f;
+			return;
+		}
+
+		limitBreakTimer_ += 0.1f / 60.f;
+		if (limitBreakTimer_ >= kLimitBreakTime)
+		{
+			isLimitBreak_ = true;
+			limitBreakTimer_ = 0.f;
+			hammer_->LimitBreakStart();
+			DebugLog::Output("ŒÀŠE“Ë”jŠJŽn");
+		}
+	}
+
 	// ƒQ[ƒWŒ¸Š’†
 	if (isGaugeDecaying)
 	{
@@ -131,6 +160,16 @@ float GlassGaugeManager::GetGaugeRatio()
 HammerGrade GlassGaugeManager::GetHammerGrade()
 {
 	return hammer_->GetGrade();
+}
+
+bool GlassGaugeManager::IsMaxGauge()
+{
+	size_t grade = ToIndex(hammer_->GetGrade());
+	if (gauge_ >= kMaxGaugeVale[grade])
+	{
+		return true;
+	}
+	return false;
 }
 
 #ifdef _DEBUG

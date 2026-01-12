@@ -137,6 +137,10 @@ bool Hammer::CanBrake(GlassGrade glass)
 	return (ToIndex(glass) <= ToIndex(grade_));
 }
 
+void Hammer::LimitBreakStart()
+{
+}
+
 #ifdef _DEBUG
 #include "InputKeyboard.h"
 void Hammer::DebugCommand()
