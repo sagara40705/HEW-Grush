@@ -21,5 +21,6 @@ public:
 	GameObject* Instantiate(const Vector3& pos, GlassGrade grade);
 private:
 	Vector3 CalcBillboard(const Vector3& pos);
-
+	Vector3 MakePlayerBiasedDir(const Vector3& shardPos);
+	float MakeImpulsePower();
 };

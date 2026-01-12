@@ -10,7 +10,7 @@ private:
 	Vector3 dir_;
 	DirectX::XMFLOAT4 randParam_;
 private:
-	//Transform* tf_ = nullptr;
+	Transform* tf_ = nullptr;
 	Rigidbody* rb_ = nullptr;
 public:
 	void OnEnable() override;
@@ -20,8 +20,8 @@ public:
 	void OnDestroy() override;
 public:
 	void OnActive(const Vector3& pos);
-	void AddForce(const Vector3& dir);
-	void SetGlassGrade(GlassGrade g) { grade_ = g; }
+	void AddForce(const Vector3& dir, float impulsePower);
+	void SetGlassGrade(GlassGrade g); 
 	void SetShardParamVS();
 	void SetGlassParamPS();
 };

@@ -383,7 +383,7 @@ VS_OUT main(VS_IN vin)
 
     // 先端を少しギザギザに（長さ方向にランダム伸ばす）
     float radial = length(p);
-    float jaggy = 1.0f + (Hash(radial * 17.0f + randParam.w * 13.0f) - 0.5f) * 0.4f;
+    float jaggy = 1.0f + (Hash(radial * 17.0f + randParam.w * 13.0f) - 0.5f) * 0.9f;
     p *= jaggy;
 
     // 中心を戻す
@@ -840,7 +840,7 @@ SamplerState samp : register(s0);
 float4 main(PS_IN pin) : SV_TARGET
 {
     float4 texColor = tex.Sample(samp, pin.uv);
-	return texColor;
+	//return texColor;
 
     float3 N = normalize(pin.normal);
     float3 L = normalize(-lightDir.xyz);
