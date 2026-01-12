@@ -95,10 +95,13 @@ void GlassShard::OnActive(const Vector3& pos)
     if (!rb_) return;
 
     gameObject->transform->SetPosition(pos);
-
-    constexpr float kImpulsePower = 8.0f; 
-    Vector3 dir = RandomUpHemisphere();
     dir_ = RandomUpHemisphere();
+	AddForce(dir_);
+}
+
+void GlassShard::AddForce(const Vector3& dir)
+{
+    constexpr float kImpulsePower = 8.0f;
 
     rb_->AddForce(dir * kImpulsePower);
 }

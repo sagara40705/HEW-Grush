@@ -29,10 +29,15 @@ void GlassShardPool::Start()
 
 	camTf_ = Camera::Main()->gameObject->transform;
 	assert(camTf_ && "ƒƒCƒ“ƒJƒƒ‰‚Ìtransform‚ªnullptr");
+
+	GameObject* player = gameObject->FindWithTag(Tag::Player);
+	player_ = player->transform;
 }
 
 void GlassShardPool::OnDestroy()
 {
+	player_ = nullptr;
+	camTf_ = nullptr;
 	s_instance = nullptr;
 }
 

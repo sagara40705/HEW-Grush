@@ -20,6 +20,7 @@ public:
 	void OnDestroy() override;
 public:
 	void OnActive(const Vector3& pos);
+	void AddForce(const Vector3& dir);
 	void SetGlassGrade(GlassGrade g) { grade_ = g; }
 	void SetShardParamVS();
 	void SetGlassParamPS();
