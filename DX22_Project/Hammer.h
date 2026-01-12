@@ -39,6 +39,7 @@ private:
 private:
 	Transform* tf_ = nullptr;
 	BoxCollider* bc_ = nullptr;
+	MeshRenderer* renderer_ = nullptr;
 	CameraShake* shake_ = nullptr;
 	GlassGaugeManager* gauge_ = nullptr;
 	ScoreManager* score_ = nullptr;
@@ -60,6 +61,7 @@ private:
 	bool CanBrake(GlassGrade glass);
 public:
 	void LimitBreakStart();
+	void LimitBreakEnd();
 private:
 #ifdef _DEBUG
 	void DebugCommand();

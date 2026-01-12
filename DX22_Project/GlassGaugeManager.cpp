@@ -5,6 +5,7 @@
 #include "GlassObject.h"
 #include "InputKeyboard.h"
 #include "DebugLog.h"
+#include "ShaderList.h"
 
 constexpr float kMaxGaugeVale[ToIndex(HammerGrade::Count)] 
 				= { 100.f, 200.f, 300.f };
@@ -29,15 +30,17 @@ void GlassGaugeManager::Update()
 	DebugCommand();
 #endif // DEBUG	
 
-	if (isGaugeEmpty) return;
-
+	// ŒÀŠE“Ë”j’†
 	if (isLimitBreak_)
 	{
 		limitBreakDurationTimer_ += 0.1f / 60.f;
+		ShaderList::SetRainbowTime(limitBreakDurationTimer_);
+
 		if (limitBreakDurationTimer_ >= kLimitBreakDuration)
 		{
 			isLimitBreak_ = false;
 			limitBreakDurationTimer_ = 0.f;
+			hammer_->LimitBreakEnd();
 			DebugLog::Output("ŒÀŠE“Ë”jI—¹");
 		}
 		return;
@@ -59,6 +62,8 @@ void GlassGaugeManager::Update()
 			DebugLog::Output("ŒÀŠE“Ë”jŠJŽn");
 		}
 	}
+
+	if (isGaugeEmpty) return;
 
 	// ƒQ[ƒWŒ¸Š’†
 	if (isGaugeDecaying)
@@ -179,6 +184,19 @@ void GlassGaugeManager::DebugCommand()
 	{
 		BrakeGlass(GlassGrade::Grade_1);
 		DebugLog::Output("DebugCommand GaugeUp 1");
+	}
+
+	if (InputKeyboard::GetKeyDown('N'))
+	{
+		isLimitBreak_ = true;
+		player_->LimitBreakOn();
+		hammer_->LimitBreakStart();
+	}
+	if (InputKeyboard::GetKeyDown('M'))
+	{
+		isLimitBreak_ = true;
+		player_->LimitBreakOff();
+		hammer_->LimitBreakEnd();
 	}
 }
 #endif // DEBUG	

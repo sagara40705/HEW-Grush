@@ -61,4 +61,11 @@ public:
     {
         return (cooltime[ToIndex(action)] / kActionCT[ToIndex(action)]);
     }
+private:
+	MeshRenderer* renderer_ = nullptr;
+public:
+	void Start() override;
+	void OnDestroy() override;
+	void LimitBreakOn();
+	void LimitBreakOff();
 };

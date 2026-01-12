@@ -28,6 +28,7 @@ public:
 		PS_SPRITE,
 		PS_GLASS,
 		PS_GLASS_SHARD,
+		PS_RAINBOW,
 		PS_KIND_MAX
 	};
 
@@ -51,6 +52,7 @@ public:
 	static void SetCameraPos(const DirectX::XMFLOAT3 pos);
 	static void SetFog(DirectX::XMFLOAT4 color, float start, float range);
 	static void SetGlassParam(const DirectX::XMFLOAT4& tint, float fresnelPower, float reflectionStrength, float transmissionStrength, float v = 0.5f);
+	static void SetRainbowTime(float time);
 	
 private:
 	static void MakePrimVS();
@@ -67,6 +69,7 @@ private:
 	static void MakeSpritePS();
 	static void MakeGlassPS();
 	static void MakeGlassShardPS();
+	static void MakeRainbowPS();
 
 private:
 	static VertexShader* m_pVS[VS_KIND_MAX];
