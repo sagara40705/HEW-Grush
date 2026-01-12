@@ -8,8 +8,6 @@
 class SceneGame : public Scene
 {
 public:
-	SceneGame();
-	~SceneGame();
 	void Update() final;
 	void Draw() final;
 	void Load() final;

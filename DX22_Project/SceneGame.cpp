@@ -7,16 +7,10 @@
 #include "PrefabSet.h"
 #include "LineManager.h"
 #include "GlassObjectSpawner.h"
+#include "GameState.h"
+#include "DebugLog.h"
 
-SceneGame::SceneGame()
-{
-	
-}
 
-SceneGame::~SceneGame()
-{
-	
-}
 void SceneGame::Load()
 {
 	// 従来の同期ロードが必要なら、タスクを構築して全部回す
@@ -149,9 +143,6 @@ void SceneGame::CreateManagers()
 	GameObject& glassGaugeManager = w.CreateGameObject();
 	glassGaugeManager.SetTag(Tag::GaugeManager);
 	glassGaugeManager.AddComponent<GlassGaugeManager>();
-
-	GameObject& timerManager = w.CreateGameObject();
-	timerManager.SetTag(Tag::TimerUI);
 }
 
 void SceneGame::CreateCameraAndPlayer()
@@ -196,8 +187,23 @@ void SceneGame::CreateCameraAndPlayer()
 
 void SceneGame::CreateStage()
 {
-	// まずはステージ1固定
-	CreateStage1();
+	StageId stage = GetCurrentStage();
+
+	// デバック用
+	//stage = StageId::Stage2;
+
+	switch (stage)
+	{
+	case StageId::Stage1:	CreateStage1();
+		break;
+	case StageId::Stage2:	CreateStage2();
+		break;
+	case StageId::Stage3:	CreateStage3();
+		break;
+	default:
+		assert(false && "不正なステージID");
+		break;
+	}
 }
 
 void SceneGame::CreateStage1()
