@@ -341,14 +341,14 @@ cbuffer Matrix : register(b0)
 };
 
 // 破片ごとのランダムパラメータ
-// randParam.xyz : スケール・回転用 (0〜1)
+// randParam.xyz : スケール・回転用 (0-1)
 // randParam.w   : ジャギー用シード
 cbuffer ShardParam : register(b1)
 {
     float4 randParam;
 };
 
-// 簡易ハッシュ（0〜1）
+// 簡易ハッシュ（0-1）
 float Hash(float n)
 {
     return frac(sin(n) * 43758.5453);
@@ -366,12 +366,12 @@ VS_OUT main(VS_IN vin)
     float2 center = float2(0.0f, 1.0f / 3.0f);
     p -= center;
 
-    // ランダムスケール（0.7〜1.3倍）
+    // ランダムスケール（0.7 -- 1.3倍）
     float sx = lerp(0.7f, 1.3f, randParam.x);
     float sy = lerp(0.7f, 1.3f, randParam.y);
     p *= float2(sx, sy);
 
-    // ランダム回転（約 -60〜+60 度）
+    // ランダム回転（約 -60 -- +60 度）
     float angle = (randParam.z * 2.0f - 1.0f) * (60.0f / 180.0f) * 3.14159265f;
     float s = sin(angle);
     float c = cos(angle);
@@ -795,8 +795,8 @@ float4 main(PS_IN pin) : SV_TARGET
     // ==========================
     float baseAlpha = glassTint.a;
 
-    // Fresnel でほんの少しだけ縁を濃くするが、ほぼ一定
-    float fresnelAlpha = lerp(0.9f, 1.0f, fresnel); // 0.9〜1.0 の範囲
+    // Fresnel でほんの少しだけ縁を濃くするが、ほぼ一定// 0.9 - 1.0 の範囲
+    float fresnelAlpha = lerp(0.9f, 1.0f, fresnel); 
 
     float finalA = saturate(baseAlpha * fresnelAlpha);
 

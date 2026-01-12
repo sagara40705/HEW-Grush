@@ -24,6 +24,7 @@ private:
 	void CreateManagers();
 	void CreateCameraAndPlayer();
 	void CreateStage();
+	void CreateStage1();
 	void CreateStage2();
 	void CreateStage3();
 	void CreateUi();

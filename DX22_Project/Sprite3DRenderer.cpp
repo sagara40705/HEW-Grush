@@ -27,7 +27,7 @@ void Sprite3DRenderer::Render()
     // 0) VS / PS ‚ðŽæ“¾
     VertexShader* vs = Sprite::Get3dVS();
     PixelShader* ps = Sprite::Get3dPS();
-    if (!vs || !ps);
+	if (!vs || !ps) return;
 
     assert(tf_ && "Transfrom‚ªnullptr");
 
