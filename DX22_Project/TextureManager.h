@@ -1,29 +1,50 @@
 #pragma once
 #include <memory>
 #include <array>
+#include <cstdint>
 #include "Texture.h"
 
-enum class TextureTag : int
+enum class TextureTag : uint8_t
 {
-    Number,          // Assets/Texture/Number.png
-    GaugeFrame,
-    GaugeMaxLv1,     // Assets/Texture/GaugeMAX_Level1.png
-    GaugeEffect,
-    SpinUI,
-    DashUI,
-    Count
+    Title_BG = 0,
+    LoadGauge = 1,
+    Star = 2,
+    GroundTile = 3,
+    Stage = 4,
+    SkyDome = 5,
+    GaugeEmpty = 6,
+    GaugeMax = 7,
+    GaugeEffect = 8,
+    ScoreAtoKg = 9,
+    ScoreNumber = 10,
+    TimerColon = 11,
+    TimerNumber = 12,
+    Spin = 13,
+    SpinMono = 14,
+    SpinMoji = 15,
+    SpinMojiMono = 16,
+    SpinFlash = 17,
+    SpinFront = 18,
+    Dash = 19,
+    DashMono = 20,
+    DashMoji = 21,
+    DashMojiMono = 22,
+	UIFrostNoise = 23,
+	EffectLv1 = 24,
+	GlassShard = 25,
+    Count = 26
 };
 
 class TextureManager
 {
 private:
-    static std::array<std::unique_ptr<Texture>, static_cast<int>(TextureTag::Count)> s_textures;
-    static const char* kTexturePath[static_cast<int>(TextureTag::Count)];
+    static std::array<std::unique_ptr<Texture>, static_cast<size_t>(TextureTag::Count)> s_textures;
+    static const char* kTexturePath[static_cast<size_t>(TextureTag::Count)];
 
 public:
     /// 成功時 true, 失敗時 false
-    static bool Register(TextureTag tag, const char* filePath);
-    static bool RegisterAuto(TextureTag tag);   // ファイルパスを自動参照
+    static bool Load(TextureTag tag);   // ファイルパスを自動参照
+    static void Unload(TextureTag tag);
 
     /// 取得：tag に対応する Texture のポインタを返す（なければ nullptr）
     static Texture* Get(TextureTag tag);

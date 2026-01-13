@@ -1,57 +1,76 @@
-#pragma once
+ï»¿#pragma once
+#include <vector>
+//#include <typeindex>
+#include <cstdint>
 #include "Vector3.h"
 #include "Component.h"
-#include "DebugLog.h"
+#include "Raycast.h"  
+
+enum class CameraTag : uint8_t
+{
+    Main,
+    UI,
+    MiniMap,
+    Debug,
+    Custom,
+};
 
 class Camera : public Component
 {
 public:
-    // ==== ’è”’è‹` ====
-    static constexpr Vector3 initPos()      noexcept { return { 0, 1, -3 }; }
-    static constexpr Vector3 initRotate()   noexcept { return { 30, 0, 0 }; }
-    static constexpr DirectX::XMFLOAT3 defaltPos = { 0.0f, 1.0f, -3.0f };
-    static constexpr DirectX::XMFLOAT3 defaltRotate = { 30.0f, 0.0f,  0.0f };
-    static constexpr float DEFAULT_FOVY = DirectX::XM_PIDIV4; // 45‹
+    static constexpr Vector3 kInitPos = { 0.f, 3.f, -6.f };
+    static constexpr Vector3 kInitRotate = { 10.f, 0.f, 0.f };
+
+    static constexpr float DEFAULT_FOVY = DirectX::XM_PIDIV4; // 45
     static constexpr float DEFAULT_NEAR_Z = 0.1f;
     static constexpr float DEFAULT_FAR_Z = 1000.0f;
-    // ƒŒƒ“ƒYi¶èŒn‘O’ñj
-    float fovY = DEFAULT_FOVY; // 45‹
+
+    // ï¿½ï¿½ï¿½ï¿½ï¿½Yï¿½iï¿½ï¿½ï¿½ï¿½nï¿½Oï¿½ï¿½j
+    float fovY = DEFAULT_FOVY; // 45
     float aspect = 16.0f / 9.0f;
     float nearZ = DEFAULT_NEAR_Z;
     float farZ = DEFAULT_FAR_Z;
+    CameraTag tag = CameraTag::Main;
 
 private:
-    DirectX::XMFLOAT4X4 view_{};       // –ˆƒtƒŒ[ƒ€ Transform ‚©‚çÄŒvZ
-    DirectX::XMFLOAT4X4 proj_{};       // ƒpƒ‰ƒ[ƒ^•ÏX‚Ì‚İÄŒvZ
+    DirectX::XMFLOAT4X4 view_{};       
+    DirectX::XMFLOAT4X4 proj_{};      
     bool projDirty_ = true;
 
     static Camera* s_main;
+    static std::vector<Camera*> s_cameras;
 
 public:
     Camera() = default;
     ~Camera() override = default;
 
+    void Awake() override;
     void Start() override
     {
-        // Å‰‚É‹N“®‚µ‚½ Camera ‚ğƒƒCƒ“‚É
+        // ï¿½Åï¿½ï¿½É‹Nï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Camera ï¿½ï¿½ï¿½ï¿½ï¿½Cï¿½ï¿½ï¿½ï¿½
         if (s_main == nullptr) s_main = this;
-        Debug::LogValue("Camera-Start", (s_main == nullptr));
         RebuildProjectionIfDirty();
     }
     void OnDestroy();
 
-    static Camera* Main() { return s_main; }
+    static Camera* Main();
+    static const std::vector<Camera*>& All() { return s_cameras; }
     void ForceMain() { s_main = this; }
 
-    // ----------------- ƒŒƒ“ƒYİ’è -----------------
+    // ----------------- ï¿½ï¿½ï¿½ï¿½ï¿½Yï¿½İ’ï¿½ -----------------
     void SetPerspective(float fovYRad, float aspectRatio, float nearPlane, float farPlane);
-    void SetFovY(float  fovYRad) { fovY = fovYRad; projDirty_ = true;}
+    void SetFovY(float  fovYRad) { fovY = fovYRad; projDirty_ = true; }
     void SetAspect(float aspectRatio) { aspect = aspectRatio; projDirty_ = true; }
 
-    // ----------------- æ“¾Œn -----------------
+    // ----------------- ï¿½æ“¾ï¿½n -----------------
     const DirectX::XMFLOAT4X4& GetView();       //View
     const DirectX::XMFLOAT4X4& GetProjection(); //Proj
     DirectX::XMFLOAT4X4 GetViewProjection();    //VP
+public:
+    Ray GetForwardRay() const;
+public:
+    void DebugDrawFrustum();
+    bool IsVisibleSphere(const Vector3& center, float radius) const;
 private:
     void RebuildViewFromTransform();
     void RebuildProjectionIfDirty();

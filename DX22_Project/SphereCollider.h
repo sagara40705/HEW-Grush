@@ -1,4 +1,3 @@
-// SphereCollider.h
 #pragma once
 #include "Collider.h"
 #include <DirectXMath.h>

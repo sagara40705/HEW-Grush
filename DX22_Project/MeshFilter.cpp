@@ -1,341 +1,52 @@
 #include "MeshFilter.h"
-#include <vector>
-#include <DirectXMath.h>
+#include "LineManager.h"
+#include "GameObject.h"
+#include "Transform.h"
+#include "DebugLog.h"
 
-// static メンバ定義
-std::array<std::unique_ptr<MeshBuffer>, MeshFilter::Type::Count> MeshFilter::s_meshBuffers{};
-
-void MeshFilter::Start()
+using namespace DirectX;
+void MeshFilter::DebugDrawBounds() const
 {
-    EnsureBuilt(type);
-}
+	const auto& m = gameObject->transform->GetMatrix(); //
+    Vector3 center{ m._41, m._42, m._43 };
 
-void MeshFilter::OnDestroy()
-{
-}
+    center += boundsOffset;
 
-MeshBuffer* MeshFilter::GetMeshBuffer() const
-{
-    return s_meshBuffers[static_cast<int>(type)].get();
-}
+	const float r = boundsRadius;
+  
+	//if (r <= 0.0f) return;
 
-void MeshFilter::ReleaseAll()
-{
-    for (auto& mb : s_meshBuffers)
-    {
-        mb.reset();
-    }
-}
+    const XMFLOAT4& color = kBlue;
+    LineManager::LineGroup group = LineManager::LineGroup::General;
 
-// ==============================
-// 内部ヘルパ
-// ==============================
-
-void MeshFilter::EnsureBuilt(Type t)
-{
-    const int idx = static_cast<int>(t);
-    if (idx < 0 || idx >= Type::Count)
-    {
-        return;
-    }
-
-    if (s_meshBuffers[idx]) return; // 既に生成済み
-
-    switch (t)
-    {
-    case Cube:     BuildCube();     break;
-    case Sphere:   BuildSphere();   break;
-    case Plane:    BuildPlane();    break;
-    case Cylinder: BuildCylinder(); break;
-    default: break;
-    }
-}
-
-// ==============================
-// 各プリミティブ生成
-// ==============================
-
-void MeshFilter::BuildCube()
-{
-    //--- 頂点の作成（中心(0,0,0)、サイズ1のキューブ）
-    Vertex vtx[] = {
-        // -Z 面
-        {{-0.5f,  0.5f, -0.5f}, {0.0f, 0.0f}},
-        {{ 0.5f,  0.5f, -0.5f}, {1.0f, 0.0f}},
-        {{-0.5f, -0.5f, -0.5f}, {0.0f, 1.0f}},
-        {{ 0.5f, -0.5f, -0.5f}, {1.0f, 1.0f}},
-        // +Z 面
-        {{-0.5f,  0.5f,  0.5f}, {0.0f, 0.0f}},
-        {{ 0.5f,  0.5f,  0.5f}, {1.0f, 0.0f}},
-        {{-0.5f, -0.5f,  0.5f}, {0.0f, 1.0f}},
-        {{ 0.5f, -0.5f,  0.5f}, {1.0f, 1.0f}},
-        // +X 面
-        {{ 0.5f,  0.5f, -0.5f}, {0.0f, 0.0f}},
-        {{ 0.5f,  0.5f,  0.5f}, {1.0f, 0.0f}},
-        {{ 0.5f, -0.5f, -0.5f}, {0.0f, 1.0f}},
-        {{ 0.5f, -0.5f,  0.5f}, {1.0f, 1.0f}},
-        // -X 面
-        {{-0.5f,  0.5f, -0.5f}, {0.0f, 0.0f}},
-        {{-0.5f,  0.5f,  0.5f}, {1.0f, 0.0f}},
-        {{-0.5f, -0.5f, -0.5f}, {0.0f, 1.0f}},
-        {{-0.5f, -0.5f,  0.5f}, {1.0f, 1.0f}},
-        // +Y 面
-        {{-0.5f,  0.5f, -0.5f}, {0.0f, 0.0f}},
-        {{-0.5f,  0.5f,  0.5f}, {1.0f, 0.0f}},
-        {{ 0.5f,  0.5f, -0.5f}, {0.0f, 1.0f}},
-        {{ 0.5f,  0.5f,  0.5f}, {1.0f, 1.0f}},
-        // -Y 面
-        {{-0.5f, -0.5f, -0.5f}, {0.0f, 0.0f}},
-        {{-0.5f, -0.5f,  0.5f}, {1.0f, 0.0f}},
-        {{ 0.5f, -0.5f, -0.5f}, {0.0f, 1.0f}},
-        {{ 0.5f, -0.5f,  0.5f}, {1.0f, 1.0f}},
+    // 簡易版として「中心 ± 半径」の立方体 AABB を作る
+    XMFLOAT3 p[8] = {
+        { center.x - r, center.y - r, center.z - r }, // 0
+        { center.x + r, center.y - r, center.z - r }, // 1
+        { center.x - r, center.y + r, center.z - r }, // 2
+        { center.x + r, center.y + r, center.z - r }, // 3
+        { center.x - r, center.y - r, center.z + r }, // 4
+        { center.x + r, center.y - r, center.z + r }, // 5
+        { center.x - r, center.y + r, center.z + r }, // 6
+        { center.x + r, center.y + r, center.z + r }, // 7
     };
 
-    //--- インデックスの作成
-    unsigned int idx[] = {
-        0, 1, 2,  1, 3, 2,   // -Z
-        4, 6, 5,  5, 6, 7,   // +Z
+    // 12 本のエッジを LineManager に登録
+    // near 面
+    LineManager::AddLine(p[0], p[1], color, group);
+    LineManager::AddLine(p[1], p[3], color, group);
+    LineManager::AddLine(p[3], p[2], color, group);
+    LineManager::AddLine(p[2], p[0], color, group);
 
-        8,  9, 10,  9, 11, 10,   // +X
-        13, 12, 14, 13, 14, 15,  // -X
+    // far 面
+    LineManager::AddLine(p[4], p[5], color, group);
+    LineManager::AddLine(p[5], p[7], color, group);
+    LineManager::AddLine(p[7], p[6], color, group);
+    LineManager::AddLine(p[6], p[4], color, group);
 
-        16, 17, 18, 17, 19, 18,  // +Y
-        21, 20, 22, 21, 22, 23,  // -Y
-    };
-
-    MeshBuffer::Description desc{};
-    desc.pVtx = vtx;
-    desc.vtxCount = static_cast<UINT>(std::size(vtx));
-    desc.vtxSize = sizeof(Vertex);
-    desc.isWrite = false;
-    desc.pIdx = idx;
-    desc.idxCount = static_cast<UINT>(std::size(idx));
-    desc.idxSize = sizeof(unsigned int);
-    desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-
-    auto mb = std::make_unique<MeshBuffer>();
-    mb->Create(desc);
-    s_meshBuffers[static_cast<int>(Type::Cube)] = std::move(mb);
-}
-
-void MeshFilter::BuildSphere()
-{
-    using namespace DirectX;
-
-    const int   slice = 16;    // 経度分割
-    const int   stack = 16;    // 緯度分割
-    const float radius = 0.5f;
-
-    std::vector<Vertex>        vertices;
-    std::vector<unsigned int>  indices;
-
-    // 頂点生成
-    for (int i = 0; i <= stack; ++i)
-    {
-        float phi = XM_PI * i / stack;
-        float y = std::cos(phi);
-        float r = std::sin(phi);
-
-        for (int j = 0; j <= slice; ++j)
-        {
-            float theta = XM_2PI * j / slice;
-            float x = r * std::cos(theta);
-            float z = r * std::sin(theta);
-
-            Vertex v{};
-            v.pos[0] = x * radius;
-            v.pos[1] = y * radius;
-            v.pos[2] = z * radius;
-            v.uv[0] = static_cast<float>(j) / slice;
-            v.uv[1] = static_cast<float>(i) / stack;
-            vertices.push_back(v);
-        }
-    }
-
-    // インデックス生成
-    for (int i = 0; i < stack; ++i)
-    {
-        for (int j = 0; j < slice; ++j)
-        {
-            int a = i * (slice + 1) + j;
-            int b = a + slice + 1;
-
-            indices.push_back(a);
-            indices.push_back(b);
-            indices.push_back(a + 1);
-
-            indices.push_back(a + 1);
-            indices.push_back(b);
-            indices.push_back(b + 1);
-        }
-    }
-
-    MeshBuffer::Description desc{};
-    desc.pVtx = vertices.data();
-    desc.vtxCount = static_cast<UINT>(vertices.size());
-    desc.vtxSize = sizeof(Vertex);
-    desc.isWrite = false;
-    desc.pIdx = indices.data();
-    desc.idxCount = static_cast<UINT>(indices.size());
-    desc.idxSize = sizeof(unsigned int);
-    desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-
-    auto mb = std::make_unique<MeshBuffer>();
-    mb->Create(desc);
-    s_meshBuffers[static_cast<int>(Type::Sphere)] = std::move(mb);
-}
-
-void MeshFilter::BuildPlane()
-{
-    // y=0 の XZ 平面（原点中心、1x1）
-    Vertex vtx[4] =
-    {
-        {{-0.5f, 0.0f, -0.5f}, {0.0f, 1.0f}}, // 左下
-        {{-0.5f, 0.0f,  0.5f}, {0.0f, 0.0f}}, // 左上
-        {{ 0.5f, 0.0f,  0.5f}, {1.0f, 0.0f}}, // 右上
-        {{ 0.5f, 0.0f, -0.5f}, {1.0f, 1.0f}}, // 右下
-    };
-
-    unsigned int idx[6] = { 0, 1, 2,  0, 2, 3 };
-
-    MeshBuffer::Description desc{};
-    desc.pVtx = vtx;
-    desc.vtxCount = 4;
-    desc.vtxSize = sizeof(Vertex);
-    desc.isWrite = false;
-    desc.pIdx = idx;
-    desc.idxCount = 6;
-    desc.idxSize = sizeof(unsigned int);
-    desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-
-    auto mb = std::make_unique<MeshBuffer>();
-    mb->Create(desc);
-    s_meshBuffers[static_cast<int>(Type::Plane)] = std::move(mb);
-}
-
-void MeshFilter::BuildCylinder()
-{
-    using namespace DirectX;
-
-    const int   slice = 24;    // 角度分割
-    const float radius = 0.5f;  // 半径
-    const float halfH = 0.5f;  // 高さ / 2
-
-    std::vector<Vertex>        vertices;
-    std::vector<unsigned int>  indices;
-
-    // ===== 側面 =====
-    // 下段(y=-halfH) と 上段(y=+halfH) の2列、それぞれ (slice+1) 頂点でクローズ
-    for (int yStep = 0; yStep <= 1; ++yStep)
-    {
-        const float y = (yStep == 0) ? -halfH : +halfH;
-        const float v = static_cast<float>(yStep); // 0 or 1
-
-        for (int i = 0; i <= slice; ++i)
-        {
-            const float t = static_cast<float>(i) / slice; // 0..1
-            const float theta = XM_2PI * t;
-            const float x = std::cos(theta) * radius;
-            const float z = std::sin(theta) * radius;
-
-            Vertex vert{};
-            vert.pos[0] = x;
-            vert.pos[1] = y;
-            vert.pos[2] = z;
-            vert.uv[0] = t;   // U=角度
-            vert.uv[1] = v;   // V=高さ
-            vertices.push_back(vert);
-        }
-    }
-    const unsigned int sideStride = static_cast<unsigned int>(slice + 1);
-
-    // 側面インデックス（外側から見て CW）
-    for (int i = 0; i < slice; ++i)
-    {
-        const unsigned int a = i;                 // 下段
-        const unsigned int b = i + sideStride;    // 上段
-
-        indices.push_back(a);
-        indices.push_back(b);
-        indices.push_back(a + 1);
-
-        indices.push_back(a + 1);
-        indices.push_back(b);
-        indices.push_back(b + 1);
-    }
-
-    // ===== 下キャップ (y = -halfH) =====
-    const unsigned int bottomCenter = static_cast<unsigned int>(vertices.size());
-    {
-        Vertex c{};
-        c.pos[0] = 0.0f; c.pos[1] = -halfH; c.pos[2] = 0.0f;
-        c.uv[0] = 0.5f; c.uv[1] = 0.5f;
-        vertices.push_back(c);
-
-        const unsigned int ringStart = static_cast<unsigned int>(vertices.size());
-        for (int i = 0; i <= slice; ++i)
-        {
-            const float t = static_cast<float>(i) / slice;
-            const float theta = XM_2PI * t;
-            const float x = std::cos(theta) * radius;
-            const float z = std::sin(theta) * radius;
-
-            Vertex v{};
-            v.pos[0] = x; v.pos[1] = -halfH; v.pos[2] = z;
-            // 中心(0.5,0.5) の平面マッピング
-            v.uv[0] = 0.5f + (x / (radius * 2.0f));
-            v.uv[1] = 0.5f - (z / (radius * 2.0f));
-            vertices.push_back(v);
-        }
-        for (int i = 0; i < slice; ++i)
-        {
-            indices.push_back(bottomCenter);
-            indices.push_back(ringStart + i);
-            indices.push_back(ringStart + i + 1); // 上から見て CCW
-        }
-    }
-
-    // ===== 上キャップ (y = +halfH) =====
-    const unsigned int topCenter = static_cast<unsigned int>(vertices.size());
-    {
-        Vertex c{};
-        c.pos[0] = 0.0f; c.pos[1] = +halfH; c.pos[2] = 0.0f;
-        c.uv[0] = 0.5f; c.uv[1] = 0.5f;
-        vertices.push_back(c);
-
-        const unsigned int ringStart = static_cast<unsigned int>(vertices.size());
-        for (int i = 0; i <= slice; ++i)
-        {
-            const float t = static_cast<float>(i) / slice;
-            const float theta = XM_2PI * t;
-            const float x = std::cos(theta) * radius;
-            const float z = std::sin(theta) * radius;
-
-            Vertex v{};
-            v.pos[0] = x; v.pos[1] = +halfH; v.pos[2] = z;
-            v.uv[0] = 0.5f + (x / (radius * 2.0f));
-            v.uv[1] = 0.5f - (z / (radius * 2.0f));
-            vertices.push_back(v);
-        }
-        for (int i = 0; i < slice; ++i)
-        {
-            indices.push_back(topCenter);
-            indices.push_back(ringStart + i + 1);
-            indices.push_back(ringStart + i);     // 上から見て CW
-        }
-    }
-
-    MeshBuffer::Description desc{};
-    desc.pVtx = vertices.data();
-    desc.vtxCount = static_cast<UINT>(vertices.size());
-    desc.vtxSize = sizeof(Vertex);
-    desc.isWrite = false;
-    desc.pIdx = indices.data();
-    desc.idxCount = static_cast<UINT>(indices.size());
-    desc.idxSize = sizeof(unsigned int);
-    desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-
-    auto mb = std::make_unique<MeshBuffer>();
-    mb->Create(desc);
-    s_meshBuffers[static_cast<int>(Type::Cylinder)] = std::move(mb);
+    // 側面 4 本
+    LineManager::AddLine(p[0], p[4], color, group);
+    LineManager::AddLine(p[1], p[5], color, group);
+    LineManager::AddLine(p[2], p[6], color, group);
+    LineManager::AddLine(p[3], p[7], color, group);
 }

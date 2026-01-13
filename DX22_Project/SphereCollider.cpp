@@ -6,7 +6,7 @@
 #include <cmath>
 using namespace DirectX;
 
-static inline float AbsMax3(float x, float y, float z) 
+static inline float AbsMax3(float x, float y, float z)
 {
     return std::max(std::max(std::fabs(x), std::fabs(y)), std::fabs(z));
 }

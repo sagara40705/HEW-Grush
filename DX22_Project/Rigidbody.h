@@ -1,21 +1,22 @@
-// Rigidbody.h（イメージ：既存に最小追加）
+#pragma once
 #pragma once
 #include "Component.h"
 #include "Vector3.h"
 
-class Rigidbody : public MonoBehaviour
+class Rigidbody : public Component, public IFixedUpdate
 {
+private:
+    Transform* tf = nullptr;
 public:
     Vector3 velocity = Vector3::zero();
     bool useGravity = true;
     const float gravity = -9.8f;;
-    float mass = 1.0f; // 今は未使用（将来用）
-    //bool  isKinematic = false;
-    //const float gravity = -9.8f;
-
-    //float mass = 1.0f;         // 有効質量（0か負は非許可）
-    //float bounciness = 0.0f;   // 反発係数 e ∈ [0,1]（0=非弾性, 1=完全弾性）
+    float   mass = 1.0f;          // 質量
+    float   drag = 0.0f;          // 空気抵抗
+    float   friction = 0.5f;      // 摩擦
+    float   e = 0.f;              // 反発係数
 
     void Start() override;
-    void Update() override; // ここで「重力→積分」のみ
+    void FixedUpdate() override;  // ここが「Integrate フェーズ」
+    void AddForce(const Vector3& impulse);
 };

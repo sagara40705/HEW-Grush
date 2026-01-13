@@ -1,46 +1,42 @@
-#ifndef __SPRITE_H__
+﻿#ifndef __SPRITE_H__
 #define __SPRITE_H__
 
-#include <DirectXMath.h>
 #include <memory>
+#include "Vector2.h"
 #include "MeshBuffer.h"
-#include "Shader.h"
 #include "Texture.h"
+#include "Shader.h"
+
+// ・Sprite は「UI / 2D 用」の低レベル描画ヘルパ（コンポーネントではない）
 
 class Sprite
 {
 public:
-	static void Init();
-	static void Uninit();
-	static void Draw();
+    // 一度だけ呼ぶ（Game 起動時）
+    static void Init();
+    static void Uninit();
 
-	static void SetOffset(DirectX::XMFLOAT2 offset);
-	static void SetSize(DirectX::XMFLOAT2 size);
-	static void SetUVPos(DirectX::XMFLOAT2 pos);
-	static void SetUVScale(DirectX::XMFLOAT2 scale);
-	static void SetColor(DirectX::XMFLOAT4 color);
-	static void SetTexture(Texture* tex);
+    // 実際の描画
+    static void Draw();
 
-	static void SetWorld(DirectX::XMFLOAT4X4 world);
-	static void SetView(DirectX::XMFLOAT4X4 view);
-	static void SetProjection(DirectX::XMFLOAT4X4 proj);
+    struct ParamCB
+    {
+        DirectX::XMFLOAT4 offset_size;    // xy=offset(px), zw=size(px)
+        DirectX::XMFLOAT4 uvPos_uvScale;  // xy=uvPos,     zw=uvScale
+        DirectX::XMFLOAT4 color;          // RGBA
+    };
 
-	static void SetVertexShader(Shader* vs);
-	static void SetPixelShader(Shader* ps);
+    static VertexShader* Get3dVS() { return s_3dVS.get(); }
+    static PixelShader* Get3dPS() { return s_3dPS.get(); }
 
 private:
-	struct Data
-	{
-		std::shared_ptr<MeshBuffer> mesh;
-		DirectX::XMFLOAT4X4 matrix[3];
-		DirectX::XMFLOAT4 param[3];
-		Texture* texture;
-		Shader* vs;
-		Shader* ps;
-	};
-	static Data m_data;
-	static std::shared_ptr<VertexShader> m_defVS;
-	static std::shared_ptr<PixelShader> m_defPS;
+    // 共有メッシュ＆デフォルトシェーダ
+    static std::unique_ptr<MeshBuffer> s_quad;
+    static std::unique_ptr<VertexShader> s_3dVS;
+    static std::unique_ptr<PixelShader> s_3dPS;
+
+    static void Create3dVS();
+    static void Create3dPS();
 };
 
 #endif // __SPRITE_H__

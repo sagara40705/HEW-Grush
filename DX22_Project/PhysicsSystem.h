@@ -1,25 +1,15 @@
 // PhysicsSystem.h
 #pragma once
+#include "Raycast.h"
+#include "Layer.h"
 class World;
 
-namespace PhysicsSystem 
+namespace PhysicsSystem
 {
     // 物理1ステップ
     void Step(const World& W, float dt);
 }
-
-
-
-//// PhysicsSystem.h
-//#pragma once
-//#include <set>
-//class World;
-//
-//namespace PhysicsSystem
-//{
-//
-//    // dt 1/60 
-//    void Step(World& W, float dt);
-//
-//    inline constexpr int kSolveIterations = 1;
-//}
+namespace Physics
+{
+    bool Raycast(const World& world, const Ray& ray, RaycastHit* outHit, float maxDistance = Ray::kMaxDist, LayerMask layer = MaskAll, bool queryTrigger = true);
+}

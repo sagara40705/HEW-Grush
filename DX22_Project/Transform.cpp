@@ -1,96 +1,117 @@
 #include "Transform.h"
+#include "GameObject.h"
 using namespace DirectX;
 
-static inline XMVECTOR LoadF3(const XMFLOAT3& v) { return XMLoadFloat3(&v); }
-static inline XMVECTOR LoadF4(const XMFLOAT4& v) { return XMLoadFloat4(&v); }
+Transform::Transform(Vector3 p, Vector3 r, Vector3 s)
+    : pos(p), rotate(r), scale(s)
+{
+    XMStoreFloat4x4(&worldMatrix, XMMatrixIdentity());
+    dirty = true;
+}
 
+//-----------------------------
+// SetParent
+//-----------------------------
+// ※実際の親子は GameObject 側で持つ。
+//   ここでは keepWorld = true のときにローカルTRSを再計算して
+//   「見た目のワールド姿勢を維持」するためだけに使う。
 void Transform::SetParent(Transform* newParent, bool keepWorld)
 {
-    if (newParent == parent) return;
+    if (!keepWorld || !newParent)
+    {
+        // 親子変更だけ行う場合は、GameObject 側の処理の後で
+        // MarkDirtyRecursive しておけば十分
+        MarkDirtyRecursive();
+        return;
+    }
 
-    // 既存親から外す
-    if (parent) parent->DetachChild(this);
-
-    // 現在のワールドを保持
+    // 現在のワールド行列を保持
     XMMATRIX curWorld = XMLoadFloat4x4(&GetMatrix());
 
-    parent = newParent;
-    if (parent) parent->AttachChild(this);
+    // 新しい親のワールド行列
+    XMMATRIX P = XMLoadFloat4x4(&newParent->GetMatrix());
+    XMVECTOR det{};
+    XMMATRIX Pinv = XMMatrixInverse(&det, P);
 
-    if (keepWorld)
+    // L = World * inverse(ParentWorld)
+    XMMATRIX L = XMMatrixMultiply(curWorld, Pinv);
+
+    // 分解（S,Q,T）
+    XMVECTOR S, RQ, T;
+    if (XMMatrixDecompose(&S, &RQ, &T, L))
     {
-        // 目標：Local = World * inverse(ParentWorld)
-        XMMATRIX P = parent ? XMLoadFloat4x4(&parent->GetMatrix()) : XMMatrixIdentity();
-        XMVECTOR det{};
-        XMMATRIX Pinv = XMMatrixInverse(&det, P);
-        XMMATRIX L = XMMatrixMultiply(curWorld, Pinv);
+        XMFLOAT3 pf{}, sf{};
+        XMFLOAT4 rqf{};
+        XMStoreFloat3(&pf, T);
+        XMStoreFloat3(&sf, S);
+        XMStoreFloat4(&rqf, RQ);
 
-        // 分解（S,Q,T）
-        XMVECTOR S, RQ, T;
-        if (XMMatrixDecompose(&S, &RQ, &T, L))
+        // クォータニオン → オイラー（X→Y→Z）簡易変換
+        XMMATRIX Rm = XMMatrixRotationQuaternion(RQ);
+
+        float pitch, yaw, roll;
         {
-            XMFLOAT3 pf{}, sf{}; XMFLOAT4 rqf{};
-            XMStoreFloat3(&pf, T);
-            XMStoreFloat3(&sf, S);
-            XMStoreFloat4(&rqf, RQ);
+            // Row-major 前提
+            float r21 = Rm.r[2].m128_f32[1];
 
-            // クォータニオン→オイラー（X→Y→Z）
-            // 直接度数に戻す
-            // NOTE: XMQuaternionRotationRollPitchYaw 逆変換関数は無いので行列→オイラーで近似
-            XMMATRIX Rm = XMMatrixRotationQuaternion(RQ);
-            // YawPitchRoll抽出（簡易）
-            float pitch, yaw, roll;
-            {
-                // Row-major 前提
-                float r20 = Rm.r[2].m128_f32[0];
-                float r21 = Rm.r[2].m128_f32[1];
-                float r22 = Rm.r[2].m128_f32[2];
-
-                yaw = std::atan2(Rm.r[0].m128_f32[2], Rm.r[2].m128_f32[2]); // 近似
-                pitch = std::asin(-r21);
-                roll = std::atan2(Rm.r[1].m128_f32[0], Rm.r[1].m128_f32[1]);
-            }
-
-            pos = XMFLOAT3(pf.x, pf.y, pf.z);
-            scale = XMFLOAT3(sf.x, sf.y, sf.z);
-            rotate = XMFLOAT3(XMConvertToDegrees(pitch), XMConvertToDegrees(yaw), XMConvertToDegrees(roll));
+            pitch = std::asin(-r21);
+            yaw = std::atan2(Rm.r[0].m128_f32[2], Rm.r[2].m128_f32[2]);
+            roll = std::atan2(Rm.r[1].m128_f32[0], Rm.r[1].m128_f32[1]);
         }
-        // 失敗時はそのまま（TODO: 必要なら安全値）
+
+        pos = Vector3(pf.x, pf.y, pf.z);
+        scale = Vector3(sf.x, sf.y, sf.z);
+        rotate = Vector3(
+            XMConvertToDegrees(pitch),
+            XMConvertToDegrees(yaw),
+            XMConvertToDegrees(roll));
     }
 
     MarkDirtyRecursive();
 }
 
+//-----------------------------
+// 方向ベクトル（world）
+//-----------------------------
 DirectX::XMFLOAT3 Transform::Forward()
 {
     RebuildIfDirty();
     XMFLOAT3 f{ worldMatrix._31, worldMatrix._32, worldMatrix._33 };
-    // 正規化
-    XMVECTOR v = XMVector3Normalize(LoadF3(f)); XMStoreFloat3(&f, v); return f;
+    XMVECTOR v = XMVector3Normalize(XMLoadFloat3(&f));
+    XMStoreFloat3(&f, v);
+    return f;
 }
 
 DirectX::XMFLOAT3 Transform::Up()
 {
     RebuildIfDirty();
     XMFLOAT3 u{ worldMatrix._21, worldMatrix._22, worldMatrix._23 };
-    XMVECTOR v = XMVector3Normalize(LoadF3(u)); XMStoreFloat3(&u, v); return u;
+    XMVECTOR v = XMVector3Normalize(XMLoadFloat3(&u));
+    XMStoreFloat3(&u, v);
+    return u;
 }
 
 DirectX::XMFLOAT3 Transform::Right()
 {
     RebuildIfDirty();
     XMFLOAT3 r{ worldMatrix._11, worldMatrix._12, worldMatrix._13 };
-    XMVECTOR v = XMVector3Normalize(LoadF3(r)); XMStoreFloat3(&r, v); return r;
+    XMVECTOR v = XMVector3Normalize(XMLoadFloat3(&r));
+    XMStoreFloat3(&r, v);
+    return r;
 }
 
-// 度→クォータニオン化（X→Y→Z 順：pitch, yaw, roll）
-XMVECTOR Transform::GetRotationQuaternionXM() const 
+//-----------------------------
+// 回転クォータニオン
+//-----------------------------
+XMVECTOR Transform::GetRotationQuaternionXM() const
 {
     const float pitch = XMConvertToRadians(rotate.x);
     const float yaw = XMConvertToRadians(rotate.y);
     const float roll = XMConvertToRadians(rotate.z);
+    // X→Y→Z (pitch, yaw, roll)
     return XMQuaternionRotationRollPitchYaw(pitch, yaw, roll);
 }
+
 XMFLOAT4 Transform::GetRotationQuaternion() const
 {
     XMFLOAT4 out{};
@@ -98,62 +119,69 @@ XMFLOAT4 Transform::GetRotationQuaternion() const
     return out;
 }
 
-const XMFLOAT4X4& Transform::GetMatrix() 
+//-----------------------------
+// 行列／ワールド座標
+//-----------------------------
+const XMFLOAT4X4& Transform::GetMatrix()
 {
     RebuildIfDirty();
     return worldMatrix;
 }
 
-XMFLOAT3 Transform::GetWorldPosition() 
+XMFLOAT3 Transform::GetWorldPosition()
 {
-    return pos; // 親子なし＝ローカル＝ワールド
+    RebuildIfDirty();
+    return XMFLOAT3(worldMatrix._41, worldMatrix._42, worldMatrix._43);
 }
 
+//-----------------------------
+// 行列再計算
+//-----------------------------
 void Transform::RebuildIfDirty()
 {
     if (!dirty) return;
     dirty = false;
 
-    const XMVECTOR S = LoadF3(scale);
-    const XMVECTOR Q = GetRotationQuaternionXM();
-    const XMVECTOR T = LoadF3(pos) + XMVectorSet(0, 0, 0, 1);
+    
+    XMVECTOR S = XMVectorSet(scale.x, scale.y, scale.z, 0.0f);
+    XMVECTOR Q = GetRotationQuaternionXM();
+    XMVECTOR T = XMVectorSet(pos.x, pos.y, pos.z, 1.0f);
 
-    XMMATRIX L = XMMatrixAffineTransformation(S, XMVectorZero(), Q, LoadF3(pos));
+    XMMATRIX local = XMMatrixAffineTransformation(S, XMVectorZero(), Q, T);
+ 
+    // 親がいれば親のワールド行列を掛ける（親情報は GameObject 経由）
+    XMMATRIX world = local;
 
-    // Parent を掛ける（row-major 想定：Local * ParentWorld）
-    if (parent)
+    if (gameObject)
     {
-        const XMMATRIX P = XMLoadFloat4x4(&parent->GetMatrix());
-        L = XMMatrixMultiply(L, P);
+        GameObject* parentGO = gameObject->GetParent();
+        if (parentGO && parentGO->transform)
+        {
+            const XMFLOAT4X4& pm = parentGO->transform->GetMatrix();
+            XMMATRIX P = XMLoadFloat4x4(&pm);
+            world = XMMatrixMultiply(local, P);
+        }
     }
 
-    //const XMMATRIX M = XMMatrixAffineTransformation(S, XMVectorZero(), Q, T);
-    XMStoreFloat4x4(&worldMatrix, L);
+    XMStoreFloat4x4(&worldMatrix, world);
 }
 
+//-----------------------------
+// Dirty 伝播
+//-----------------------------
 void Transform::MarkDirtyRecursive()
 {
-    // 自分は dirty に
     dirty = true;
-    // 子に伝播
-    for (Transform* c : children)
+
+    if (!gameObject) return;
+
+    const auto& children = gameObject->GetChildren();
+    for (auto* c : children)
     {
         if (!c) continue;
-        c->MarkDirtyRecursive();
-    }
-}
-
-void Transform::AttachChild(Transform* c)
-{
-    if (!c) return;
-    children.push_back(c);
-}
-
-void Transform::DetachChild(Transform* c)
-{
-    if (!c) return;
-    for (size_t i = 0; i < children.size(); ++i)
-    {
-        if (children[i] == c) { children.erase(children.begin() + i); break; }
+        if (c->transform)
+        {
+            c->transform->MarkDirtyRecursive();
+        }
     }
 }

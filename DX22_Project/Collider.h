@@ -7,9 +7,9 @@
 
 class Transform;
 
-enum class ColliderType : uint8_t { Box , Sphere, Capsule };
+enum class ColliderType : uint8_t { Box, Sphere, Capsule };
 
-struct Contact 
+struct Contact
 {
     DirectX::XMFLOAT3 normal{ 0,1,0 }; // A←B
     float penetration = 0.0f;
@@ -30,7 +30,7 @@ public:
     virtual AABB GetWorldAABB() = 0;
 
     // レイヤーマスクで当たり対象か？
-    bool IsCollidableWith(const Collider& other) const noexcept 
+    bool IsCollidableWith(const Collider& other) const noexcept
     {
         const LayerMask meBit = ToBit(layer);
         const LayerMask otherBit = ToBit(other.layer);

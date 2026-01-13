@@ -1,41 +1,60 @@
-#pragma once
+ï»¿#pragma once
 #include <memory>
 #include <array>
+#include <cstdint>
 #include "Model.h"
-#include "Vector3.h"
 
-enum class ModelTag: int
+enum class ModelTag : uint8_t
 {
 	Karubi,
+
 	Swing,
+	Akican,
+	Desktop,
+	Gomibukuro,
+	Isu,
+	Kuukseizixyoukii,
+	Ningixyou,
+
 	Benti,
+	Aircon,
+	Jihanki,
+	Reizouko,
+
 	Ufo,
+	Eiseii,
+
 	ProtPlay,
+	Player,
+	Hammer,
 	Count
 };
+constexpr size_t ToIndex(ModelTag tag) noexcept
+{
+	return static_cast<size_t>(tag);
+}
 
 struct ModelLoadData
 {
 	const char* pass = "";
 	float size = 0.0f;
 	Model::Flip flip = Model::Flip::None;
-	Vector3 colliderPos = Vector3::zero();
-	Vector3 colliderSize = Vector3::one();
 };
 
-class ModelManager
+class ModelManager final
 {
 private:
-	static std::array<std::unique_ptr<Model>, static_cast<int>(ModelTag::Count)> s_models;
-	static const ModelLoadData kModelData[static_cast<int>(ModelTag::Count)];
+	static std::array<std::unique_ptr<Model>, static_cast<size_t>(ModelTag::Count)> s_models;
+	static std::array<float, static_cast<size_t>(ModelTag::Count)> modelBounds;
+	static const ModelLoadData kModelData[static_cast<size_t>(ModelTag::Count)];
 public:
-	/// ¬Œ÷ true, ¸”s false
-	static bool Register(ModelTag tag, const ModelLoadData& data);
-	static bool RegisterAuto(ModelTag tag);   // ƒtƒ@ƒCƒ‹ƒpƒX‚ğ©“®QÆ
+	static bool Load(ModelTag tag);
+	static void Unload(ModelTag tag);
 
-	/// æ“¾Ftag ‚É‘Î‰‚·‚é Texture ‚Ìƒ|ƒCƒ“ƒ^‚ğ•Ô‚·i‚È‚¯‚ê‚Î nullptrj
 	static Model* Get(ModelTag tag);
+	static float GetBounds(ModelTag tag);
 
-	/// ‘SíœF“o˜^‚³‚ê‚Ä‚¢‚é‚·‚×‚Ä‚Ì Texture ‚ğ‰ğ•ú
+	static Model::AnimeNo AddAnimation(ModelTag tag, const char* file);
+
 	static void Clear();
 };

@@ -6,8 +6,6 @@
 #include "Rigidbody.h"
 #include "Collider.h"
 #include "Collision.h"
-#include "CollisionListener.h"
-#include "DebugLog.h"
 
 #include <vector>
 #include <set>
@@ -17,6 +15,7 @@
 #include <algorithm>
 
 using std::vector;
+bool RaycastAABB(const Ray& ray, const Collider::AABB& box, float maxDistance, float& outT, Vector3& outNormal);
 
 //========================= 基本構造体・ユーティリティ =========================
 
@@ -127,10 +126,10 @@ static void CollectBodies(const World& W, vector<Body>& dynamics, vector<Body>& 
         }
         if (cols.empty()) continue;
 
-        auto* tf = go.TryGetComponent<Transform>();
+        auto* tf = go.GetComponent<Transform>();
         if (!tf) continue;
 
-        auto* rb = go.TryGetComponent<Rigidbody>(); // nullなら静的
+        auto* rb = go.GetComponent<Rigidbody>(); // nullなら静的
 
         for (auto* c : cols) {
             if (!c->IsEnabled()) continue;
@@ -270,235 +269,3 @@ void PhysicsSystem::Step(const World& W, float /*dt*/)
     DispatchEvents(W, pairs);
 }
 
-
-
-/*
-#include "PhysicsSystem.h"
-#include "World.h"
-#include "GameObject.h"
-#include "Transform.h"
-#include "Rigidbody.h"
-#include "Collider.h"
-#include "Collision.h"
-#include "CollisionListener.h"
-
-#include <vector>
-#include <set>
-#include <map>
-#include <utility>
-#include <typeindex>
-
-using std::vector;
-
-namespace 
-{
-    struct Body 
-    {
-        GameObject* go;
-        Transform* tf;
-        Rigidbody* rb;  // null なら静的
-        Collider* col;
-        bool isDynamic() const { return rb != nullptr && !col->isStatic; }
-    };
-
-    struct PairKey
-    {
-        ObjectId a, b; // a<b に正規化
-        bool operator<(const PairKey& o) const noexcept {
-            return (a < o.a) || (a == o.a && b < o.b);
-        }
-    };
-
-    // 前フレーム衝突ペア
-    static std::set<PairKey> s_lastPairs;
-    static std::set<PairKey> s_lastCollisionPairs;
-    static std::set<PairKey> s_lastTriggerPairs;
-    struct PairData 
-    {
-        Contact contact;   // 接触情報（法線/貫通量）
-        bool    isTrigger; // ← どちらかがトリガー
-    };
-    std::map<PairKey, PairData> pairMap;
-}
-
-// 衝突コールバック（片側ずつ）
-static void DispatchEnter(GameObject& self, GameObject& other, const Contact& c) 
-{
-    CollisionInfo info{ &other, c.normal, c.penetration };
-    for (auto& kv : self.components) 
-    {
-        if (auto* lis = dynamic_cast<CollisionListener*>(kv.second.get())) 
-        {
-            lis->OnCollisionEnter(info);
-        }
-    }
-}
-static void DispatchStay(GameObject& self, GameObject& other, const Contact& c) 
-{
-    CollisionInfo info{ &other, c.normal, c.penetration };
-    for (auto& kv : self.components) 
-    {
-        if (auto* lis = dynamic_cast<CollisionListener*>(kv.second.get()))
-        {
-            lis->OnCollisionStay(info);
-        }
-    }
-}
-static void DispatchExit(GameObject& self, GameObject& other)
-{
-    for (auto& kv : self.components) 
-    {
-        if (auto* lis = dynamic_cast<CollisionListener*>(kv.second.get()))
-        {
-            lis->OnCollisionExit(other);
-        }
-    }
-}
-
-void PhysicsSystem::Step(const World& W, float dt)
-{
-    vector<Body> dynamics;
-    vector<Body> statics;
-
-    // ワールドの全コライダー収集＆動静仕分け
-    for (auto& up : W.objects) 
-    {
-        if (!up) continue;
-        auto& o = *up;
-        if (!o.active) continue;
-
-        vector<Collider*> cols;
-        cols.reserve(o.components.size());
-        for (auto& kv : o.components) 
-        {
-            if (auto* c = dynamic_cast<Collider*>(kv.second.get())) cols.push_back(c);
-        }
-        if (cols.empty()) continue;
-
-        auto* tf = o.TryGetComponent<Transform>();
-        if (!tf) continue;
-
-        auto* rb = o.TryGetComponent<Rigidbody>();
-
-        for (auto* c : cols) 
-        {
-            Body b{ &o, tf, rb, c };
-            (b.isDynamic() ? dynamics : statics).push_back(b);
-        }
-    }
-
-    // 今フレーム衝突ペアと接触情報（オブジェクト単位で一回だけ通知するため集約）
-    std::set<PairKey> curPairs;
-    std::map<PairKey, Contact> pairContact; // 最初に見つけた接触でOK（単純化）
-
-    auto addPair = [&](GameObject& A, GameObject& B, const Contact& c) 
-    {
-        PairKey k{ std::min(A.id,B.id), std::max(A.id,B.id) };
-        curPairs.insert(k);
-        if (pairContact.find(k) == pairContact.end()) pairContact.emplace(k, c);
-    };
-
-    
-     //：動的 × 静的
-    for (auto& d : dynamics)
-    {
-        for (auto& s : statics)
-        {
-            //
-            Contact contact{};
-            if (!Collision::Test(*d.col, *s.col, &contact)) continue;
-
-            // 位置補正
-            d.tf->AddPosition(DirectX::XMFLOAT3{
-                contact.normal.x * contact.penetration,
-                contact.normal.y * contact.penetration,
-                contact.normal.z * contact.penetration
-                });
-
-            // 速度の法線成分を除去
-            auto& v = d.rb->velocity; // XMFLOAT3 前提
-            const float dot =
-                v.x * contact.normal.x +
-                v.y * contact.normal.y +
-                v.z * contact.normal.z;
-
-            if (dot < 0.0f)
-            {
-                v.x -= dot * contact.normal.x;
-                v.y -= dot * contact.normal.y;
-                v.z -= dot * contact.normal.z;
-            }
-
-            addPair(*d.go, *s.go, contact);
-        }
-
-   
-    }
-
-    // 2) 動的×動的
-    for (size_t i = 0; i < dynamics.size(); ++i)
-    {
-        for (size_t j = i + 1; j < dynamics.size(); ++j)
-        {
-            auto& A = dynamics[i];
-            auto& B = dynamics[j];
-
-            Contact c{};
-            if (!Collision::Test(*A.col, *B.col, &c)) continue;
-
-            // 双方に半分ずつ押し出し
-            const float half = c.penetration * 0.5f;
-            A.tf->AddPosition(DirectX::XMFLOAT3{ c.normal.x * half, c.normal.y * half, c.normal.z * half });
-            B.tf->AddPosition(DirectX::XMFLOAT3{ -c.normal.x * half, -c.normal.y * half, -c.normal.z * half });
-
-            if (A.rb) A.rb->velocity = DirectX::XMFLOAT3{ 0,0,0 };
-            if (B.rb) B.rb->velocity = DirectX::XMFLOAT3{ 0,0,0 };
-
-            addPair(*A.go, *B.go, c);
-        }
-    }
-
-    // 3) コールバック（Enter/Stay/Exit）
-    // Enter or Stay
-    for (auto& k : curPairs) 
-    {
-        const bool was = (s_lastPairs.find(k) != s_lastPairs.end());
-        const Contact& c = pairContact[k];
-
-        // k は正規化(a<b)なので、実際の法線向きを両者に合わせて渡す
-        GameObject* A = nullptr; GameObject* B = nullptr;
-        for (auto& up : W.objects) 
-        {
-            if (!up) continue;
-            auto& o = *up;
-            if (o.id == k.a) A = &o;
-            if (o.id == k.b) B = &o;
-        }
-        if (!A || !B) continue;
-
-        // A側（A←B 法線 = c.normal）
-        if (was) { DispatchStay(*A, *B, c); }
-        else { DispatchEnter(*A, *B, c); }
-        // B側（B←A 法線 = -c.normal）
-        Contact cBA = c; cBA.normal.x *= -1; cBA.normal.y *= -1; cBA.normal.z *= -1;
-        if (was) { DispatchStay(*B, *A, cBA); }
-        else { DispatchEnter(*B, *A, cBA); }
-    }
-    // Exit
-    for (auto& k : s_lastPairs) 
-    {
-        if (curPairs.find(k) != curPairs.end()) continue;
-        GameObject* A = nullptr; GameObject* B = nullptr;
-        for (auto& up : W.objects) 
-        {
-            if (!up) continue;
-            auto& o = *up;
-            if (o.id == k.a) A = &o;
-            if (o.id == k.b) B = &o;
-        }
-        if (A && B) { DispatchExit(*A, *B); DispatchExit(*B, *A); }
-    }
-
-    s_lastPairs = std::move(curPairs);
-}
-*/

@@ -3,13 +3,12 @@
 #include "Transform.h"
 #include "GameObject.h"
 
-const Transform* Collider::GetTransform() const 
+const Transform* Collider::GetTransform() const
 {
-    return Parent ? Parent->TryGetComponent<Transform>() : nullptr;
+    return gameObject ? gameObject->GetComponent<Transform>() : nullptr;
 }
 
-Transform* Collider::GetTransform() 
+Transform* Collider::GetTransform()
 {
-    return Parent ? Parent->TryGetComponent<Transform>() : nullptr;
+    return gameObject ? gameObject->GetComponent<Transform>() : nullptr;
 }
-

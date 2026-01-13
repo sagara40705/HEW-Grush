@@ -2,82 +2,179 @@
 #include <unordered_map>
 #include <typeindex>
 #include <memory>
+#include <vector>
+#include <cstdint>
+#include <cassert>
+#include <type_traits>
+#include <utility>
+
+#include "World.h"
 #include "Component.h"
+#include "Transform.h"
+#include "Collider.h"
 
-using ObjectId = std::uint32_t;
-class World;
+//====================== Tag / ID ======================
 
-enum class Tag : uint8_t
+enum class Tag : std::uint8_t
 {
     None,
+    GameManager,
+    GaugeManager,
+    ScoreManager,
+    TimerUI,
+    CamreraPivot,
+    MainCamera,
     Player,
-    Weapon,
+    Hammer,
+    Enemy,
     Glass,
-    Ground,
+    ActionUI
+    // 必要に応じて追加
 };
 
+// 前方宣言（必要なら）
+class Transform;
+
+//=========================================================
+// GameObject
+//=========================================================
 class GameObject
 {
 public:
-	ObjectId id = 0;
-	bool active = true;
-    std::unordered_map<std::type_index, std::unique_ptr<Component>> components{};
+    ObjectId   id = 0;
     World* world = nullptr;
-    Tag tag = Tag::None;
+    Transform* transform = nullptr; // 必ず存在させる
+    bool       active = true;      // activeSelf 相当
+    bool  pendingStart = true; // Start 未実行
+    bool  isDestroyScheduled = false;
+   
+    std::unordered_map<std::type_index, std::unique_ptr<Component>> components{};
+private:
+    Tag  tag = Tag::None;
+    float destroyTimer = 0.0f;
 
-    ~GameObject()
-    {
-        for (auto& kv : components)
-        {
-            kv.second->OnDestroy();
-        }
-    }
+    std::vector<GameObject*> children{};
+    GameObject* parent = nullptr;
 
-    // 追加
+public:
+    GameObject() {}
+    ~GameObject();
+
+    //====================== コンポーネント追加 ======================
     template<class T, class... Args>
-    T& AddComponent(Args&&... args)
-    {
-        static_assert(std::is_base_of_v<Component, T>, "T must derive from Component");
-        const std::type_index key = typeid(T);
+    T& AddComponent(Args&&... args);
 
-        auto it = components.find(key);
-        assert(it == components.end() && "Component already exists on this GameObject");
-
-        auto ptr = std::make_unique<T>(std::forward<Args>(args)...);
-        ptr->Parent = this;
-
-        T* raw = ptr.get();
-        components.emplace(key, std::move(ptr));
-
-        return *raw;
-    }
-
-    // 取得
+    //====================== コンポーネント取得 ======================
     template<class T>
-    T& GetComponent() 
-    {
-        static_assert(std::is_base_of_v<Component, T>);
-        auto it = components.find(std::type_index(typeid(T)));
-        assert(it != components.end());
-        return *static_cast<T*>(it->second.get());
-    }
+    T* GetComponent() noexcept;
 
-    template<class T>
-    T* TryGetComponent() noexcept
-    {
-        static_assert(std::is_base_of_v<Component, T>);
-        auto it = components.find(std::type_index(typeid(T)));
-        return (it == components.end()) ? nullptr : static_cast<T*>(it->second.get());
-    }
+    //====================== active ======================
+
+    void SetActive(bool v);
+    bool IsActiveSelf() const { return active; }
+    bool IsActiveInHierarchy() const;
+
+    //====================== 子オブジェクト ======================
+
+    GameObject& CreateChild(const Vector3& pos = Vector3::zero(), const Vector3& rot = Vector3::zero(), const Vector3& scale = Vector3::one());
+
+    GameObject* GetParent() const { return parent; }
+    const std::vector<GameObject*>& GetChildren() const { return children; }
+
+    // 親子リンク操作（親子関係を消す用）
+    void DetachParent();         // 自分を親から外す
+    void DetachChildren();       // 全ての子を外す（子の parent を nullptr に）
+    void DetachAllRelations();   // 親・子の両方を全部切る
+    void DestroyChildren();
+
+    //====================== Start / Destroy（World から呼ばれる） ======================
+
+    void CallStart();   // World::Update 内から呼ぶ
+    void CallDestroy(); // World::DestroyObject 内などから呼ぶ
+
+    //====================== 破棄予約 ======================
 
     void Destroy(float time = 0.f);
+    void DestroyTimerUpdate(float dt);
+
+    //====================== Tag ユーティリティ ======================
 
     void SetTag(Tag t) { tag = t; }
-    bool CompareTag(Tag t) { return (tag == t); }
-
-    GameObject() = default;
-    GameObject(const GameObject&) = delete;
-    GameObject& operator=(const GameObject&) = delete;
-    GameObject(GameObject&&) noexcept = default;
-    GameObject& operator=(GameObject&&) noexcept = default;
+    bool CompareTag(Tag t) const { return tag == t; }
+    GameObject* FindWithTag(Tag tag) { return world->FindWithTag(tag); }
+    GameObject* FindChildWithTag(Tag tag);
 };
+
+//=========================================================
+// ここからテンプレート関数の実装
+//=========================================================
+
+
+//---- AddComponent ----
+
+template<class T, class... Args>
+T& GameObject::AddComponent(Args&&... args)
+{
+    static_assert(std::is_base_of_v<Component, T>, "T must derive from Component");
+
+    const std::type_index key = typeid(T);
+    auto it = components.find(key);
+    assert(it == components.end() && "Component already exists on this GameObject");
+
+    auto ptr = std::make_unique<T>(std::forward<Args>(args)...);
+    T* raw = ptr.get();
+    raw->gameObject = this;
+
+    components.emplace(key, std::move(ptr));
+
+    //--------- ライフサイクル ----------
+    raw->RootAwake();
+    pendingStart = true; // World 側で次フレーム CallStart() するためのフラグ
+
+    //--------- 登録リスト方式 ----------
+    if (auto* mb = dynamic_cast<MonoBehaviour*>(raw))
+    {
+        world->Register(mb);
+    }
+    if (auto* fu = dynamic_cast<IFixedUpdate*>(raw))
+    {
+        world->Register(fu);
+    }
+    if (auto* lu = dynamic_cast<ILateUpdate*>(raw))
+    {
+        world->Register(lu);
+    }
+    if (auto* r = dynamic_cast<Renderer*>(raw))
+    {
+        world->Register(r);
+    }
+    if (auto* c = dynamic_cast<Collider*>(raw))
+    {
+        world->Register(c);
+    }
+
+    return *raw;
+}
+
+//---- GetComponent / TryGetComponent ----
+template<class T>
+T* GameObject::GetComponent() noexcept
+{
+    static_assert(std::is_base_of_v<Component, T>, "T must derive from Component");
+
+    const std::type_index key = typeid(T);
+    auto it = components.find(key);
+    if (it == components.end()) return nullptr;
+    return static_cast<T*>(it->second.get());
+}
+
+//=========================================================
+// Component 側テンプレートの実装
+// ここなら GameObject が完全型なので OK
+//=========================================================
+
+template<class T>
+T* Component::GetComponent() noexcept
+{
+    return gameObject->GetComponent<T>();
+}

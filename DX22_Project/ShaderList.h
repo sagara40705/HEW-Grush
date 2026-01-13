@@ -11,16 +11,24 @@ class ShaderList
 public:
 	enum VSKind
 	{
+		VS_PRIM,
 		VS_WORLD, // SetWVP
 		VS_ANIME, // SetWVP,SetBones
+		VS_SPRITE,
+		VS_SHARD,
 		VS_KIND_MAX
 	};
 	enum PSKind
 	{
+		PS_PRIM,
 		PS_LAMBERT, //SetMaterial, SetLight
 		PS_SPECULAR, //SetMaterial, SetLight, SetCameraPos
 		PS_TOON, // SetMaterial, SetLight
 		PS_FOG, // SetMaterial, SetLight,SetFog
+		PS_SPRITE,
+		PS_GLASS,
+		PS_GLASS_SHARD,
+		PS_RAINBOW,
 		PS_KIND_MAX
 	};
 
@@ -43,14 +51,25 @@ public:
 	static void SetLight(DirectX::XMFLOAT4 color, DirectX::XMFLOAT3 dir);
 	static void SetCameraPos(const DirectX::XMFLOAT3 pos);
 	static void SetFog(DirectX::XMFLOAT4 color, float start, float range);
+	static void SetGlassParam(const DirectX::XMFLOAT4& tint, float fresnelPower, float reflectionStrength, float transmissionStrength, float v = 0.5f);
+	static void SetRainbowTime(float time);
 	
 private:
+	static void MakePrimVS();
 	static void MakeWorldVS();
 	static void MakeAnimeVS();
+	static void MakeSpriteVS();
+	static void MakeShardVS();
+private:
+	static void MakePrimPS();
 	static void MakeLambertPS();
 	static void MakeSpecularPS();
 	static void MakeToonPS();
 	static void MakeFogPS();
+	static void MakeSpritePS();
+	static void MakeGlassPS();
+	static void MakeGlassShardPS();
+	static void MakeRainbowPS();
 
 private:
 	static VertexShader* m_pVS[VS_KIND_MAX];

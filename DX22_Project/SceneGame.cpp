@@ -1,410 +1,734 @@
 #include "SceneGame.h"
-#include <DirectXMath.h>
-#include "Defines.h"
-#include "World.h"
-#include "AllComponet.h"
-#include "PhysicsSystem.h"
-#include "SampleMapData.h"
-#include "Model.h"
-#include "LineManager.h"
-#include "RenderSystem.h"
-#include "Game.h"
+#include "GameObject.h"
+#include "AllComponent.h"
 #include "TextureManager.h"
 #include "ModelManager.h"
+#include "Prefab.h"
+#include "PrefabSet.h"
+#include "LineManager.h"
+#include "GlassObjectSpawner.h"
+#include "GameState.h"
+#include "DebugLog.h"
 
-World* W = nullptr;
 
-namespace
+void SceneGame::Load()
 {
-    // ブロック共通処理
-    GameObject& SpawnCubeBlock(const DirectX::XMFLOAT3& pos,
-        const DirectX::XMFLOAT3& scale = Vec3One,
-        bool isStaticCollider = true)
-    {
-        GameObject& o = W->CreateGameObject();
-        o.AddComponent<Transform>(pos, Vec3Zero, scale);
-        o.AddComponent<MeshFilter>(MeshFilter::Type::Cube);
-        o.AddComponent<MeshRender>();
-        o.AddComponent<BoxCollider>();
-        o.AddComponent<GlassScript>();
-        o.SetTag(Tag::Glass);
-        return o;
-    }
-
-    // 三次元マップ(0/1)からブロック群を生成
-    template<size_t Y, size_t Z, size_t X>
-    void BuildBlocksFromMap(const int(&map)[Y][Z][X],
-        float unit = kUnit,
-        const DirectX::XMFLOAT3& scale = Vec3One,
-        bool isStaticCollider = true)
-    {
-        for (size_t y = 0; y < Y; ++y)
-        {
-            for (size_t z = 0; z < Z; ++z)
-            {
-                for (size_t x = 0; x < X; ++x)
-                {
-                    if (map[y][z][x] == 0) continue;
-
-                    DirectX::XMFLOAT3 pos
-                    {
-                        static_cast<float>(x) * unit,
-                        static_cast<float>(y) * unit,
-                        static_cast<float>(z) * unit
-                    };
-                    SpawnCubeBlock(pos, scale, isStaticCollider);
-                }
-            }
-        }
-    }
+	// 従来の同期ロードが必要なら、タスクを構築して全部回す
+	std::vector<LoadTask> tasks;
+	BuildLoadTasks(tasks);
+	for (auto& t : tasks) t();
 }
 
-SceneGame::SceneGame()
+void SceneGame::Unload()
 {
-    W = &Game::GetWorld();
 
-    Debug::Init();
-    RegisterTexture();
-    RegisterModel();
-
-    GameObject& camera = W->CreateGameObject();
-    camera.AddComponent<Transform>(Camera::initPos(), Camera::initRotate(), Vector3::zero());
-    camera.AddComponent<Camera>();
-    LineManager::Init();
-
-    GameObject& player = W->CreateGameObject();
-    player.AddComponent<Transform>(Vector3(0, 2, 0), Vector3::zero(), Vector3(1, 1, 1));
-    player.AddComponent<MeshFilter>(MeshFilter::Type::Cylinder);
-    player.AddComponent<MeshRender>(1);
-    player.AddComponent<BoxCollider>(true, Vector3(0, 0, 0), Vector3(1, 1, 1));
-    // player.AddComponent<SphereCollider>(0.5f, false);
-    // player.AddComponent<CapsuleCollider>(0.01f, 0.5f, false);
-    player.AddComponent<Rigidbody>();
-    player.AddComponent<PlayerMove>();
-    player.AddComponent<PlayerAction>();
-    camera.AddComponent<CameraFollow>(&player.GetComponent<Transform>());
-    player.SetTag(Tag::Player);
-    // LineManager::AddBoxCollider(&player);
-
-    GameObject& hammer = W->CreateGameObject();
-    hammer.AddComponent<Transform>(Vector3(0, 0, 1.5f), Vector3::zero(), kDefaultHummerScale);
-    hammer.TryGetComponent<Transform>()->SetParent(&player.GetComponent<Transform>());
-    hammer.AddComponent<MeshFilter>(MeshFilter::Type::Cube);
-    hammer.AddComponent<MeshRender>(1);
-    auto& hbc = hammer.AddComponent<BoxCollider>(false); hbc.isTrigger = true;
-    hammer.AddComponent<HummerScript>(player.TryGetComponent<Transform>());
-    hammer.SetTag(Tag::Weapon);
-
-    GameObject& floor = W->CreateGameObject();
-    floor.AddComponent<Transform>(Vector3(0, -1, 0), Vector3::zero(), Vector3(50, 0.1, 50));
-    floor.AddComponent<MeshFilter>(MeshFilter::Type::Plane);
-    floor.AddComponent<MeshRender>();
-    floor.AddComponent<BoxCollider>();
-    floor.SetTag(Tag::Ground);
-
-    //BuildBlocksFromMap(map, /*unit=*/kUnit, /*scale=*/blockScale, /*isStaticCollider=*/true);
-
-    //GameObject& karubi = W->CreateGameObject();
-    //karubi.AddComponent<Transform>(DirectX::XMFLOAT3{ 2,0.5,2 }, Vec3Zero, Vec3One);
-    //karubi.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::Karubi));
-    //karubi.AddComponent<ModelRenderer>();
-    //karubi.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0,0.75f,0 }, DirectX::XMFLOAT3{ 1, 1.5, 1 });
-    //LineManager::AddBoxCollider(&karubi);
-
-    CreateProtStage();
-    //CreateGlassModel();
-    CreateTimerUi();
-    CreateScoreUi();
-    CreateActionUi();
-
-    GameObject& gaugeFrame = W->CreateGameObject();
-    CanvasUI& gaugeFrameUI = gaugeFrame.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::GaugeFrame));
-
-    GameObject& gauge = W->CreateGameObject();
-    CanvasUI& gaugeUI = gauge.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::GaugeMaxLv1));
-
-    GameObject& GaEf = W->CreateGameObject();
-    CanvasUI& gaefUI = GaEf.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::GaugeEffect));
-
-    GameObject& gaugeUiManagerObj = W->CreateGameObject();
-    gaugeUiManagerObj.AddComponent<GlassGauge>(&gaugeFrameUI , &gaugeUI, &gaefUI);
-
-   
-    W->Start();
-   
 }
-SceneGame::~SceneGame()
+
+void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 {
-    W->ClearAll();
-    W = nullptr;
-    TextureManager::Clear();
+	// World の中身を消す
+	outTasks.emplace_back([this]
+		{
+		GetWorld().ClearAll();        // 既存の World API に合わせる
+		});
+
+	// ==== タスク設定 ====
+
+	// モデルロード
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Karubi); });
+
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Swing); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Akican); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Desktop); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Gomibukuro); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Isu); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Kuukseizixyoukii); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Ningixyou); });
+
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Benti); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Aircon); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Jihanki); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Reizouko); });
+
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Ufo); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Eiseii); });
+
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::ProtPlay); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer); });
+
+	// テクスチャーロード
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Star); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GroundTile); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Stage); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::SkyDome); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GaugeEmpty); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GaugeMax); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GaugeEffect); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ScoreAtoKg); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ScoreNumber); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::TimerColon); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::TimerNumber); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Spin); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::SpinMono); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::SpinMoji); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::SpinMojiMono); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::SpinFlash); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::SpinFront); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Dash); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::DashMono); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::DashMoji); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::DashMojiMono); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::UIFrostNoise); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::EffectLv1); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GlassShard); });
+
+
+	// プレイハブ設定
+	outTasks.emplace_back([this] { RegisterAllPrefabs(); });
+
+	// ゲームオブジェクト生成
+	outTasks.emplace_back([this] { CreateManagers(); });
+	outTasks.emplace_back([this] { CreateCameraAndPlayer(); });
+	outTasks.emplace_back([this] { CreateStage(); });
+
+	// UI
+	outTasks.emplace_back([this] { CreateUi(); });
+	outTasks.emplace_back([this] { CreateGaugeUI(); });
+	outTasks.emplace_back([this] { CreateTimerUI(); });
+	outTasks.emplace_back([this] { CreateScoreUI(); });
+	outTasks.emplace_back([this] { CreateActionUI(); });
+
+	//ギミック
+	outTasks.emplace_back([this] { CreateGlassObjectSpawner(); });
+
+	//outTasks.emplace_back([this] { InitPlayerTex(); });
+	outTasks.emplace_back([this] { InitSkyDome(); });
+
+
+	// 最後に Start を流す
+	outTasks.emplace_back([this] 
+		{
+		GetWorld().Start();
+		});
 }
+
+void SceneGame::LoadModels()
+{
+	ModelManager::Load(ModelTag::Karubi);
+	ModelManager::Load(ModelTag::Swing);
+	ModelManager::Load(ModelTag::Benti);
+	ModelManager::Load(ModelTag::Ufo);
+	ModelManager::Load(ModelTag::ProtPlay);
+	ModelManager::Load(ModelTag::Player);
+}
+
+void SceneGame::LoadTextures()
+{
+	TextureManager::Load(TextureTag::Star);
+	TextureManager::Load(TextureTag::GaugeEffect);
+	TextureManager::Load(TextureTag::ScoreAtoKg);
+	TextureManager::Load(TextureTag::ScoreNumber);
+	TextureManager::Load(TextureTag::TimerColon);
+	TextureManager::Load(TextureTag::TimerNumber);
+}
+
+void SceneGame::CreateManagers()
+{
+	World& w = GetWorld();
+
+	GameObject& gameManager = w.CreateGameObject();
+	gameManager.SetTag(Tag::GameManager);
+
+	GameObject& glassGaugeManager = w.CreateGameObject();
+	glassGaugeManager.SetTag(Tag::GaugeManager);
+	glassGaugeManager.AddComponent<GlassGaugeManager>();
+}
+
+void SceneGame::CreateCameraAndPlayer()
+{
+	World& w = GetWorld();
+
+	//70×70 ①
+	GameObject& cameraPivot = w.CreateGameObject(Vector3::zero(), Vector3(0.f, 180.f, 0.f), Vector3::one());
+
+	cameraPivot.SetTag(Tag::CamreraPivot);
+	cameraPivot.AddComponent<CameraControl>();
+
+	GameObject& mainCamera = cameraPivot.CreateChild(Camera::kInitPos, Camera::kInitRotate, Vector3::one());
+	mainCamera.SetTag(Tag::MainCamera);
+	mainCamera.AddComponent<Camera>();
+	mainCamera.AddComponent<CameraShake>();
+
+	//70×70 ①
+	GameObject& player = w.CreateGameObject(Vector3(0.f, 2.f, 0.f), Vector3(0.f, 0.f, 0.f));
+	 
+	player.SetTag(Tag::Player);
+	player.AddComponent<MeshFilter>(ModelTag::Player);
+	player.AddComponent<MeshRenderer>();
+	player.AddComponent<Rigidbody>();
+	player.AddComponent<BoxCollider>(false, Vector3(0.f, 0.5f, 0.f));
+	player.AddComponent<PlayerState>();
+	player.AddComponent<PlayerMove>();
+	player.AddComponent<PlayerAction>();
+	player.AddComponent<Animator>();
+	player.AddComponent<PlayerAnimation>();
+
+	GameObject& hummer = player.CreateChild(Hammer::BasePos, Hammer::BaseRota, Vector3(0.2f, 0.2f, 0.2f));
+	hummer.SetTag(Tag::Hammer);
+	hummer.AddComponent<MeshFilter>(ModelTag::Hammer);
+	hummer.AddComponent<MeshRenderer>();
+	hummer.AddComponent<BoxCollider>(false, Vector3(-3.f, 2.f, -3.f), Vector3(5.f, 5.f, 2.f));
+	hummer.AddComponent<Hammer>();
+
+	GameObject& glassShardPool = w.CreateGameObject();
+	glassShardPool.AddComponent<GlassShardPool>();
+}
+
+void SceneGame::CreateStage()
+{
+	StageId stage = GetCurrentStage();
+
+	// デバック用
+	//stage = StageId::Stage2;
+
+	switch (stage)
+	{
+	case StageId::Stage1:	CreateStage1();
+		break;
+	case StageId::Stage2:	CreateStage2();
+		break;
+	case StageId::Stage3:	CreateStage3();
+		break;
+	default:
+		assert(false && "不正なステージID");
+		break;
+	}
+}
+
+void SceneGame::CreateStage1()
+{
+	World& w = GetWorld();
+
+	//80端
+	constexpr float SIZE = 80.f;
+	constexpr float HALF = SIZE / 2.f;
+	constexpr float OFFSET = HALF + 0.5f;
+	
+	//80フィールド
+	GameObject& floor = w.CreateGameObject(Vector3(0.f, -1.f, 0.f), Vector3::zero(), Vector3(80.f, 0.1f, 80.f));
+	MeshFilter& mf = floor.AddComponent<MeshFilter>(PrimitiveMeshTag::Plane); mf.boundsRadius = 0.f;
+	floor.AddComponent<GroundRenderer>();
+	BoxCollider& collider = floor.AddComponent<BoxCollider>();
+	collider.layer = Layer::Ground;
+
+
+	//壁
+	GameObject& wT = w.CreateGameObject(Vector3(0.f, 1.f, OFFSET), Vector3(90.f, 0.f, 0.f), Vector3(SIZE, 1.f, 4.f));
+	MeshFilter& mfT = wT.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mfT.boundsRadius = 0.f;
+	wT.AddComponent<GroundRenderer>();
+	BoxCollider& bcT = wT.AddComponent<BoxCollider>(); bcT.layer = Layer::Ground;
+	wT.AddComponent<StageWall>();
+
+	GameObject& wB = w.CreateGameObject(Vector3(0.f, 1.f, -OFFSET), Vector3(90.f, 0.f, 0.f), Vector3(SIZE, 1.f, 4.0f));
+	MeshFilter& mfB = wB.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mfB.boundsRadius = 0.f;
+	wB.AddComponent<GroundRenderer>();
+	BoxCollider& bcB = wB.AddComponent<BoxCollider>(); bcB.layer = Layer::Ground;
+	wB.AddComponent<StageWall>();
+
+	GameObject& wR = w.CreateGameObject(Vector3(OFFSET, 1.f, 0.f), Vector3(0.f, 0.f, 90.f), Vector3(4.0f, 1.f, SIZE));
+	MeshFilter& mfR = wR.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mfR.boundsRadius = 0.f;
+	wR.AddComponent<GroundRenderer>();
+	BoxCollider& bcR = wR.AddComponent<BoxCollider>(); bcR.layer = Layer::Ground;
+	wR.AddComponent<StageWall>();
+
+	GameObject& wL = w.CreateGameObject(Vector3(-OFFSET, 1.f, 0.f), Vector3(0.f, 0.f, 90.f), Vector3(4.0f, 1.f, SIZE));
+	MeshFilter& mfL = wL.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mfL.boundsRadius = 0.f;
+	wL.AddComponent<GroundRenderer>();
+	BoxCollider& bcL = wL.AddComponent<BoxCollider>(); bcL.layer = Layer::Ground;
+	wL.AddComponent<StageWall>();
+
+
+	////Grade_3
+	//Prefab::Instantiate(w, PrefabId::Ufo, Vector3(-5.f, -0.5f, 20.f), Vector3::zero(), Vector3::one());
+	//Prefab::Instantiate(w, PrefabId::Eisei, Vector3(5.f, -0.5f, 20.f), Vector3::zero(), Vector3::one());
+
+	//Grade_2
+	//Prefab::Instantiate(w, PrefabId::Benti, Vector3(-10.f, -0.9f, 10.f), Vector3::zero(), Vector3::one());
+	//Prefab::Instantiate(w, PrefabId::Aircon, Vector3(-5.f, -0.9f, 10.f), Vector3::zero(), Vector3::one());
+	//Prefab::Instantiate(w, PrefabId::Jihanki, Vector3(0.f, -0.9f, 10.f), Vector3::zero(), Vector3::one());
+	//Prefab::Instantiate(w, PrefabId::Reizouko, Vector3(5.f, -0.9f, 10.f), Vector3::zero(), Vector3::one());
+
+	//Grade_1
+	//Prefab::Instantiate(w, PrefabId::Swing, Vector3(-10.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());
+	//Prefab::Instantiate(w, PrefabId::Akican, Vector3(-8.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());
+	//Prefab::Instantiate(w, PrefabId::Desktop, Vector3(-6.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());
+	//Prefab::Instantiate(w, PrefabId::Gomibukuro, Vector3(-4.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());
+	//Prefab::Instantiate(w, PrefabId::Isu, Vector3(-2.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());
+	//Prefab::Instantiate(w, PrefabId::Kuukseizixyoukii, Vector3(-0.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());
+	//Prefab::Instantiate(w, PrefabId::Ningixyou, Vector3(2.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());
+	//Prefab::Instantiate(w, PrefabId::Swing, Vector3(-10.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());
+	//Prefab::Instantiate(w, PrefabId::Akican, Vector3(-8.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());
+	//Prefab::Instantiate(w, PrefabId::Desktop, Vector3(-6.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());
+	//Prefab::Instantiate(w, PrefabId::Gomibukuro, Vector3(-4.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());
+	//Prefab::Instantiate(w, PrefabId::Isu, Vector3(-2.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());
+	//Prefab::Instantiate(w, PrefabId::Kuukseizixyoukii, Vector3(-0.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());
+	//Prefab::Instantiate(w, PrefabId::Ningixyou, Vector3(2.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());
+     
+	//プロト
+	//Prefab::Instantiate(w, PrefabId::ProtPlay, Vector3(-12, -0.9f, 8), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
+
+	// 座標用構造体（共通）
+
+	struct Pos { float x;  float y; float z;};
+	struct Rot { float x, y, z; };
+
+
+
+	//ステージ1
+
+	//--------------------------------------
+   // Grade 1
+   //--------------------------------------
+
+	const Pos positionsGrade_1[] = {
+    { -8.f,-0.9f,-11.f},{ 6.f,-0.6f,-12.f},{ 34.f,-0.6f, -9.f},{  5.f,-0.5f,-14.f},{ 11.f,-0.5f, -3.f},{-3.f,-1.2f, 13.f},{20.f,-1.1f, 39.f},
+	{-10.f,-1.1f , 7.f},{ 5.f,-0.9f, 11.f},{  1.f,-0.9f,-13.f},{  3.f,-1.1f, 14.f},{ 11.f,-1.1f, 14.f},{ 3.f,-1.2f,  7.f},{-7.f,-1.2f, -5.f},
+	{  8.f,-1.1f,  4.f},{ 6.f,-1.1f,  9.f},{  2.f,-0.9f, 11.f},{  8.f,-0.9f,  0.f},{  1.f,-1.1f,  9.f},{ 3.f,-1.1f, 12.f},{ 8.f,-1.2f,  9.f},
+	{-12.f,-1.2f,  4.f},{ 2.f,-1.1f,-13.f},{ -8.f,-1.1f,-13.f},{  7.f,-0.9f,  1.f},{ -2.f,-0.9f, 14.f},{-6.f,-1.1f,-27.f},{12.f,-1.1f, -5.f},
+	{ 10.f,-1.2f,  2.f},{ 1.f,-1.2f, 12.f},{-12.f,-1.1f,  9.f},{  6.f,-1.1f,  7.f},{  5.f,-0.9f, -8.f},{ 5.f,-0.9f,-26.f},{ 3.f,-1.1f,-14.f}, 
+	{ 14.f,-1.1f,  0.f},{-9.f,-1.2f,  5.f},{  2.f,-1.2f,  9.f},{ -4.f,-1.1f, -6.f},{ -8.f,-1.1f, -1.f},{14.f,-0.9f, -1.f},{ 7.f,-0.9f, -8.f}, 
+	{  6.f,-1.1f, 10.f},{-9.f,-1.1f,  4.f},{  6.f,-1.2f, -7.f},{ -6.f,-1.2f, 12.f},{-11.f,-1.1f,  4.f},{-6.f,-1.1f, 13.f},{ 7.f,-0.9f, -5.f},
+	{ -5.f,-0.9f, -7.f},{ 2.f,-1.1f,-15.f},{ 12.f,-1.1f, -4.f},{ -7.f,-1.2f, -2.f},{-30.f,-1.2f,-25.f},{-6.f,-1.1f,  6.f},{-3.f,-1.1f,-10.f},
+	{  0.f,-0.9f,-11.f},{-2.f,-0.9f,  6.f},{  7.f,-1.1f,-11.f},{-11.f,-1.1f, -7.f}
+    };
+
+	
+	const Rot rotationsGrade_1[] = {
+	{ 0.f,0.f,0.f},{-90.f,0.f,0.f},{90.f,0.f, 0.f},{0.f,0.f,-90.f},{ 0.f,0.f,90.f},{-15.f,0.f,-15.f},{30.f,0.f,30.f},{-30.f,0.f,-30.f},
+	{45.f,0.f,0.f},{-45.f,0.f,0.f},{ 0.f,0.f,45.f},{0.f,0.f,-45.f},{15.f,0.f,15.f},{-15.f,0.f,-15.f},{30.f,0.f,30.f},{-30.f,0.f,-30.f},
+	{45.f,0.f,0.f},{-45.f,0.f,0.f},{ 0.f,0.f,45.f},{0.f,0.f,-45.f},{15.f,0.f,15.f},{-15.f,0.f,-15.f},{30.f,0.f,30.f},{-30.f,0.f,-30.f},
+	{45.f,0.f,0.f},{-45.f,0.f,0.f},{ 0.f,0.f,45.f},{0.f,0.f,-45.f},{15.f,0.f,15.f},{-15.f,0.f,-15.f},{30.f,0.f,30.f},{-30.f,0.f,-30.f},
+	{45.f,0.f,0.f},{-45.f,0.f,0.f},{ 0.f,0.f,45.f},{0.f,0.f,-45.f},{15.f,0.f,15.f},{-15.f,0.f,-15.f},{30.f,0.f,30.f},{-30.f,0.f,-30.f},
+	{45.f,0.f,0.f},{-45.f,0.f,0.f},{ 0.f,0.f,45.f},{0.f,0.f,-45.f},{15.f,0.f,15.f},{-15.f,0.f,-15.f},{30.f,0.f,30.f},{-30.f,0.f,-30.f},
+	{45.f,0.f,0.f},{-45.f,0.f,0.f},{ 0.f,0.f,45.f},{0.f,0.f,-45.f},{15.f,0.f,15.f},{-15.f,0.f,-15.f},{30.f,0.f,30.f},{-30.f,0.f,-30.f},
+	{45.f,0.f,0.f},{-45.f,0.f,0.f},{ 0.f,0.f,45.f},{0.f,0.f,-45.f}
+	};
+
+
+	//--------------------------------------
+	// Grade 2
+	//--------------------------------------
+
+	const Pos positionsGrade_2[] = {
+
+	{ -8.f,-0.9f, 17.f},{-21.f,-0.4f,  0.f},{-27.f,-0.4f,  8.f},{ -9.f,-0.4f,-21.f},{-17.f,-0.4f,-21.f},{ 12.f,-1.0f,-16.f},{-27.f,-1.0f, 15.f},
+	{  7.f,-0.9f,-15.f},{-10.f,-0.5f,-25.f},{ 14.f,-0.5f, -7.f},{  0.f,-0.5f,-16.f},{ 11.f,-0.5f,  9.f},{ 18.f,-1.4f, -6.f},{ 15.f,-1.4f,-13.f},
+	{ -6.f,-0.9f,-33.f},{ 16.f,-0.5f,  3.f},{-15.f,-0.5f,-15.f},{  6.f,-0.5f, 18.f},{-22.f,-0.5f,-11.f},{ 10.f,-1.4f,-18.f},{ 21.f,-1.4f,-18.f},
+	{ 15.f,-0.9f,-11.f},{ -5.f,-0.5f,-18.f},{ 25.f,-0.5f,  3.f},{  6.f,-0.5f, 22.f},{ -6.f,-0.5f,-24.f},{  8.f,-1.4f, 22.f},{ 19.f,-1.4f,  9.f},
+	{ 33.f,-0.9f,-17.f},{-25.f,-0.5f,  8.f},{-12.f,-0.5f, 26.f},{-29.f,-0.5f,-16.f},{  3.f,-0.5f, 25.f},{-16.f,-1.4f,  6.f},{ 21.f,-1.4f, 15.f},
+	{-12.f,-0.9f,-13.f},{-14.f,-0.5f,-18.f},{-25.f,-0.5f, -8.f},{-28.f,-0.5f, -1.f},{-27.f,-0.5f,  2.f},{ 13.f,-1.4f, -9.f},{-20.f,-1.4f,-10.f},
+	{-20.f,-0.9f, -2.f},{ 24.f,-0.5f, -7.f},{  1.f,-0.5f,-21.f},{-21.f,-0.5f, 18.f},{-20.f,-0.5f,  9.f},{ 14.f,-1.4f,-22.f},{-17.f,-1.4f, 18.f},
+	{-10.f,-0.9f, 16.f}
+	};
+
+	const Rot rotationsGrade_2[] = {
+	{ 0.f,0.f,0.f}, {90.f,0.f,0.f}, {  0.f, 0.f, 90.f}, {90.f,0.f,45.f}, {  45.f, 0.f, 90.f},{  0.f,0.f,10.f}, {  0.f,0.f,-10.f},
+	{ 0.f,0.f,0.f}, {90.f,0.f,0.f}, {  0.f, 0.f, 90.f}, {90.f,0.f,45.f}, {  45.f, 0.f, 90.f},{  0.f,0.f,10.f}, {  0.f,0.f,-10.f},
+	{ 0.f,0.f,0.f}, {90.f,0.f,0.f}, {  0.f, 0.f, 90.f}, {90.f,0.f,45.f}, {  45.f, 0.f, 90.f},{  0.f,0.f,10.f}, {  0.f,0.f,-10.f},
+	{ 0.f,0.f,0.f}, {90.f,0.f,0.f}, {  0.f, 0.f, 90.f}, {90.f,0.f,45.f}, {  45.f, 0.f, 90.f},{  0.f,0.f,10.f}, {  0.f,0.f,-10.f},
+	{ 0.f,0.f,0.f}, {90.f,0.f,0.f}, {  0.f, 0.f, 90.f}, {90.f,0.f,45.f}, {  45.f, 0.f, 90.f},{  0.f,0.f,10.f}, {  0.f,0.f,-10.f},
+	{ 0.f,0.f,0.f}, {90.f,0.f,0.f}, {  0.f, 0.f, 90.f}, {90.f,0.f,45.f}, {  45.f, 0.f, 90.f},{  0.f,0.f,10.f}, {  0.f,0.f,-10.f},
+	{ 0.f,0.f,0.f}, {90.f,0.f,0.f}, {  0.f, 0.f, 90.f}, {90.f,0.f,45.f}, {  45.f, 0.f, 90.f},{  0.f,0.f,10.f}, {  0.f,0.f,-10.f},
+	{ 0.f,0.f,0.f}
+	};
+
+	//--------------------------------------
+	// Grade 3
+	//--------------------------------------
+
+	const Pos positionsGrade_3[] = {
+	{-29.f, 2.f, -25.f}, { 28.f, 2.f, -23.f}, { 12.f, -0.9f, -32.f}, { 17.f ,3.f, 20.f}, { -3.f, 3.f,  36.f},
+	{-33.f, 1.f, -38.f}, { 22.f, 1.f, -21.f}, { 19.f, -0.9f, -30.f}, {-28.f, 2.f, 17.f}, {-33.f, 2.f,  -5.f},
+	{ 30.f, 1.f,  11.f}, {  9.f, 1.f,  -8.f}, { 27.f, -0.9f,  17.f}, { -8.f, 2.f, 37.f}, { 15.f, 2.f,  33.f},
+	{ 21.f, 1.f,  29.f}, {-31.f, 1.f,   9.f}, {  1.f, -0.9f,  27.f}, { 31.f, 2.f, 21.f}, {-25.f, 2.f, -21.f},
+	{ 28.f, 1.f, -13.f}, { 30.f, 1.f, -18.f}, { 36.f, -0.9f,  -2.f}, {-15.f, 2.f, 34.f}, { 23.f, 2.f,  21.f},
+	{ 17.f, 1.f,  15.f}, {  6.f, 1.f,  27.f}, {-32.f, -0.9f, -10.f}, { 23.f, 2.f, 24.f}, { 29.f, 2.f,   6.f},
+	{ -5.f, 1.f, -36.f}, { 32.f, 1.f,   3.f},{ -17.f, -0.9f,  25.f}, { 33.f, 2.f, 11.f}, {-26.f, 2.f, -17.f}
+	};
+
+	const Rot rotationsGrade_3[] = {
+	{125.f,  0.f, 0.f}, {0.f,  0.f, 125.f}, {0.f,  0.f, 0.f}, {0.f,  0.f, 150.f}, {150.f,  0.f, 0.f},
+    {125.f,  0.f, 0.f}, {0.f,  0.f, 125.f}, {0.f,  0.f, 0.f}, {0.f,  0.f, 150.f}, {150.f,  0.f, 0.f},
+	{125.f,  0.f, 0.f}, {0.f,  0.f, 125.f}, {0.f,  0.f, 0.f}, {0.f,  0.f, 150.f}, {150.f,  0.f, 0.f},
+	{125.f,  0.f, 0.f}, {0.f,  0.f, 125.f}, {0.f,  0.f, 0.f}, {0.f,  0.f, 150.f}, {150.f,  0.f, 0.f},
+	{125.f,  0.f, 0.f}, {0.f,  0.f, 125.f}, {0.f,  0.f, 0.f}, {0.f,  0.f, 150.f}, {150.f,  0.f, 0.f},
+	{125.f,  0.f, 0.f}, {0.f,  0.f, 125.f}, {0.f,  0.f, 0.f}, {0.f,  0.f, 150.f}, {150.f,  0.f, 0.f},
+	{125.f,  0.f, 0.f}, { 0.f, 0.f, 125.f}, {0.f,  0.f, 0.f}, {0.f,  0.f, 150.f}, {150.f,  0.f, 0.f}
+	};
+
+PrefabId prefabOrder1[] = {
+		PrefabId::Swing,
+		PrefabId::Akican,
+		PrefabId::Desktop,
+		PrefabId::Gomibukuro,
+		PrefabId::Isu,
+		PrefabId::Kuukseizixyoukii,
+		PrefabId::Ningixyou
+};
+
+int prefabCount1 = sizeof(prefabOrder1) / sizeof(prefabOrder1[0]);
+int posCount1 = sizeof(positionsGrade_1) / sizeof(positionsGrade_1[0]);
+int rotCount1 = sizeof(rotationsGrade_1) / sizeof(rotationsGrade_1[0]);
+
+for (int i = 0; i < posCount1; i++) {
+	PrefabId id = prefabOrder1[i % prefabCount1];
+	Rot rot = rotationsGrade_1[i % rotCount1];
+	Prefab::Instantiate(
+		w,
+		id,
+		Vector3(positionsGrade_1[i].x, positionsGrade_1[i].y, positionsGrade_1[i].z),
+		Vector3(rot.x, rot.y, rot.z),
+		Vector3::one()
+	);
+}
+
+	//--------------------------------------
+	// Grade 2
+	//--------------------------------------
+	PrefabId prefabOrder2[] = {
+		PrefabId::Benti,
+		PrefabId::Aircon,
+		PrefabId::Jihanki,
+		PrefabId::Reizouko,
+	};
+
+	int prefabCount2 = sizeof(prefabOrder2) / sizeof(prefabOrder2[0]);
+	int posCount2 = sizeof(positionsGrade_2) / sizeof(positionsGrade_2[0]);
+	int rotCount2 = sizeof(rotationsGrade_2) / sizeof(rotationsGrade_2[0]);
+
+	for (int i = 0; i < posCount2; i++) {
+		PrefabId id = prefabOrder2[i % prefabCount2];
+		Rot rot = rotationsGrade_2[i % rotCount2];
+		Prefab::Instantiate(
+			w,
+			id,
+			Vector3(positionsGrade_2[i].x, positionsGrade_2[i].y, positionsGrade_2[i].z),
+			Vector3(rot.x, rot.y, rot.z),
+			Vector3::one()
+		);
+	}
+
+	//--------------------------------------
+	// Grade 3
+	//--------------------------------------
+	PrefabId prefabOrder3[] = {
+		PrefabId::Ufo,
+		PrefabId::Eisei,
+	};
+
+	int prefabCount3 = sizeof(prefabOrder3) / sizeof(prefabOrder3[0]);
+	int posCount3 = sizeof(positionsGrade_3) / sizeof(positionsGrade_3[0]);
+	int rotCount3 = sizeof(rotationsGrade_3) / sizeof(rotationsGrade_3[0]);
+
+	for (int i = 0; i < posCount3; i++) {
+		PrefabId id = prefabOrder3[i % prefabCount3];
+		Rot rot = rotationsGrade_3[i % rotCount3];
+		Prefab::Instantiate(
+			w,
+			id,
+			Vector3(positionsGrade_3[i].x, positionsGrade_3[i].y, positionsGrade_3[i].z),
+			Vector3(rot.x, rot.y, rot.z),
+			Vector3::one()
+		);
+	}
+}
+
+void SceneGame::CreateStage2()
+{
+	World& w = GetWorld();
+
+	//80 * 50 フィールド1
+	GameObject& floor1 = w.CreateGameObject(Vector3(0.f, -1.f, 0.f), Vector3::zero(), Vector3(80.f, 0.1f, 50.f));
+	MeshFilter& mf1 = floor1.AddComponent<MeshFilter>(PrimitiveMeshTag::Plane); mf1.boundsRadius = 0.f;
+	floor1.AddComponent<GroundRenderer>();
+	BoxCollider& collider1 = floor1.AddComponent<BoxCollider>();
+	collider1.layer = Layer::Ground;
+
+	//80 * 50 フィールド1
+	GameObject& floor2 = w.CreateGameObject(Vector3(90.f, -1.f, 0.f), Vector3::zero(), Vector3(80.f, 0.1f, 50.f));
+	MeshFilter& mf2 = floor2.AddComponent<MeshFilter>(PrimitiveMeshTag::Plane); mf2.boundsRadius = 0.f;
+	floor2.AddComponent<GroundRenderer>();
+	BoxCollider& collider2 = floor2.AddComponent<BoxCollider>();
+	collider2.layer = Layer::Ground;
+
+	CreateWarp();
+}
+
+void SceneGame::CreateStage3()
+{
+	World& w = GetWorld();
+
+	//80 * 50 フィールド
+	GameObject& floor1 = w.CreateGameObject(Vector3(0.f, -1.f, 0.f), Vector3::zero(), Vector3(80.f, 0.1f, 50.f));
+	MeshFilter& mf1 = floor1.AddComponent<MeshFilter>(PrimitiveMeshTag::Plane); mf1.boundsRadius = 0.f;
+	floor1.AddComponent<GroundRenderer>();
+	BoxCollider& collider1 = floor1.AddComponent<BoxCollider>();
+	collider1.layer = Layer::Ground;
+
+	//50 * 50 フィールド1
+	GameObject& floor2 = w.CreateGameObject(Vector3(0.f, -1.f, -60.f), Vector3::zero(), Vector3(50.f, 0.1f, 50.f));
+	MeshFilter& mf2 = floor2.AddComponent<MeshFilter>(PrimitiveMeshTag::Plane); mf2.boundsRadius = 0.f;
+	floor2.AddComponent<GroundRenderer>();
+	BoxCollider& collider2 = floor2.AddComponent<BoxCollider>();
+	collider2.layer = Layer::Ground;
+
+	//50 * 50 フィールド2
+	GameObject& floor3 = w.CreateGameObject(Vector3(0.f, -1.f, 60.f), Vector3::zero(), Vector3(50.f, 0.1f, 50.f));
+	MeshFilter& mf3 = floor3.AddComponent<MeshFilter>(PrimitiveMeshTag::Plane); mf3.boundsRadius = 0.f;
+	floor3.AddComponent<GroundRenderer>();
+	BoxCollider& collider3 = floor3.AddComponent<BoxCollider>();
+	collider3.layer = Layer::Ground;
+}
+
+void SceneGame::CreateUi()
+{
+	World& w = GetWorld();
+
+	GameObject& canvas = w.CreateGameObject();
+	canvas.AddComponent<Canvas>();
+}
+
+void SceneGame::CreateGaugeUI()
+{
+	World& w = GetWorld();
+
+	GameObject& glassGaugeUI = w.CreateGameObject();
+	glassGaugeUI.AddComponent<GlassGaugeUI>();
+}
+
+void SceneGame::CreateTimerUI()
+{
+	World& w = GetWorld();
+
+	GameObject& timerUI = w.CreateGameObject();
+	timerUI.SetTag(Tag::TimerUI);
+	timerUI.AddComponent<TimerUI>();
+}
+
+void SceneGame::CreateScoreUI()
+{
+	World& w = GetWorld();
+
+	GameObject& scoreManager = w.CreateGameObject();
+	scoreManager.SetTag(Tag::ScoreManager);
+	scoreManager.AddComponent<ScoreManager>();
+
+	GameObject& scoreUI = w.CreateGameObject();
+	scoreUI.AddComponent<ScoreUI>();
+}
+
+void SceneGame::CreateActionUI()
+{
+	World& w = GetWorld();
+
+	GameObject& actionManager = w.CreateGameObject();
+	actionManager.SetTag(Tag::ActionUI);
+	actionManager.AddComponent<ActionUI>();
+}
+
+void SceneGame::CreateGlassObjectSpawner()
+{
+	World& w = GetWorld();
+
+	GameObject& glassObjectSpawner = w.CreateGameObject();
+	//glassObjectSpawner.AddComponent<GlassObjectSpawner>();
+
+	GameObject& Frost = w.CreateGameObject();
+	//Frost.AddComponent<Sprite3DRenderer>(TextureTag::UIFrostNoise, Vector2::zero(), Vector2(12.8f, 7.2f));
+}
+
+void SceneGame::CreateWarp()
+{
+	World& w = GetWorld();
+
+	GameObject& warpA = w.CreateGameObject(Vector3(37.f, 0.f, 0.f), Vector3::zero(), Vector3::one());
+	warpA.AddComponent< MeshFilter > (PrimitiveMeshTag::Sphere);
+	warpA.AddComponent<MeshRenderer>();
+	BoxCollider& bcA = warpA.AddComponent<BoxCollider>(true); bcA.isTrigger = true;
+	warpA.AddComponent<WarpPoint>(Point::AtoB);
+
+	GameObject& warpB = w.CreateGameObject(Vector3(53.f, 0.f, 0.f), Vector3::zero(), Vector3::one());
+	warpB.AddComponent< MeshFilter >(PrimitiveMeshTag::Sphere);
+	warpB.AddComponent<MeshRenderer>();
+	BoxCollider& bcB = warpB.AddComponent<BoxCollider>(true); bcB.isTrigger = true;
+	warpB.AddComponent<WarpPoint>(Point::BtoA);
+
+}
+
+void SceneGame::InitPlayerTex()
+{
+	// プレイヤーモデル取得
+	Model * model = ModelManager::Get(ModelTag::Player);
+	if (!model)
+	{
+		return; // 読み込み失敗などの保険
+	}
+
+	// 体（lambert1）
+	Texture* texBody = new Texture();
+	texBody->Create("Assets/Model/playerchara_20251202/lambert1.png");
+
+	if (texBody == NULL)
+	{
+		MessageBox(NULL, "a", "Error", MB_OK); // エラーメッセージの表示
+	}
+
+	// 頭皮・顔上部（lambert4）
+	Texture* texFaceA = new Texture();
+	texFaceA->Create("Assets/Model/playerchara_20251202/lambert4.png");
+
+	if (texFaceA == NULL)
+	{
+		MessageBox(NULL, "aaa", "Error", MB_OK); // エラーメッセージの表示
+	}
+
+	// 目・口（lambert5）
+	Texture* texFaceB = new Texture();
+	texFaceB->Create("Assets/Model/playerchara_20251202/lambert5.png");
+
+	if (texFaceB)
+	{
+		//MessageBox(NULL, "aaaa", "Error", MB_OK); // エラーメッセージの表示
+	}
+
+	// MaterialID に応じて割り当てる
+	const unsigned int matNum = model->GetMaterialNum();
+	for (unsigned int i = 0; i < matNum; ++i)
+	{
+		// ★ 非 const のマテリアルを取得（関数名は環境に合わせて）
+		auto* mat = model->GetMaterialNonConst(i);
+
+		if (!mat) continue;
+
+		switch (i)
+		{
+		case 0:
+			mat->pTexture = texFaceA;   // 頭皮
+			break;
+		case 1:
+			mat->pTexture = texFaceB;   // 顔（目）
+			break;
+		case 2:
+			mat->pTexture = texBody;    // 体
+			break;
+		}
+	}
+}
+
+void SceneGame::InitSkyDome()
+{
+	using namespace DirectX;
+
+	ID3D11Device* device = GetDevice();
+	if (!device) return;
+
+	// 1) メッシュ初期化
+	m_skyMesh.Init(device, 32, 16, 1.0f);
+
+	// 2) シェーダー初期化
+	m_skyShader.Init();
+
+	// 3) テクスチャ取得 → シェーダへ設定
+	//    ・事前に BuildLoadTasks で Load(TextureTag::Background_Game) しておく前提
+	m_pSkyTex = TextureManager::Get(TextureTag::SkyDome);
+	if (m_pSkyTex)
+	{
+		ID3D11ShaderResourceView* srv = m_pSkyTex->GetResource();
+		m_skyShader.SetTexture(srv);      // t0 に設定
+		m_skyShader.SetUseTexture(true);  // gUseTexture = 1
+	}
+	else
+	{
+		// 読み込み失敗時にだけメッセージを出したいならここで
+		// MessageBox(nullptr, "Background_Game テクスチャが読み込まれていません", "Error", MB_OK);
+		m_skyShader.SetUseTexture(false); // プロシージャルにフォールバック
+	}
+
+	// 4) 深度ステート（深度読み取りのみ）
+	D3D11_DEPTH_STENCIL_DESC dsDesc = {};
+	dsDesc.DepthEnable = TRUE;
+	dsDesc.DepthWriteMask = D3D11_DEPTH_WRITE_MASK_ZERO;
+	dsDesc.DepthFunc = D3D11_COMPARISON_LESS_EQUAL;
+	dsDesc.StencilEnable = FALSE;
+
+	HRESULT hr = device->CreateDepthStencilState(&dsDesc, &m_pDepthNoWrite);
+	if (FAILED(hr))
+	{
+		m_pDepthNoWrite = nullptr;
+	}
+
+
+}
+
+void SceneGame::SkyDomeDorw()
+{
+	using namespace DirectX;
+
+	ID3D11DeviceContext* context = GetContext();
+
+	// 1. メインカメラから View / Proj 行列と位置を取得
+	Camera* cam = Camera::Main();
+	if (!cam) return;
+
+	m_view = cam->GetView();
+	m_proj = cam->GetProjection();
+
+	Transform* tf = cam->gameObject->GetComponent<Transform>();
+	const XMFLOAT4X4& M = tf->GetMatrix();
+	XMFLOAT3 camPos(M._41, M._42, M._43);
+
+	// 2. カメラ中心・大きな半径の球を World 行列として作成
+	float radius = 100.0f;
+	XMMATRIX S = XMMatrixScaling(radius, radius, radius);
+	XMMATRIX T = XMMatrixTranslation(camPos.x, camPos.y, camPos.z);
+	XMMATRIX W = S * T;
+
+	XMFLOAT4X4 worldSky, viewT, projT;
+	XMStoreFloat4x4(&worldSky, XMMatrixTranspose(W));
+	XMStoreFloat4x4(&viewT, XMMatrixTranspose(XMLoadFloat4x4(&m_view)));
+	XMStoreFloat4x4(&projT, XMMatrixTranspose(XMLoadFloat4x4(&m_proj)));
+
+	// 3. スカイドーム用シェーダに行列を渡す
+	m_skyShader.SetWVP(worldSky, viewT, projT);
+
+	// 4. 現在の深度ステートを退避してから、スカイドーム用へ切り替え
+	ID3D11DepthStencilState* oldDS = nullptr;
+	UINT                     oldRef = 0;
+	context->OMGetDepthStencilState(&oldDS, &oldRef);
+
+	context->OMSetDepthStencilState(m_pDepthNoWrite, 1);
+
+	// 5. シェーダをバインドしてメッシュを描画
+	m_skyShader.Bind();
+	context->RSSetState(nullptr);
+	m_skyMesh.Draw(context);
+
+	// 6. 深度ステートを元に戻す
+	context->OMSetDepthStencilState(oldDS, oldRef);
+	if (oldDS)
+	{
+		oldDS->Release();
+	}
+}
+
 void SceneGame::Update()
 {
-    W->Update();
 }
+
 void SceneGame::Draw()
 {
-    W->Draw();
+	SkyDomeDorw();
 }
 
-void SceneGame::RegisterTexture()
-{
-    TextureManager::RegisterAuto(TextureTag::Number);
-    TextureManager::RegisterAuto(TextureTag::GaugeFrame);
-    TextureManager::RegisterAuto(TextureTag::GaugeMaxLv1);
-    TextureManager::RegisterAuto(TextureTag::GaugeEffect);
-    TextureManager::RegisterAuto(TextureTag::SpinUI);
-    TextureManager::RegisterAuto(TextureTag::DashUI);
-}
 
-void SceneGame::RegisterModel()
-{
-    ModelManager::RegisterAuto(ModelTag::Karubi);
-    ModelManager::RegisterAuto(ModelTag::Swing);
-    ModelManager::RegisterAuto(ModelTag::Benti);
-    ModelManager::RegisterAuto(ModelTag::Ufo);
-    ModelManager::RegisterAuto(ModelTag::ProtPlay);
-}
-
-void SceneGame::CreateProtStage()
-{
-    //最後に壊させる
-    //最後に一番大きいガラスを割ってみよう！(最大強化できた時)
-    //UFOを割ったらクリア
-    GameObject& ufo1 = W->CreateGameObject();
-    ufo1.AddComponent<Transform>(DirectX::XMFLOAT3{ 10, -0.5f,10 }, Vec3Zero, Vec3One);
-    ufo1.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::Ufo));
-    ufo1.AddComponent<ModelRenderer>();
-    ufo1.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0,2,0 }, DirectX::XMFLOAT3{ 4,4 , 4 });
-    LineManager::AddBoxCollider(&ufo1);
-    ufo1.AddComponent<GlassScript>(GlassGrade::Grade_3);
-    ufo1.SetTag(Tag::Glass);
-
-    //二番目に壊させる
-    //ハンマーがパワーアップした！大きいガラスを割ったほうがゲージがより増えやすい！
-    //たくさん壊して最大強化させよう！
-    GameObject& benti1 = W->CreateGameObject();
-    benti1.AddComponent<Transform>(DirectX::XMFLOAT3{ -10,-0.9f,10 }, Vec3Zero, Vector3( 1.2f, 1.2f, 1.2f));
-    benti1.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::Benti));
-    benti1.AddComponent<ModelRenderer>();
-    benti1.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0,1,0 }, DirectX::XMFLOAT3{ 4,2 , 2 });
-    LineManager::AddBoxCollider(&benti1);
-    benti1.AddComponent<GlassScript>(GlassGrade::Grade_2);
-    benti1.SetTag(Tag::Glass);
-    
-
-    GameObject& benti2 = W->CreateGameObject();
-    benti2.AddComponent<Transform>(DirectX::XMFLOAT3{ 20,-0.9f,-16 }, Vec3Zero, Vector3( 1.2f, 1.2f, 1.2f));
-    benti2.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::Benti));
-    benti2.AddComponent<ModelRenderer>();
-    benti2.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0,1,0 }, DirectX::XMFLOAT3{ 4,2 , 2 });
-    LineManager::AddBoxCollider(&benti2);
-    benti2.AddComponent<GlassScript>(GlassGrade::Grade_2);
-    benti2.SetTag(Tag::Glass);
-
-    GameObject& benti3 = W->CreateGameObject();
-    benti3.AddComponent<Transform>(DirectX::XMFLOAT3{ 11,-0.9f,-13 }, Vec3Zero, Vector3( 1.2f, 1.2f, 1.2f));
-    benti3.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::Benti));
-    benti3.AddComponent<ModelRenderer>();
-    benti3.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0,1,0 }, DirectX::XMFLOAT3{ 4,2 , 2 });
-    LineManager::AddBoxCollider(&benti3);
-    benti3.AddComponent<GlassScript>(GlassGrade::Grade_2);
-    benti3.SetTag(Tag::Glass);
-
-    //一番初めに壊させる。
-    // ここで簡単な操作説明
-    //<内容文>物を壊すとゲージがたまる！ゲージがMAXになるとハンマーが強化され、より大きなガラスを破壊できるようになるぞ！
-    //もっと小さなガラスを割ってゲージをためてみよう！
-    GameObject& swing1 = W->CreateGameObject();
-    swing1.AddComponent<Transform>(DirectX::XMFLOAT3{ -7,-0.9f,-8 }, Vec3Zero, Vector3(0.8f, 0.8f, 0.8f));
-    swing1.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::Swing));
-    swing1.AddComponent<ModelRenderer>();
-    swing1.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0, 0.7f, 0.2f }, DirectX::XMFLOAT3{ 1.5f, 1.5f , 1.5f });
-    LineManager::AddBoxCollider(&swing1);
-    swing1.AddComponent<GlassScript>(GlassGrade::Grade_1);
-    swing1.SetTag(Tag::Glass);
-
-    GameObject& swing2 = W->CreateGameObject();
-    swing2.AddComponent<Transform>(DirectX::XMFLOAT3{ -12,-0.9f,-2 }, Vec3Zero, Vector3(0.8f, 0.8f, 0.8f));
-    swing2.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::Swing));
-    swing2.AddComponent<ModelRenderer>();
-    swing2.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0, 0.7f, 0.2f }, DirectX::XMFLOAT3{ 1.5f, 1.5f , 1.5f });
-    LineManager::AddBoxCollider(&swing2);
-    swing2.AddComponent<GlassScript>(GlassGrade::Grade_1);
-    swing2.SetTag(Tag::Glass);
-
-    GameObject& swing3 = W->CreateGameObject();
-    swing3.AddComponent<Transform>(DirectX::XMFLOAT3{ -22,-0.9f,-13 }, Vec3Zero, Vector3(0.8f, 0.8f, 0.8f));
-    swing3.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::Swing));
-    swing3.AddComponent<ModelRenderer>();
-    swing3.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0, 0.7f, 0.2f }, DirectX::XMFLOAT3{ 1.5f, 1.5f , 1.5f });
-    LineManager::AddBoxCollider(&swing3);
-    swing3.AddComponent<GlassScript>(GlassGrade::Grade_1);
-    swing3.SetTag(Tag::Glass);
-
-
-    //物が少なくてさみしいので適当に置きます↓（削除OK）
-    GameObject& player1 = W->CreateGameObject();
-    player1.AddComponent<Transform>(DirectX::XMFLOAT3{ -12,-0.9f,8 }, Vec3Zero, Vector3(0.8f, 0.8f, 0.8f));
-    player1.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::ProtPlay));
-    player1.AddComponent<ModelRenderer>();
-    player1.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ -0.2f, 1, 0 }, DirectX::XMFLOAT3{ 1, 2, 1 });
-    LineManager::AddBoxCollider(&player1);
-    player1.AddComponent<GlassScript>(GlassGrade::Grade_1);
-    player1.SetTag(Tag::Glass);
-
-    GameObject& player2 = W->CreateGameObject();
-    player2.AddComponent<Transform>(DirectX::XMFLOAT3{ 5,-0.9f,2 }, Vec3Zero, Vector3(0.8f, 0.8f, 0.8f));
-    player2.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::ProtPlay));
-    player2.AddComponent<ModelRenderer>();
-    player2.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ -0.2f, 1, 0 }, DirectX::XMFLOAT3{ 1, 2, 1 });
-    LineManager::AddBoxCollider(&player2);
-    player2.AddComponent<GlassScript>(GlassGrade::Grade_1);
-    player2.SetTag(Tag::Glass);
-
-    GameObject& player3 = W->CreateGameObject();
-    player3.AddComponent<Transform>(DirectX::XMFLOAT3{ -20,-0.9f,-20 }, Vec3Zero, Vector3(0.8f, 0.8f, 0.8f));
-    player3.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::ProtPlay));
-    player3.AddComponent<ModelRenderer>();
-    player3.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ -0.2f, 1, 0 }, DirectX::XMFLOAT3{ 1, 2, 1 });
-    LineManager::AddBoxCollider(&player3);
-    player3.AddComponent<GlassScript>(GlassGrade::Grade_1);
-    player3.SetTag(Tag::Glass);
-
-    GameObject& player4 = W->CreateGameObject();
-    player4.AddComponent<Transform>(DirectX::XMFLOAT3{ -16,-0.9f,-16 }, Vec3Zero, Vector3(0.8f, 0.8f, 0.8f));
-    player4.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::ProtPlay));
-    player4.AddComponent<ModelRenderer>();
-    player4.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ -0.2f, 1, 0 }, DirectX::XMFLOAT3{ 1, 2, 1 });
-    LineManager::AddBoxCollider(&player4);
-    player4.AddComponent<GlassScript>(GlassGrade::Grade_1);
-    player4.SetTag(Tag::Glass);
-
-    GameObject& player5 = W->CreateGameObject();
-    player5.AddComponent<Transform>(DirectX::XMFLOAT3{ 13,-0.9f,2 }, Vec3Zero, Vector3(0.8f, 0.8f, 0.8f));
-    player5.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::ProtPlay));
-    player5.AddComponent<ModelRenderer>();
-    player5.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ -0.2f, 1, 0 }, DirectX::XMFLOAT3{ 1, 2, 1 });
-    LineManager::AddBoxCollider(&player5);
-    player5.AddComponent<GlassScript>(GlassGrade::Grade_1);
-    player5.SetTag(Tag::Glass);
-
-    GameObject& player6 = W->CreateGameObject();
-    player6.AddComponent<Transform>(DirectX::XMFLOAT3{ 22,-0.9f,8 }, Vec3Zero, Vector3(0.8f, 0.8f, 0.8f));
-    player6.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::ProtPlay));
-    player6.AddComponent<ModelRenderer>();
-    player6.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ -0.2f, 1, 0 }, DirectX::XMFLOAT3{ 1, 2, 1 });
-    LineManager::AddBoxCollider(&player6);
-    player6.AddComponent<GlassScript>(GlassGrade::Grade_1);
-    player6.SetTag(Tag::Glass);
-
-    GameObject& player7 = W->CreateGameObject();
-    player7.AddComponent<Transform>(DirectX::XMFLOAT3{ -17,-0.9f,15 }, Vec3Zero, Vector3(0.8f, 0.8f, 0.8f));
-    player7.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::ProtPlay));
-    player7.AddComponent<ModelRenderer>();
-    player7.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ -0.2f, 1, 0 }, DirectX::XMFLOAT3{ 1, 2, 1 });
-    LineManager::AddBoxCollider(&player7);
-    player7.AddComponent<GlassScript>(GlassGrade::Grade_1);
-    player7.SetTag(Tag::Glass);
-
-    GameObject& player8 = W->CreateGameObject();
-    player8.AddComponent<Transform>(DirectX::XMFLOAT3{ 6,-0.9f,17 }, Vec3Zero, Vector3(0.8f, 0.8f, 0.8f));
-    player8.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::ProtPlay));
-    player8.AddComponent<ModelRenderer>();
-    player8.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ -0.2f, 1, 0 }, DirectX::XMFLOAT3{ 1, 2, 1 });
-    LineManager::AddBoxCollider(&player8);
-    player8.AddComponent<GlassScript>(GlassGrade::Grade_1);
-    player8.SetTag(Tag::Glass);
-
-    GameObject& player9 = W->CreateGameObject();
-    player9.AddComponent<Transform>(DirectX::XMFLOAT3{ 20,-0.9f,-12 }, Vec3Zero, Vector3(0.8f, 0.8f, 0.8f));
-    player9.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::ProtPlay));
-    player9.AddComponent<ModelRenderer>();
-    player9.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ -0.2f, 1, 0 }, DirectX::XMFLOAT3{ 1, 2, 1 });
-    LineManager::AddBoxCollider(&player9);
-    player9.AddComponent<GlassScript>(GlassGrade::Grade_1);
-    player9.SetTag(Tag::Glass);
-
-    GameObject& player10 = W->CreateGameObject();
-    player10.AddComponent<Transform>(DirectX::XMFLOAT3{ 14,-0.9f,-19 }, Vec3Zero, Vector3(0.8f, 0.8f, 0.8f));
-    player10.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::ProtPlay));
-    player10.AddComponent<ModelRenderer>();
-    player10.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ -0.2f, 1, 0 }, DirectX::XMFLOAT3{ 1, 2, 1 });
-    LineManager::AddBoxCollider(&player10);
-    player10.AddComponent<GlassScript>(GlassGrade::Grade_1);
-    player10.SetTag(Tag::Glass);
-}
-
-void SceneGame::CreateGlassModel()
-{
-    GameObject& ufo = W->CreateGameObject();
-    ufo.AddComponent<Transform>(DirectX::XMFLOAT3{ 4,0.5,4 }, Vec3Zero, Vec3One);
-    ufo.AddComponent<ModelComponent>(ModelManager::Get(ModelTag::Ufo));
-    ufo.AddComponent<ModelRenderer>();
-    ufo.AddComponent<BoxCollider>(true, DirectX::XMFLOAT3{ 0,0,0 }, DirectX::XMFLOAT3{ 2, 2, 2 });
-    LineManager::AddBoxCollider(&ufo);
-}
-
-void SceneGame::SetPlayerAndHummer()
-{
-}
-
-void SceneGame::CreateTimerUi()
-{
-    GameObject& tm = W->CreateGameObject();
-    CanvasUI& tmUI = tm.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Number));
-
-    GameObject& om = W->CreateGameObject();
-    CanvasUI& omUI = om.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Number));
-
-    GameObject& TimerUi_colon = W->CreateGameObject();
-
-    GameObject& ts = W->CreateGameObject();
-    CanvasUI& tsUI = ts.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Number));
-
-    GameObject& os = W->CreateGameObject();
-    CanvasUI& osUI = os.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Number));
-
-    GameObject& TimerUi_manager = W->CreateGameObject();
-    TimerUi_manager.AddComponent<TimerUIManager>(&tmUI, &omUI, &tsUI, &osUI);
-}
-
-void SceneGame::CreateScoreUi()
-{
-    // スコアの初期化
-    ScoreManager::Instance().Reset(500);
-
-    // 千の位
-    GameObject& th = W->CreateGameObject();
-    CanvasUI& thUI = th.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Number));
-
-    // 百の位
-    GameObject& h = W->CreateGameObject();
-    CanvasUI& hUI = h.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Number));
-
-    // 十の位
-    GameObject& t = W->CreateGameObject();
-    CanvasUI& tUI = t.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Number));
-
-    // 一の位
-    GameObject& o = W->CreateGameObject();
-    CanvasUI& oUI = o.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::Number));
-
-    GameObject& scoreUiManagerObj = W->CreateGameObject();
-    scoreUiManagerObj.AddComponent<ScoreUIManager>(&thUI, &hUI, &tUI, &oUI);
-}
-
-void SceneGame::CreateActionUi()
-{
-    //
-    GameObject& spin = W->CreateGameObject();
-    CanvasUI& spinUI = spin.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::SpinUI));
-
-    // 
-    GameObject& dash = W->CreateGameObject();
-    CanvasUI& dashUI = dash.AddComponent<CanvasUI>(TextureManager::Get(TextureTag::DashUI));
-
-    GameObject& actionUiManagerObj = W->CreateGameObject();
-    actionUiManagerObj.AddComponent<ActionUIManager>(&spinUI, &dashUI);
-}

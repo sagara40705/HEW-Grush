@@ -1,5 +1,6 @@
 #include "DirectX.h"
 #include "Texture.h"
+#include "DebugLog.h"
 
 //--- グローバル変数
 ID3D11Device*				g_pDevice;
@@ -153,7 +154,7 @@ HRESULT InitDirectX(HWND hWnd, UINT width, UINT height, bool fullscreen)
 	g_pDevice->CreateDepthStencilState(&dsDesc, &g_pDepthStencilState[0]);
 	dsDesc.DepthEnable = false;
 	g_pDevice->CreateDepthStencilState(&dsDesc, &g_pDepthStencilState[1]);
-	SetDepthTest(true); // ----- 深度テスト実行 -----
+	SetDepthTest(false);
 
 	//--- アルファブレンディング
 	// https://pgming-ctrl.com/directx11/blend/
@@ -199,7 +200,8 @@ HRESULT InitDirectX(HWND hWnd, UINT width, UINT height, bool fullscreen)
 		if (FAILED(hr)) { return hr; }
 	}
 	SetSamplerState(SAMPLER_LINEAR);
-	//SetSamplerState(/*slot=*/0, /*filter=*/SAMPLER_LINEAR, /*address=*/ADDRESS_WRAP);
+
+	DebugLog::Init();
 
 	return S_OK;
 }
@@ -223,6 +225,8 @@ void UninitDirectX()
 	if(g_pSwapChain)
 		g_pSwapChain->SetFullscreenState(false, NULL);
 	SAFE_RELEASE(g_pSwapChain);
+
+	DebugLog::Uninit(g_pDevice);
 	SAFE_RELEASE(g_pDevice);
 }
 

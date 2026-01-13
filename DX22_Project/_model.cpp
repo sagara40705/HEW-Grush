@@ -2,156 +2,216 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
+#include "DebugLog.h"
 
-
-void Model::MakeMesh(const void* ptr, float scale, Flip flip)
+void Model::MakeMesh(const void* ptr)
 {
 	// 事前準備
 	aiVector3D zero3(0.0f, 0.0f, 0.0f);
 	aiColor4D one4(1.0f, 1.0f, 1.0f, 1.0f);
 	const aiScene* pScene = reinterpret_cast<const aiScene*>(ptr);
-	float xFlip = flip == Flip::XFlip ? -1.0f : 1.0f;
-	float zFlip = (flip == Flip::ZFlip || flip == Flip::ZFlipUseAnime) ? -1.0f : 1.0f;
-	int idx1 = (flip == Flip::XFlip || flip == Flip::ZFlip) ? 2 : 1;
-	int idx2 = (flip == Flip::XFlip || flip == Flip::ZFlip) ? 1 : 2;
+	bool isXFlip = (m_loadFlip == Flip::XFlip || m_loadFlip == Flip::XZFlip);
+	bool isIdxFlip = (m_loadFlip == Flip::XFlip || m_loadFlip == Flip::ZFlip);
+	float xFlip = isXFlip ? -1.0f : 1.0f;
+	int idx1 = isIdxFlip ? 2 : 1;
+	int idx2 = isIdxFlip ? 1 : 2;
 
 	// メッシュの作成
 	m_meshes.resize(pScene->mNumMeshes);
 	for (unsigned int i = 0; i < m_meshes.size(); ++i)
 	{
+		aiMesh* assimpMesh = pScene->mMeshes[i];
+		Mesh& mesh = m_meshes[i];
+
+		// ノード階層内の探索
+		mesh.nodeIndex = FindNode(assimpMesh->mName.data);
+
+		// モーフを行ってないモデルはシーンにメッシュが登録されていないので
+		// 特にエラー処理を行わないようにする
+		// if (mesh.nodeIndex == NODE_NONE) { continue; }
+
 		// 頂点書き込み先の領域を用意
-		m_meshes[i].vertices.resize(pScene->mMeshes[i]->mNumVertices);
+		mesh.vertices.resize(assimpMesh->mNumVertices);
 
 		// 頂点データの書き込み
-		for (unsigned int j = 0; j < m_meshes[i].vertices.size(); ++j) {
-			// ☆モデルデータから値の取得
-			aiVector3D pos = pScene->mMeshes[i]->mVertices[j];
-			aiVector3D normal = pScene->mMeshes[i]->HasNormals() ?
-				pScene->mMeshes[i]->mNormals[j] : zero3;
-			aiVector3D uv = pScene->mMeshes[i]->HasTextureCoords(0) ?
-				pScene->mMeshes[i]->mTextureCoords[0][j] : zero3;
-			aiColor4D color = pScene->mMeshes[i]->HasVertexColors(0) ?
-				pScene->mMeshes[i]->mColors[0][j] : one4;
-
-			// ☆値を設定
-			m_meshes[i].vertices[j] = {
-				DirectX::XMFLOAT3(pos.x * scale * xFlip, pos.y * scale, pos.z * scale * zFlip),
-				DirectX::XMFLOAT3(normal.x, normal.y, normal.z),
+		for (unsigned int j = 0; j < mesh.vertices.size(); ++j) {
+			// モデルデータから値の取得
+			aiVector3D pos = assimpMesh->mVertices[j];
+			aiVector3D normal = assimpMesh->HasNormals() ? assimpMesh->mNormals[j] : zero3;
+			aiVector3D uv = assimpMesh->HasTextureCoords(0) ?
+				assimpMesh->mTextureCoords[0][j] : zero3;
+			aiColor4D color = assimpMesh->HasVertexColors(0) ? assimpMesh->mColors[0][j] : one4;
+			// 値を設定
+			mesh.vertices[j] = {
+				DirectX::XMFLOAT3(pos.x * m_loadScale * xFlip, pos.y * m_loadScale, pos.z * m_loadScale),
+				DirectX::XMFLOAT3(normal.x * xFlip, normal.y, normal.z),
 				DirectX::XMFLOAT2(uv.x, uv.y),
 				DirectX::XMFLOAT4(color.r, color.g, color.b, color.a)
 			};
 		}
 
 		// ボーン生成
-		MakeWeight(pScene, i);
+		MakeVertexWeight(pScene, i);
 
 		// インデックスの書き込み先の用意
 		// mNumFacesはポリゴンの数を表す(１ポリゴンで3インデックス
-		m_meshes[i].indices.resize(pScene->mMeshes[i]->mNumFaces * 3);
+		mesh.indices.resize(assimpMesh->mNumFaces * 3);
 
 		// インデックスの書き込み
-		for (unsigned int j = 0; j < pScene->mMeshes[i]->mNumFaces; ++j) {
-			// ☆モデルデータから値の取得
-			aiFace face = pScene->mMeshes[i]->mFaces[j];
-			// ☆値の設定
+		for (unsigned int j = 0; j < assimpMesh->mNumFaces; ++j) {
+			// モデルデータから値の取得
+			aiFace face = assimpMesh->mFaces[j];
+
+			// 値の設定
 			int idx = j * 3;
-			m_meshes[i].indices[idx + 0] = face.mIndices[0];
-			m_meshes[i].indices[idx + 1] = face.mIndices[idx1];
-			m_meshes[i].indices[idx + 2] = face.mIndices[idx2];
+			mesh.indices[idx + 0] = face.mIndices[0];
+			mesh.indices[idx + 1] = face.mIndices[idx1];
+			mesh.indices[idx + 2] = face.mIndices[idx2];
 		}
 
 		// マテリアルの割り当て
-		m_meshes[i].materialID = pScene->mMeshes[i]->mMaterialIndex;
+		mesh.materialID = assimpMesh->mMaterialIndex;
 
-		// ☆頂点バッファに必要なデータを設定
+		// メッシュを元に頂点バッファ作成
 		MeshBuffer::Description desc = {};
-		desc.pVtx = m_meshes[i].vertices.data();
+		desc.pVtx = mesh.vertices.data();
 		desc.vtxSize = sizeof(Vertex);
-		desc.vtxCount = m_meshes[i].vertices.size();
-		desc.pIdx = m_meshes[i].indices.data();
+		desc.vtxCount = static_cast<UINT>(mesh.vertices.size());
+		desc.pIdx = mesh.indices.data();
 		desc.idxSize = sizeof(unsigned long);
-		desc.idxCount = m_meshes[i].indices.size();
+		desc.idxCount = static_cast<UINT>(mesh.indices.size());
 		desc.topology = D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST;
-				
-		// ☆頂点バッファ作成
-		m_meshes[i].pMesh = new MeshBuffer();
-		m_meshes[i].pMesh->Create(desc);
+		mesh.pMesh = new MeshBuffer();
+		mesh.pMesh->Create(desc);
 	}
 }
+
 void Model::MakeMaterial(const void* ptr, std::string directory)
 {
 	// 事前準備
 	aiColor3D color(0.0f, 0.0f, 0.0f);
-	float shininess = 0.0f;
 	const aiScene* pScene = reinterpret_cast<const aiScene*>(ptr);
+	float shininess;
 
 	// マテリアルの作成
 	m_materials.resize(pScene->mNumMaterials);
 	for (unsigned int i = 0; i < m_materials.size(); ++i)
 	{
+		aiMaterial* assimpMaterial = pScene->mMaterials[i];
+		Material& material = m_materials[i];
+
 		//--- 各種マテリアルパラメーターの読み取り
-		// ☆拡散光の読み取り
-		if (pScene->mMaterials[i]->Get(AI_MATKEY_COLOR_DIFFUSE, color) == AI_SUCCESS)
-			m_materials[i].diffuse = DirectX::XMFLOAT4(color.r, color.g, color.b, 1.0f);
+		// 拡散光の読み取り
+		if (assimpMaterial->Get(AI_MATKEY_COLOR_DIFFUSE, color) == AI_SUCCESS)
+			material.diffuse = DirectX::XMFLOAT4(color.r, color.g, color.b, 1.0f);
 		else
-			m_materials[i].diffuse = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
-		// ☆環境光の読み取り
-		if (pScene->mMaterials[i]->Get(AI_MATKEY_COLOR_AMBIENT, color) == AI_SUCCESS)
-			m_materials[i].ambient = DirectX::XMFLOAT4(color.r, color.g, color.b, 1.0f);
+			material.diffuse = DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+		// 環境光の読み取り
+		if (assimpMaterial->Get(AI_MATKEY_COLOR_AMBIENT, color) == AI_SUCCESS)
+			material.ambient = DirectX::XMFLOAT4(color.r, color.g, color.b, 1.0f);
 		else
-			m_materials[i].ambient = DirectX::XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f);
-		// ☆反射光の読み取り
-		if (pScene->mMaterials[i]->Get(AI_MATKEY_COLOR_SPECULAR, color) == AI_SUCCESS)
-			m_materials[i].specular = DirectX::XMFLOAT4(color.r, color.g, color.b, 0.0f);
+			material.ambient = DirectX::XMFLOAT4(0.3f, 0.3f, 0.3f, 1.0f);
+		// 反射光の読み取り
+		if (assimpMaterial->Get(AI_MATKEY_COLOR_SPECULAR, color) == AI_SUCCESS)
+			material.specular = DirectX::XMFLOAT4(color.r, color.g, color.b, 0.0f);
 		else
-			m_materials[i].specular = DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
-		// ☆反射光の強さを読み取り
-		if (pScene->mMaterials[i]->Get(AI_MATKEY_SHININESS, shininess) == AI_SUCCESS)
-			m_materials[i].specular.w = shininess;
+			material.specular = DirectX::XMFLOAT4(0.0f, 0.0f, 0.0f, 0.0f);
+		// 反射光の強さを読み取り
+		if (assimpMaterial->Get(AI_MATKEY_SHININESS, shininess) == AI_SUCCESS)
+			material.specular.w = shininess;
+
+		//========================================================
+	   // 2) 透過を読む
+	   //========================================================
+		float opacity = 1.0f;
+		bool foundOpacity = false;
+
+		// (A) Opacity（1=不透明, 0=透明）を最優先
+		float op = 1.0f;
+		if (assimpMaterial->Get(AI_MATKEY_OPACITY, op) == AI_SUCCESS)
+		{
+			op = std::clamp(op, 0.0f, 1.0f);
+
+			// 0/1 しか出ない（未使用で 0 が返る等）ケースを避けるため
+			// “中間値っぽい”ときだけ採用（必要なら条件を緩めてOK）
+			if (op > 0.0f && op < 1.0f)
+			{
+				opacity = op;
+				foundOpacity = true;
+			}
+		}
+		// (B) TransparencyFactor（0=不透明, 1=透明）をフォールバック
+		if (!foundOpacity)
+		{
+			float tf = 0.0f;
+			if (assimpMaterial->Get(AI_MATKEY_TRANSPARENCYFACTOR, tf) == AI_SUCCESS)
+			{
+				tf = std::clamp(tf, 0.0f, 1.0f);
+
+				// 未使用で 1.0 が入ってしまう等の事故を避ける
+				if (tf > 0.0f && tf < 1.0f)
+				{
+					opacity = 1.0f - tf;
+					foundOpacity = true;
+				}
+			}
+		}
+		// (C) TransparentColor（0=不透明, 1=透明っぽい）をさらにフォールバック
+		if (!foundOpacity)
+		{
+			aiColor3D tcol(0, 0, 0);
+			if (assimpMaterial->Get(AI_MATKEY_COLOR_TRANSPARENT, tcol) == AI_SUCCESS)
+			{
+				float t = std::clamp((tcol.r + tcol.g + tcol.b) / 3.0f, 0.0f, 1.0f);
+				if (t > 0.0f && t < 1.0f)
+				{
+					opacity = 1.0f - t;
+					foundOpacity = true;
+				}
+			}
+		}
+		// 最終：Diffuseのalphaに格納（PS側で objDiffuse.a を掛ける）
+		material.diffuse.w = std::clamp(opacity, 0.0f, 1.0f);
+
+
 
 		// テクスチャ読み込み処理
 		HRESULT hr;
 		aiString path;
 
 		// テクスチャのパス情報を読み込み
-		m_materials[i].pTexture = nullptr;
-		if (pScene->mMaterials[i]->Get(AI_MATKEY_TEXTURE_DIFFUSE(0), path) != AI_SUCCESS) {
+		material.pTexture = nullptr;
+		if (assimpMaterial->Get(AI_MATKEY_TEXTURE_DIFFUSE(0), path) != AI_SUCCESS) {
 			continue;
 		}
 
 		// テクスチャ領域確保
-		m_materials[i].pTexture = new Texture;
+		material.pTexture = new Texture;
 
 		// そのまま読み込み
-		hr = m_materials[i].pTexture->Create(path.C_Str());
-		if (SUCCEEDED(hr)) { continue; }
+		hr = material.pTexture->Create(path.C_Str());
+		if (SUCCEEDED(hr)) { DebugLog::OutputValue("Model::Load, material.pTexture", material.pTexture);  continue; }
 
 		// ディレクトリと連結して探索
-		hr = m_materials[i].pTexture->Create((directory + path.C_Str()).c_str());
-		if (SUCCEEDED(hr)) { continue; }
+		hr = material.pTexture->Create((directory + path.C_Str()).c_str());
+		if (SUCCEEDED(hr)) { DebugLog::OutputValue("Model::Load, material.pTexture", material.pTexture);  continue; }
+
+
 
 		// モデルと同じ階層を探索
 		// パスからファイル名のみ取得
 		std::string fullPath = path.C_Str();
-		std::string::iterator strIt = fullPath.begin();
-		while (strIt != fullPath.end()) {
-			if (*strIt == '/')
-				*strIt = '\\';
-			++strIt;
-		}
-		size_t find = fullPath.find_last_of("\\");
-		std::string fileName = fullPath;
-		if (find != std::string::npos)
-			fileName = fileName.substr(find + 1);
+		std::string baseDir = GetDirectory(fullPath.c_str());
+		std::string fileName = fullPath.substr(baseDir.size());
+
 		// テクスチャの読込
-		hr = m_materials[i].pTexture->Create((directory + fileName).c_str());
-		if (SUCCEEDED(hr)) { continue; }
+		hr = material.pTexture->Create((directory + fileName).c_str());
+		if (SUCCEEDED(hr)) { DebugLog::OutputValue("Model::Load, material.pTexture", material.pTexture);  continue; }
 
 		// テクスチャが見つからなかった
-		delete m_materials[i].pTexture;
-		m_materials[i].pTexture = nullptr;
-#ifdef _DEBUG
-		m_errorStr += path.C_Str();
-#endif
+		delete material.pTexture;
+		material.pTexture = nullptr;
+		SetErrorMessage("Not find texture. [" + fullPath + "]");
+
 	}
 }

@@ -1,37 +1,43 @@
 #pragma once
-#include "World.h"
+#include <cstdint>
+#include <type_traits>
+#include <memory>
 #include "Scene.h"
+#include "SceneManager.h"
+
+struct GameState;
+
+// ゲーム全体のエントリーポイント的クラス。
+// シーン管理自体は SceneManager に委譲する。
 class Game
 {
-public:
-    // ゲーム全体で共有する World
-    static World world;
-
 private:
-    // 現在のシーン
-    static Scene* s_currentScene;
-    // 次フレームに切り替えるために予約されたシーン
-    static Scene* s_nextScene;
-
+    static std::unique_ptr<GameState> s_state;
 public:
-    // 最初のシーンを渡して初期化
-    // 例: Game::Init(new SceneGame());
-    static void Init(Scene* firstScene);
+    static GameState* GetState() { return s_state.get(); }
+    static void OriginalInit();
+    static void OriginalUninit();
+public:
+    static void Init();     // 初期化
+    static void Uninit();   // 終了処理
+    static void Update();   // 毎フレーム更新
+    static void Draw();     // 毎フレーム描画
 
-    static void Uninit();
+    // 既存コードで Game::SetNext<T>() を使っているなら、その互換ラッパ
+    template<class T>
+    static void SetNext()
+    {
+        SceneManager::ChangeScene<T>();
+    }
 
-    // 毎フレーム呼ぶ
-    static void Update();
-    static void Draw();
+    template<class T>
+    static void PushScene()
+    {
+        SceneManager::PushScene<T>();
+    }
 
-    // シーン切り替え予約
-    // 例: Game::RequestSceneChange(new DebugScene());
-    static void RequestSceneChange(Scene* nextScene);
-
-    // World へのアクセサ（W の代わりに使う想定）
-    static World& GetWorld() { return world; }
-
-private:
-    // Update の最後で呼ぶ：予約があれば実際に切り替える
-    static void ApplySceneChange();
+    static void PopScene()
+    {
+        SceneManager::PopScene();
+    }
 };

@@ -1,46 +1,45 @@
 #pragma once
-#include <memory>
-#include <array>
 #include "Component.h"
-#include "MeshBuffer.h"
+#include "PrimitiveMeshManager.h"
+#include "ModelManager.h"
+#include <cstdint>
 
-struct Vertex
+enum class MeshSource : uint8_t
 {
-    float pos[3];
-    float uv[2];
+    Primitive,
+    Model,
 };
 
-//途中変更なし予定
-class MeshFilter : public Component
+class MeshFilter final : public Component
 {
 public:
-    enum Type
+    // プリミティブ用コンストラクタ
+    MeshFilter(PrimitiveMeshTag tag) : source(MeshSource::Primitive)
     {
-        Cube,
-        Sphere,
-        Plane,
-        Cylinder,
-        Count
-    };
+        primitive = PrimitiveMeshManager::Get(tag);
+        boundsRadius = PrimitiveMeshManager::GetBounds(tag);  // あれば
+    }
+
+    // モデル用コンストラクタ
+    MeshFilter(ModelTag tag) : source(MeshSource::Model)
+    {
+        model = ModelManager::Get(tag);
+        boundsRadius = ModelManager::GetBounds(tag);          // あれば
+    }
+
+    MeshSource GetSource() const { return source; }
+    MeshBuffer* GetPrimitive() const { return primitive; }
+    Model* GetModel()     const { return model; }
+
+    float boundsRadius = 5.0f;
+    Vector3 boundsOffset = Vector3(0.f, 0.5f, 0.f);
+
+    // color はデフォルト緑 / group は General としておく
+    void SetBoundsOffset(Vector3 offset) { boundsOffset = offset; }
+    void DebugDrawBounds() const;
+
 private:
-    static std::array<std::unique_ptr<MeshBuffer>, Type::Count> s_meshBuffers;
-    Type type{};
-public:
-    explicit MeshFilter(Type t = Cube) : type(t) {}
-    ~MeshFilter() override = default;
-
-    void Start() override;
-    void OnDestroy() override;
-
-    MeshBuffer* GetMeshBuffer() const;
-    Type GetType() const { return type; }
-
-    static void ReleaseAll();
-private:
-    static void EnsureBuilt(Type t); // 必要なプリミティブだけ生成
-
-    static void BuildCube();
-    static void BuildSphere();
-    static void BuildPlane();
-    static void BuildCylinder();
+    MeshSource  source{};
+    MeshBuffer* primitive = nullptr; // プリミティブ用
+    Model* model = nullptr; // モデル用
 };
