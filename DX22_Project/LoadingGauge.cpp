@@ -14,6 +14,7 @@ void LoadingGauge::Start()
 
 void LoadingGauge::Update()
 {
+	// ƒ[ƒhi’»(0 - 1.0)‚ðŽæ“¾
 	float prog = loading_->GetProgress();
 
 	Vector2 size = ui_->GetSize();

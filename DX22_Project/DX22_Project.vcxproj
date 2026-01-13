@@ -171,6 +171,7 @@
     <ClCompile Include="Hammer.cpp" />
     <ClCompile Include="JumpSki.cpp" />
     <ClCompile Include="LoadingGauge.cpp" />
+    <ClCompile Include="LoadingUI.cpp" />
     <ClCompile Include="Model_anime.cpp" />
     <ClCompile Include="Model_check.cpp" />
     <ClCompile Include="Model_get.cpp" />
@@ -276,6 +277,7 @@
     <ClInclude Include="LineManager.h" />
     <ClInclude Include="LoadingGauge.h" />
     <ClInclude Include="LoadingScene.h" />
+    <ClInclude Include="LoadingUI.h" />
     <ClInclude Include="Main.h" />
     <ClInclude Include="MeshBuffer.h" />
     <ClInclude Include="MeshFilter.h" />
