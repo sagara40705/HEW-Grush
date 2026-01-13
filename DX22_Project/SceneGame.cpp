@@ -191,11 +191,21 @@ void SceneGame::CreateStage()
 
 	// デバック用
 	stage = StageId::Stage1;
-
+	
+	//ステージ１
 	CreateStageFromCSV("CSV/StageData_Grade1.csv");
 	CreateStageFromCSV("CSV/StageData_Grade2.csv");
 	CreateStageFromCSV("CSV/StageData_Grade3.csv");
 
+	//ステージ２の左側　プレイヤーの初期値はステージ1と違う
+	//CreateStageFromCSV("CSV/Stage2LeftData_Grade1.csv");
+	//CreateStageFromCSV("CSV/Stage2LeftData_Grade2.csv");
+	//CreateStageFromCSV("CSV/Stage2LeftData_Grade3.csv");
+	//ステージ2の右側
+	//CreateStageFromCSV("CSV/Stage2RightData_Grade1.csv");
+	//CreateStageFromCSV("CSV/Stage2RightData_Grade2.csv");
+	//CreateStageFromCSV("CSV/Stage2RightData_Grade3.csv");
+	
 	switch (stage)
 	{
 	case StageId::Stage1:	CreateStage1();
