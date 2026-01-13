@@ -190,7 +190,11 @@ void SceneGame::CreateStage()
 	StageId stage = GetCurrentStage();
 
 	// デバック用
-	//stage = StageId::Stage2;
+	stage = StageId::Stage1;
+
+	CreateStageFromCSV("CSV/StageData_Grade1.csv");
+	CreateStageFromCSV("CSV/StageData_Grade2.csv");
+	CreateStageFromCSV("CSV/StageData_Grade3.csv");
 
 	switch (stage)
 	{
@@ -248,6 +252,7 @@ void SceneGame::CreateStage1()
 	BoxCollider& bcL = wL.AddComponent<BoxCollider>(); bcL.layer = Layer::Ground;
 	wL.AddComponent<StageWall>();
 
+	return;
 
 	////Grade_3
 	//Prefab::Instantiate(w, PrefabId::Ufo, Vector3(-5.f, -0.5f, 20.f), Vector3::zero(), Vector3::one());
@@ -826,7 +831,7 @@ void SceneGame::CreateStageFromCSV(const std::string& filename)
 // 文字列の前後の空白を削除するヘルパー関数
 std::string Trim(const std::string& str)
 {
-	const char* trimChars = " \t\n\r\f\v";
+	const char* trimChars = " \t\n\r\f\v\"";
 
 	std::string result = str;
 
