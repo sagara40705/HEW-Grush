@@ -34,7 +34,7 @@ void GlassGaugeManager::Update()
 	if (isLimitBreak_)
 	{
 		limitBreakDurationTimer_ += 0.1f / 60.f;
-		ShaderList::SetRainbowTime(limitBreakDurationTimer_);
+		//ShaderList::SetRainbowTime(limitBreakDurationTimer_);
 
 		if (limitBreakDurationTimer_ >= kLimitBreakDuration)
 		{

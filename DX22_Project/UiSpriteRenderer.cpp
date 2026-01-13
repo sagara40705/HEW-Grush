@@ -82,6 +82,8 @@ void UiSpriteRenderer::Render()
 
     // Texture / states
     ps->SetTexture(0, texture_);
+    SetDepthTest(false);
+    SetCullingMode(D3D11_CULL_NONE);
 
     // Draw
     vs->Bind();

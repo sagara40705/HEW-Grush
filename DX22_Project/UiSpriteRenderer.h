@@ -16,8 +16,6 @@ class Transform;
 class UiSpriteRenderer final : public Renderer
 {
 private:
-
-private:
     Canvas* canvas = nullptr;           // nullptr ‚Ìê‡‚Í Canvas::GetMain() ‚ğg‚¤
     TextureTag texTag;
     Texture* texture_ = nullptr;

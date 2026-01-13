@@ -14,25 +14,41 @@ enum class TextureTag : uint8_t
     SkyDome = 5,
     GaugeEmpty = 6,
     GaugeMax = 7,
-    GaugeEffect = 8,
-    ScoreAtoKg = 9,
-    ScoreNumber = 10,
-    TimerColon = 11,
-    TimerNumber = 12,
-    Spin = 13,
-    SpinMono = 14,
-    SpinMoji = 15,
-    SpinMojiMono = 16,
-    SpinFlash = 17,
-    SpinFront = 18,
-    Dash = 19,
-    DashMono = 20,
-    DashMoji = 21,
-    DashMojiMono = 22,
-	UIFrostNoise = 23,
-	EffectLv1 = 24,
-	GlassShard = 25,
-    Count = 26
+	GaugeFlash = 8,
+    GaugeEffect = 9,
+    ScoreAtoKg = 10,
+    ScoreNumber = 11,
+    TimerColon = 12,
+    TimerNumber = 13,
+    Spin = 14,
+    SpinMono = 15,
+    SpinMoji = 16,
+    SpinMojiMono = 17,
+    SpinFlash = 18,
+    SpinFront = 19,
+    Dash = 20,
+    DashMono = 21,
+    DashMoji = 22,
+    DashMojiMono = 23,
+	UIFrostNoise = 24,
+	EffectLv1 = 25,
+	GlassShard = 26,
+    UI_font,        // メニュー UI テキスト画像
+    UI_Frame,       // メニュー UI 枠画像
+    UI_Break,       // UI 選択時などのハイライト画像
+    UI_BreakID,     //UIのシェーダーアニメーションを作るためのID用画像
+    Background_Game,//ゲームの背景用
+    Background_Game2,//ゲームの背景用
+    Background_Game3,//ゲームの背景用
+    Title_Main,      //タイトルのメイン画像
+    Title_Font,     //タイトルの文字
+    Title_Break,    //タイトルを割る
+    Title_BreakID,  //タイトル割るID
+    Title_Loge,     //タイトルロゴ
+    Title_Loge2,
+    FadeOut,
+
+    Count 
 };
 
 class TextureManager
