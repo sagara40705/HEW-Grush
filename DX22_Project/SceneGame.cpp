@@ -203,7 +203,7 @@ void SceneGame::CreateStage()
 	constexpr float OFFSET = HALF + 0.5f;
 	
 	//80フィールド
-	GameObject& floor = w.CreateGameObject(Vector3(0.f, -1.f, 0.f), Vector3::zero(), Vector3(80.f, 0.1f, 80.f));
+	GameObject& floor = w.CreateGameObject(Vector3(0.f, -1.f, 0.f), Vector3::zero(), Vector3(160.f, 0.1f, 160.f));
 
 	MeshFilter& mf = floor.AddComponent<MeshFilter>(PrimitiveMeshTag::Plane); mf.boundsRadius = 0.f;
 	floor.AddComponent<GroundRenderer>();
@@ -211,11 +211,11 @@ void SceneGame::CreateStage()
 	BoxCollider& collider = floor.AddComponent<BoxCollider>();
 	collider.layer = Layer::Ground;
 
-	GameObject& wT = w.CreateGameObject(Vector3(0.f, 1.f, OFFSET), Vector3(90.f, 0.f, 0.f), Vector3(SIZE, 1.f, 4.f));
+	/*GameObject& wT = w.CreateGameObject(Vector3(0.f, 1.f, OFFSET), Vector3(90.f, 0.f, 0.f), Vector3(SIZE, 1.f, 4.f));
 	MeshFilter& mfT = wT.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mfT.boundsRadius = 0.f;
 	wT.AddComponent<GroundRenderer>();
 	BoxCollider& bcT = wT.AddComponent<BoxCollider>(); bcT.layer = Layer::Ground;
-	wT.AddComponent<StageWall>();
+	wT.AddComponent<StageWall>();*/
 
 	GameObject& wB = w.CreateGameObject(Vector3(0.f, 1.f, -OFFSET), Vector3(90.f, 0.f, 0.f), Vector3(SIZE, 1.f, 4.0f));
 	MeshFilter& mfB = wB.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mfB.boundsRadius = 0.f;
@@ -356,11 +356,11 @@ void SceneGame::CreateStage()
 PrefabId prefabOrder1[] = {
 		PrefabId::Swing,
 		PrefabId::Akican,
-		PrefabId::Desktop,
+		//PrefabId::Desktop,
 		PrefabId::Gomibukuro,
 		PrefabId::Isu,
-		PrefabId::Kuukseizixyoukii,
-		PrefabId::Ningixyou
+		//PrefabId::Kuukseizixyoukii,
+		//PrefabId::Ningixyou
 };
 
 int prefabCount1 = sizeof(prefabOrder1) / sizeof(prefabOrder1[0]);
@@ -384,9 +384,9 @@ for (int i = 0; i < posCount1; i++) {
 	//--------------------------------------
 	PrefabId prefabOrder2[] = {
 		PrefabId::Benti,
-		PrefabId::Aircon,
-		PrefabId::Jihanki,
-		PrefabId::Reizouko,
+		//PrefabId::Aircon,
+		//PrefabId::Jihanki,
+		//PrefabId::Reizouko,
 	};
 
 	int prefabCount2 = sizeof(prefabOrder2) / sizeof(prefabOrder2[0]);
@@ -410,7 +410,7 @@ for (int i = 0; i < posCount1; i++) {
 	//--------------------------------------
 	PrefabId prefabOrder3[] = {
 		PrefabId::Ufo,
-		PrefabId::Eisei,
+		//PrefabId::Eisei,
 	};
 
 	int prefabCount3 = sizeof(prefabOrder3) / sizeof(prefabOrder3[0]);
