@@ -11,6 +11,10 @@ enum class Timer : std::uint8_t
 };
 constexpr size_t ToIndex(Timer d) noexcept { return static_cast<size_t>(d); }
 
+//<<<<<<< HEAD
+//=======
+//
+//>>>>>>> e348d9a321fd84f4a3ac8ea23cc62e58cc620fd9
 class ResultTimerUI : public MonoBehaviour
 {
 private:
@@ -21,10 +25,13 @@ private:
 	UiSpriteRenderer* uiColon_ = nullptr;
 	UiSpriteRenderer* uiSecond_[ToIndex(Timer::Count)]{};
 public:
+//<<<<<<< HEAD
 	float timer_ = 0.f;
+//=======
+	float timer_ = 0.f;		//©’Ç‰Á
+//>>>>>>> e348d9a321fd84f4a3ac8ea23cc62e58cc620fd9
 	void Start() override;
 	void Update() override;
 	void OnDestroy() override;
-	//GameObject* gameObject = nullptr;
 };
 

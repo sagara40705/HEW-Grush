@@ -91,8 +91,13 @@ void Result::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	// 各種オブジェクト生成タスクを追加
 	outTasks.emplace_back([this] { CanvasDraw(); });
 	outTasks.emplace_back([this] { TimerUIDeaw(); });
+//<<<<<<< HEAD
 	outTasks.emplace_back([this] { GaugeDraw(); });
 	outTasks.emplace_back([this] { RankDraw(); });
+//=======
+	//outTasks.emplace_back([this] { GaugeDraw(); });
+	//outTasks.emplace_back([this] { RankDraw(); });
+//>>>>>>> e348d9a321fd84f4a3ac8ea23cc62e58cc620fd9
 
 	// 最後に Start を流す
 	outTasks.emplace_back([this]
