@@ -26,27 +26,30 @@ void UiSpriteRenderer::SetTexture(TextureTag tag)
 
 void UiSpriteRenderer::Render()
 { 
-    //assert(canvas && texture && "UiSpriteRenderer::Render()でnullptr");
-    // 0) ガード
+    // Guard
     if (!IsVisible()) return;
+
     if (!canvas)
     {
         canvas = Canvas::GetMain();
         if (!canvas) return;
     }
+
     if (!texture_)
     {
         texture_ = TextureManager::Get(texTag);
-        return;
+        if (!texture_) return;
     }
 
-    // 1) WVP を構築
-    XMMATRIX W = XMMatrixIdentity();
-    XMMATRIX V = XMMatrixIdentity();
-    XMMATRIX P = XMLoadFloat4x4(&canvas->GetProjMatrix());
-    W = XMMatrixTranspose(W);
-    V = XMMatrixTranspose(V);
-    P = XMMatrixTranspose(P);
+    // Get shaders
+    auto* vs = ShaderList::GetVS(ShaderList::VS_SPRITE);
+    auto* ps = ShaderList::GetPS(ShaderList::PS_SPRITE);
+    if (!vs || !ps) return;
+
+    // Build WVP
+    XMMATRIX W = XMMatrixTranspose(XMMatrixIdentity());
+    XMMATRIX V = XMMatrixTranspose(XMMatrixIdentity());
+    XMMATRIX P = XMMatrixTranspose(XMLoadFloat4x4(&canvas->GetProjMatrix()));
 
     struct WVP_CB
     {
@@ -59,28 +62,30 @@ void UiSpriteRenderer::Render()
     XMStoreFloat4x4(&wvp.view, V);
     XMStoreFloat4x4(&wvp.proj, P);
 
-    // 2) SpriteParam を構築
+    // Sprite param
     Sprite::ParamCB param = GetSpriteParamCB();
-    
-    // 3) VS / PS を ShaderList から取得
-    auto* vs = ShaderList::GetVS(ShaderList::VS_SPRITE);
-    auto* ps = ShaderList::GetPS(ShaderList::PS_SPRITE);
-    if (!vs || !ps) return;
 
-    // 4) cbuffer 書き込み
-    // b1 : WVP
+    // Write buffers
     vs->WriteBuffer(0, &wvp);
-    // b1 : SpriteParam
     vs->WriteBuffer(1, &param);
     ps->WriteBuffer(1, &param);
 
-    // 5) テクスチャ・サンプラ・ステート
+    // Break param -> b2
+    struct CB_BreakParam2
+    {
+        float breakParam[4];
+    };
+
+    CB_BreakParam2 cb = {};
+    cb.breakParam[0] = ShaderList::GetSpriteBreakT();
+    ps->WriteBuffer(2, &cb);
+
+    // Texture / states
     ps->SetTexture(0, texture_);
 
-    // 6) シェーダを Bind して Quad 描画
+    // Draw
     vs->Bind();
     ps->Bind();
-
     Sprite::Draw();
 }
 
