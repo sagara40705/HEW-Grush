@@ -22,8 +22,14 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     "Assets/Texture/effect_lv1_at_long.png", //15
      "Assets/Texture/UIFrame.png",            //16
     "Assets/Texture/UIGauge.png",            //17
-       "Assets/Texture/Result.png",
-         "Assets/Texture/RANKS.png",
+     "Assets/Texture/Result.png",
+      "Assets/Texture/RANKS.png",
+      "Assets/Texture/Timer_countr.png",
+      "Assets/Texture/time_count_ss.png",
+        "Assets/Texture/time.png",
+         "Assets/Texture/tatu_arubaita-.png",
+
+
 };
 
 // 配列のデフォルトパスを使用して登録

@@ -3,32 +3,32 @@
 #include "UiSpriteRenderer.h"
 #include "TextureManager.h"
 
-constexpr Vector2 kNumberUVScale = { 0.1f, 1.0f };
+constexpr Vector2 kNumberUVScale = { 0.2f, 0.5f };
 
 void ResultTimerUI::Start()
 {
-	constexpr Vector2 kMinutePos[ToIndex(TimerDigits::Count)] = { {500.f, 400.f}, {590.f, 400.f} };
-	constexpr Vector2 kColonPos = { 700.f,430.f };
-	constexpr Vector2 kSecondPos[ToIndex(TimerDigits::Count)] = { {750.f, 400.f}, {840.f, 400.f} };
+	constexpr Vector2 kMinutePos[ToIndex(TimerDigits::Count)] = { {500.f, 500.f}, {590.f, 500.f} };
+	constexpr Vector2 kColonPos = { 700.f,530.f };
+	constexpr Vector2 kSecondPos[ToIndex(TimerDigits::Count)] = { {750.f, 500.f}, {840.f, 500.f} };
 
 	constexpr Vector2 kNumberSize = { 100.f,100.f };
 	constexpr Vector2 kColonSize = { 40.f, 40.f };
 
 
 	GameObject& tenMinute = gameObject->CreateChild();
-	uiMinute_[ToIndex(TimerDigits::Ten)] = &tenMinute.AddComponent<UiSpriteRenderer>(TextureTag::TimerNumber, kMinutePos[ToIndex(TimerDigits::Ten)], kNumberSize, Vector2::zero(), kNumberUVScale);
+	uiMinute_[ToIndex(TimerDigits::Ten)] = &tenMinute.AddComponent<UiSpriteRenderer>(TextureTag::ResultTimer, kMinutePos[ToIndex(TimerDigits::Ten)], kNumberSize, Vector2::zero(), kNumberUVScale);
 
 	GameObject& oneMinute = gameObject->CreateChild();
-	uiMinute_[ToIndex(TimerDigits::One)] = &oneMinute.AddComponent<UiSpriteRenderer>(TextureTag::TimerNumber, kMinutePos[ToIndex(TimerDigits::One)], kNumberSize, Vector2::zero(), kNumberUVScale);
+	uiMinute_[ToIndex(TimerDigits::One)] = &oneMinute.AddComponent<UiSpriteRenderer>(TextureTag::ResultTimer, kMinutePos[ToIndex(TimerDigits::One)], kNumberSize, Vector2::zero(), kNumberUVScale);
 
 	GameObject& colon = gameObject->CreateChild();
 	uiColon_ = &colon.AddComponent<UiSpriteRenderer>(TextureTag::TimerColon, kColonPos, kColonSize);
 
 	GameObject& tenSecond = gameObject->CreateChild();
-	uiSecond_[ToIndex(TimerDigits::Ten)] = &tenSecond.AddComponent<UiSpriteRenderer>(TextureTag::TimerNumber, kSecondPos[ToIndex(TimerDigits::Ten)], kNumberSize, Vector2::zero(), kNumberUVScale);
+	uiSecond_[ToIndex(TimerDigits::Ten)] = &tenSecond.AddComponent<UiSpriteRenderer>(TextureTag::ResultTimer, kSecondPos[ToIndex(TimerDigits::Ten)], kNumberSize, Vector2::zero(), kNumberUVScale);
 
 	GameObject& oneSecond = gameObject->CreateChild();
-	uiSecond_[ToIndex(TimerDigits::One)] = &oneSecond.AddComponent<UiSpriteRenderer>(TextureTag::TimerNumber, kSecondPos[ToIndex(TimerDigits::One)], kNumberSize, Vector2::zero(), kNumberUVScale);
+	uiSecond_[ToIndex(TimerDigits::One)] = &oneSecond.AddComponent<UiSpriteRenderer>(TextureTag::ResultTimer, kSecondPos[ToIndex(TimerDigits::One)], kNumberSize, Vector2::zero(), kNumberUVScale);
 }
 
 void ResultTimerUI::Update()

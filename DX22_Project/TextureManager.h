@@ -26,6 +26,10 @@ enum class TextureTag : uint8_t
 	Gauge,
     ResultUI,
     RANKS,
+	ResultTimer,
+	ResultNumber,
+	ResultTime,
+	tatu_Arubaita,
     Count,
 };
 

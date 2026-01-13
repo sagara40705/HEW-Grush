@@ -78,11 +78,14 @@ void Result::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	
 	
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::TimerColon); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::TimerNumber); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ResultTime); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Frame); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Gauge); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ResultUI); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::RANKS); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ResultTimer); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::tatu_Arubaita); });
+
 
 
 	// 各種オブジェクト生成タスクを追加
@@ -140,6 +143,11 @@ void Result::CanvasDraw()
 	//背景生成
 	GameObject& backGroung = w.CreateGameObject();
 	backGroung.AddComponent<UiSpriteRenderer>(TextureTag::ResultUI, Vector2(350.f, -50.f), Vector2(600, 300));
+	GameObject& timeGroung = w.CreateGameObject();
+	timeGroung.AddComponent<UiSpriteRenderer>(TextureTag::ResultTime, Vector2(600.f, 380.f), Vector2(220, 100));
+	GameObject& tatuGroung = w.CreateGameObject();
+	tatuGroung.AddComponent<UiSpriteRenderer>(TextureTag::tatu_Arubaita, Vector2(500.f, 180.f), Vector2(420, 100));
+
 
 
 }
