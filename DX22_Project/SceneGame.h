@@ -1,5 +1,4 @@
-#ifndef __SCENE_GAME_H__
-#define __SCENE_GAME_H__
+#pragma once
 
 #include "Scene.h"
 #include "SkyDomeMesh.h"
@@ -56,5 +55,3 @@ private:
 	SkyDomeMesh   m_skyMesh; 
 	Texture* m_pSkyTex = nullptr;
 };
-
-#endif // __SCENE_GAME_H__
