@@ -4,6 +4,11 @@
 #include "Scene.h"
 #include "SkyDomeMesh.h"
 #include "SkyDomeShader.h"
+#include <cstdint>
+#include <string>
+
+//前方宣言
+enum class PrefabId : std::uint8_t;
 
 class SceneGame : public Scene
 {
@@ -34,6 +39,9 @@ private:
 	//ギミック	
 	void CreateGlassObjectSpawner();
 	void CreateWarp();
+
+	void CreateStageFromCSV(const std::string& filename);
+	PrefabId GetPrefabIdFromString(const std::string& rawname);
 
 	void InitPlayerTex();
 	void InitSkyDome();
