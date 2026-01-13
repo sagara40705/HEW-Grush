@@ -21,6 +21,7 @@ void SceneTitle::Load()
 	TextureManager::Load(TextureTag::Title_Break);
 	TextureManager::Load(TextureTag::Title_BreakID);
 	TextureManager::Load(TextureTag::Title_Loge);
+	TextureManager::Load(TextureTag::Title_Loge2);
 	InputKeyboard* Input = new InputKeyboard();
 
 	World& w = GetWorld();
@@ -31,7 +32,7 @@ void SceneTitle::Load()
 
 	//”wŒi¶¬
 	GameObject& backGroung = w.CreateGameObject();
-	//backGroung.AddComponent<UiSpriteRenderer>(TextureTag::Title_Main , Vector2(0.f, 0.f), Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
+	backGroung.AddComponent<UiSpriteRenderer>(TextureTag::Title_Main , Vector2(0.f, 0.f), Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
 
 	//•¶š¶¬
 	GameObject& player = w.CreateGameObject();
@@ -40,6 +41,12 @@ void SceneTitle::Load()
 	////•¶š‚ğo—Í‚·‚é
 	////===================
 	GameObject& titleFont = w.CreateGameObject();
+
+	/*titleFont.AddComponent<UiSpriteRenderer>(
+		TextureTag::Title_Font,
+		Vector2(700.0f, 60.0f),
+		Vector2(550.0f, 550.0f)
+	);*/
 
 	titleFont.AddComponent<UiSpriteRenderer>(
 		TextureTag::Title_Font,
@@ -52,13 +59,13 @@ void SceneTitle::Load()
 	///////==========================
 	//////‚±‚±‚©‚çƒƒS
 	//////==========================
-	//GameObject&TitleLogo= w.CreateGameObject();
+	GameObject&TitleLogo= w.CreateGameObject();
 
-	//TitleLogo.AddComponent<UiSpriteRenderer>(
-	//	TextureTag::Title_Loge,
-	//	Vector2(1.0f, -100.0f),
-	//	Vector2(720.0f, 660.0f)
-	//);
+	TitleLogo.AddComponent<UiSpriteRenderer>(
+		TextureTag::Title_Loge,
+		Vector2(1.0f, -100.0f),
+		Vector2(720.0f, 660.0f)
+	);
 
 	/*====================
 	‰æ–Ê‚ğŠ„‚éˆ—‚ğs‚¤

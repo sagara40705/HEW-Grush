@@ -34,7 +34,8 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     "Assets/Texture/Titele/title_hakaisuru.png",//タイトルの文字
     "Assets/Texture/Titele/fadein.png",//タイトルを割る
     "Assets/Texture/Titele/fadeinID.png",//タイトルを割るID
-    "Assets/Texture/Titele/title_Logo.png"//タイトルロゴ
+    "Assets/Texture/Titele/title_Logo.png",//タイトルロゴ
+    "Assets/Texture/Titele/title_hakaisuru2.png"//タイトルロゴの斜めVar
 };
 
 // Load: 指定された TextureTag のテクスチャを読み込む。
