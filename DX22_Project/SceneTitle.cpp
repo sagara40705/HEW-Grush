@@ -49,9 +49,9 @@ void SceneTitle::Load()
 	);*/
 
 	titleFont.AddComponent<UiSpriteRenderer>(
-		TextureTag::Title_Font,
-		Vector2(700.0f, 60.0f),
-		Vector2(550.0f, 550.0f)
+		TextureTag::Title_Loge2 ,
+		Vector2(700.0f, 5.0f),
+		Vector2(570.0f, 500.0f)
 	);
 
 	GameObject& TitleBreak = w.CreateGameObject();
