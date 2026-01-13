@@ -26,6 +26,7 @@ private:
 	SpriteAnimation* m_hitEffekt = nullptr;
 public:
 	GlassObject(GlassGrade g = GlassGrade::Grade_1) : grade_(g) {}
+	void Awake() override;
 	void Start() override;
 	void OnDestroy() override;
 public:
