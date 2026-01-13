@@ -35,9 +35,11 @@ public:
 	static constexpr Vector3 BaseRota = { 0.f, 45.f, -30.f };
 private:
 	HammerGrade grade_ = HammerGrade::Grade_1;
+	bool isLimitBreak_ = false;
 private:
 	Transform* tf_ = nullptr;
 	BoxCollider* bc_ = nullptr;
+	MeshRenderer* renderer_ = nullptr;
 	CameraShake* shake_ = nullptr;
 	GlassGaugeManager* gauge_ = nullptr;
 	ScoreManager* score_ = nullptr;
@@ -59,6 +61,9 @@ public:
 private:
 	void Attack(GameObject* go);
 	bool CanBrake(GlassGrade glass);
+public:
+	void LimitBreakStart();
+	void LimitBreakEnd();
 private:
 #ifdef _DEBUG
 	void DebugCommand();

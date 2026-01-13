@@ -197,6 +197,7 @@
     <ClCompile Include="PlayerAction.cpp" />
     <ClCompile Include="PlayerAnimation.cpp" />
     <ClCompile Include="PlayerMove.cpp" />
+    <ClCompile Include="PlayerState.cpp" />
     <ClCompile Include="Prefab.cpp" />
     <ClCompile Include="PrefabSet.cpp" />
     <ClCompile Include="PrimitiveMeshManager.cpp" />
@@ -226,6 +227,7 @@
     <ClCompile Include="TimerUI.cpp" />
     <ClCompile Include="TitleManager.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="UIFrostRenderer.cpp" />
     <ClCompile Include="UiSpriteRenderer.cpp" />
     <ClCompile Include="WarpPoint .cpp" />
     <ClCompile Include="World.cpp" />
@@ -315,6 +317,7 @@
     <ClInclude Include="TimerUI.h" />
     <ClInclude Include="TitleManager.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="UIFrostRenderer.h" />
     <ClInclude Include="UiSpriteRenderer.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vector3.h" />

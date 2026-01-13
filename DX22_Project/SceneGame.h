@@ -8,8 +8,6 @@
 class SceneGame : public Scene
 {
 public:
-	SceneGame();
-	~SceneGame();
 	void Update() final;
 	void Draw() final;
 	void Load() final;
@@ -24,6 +22,9 @@ private:
 	void CreateManagers();
 	void CreateCameraAndPlayer();
 	void CreateStage();
+	void CreateStage1();
+	void CreateStage2();
+	void CreateStage3();
 	void CreateUi();
 	void CreateGaugeUI();
 	void CreateTimerUI();

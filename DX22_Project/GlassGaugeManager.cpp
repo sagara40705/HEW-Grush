@@ -5,6 +5,7 @@
 #include "GlassObject.h"
 #include "InputKeyboard.h"
 #include "DebugLog.h"
+#include "ShaderList.h"
 
 constexpr float kMaxGaugeVale[ToIndex(HammerGrade::Count)] 
 				= { 100.f, 200.f, 300.f };
@@ -29,7 +30,39 @@ void GlassGaugeManager::Update()
 	DebugCommand();
 #endif // DEBUG	
 
-	// ƒQ[ƒW‚ª‹ó‚È‚çˆ—‚µ‚È‚¢
+	// ŒÀŠE“Ë”j’†
+	if (isLimitBreak_)
+	{
+		limitBreakDurationTimer_ += 0.1f / 60.f;
+		ShaderList::SetRainbowTime(limitBreakDurationTimer_);
+
+		if (limitBreakDurationTimer_ >= kLimitBreakDuration)
+		{
+			isLimitBreak_ = false;
+			limitBreakDurationTimer_ = 0.f;
+			hammer_->LimitBreakEnd();
+			DebugLog::Output("ŒÀŠE“Ë”jI—¹");
+		}
+		return;
+	}
+	else
+	{
+		if (!IsMaxGauge())
+		{
+			limitBreakTimer_ = 0.f;
+			return;
+		}
+
+		limitBreakTimer_ += 0.1f / 60.f;
+		if (limitBreakTimer_ >= kLimitBreakTime)
+		{
+			isLimitBreak_ = true;
+			limitBreakTimer_ = 0.f;
+			hammer_->LimitBreakStart();
+			DebugLog::Output("ŒÀŠE“Ë”jŠJŽn");
+		}
+	}
+
 	if (isGaugeEmpty) return;
 
 	// ƒQ[ƒWŒ¸Š’†
@@ -48,8 +81,8 @@ void GlassGaugeManager::Update()
 	else
 	{
 		// Œ¸Š‚Ü‚Å‚ÌŽžŠÔ‚ðŒv‚é
-		constexpr float DT = 1.f / 60.f;
-		constexpr float kGaugeDecayDelayTime = 5.f; //ƒQ[ƒWŒ¸Š‚Ü‚Å‚ÌŽžŠÔ
+		constexpr float DT = 0.1f / 60.f;
+		constexpr float kGaugeDecayDelayTime = 10.f; //ƒQ[ƒWŒ¸Š‚Ü‚Å‚ÌŽžŠÔ
 		gaugeDecayDelayTimer += DT;
 		if (gaugeDecayDelayTimer >=  kGaugeDecayDelayTime)
 		{
@@ -129,10 +162,19 @@ float GlassGaugeManager::GetGaugeRatio()
 	return  ratio;
 }
 
-
 HammerGrade GlassGaugeManager::GetHammerGrade()
 {
 	return hammer_->GetGrade();
+}
+
+bool GlassGaugeManager::IsMaxGauge()
+{
+	size_t grade = ToIndex(hammer_->GetGrade());
+	if (gauge_ >= kMaxGaugeVale[grade])
+	{
+		return true;
+	}
+	return false;
 }
 
 #ifdef _DEBUG
@@ -142,6 +184,19 @@ void GlassGaugeManager::DebugCommand()
 	{
 		BrakeGlass(GlassGrade::Grade_1);
 		DebugLog::Output("DebugCommand GaugeUp 1");
+	}
+
+	if (InputKeyboard::GetKeyDown('N'))
+	{
+		isLimitBreak_ = true;
+		player_->LimitBreakOn();
+		hammer_->LimitBreakStart();
+	}
+	if (InputKeyboard::GetKeyDown('M'))
+	{
+		isLimitBreak_ = true;
+		player_->LimitBreakOff();
+		hammer_->LimitBreakEnd();
 	}
 }
 #endif // DEBUG	

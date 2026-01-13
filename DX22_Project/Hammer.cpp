@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "Transform.h"
 #include "BoxCollider.h"
+#include "MeshRenderer.h"
 #include "CameraShake.h"
 #include "GlassGaugeManager.h"
 #include "ScoreManager.h"
@@ -14,6 +15,7 @@ void Hammer::Start()
 { 
 	tf_ = gameObject->GetComponent<Transform>();
 	bc_ = gameObject->GetComponent<BoxCollider>();
+	renderer_ = gameObject->GetComponent<MeshRenderer>();
 
 	GameObject* camera = gameObject->FindWithTag(Tag::MainCamera);
 	shake_ = camera->GetComponent<CameraShake>();
@@ -46,6 +48,7 @@ void Hammer::OnDestroy()
 {
 	tf_ = nullptr;
 	bc_ = nullptr;
+	renderer_ = nullptr;
 	shake_ = nullptr;
 	gauge_ = nullptr;
 	score_ = nullptr;
@@ -149,6 +152,16 @@ void Hammer::Attack(GameObject* go)
 bool Hammer::CanBrake(GlassGrade glass)
 {
 	return (ToIndex(glass) <= ToIndex(grade_));
+}
+
+void Hammer::LimitBreakStart()
+{
+	renderer_->psKind = ShaderList::PS_RAINBOW;
+}
+
+void Hammer::LimitBreakEnd()
+{
+	renderer_->psKind = ShaderList::PS_LAMBERT;
 }
 
 #ifdef _DEBUG

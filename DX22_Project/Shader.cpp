@@ -1,6 +1,9 @@
 #include "Shader.h"
 #include <d3dcompiler.h>
 #include <stdio.h>
+#include <algorithm>
+#define NOMINMAX
+#include <Windows.h>
 
 #pragma comment(lib, "d3dcompiler.lib")
 
@@ -118,7 +121,26 @@ HRESULT Shader::Make(void* pData, UINT size)
 		if (FAILED(hr)) { return hr; }
 	}
 	// テクスチャ領域作成
-	m_pTextures.resize(shaderDesc.TextureNormalInstructions, nullptr);
+	//m_pTextures.resize(shaderDesc.TextureNormalInstructions, nullptr);
+	UINT maxBindPoint = 0;
+	bool hasTexture = false;
+
+	for (UINT i = 0; i < shaderDesc.BoundResources; ++i)
+	{
+		D3D11_SHADER_INPUT_BIND_DESC bindDesc = {};
+		pReflection->GetResourceBindingDesc(i, &bindDesc);
+
+		// Texture2D / TextureCube など「テクスチャ系」を SRV として扱う
+		if (bindDesc.Type == D3D_SIT_TEXTURE)
+		{
+			hasTexture = true;
+			// BindCount は配列テクスチャ等。通常は 1
+			const UINT endPoint = bindDesc.BindPoint + (std::max)(1u, bindDesc.BindCount);
+			maxBindPoint = (std::max)(maxBindPoint, endPoint);
+		}
+	}
+
+	m_pTextures.assign(hasTexture ? maxBindPoint : 0, nullptr);
 
 	return MakeShader(pData, size);
 }
