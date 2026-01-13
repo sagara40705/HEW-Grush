@@ -48,7 +48,7 @@ void SceneTitle::Load()
 	);
 
 	GameObject& TitleBreak = w.CreateGameObject();
-
+	
 	///////==========================
 	//////Ç±Ç±Ç©ÇÁÉçÉS
 	//////==========================

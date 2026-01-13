@@ -18,21 +18,21 @@ void BreakUiRenderer::StartBreak()
 {
     m_isBreaking = true;
     m_breakT = 0.0f;
-    ApplyToSpritePS();
+    ShaderList::SetSpriteBreakT(m_breakT);
 }
 
 void BreakUiRenderer::Update()
 {
     if (!m_isBreaking) return;
 
-    m_breakT += 1.0f / 60.0f;
+    m_breakT += m_speed * (1.0f / 60.0f);
     if (m_breakT >= 1.0f)
     {
         m_breakT = 1.0f;
         m_isBreaking = false;
     }
 
-    ApplyToSpritePS();
+    ShaderList::SetSpriteBreakT(m_breakT);
 }
 
 void BreakUiRenderer::Render()
