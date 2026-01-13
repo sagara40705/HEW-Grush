@@ -31,9 +31,6 @@
     <Filter Include="Game\Components">
       <UniqueIdentifier>{8cc0aa6b-3e20-4a5e-89dd-1c814568bf64}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Data">
-      <UniqueIdentifier>{f6ed1e42-797a-4905-bcee-7705a82c5de2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Game\Entry">
       <UniqueIdentifier>{9d53e54b-8504-42f2-ab07-046e5c92bc05}</UniqueIdentifier>
     </Filter>
@@ -87,6 +84,9 @@
     </Filter>
     <Filter Include="Game\Components\Gimmick">
       <UniqueIdentifier>{44d1c6ce-c9cd-4aa6-8a74-78f91fd44392}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Entry\Data">
+      <UniqueIdentifier>{f6ed1e42-797a-4905-bcee-7705a82c5de2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>

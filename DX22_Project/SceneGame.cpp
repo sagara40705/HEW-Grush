@@ -280,168 +280,168 @@ void SceneGame::CreateStage1()
 
 	// 座標用構造体（共通）
 
-	struct Pos { float x;  float y; float z;};
-	struct Rot { float x, y, z; };
-
-
-
-	//ステージ1
-
-	//--------------------------------------
-   // Grade 1
-   //--------------------------------------
-
-	const Pos positionsGrade_1[] = {
-    { -8.f,-0.9f,-11.f},{ 6.f,-0.6f,-12.f},{ 34.f,-0.6f, -9.f},{  5.f,-0.5f,-14.f},{ 11.f,-0.5f, -3.f},{-3.f,-1.2f, 13.f},{20.f,-1.1f, 39.f},
-	{-10.f,-1.1f , 7.f},{ 5.f,-0.9f, 11.f},{  1.f,-0.9f,-13.f},{  3.f,-1.1f, 14.f},{ 11.f,-1.1f, 14.f},{ 3.f,-1.2f,  7.f},{-7.f,-1.2f, -5.f},
-	{  8.f,-1.1f,  4.f},{ 6.f,-1.1f,  9.f},{  2.f,-0.9f, 11.f},{  8.f,-0.9f,  0.f},{  1.f,-1.1f,  9.f},{ 3.f,-1.1f, 12.f},{ 8.f,-1.2f,  9.f},
-	{-12.f,-1.2f,  4.f},{ 2.f,-1.1f,-13.f},{ -8.f,-1.1f,-13.f},{  7.f,-0.9f,  1.f},{ -2.f,-0.9f, 14.f},{-6.f,-1.1f,-27.f},{12.f,-1.1f, -5.f},
-	{ 10.f,-1.2f,  2.f},{ 1.f,-1.2f, 12.f},{-12.f,-1.1f,  9.f},{  6.f,-1.1f,  7.f},{  5.f,-0.9f, -8.f},{ 5.f,-0.9f,-26.f},{ 3.f,-1.1f,-14.f}, 
-	{ 14.f,-1.1f,  0.f},{-9.f,-1.2f,  5.f},{  2.f,-1.2f,  9.f},{ -4.f,-1.1f, -6.f},{ -8.f,-1.1f, -1.f},{14.f,-0.9f, -1.f},{ 7.f,-0.9f, -8.f}, 
-	{  6.f,-1.1f, 10.f},{-9.f,-1.1f,  4.f},{  6.f,-1.2f, -7.f},{ -6.f,-1.2f, 12.f},{-11.f,-1.1f,  4.f},{-6.f,-1.1f, 13.f},{ 7.f,-0.9f, -5.f},
-	{ -5.f,-0.9f, -7.f},{ 2.f,-1.1f,-15.f},{ 12.f,-1.1f, -4.f},{ -7.f,-1.2f, -2.f},{-30.f,-1.2f,-25.f},{-6.f,-1.1f,  6.f},{-3.f,-1.1f,-10.f},
-	{  0.f,-0.9f,-11.f},{-2.f,-0.9f,  6.f},{  7.f,-1.1f,-11.f},{-11.f,-1.1f, -7.f}
-    };
-
-	
-	const Rot rotationsGrade_1[] = {
-	{ 0.f,0.f,0.f},{-90.f,0.f,0.f},{90.f,0.f, 0.f},{0.f,0.f,-90.f},{ 0.f,0.f,90.f},{-15.f,0.f,-15.f},{30.f,0.f,30.f},{-30.f,0.f,-30.f},
-	{45.f,0.f,0.f},{-45.f,0.f,0.f},{ 0.f,0.f,45.f},{0.f,0.f,-45.f},{15.f,0.f,15.f},{-15.f,0.f,-15.f},{30.f,0.f,30.f},{-30.f,0.f,-30.f},
-	{45.f,0.f,0.f},{-45.f,0.f,0.f},{ 0.f,0.f,45.f},{0.f,0.f,-45.f},{15.f,0.f,15.f},{-15.f,0.f,-15.f},{30.f,0.f,30.f},{-30.f,0.f,-30.f},
-	{45.f,0.f,0.f},{-45.f,0.f,0.f},{ 0.f,0.f,45.f},{0.f,0.f,-45.f},{15.f,0.f,15.f},{-15.f,0.f,-15.f},{30.f,0.f,30.f},{-30.f,0.f,-30.f},
-	{45.f,0.f,0.f},{-45.f,0.f,0.f},{ 0.f,0.f,45.f},{0.f,0.f,-45.f},{15.f,0.f,15.f},{-15.f,0.f,-15.f},{30.f,0.f,30.f},{-30.f,0.f,-30.f},
-	{45.f,0.f,0.f},{-45.f,0.f,0.f},{ 0.f,0.f,45.f},{0.f,0.f,-45.f},{15.f,0.f,15.f},{-15.f,0.f,-15.f},{30.f,0.f,30.f},{-30.f,0.f,-30.f},
-	{45.f,0.f,0.f},{-45.f,0.f,0.f},{ 0.f,0.f,45.f},{0.f,0.f,-45.f},{15.f,0.f,15.f},{-15.f,0.f,-15.f},{30.f,0.f,30.f},{-30.f,0.f,-30.f},
-	{45.f,0.f,0.f},{-45.f,0.f,0.f},{ 0.f,0.f,45.f},{0.f,0.f,-45.f}
-	};
-
-
-	//--------------------------------------
-	// Grade 2
-	//--------------------------------------
-
-	const Pos positionsGrade_2[] = {
-
-	{ -8.f,-0.9f, 17.f},{-21.f,-0.4f,  0.f},{-27.f,-0.4f,  8.f},{ -9.f,-0.4f,-21.f},{-17.f,-0.4f,-21.f},{ 12.f,-1.0f,-16.f},{-27.f,-1.0f, 15.f},
-	{  7.f,-0.9f,-15.f},{-10.f,-0.5f,-25.f},{ 14.f,-0.5f, -7.f},{  0.f,-0.5f,-16.f},{ 11.f,-0.5f,  9.f},{ 18.f,-1.4f, -6.f},{ 15.f,-1.4f,-13.f},
-	{ -6.f,-0.9f,-33.f},{ 16.f,-0.5f,  3.f},{-15.f,-0.5f,-15.f},{  6.f,-0.5f, 18.f},{-22.f,-0.5f,-11.f},{ 10.f,-1.4f,-18.f},{ 21.f,-1.4f,-18.f},
-	{ 15.f,-0.9f,-11.f},{ -5.f,-0.5f,-18.f},{ 25.f,-0.5f,  3.f},{  6.f,-0.5f, 22.f},{ -6.f,-0.5f,-24.f},{  8.f,-1.4f, 22.f},{ 19.f,-1.4f,  9.f},
-	{ 33.f,-0.9f,-17.f},{-25.f,-0.5f,  8.f},{-12.f,-0.5f, 26.f},{-29.f,-0.5f,-16.f},{  3.f,-0.5f, 25.f},{-16.f,-1.4f,  6.f},{ 21.f,-1.4f, 15.f},
-	{-12.f,-0.9f,-13.f},{-14.f,-0.5f,-18.f},{-25.f,-0.5f, -8.f},{-28.f,-0.5f, -1.f},{-27.f,-0.5f,  2.f},{ 13.f,-1.4f, -9.f},{-20.f,-1.4f,-10.f},
-	{-20.f,-0.9f, -2.f},{ 24.f,-0.5f, -7.f},{  1.f,-0.5f,-21.f},{-21.f,-0.5f, 18.f},{-20.f,-0.5f,  9.f},{ 14.f,-1.4f,-22.f},{-17.f,-1.4f, 18.f},
-	{-10.f,-0.9f, 16.f}
-	};
-
-	const Rot rotationsGrade_2[] = {
-	{ 0.f,0.f,0.f}, {90.f,0.f,0.f}, {  0.f, 0.f, 90.f}, {90.f,0.f,45.f}, {  45.f, 0.f, 90.f},{  0.f,0.f,10.f}, {  0.f,0.f,-10.f},
-	{ 0.f,0.f,0.f}, {90.f,0.f,0.f}, {  0.f, 0.f, 90.f}, {90.f,0.f,45.f}, {  45.f, 0.f, 90.f},{  0.f,0.f,10.f}, {  0.f,0.f,-10.f},
-	{ 0.f,0.f,0.f}, {90.f,0.f,0.f}, {  0.f, 0.f, 90.f}, {90.f,0.f,45.f}, {  45.f, 0.f, 90.f},{  0.f,0.f,10.f}, {  0.f,0.f,-10.f},
-	{ 0.f,0.f,0.f}, {90.f,0.f,0.f}, {  0.f, 0.f, 90.f}, {90.f,0.f,45.f}, {  45.f, 0.f, 90.f},{  0.f,0.f,10.f}, {  0.f,0.f,-10.f},
-	{ 0.f,0.f,0.f}, {90.f,0.f,0.f}, {  0.f, 0.f, 90.f}, {90.f,0.f,45.f}, {  45.f, 0.f, 90.f},{  0.f,0.f,10.f}, {  0.f,0.f,-10.f},
-	{ 0.f,0.f,0.f}, {90.f,0.f,0.f}, {  0.f, 0.f, 90.f}, {90.f,0.f,45.f}, {  45.f, 0.f, 90.f},{  0.f,0.f,10.f}, {  0.f,0.f,-10.f},
-	{ 0.f,0.f,0.f}, {90.f,0.f,0.f}, {  0.f, 0.f, 90.f}, {90.f,0.f,45.f}, {  45.f, 0.f, 90.f},{  0.f,0.f,10.f}, {  0.f,0.f,-10.f},
-	{ 0.f,0.f,0.f}
-	};
-
-	//--------------------------------------
-	// Grade 3
-	//--------------------------------------
-
-	const Pos positionsGrade_3[] = {
-	{-29.f, 2.f, -25.f}, { 28.f, 2.f, -23.f}, { 12.f, -0.9f, -32.f}, { 17.f ,3.f, 20.f}, { -3.f, 3.f,  36.f},
-	{-33.f, 1.f, -38.f}, { 22.f, 1.f, -21.f}, { 19.f, -0.9f, -30.f}, {-28.f, 2.f, 17.f}, {-33.f, 2.f,  -5.f},
-	{ 30.f, 1.f,  11.f}, {  9.f, 1.f,  -8.f}, { 27.f, -0.9f,  17.f}, { -8.f, 2.f, 37.f}, { 15.f, 2.f,  33.f},
-	{ 21.f, 1.f,  29.f}, {-31.f, 1.f,   9.f}, {  1.f, -0.9f,  27.f}, { 31.f, 2.f, 21.f}, {-25.f, 2.f, -21.f},
-	{ 28.f, 1.f, -13.f}, { 30.f, 1.f, -18.f}, { 36.f, -0.9f,  -2.f}, {-15.f, 2.f, 34.f}, { 23.f, 2.f,  21.f},
-	{ 17.f, 1.f,  15.f}, {  6.f, 1.f,  27.f}, {-32.f, -0.9f, -10.f}, { 23.f, 2.f, 24.f}, { 29.f, 2.f,   6.f},
-	{ -5.f, 1.f, -36.f}, { 32.f, 1.f,   3.f},{ -17.f, -0.9f,  25.f}, { 33.f, 2.f, 11.f}, {-26.f, 2.f, -17.f}
-	};
-
-	const Rot rotationsGrade_3[] = {
-	{125.f,  0.f, 0.f}, {0.f,  0.f, 125.f}, {0.f,  0.f, 0.f}, {0.f,  0.f, 150.f}, {150.f,  0.f, 0.f},
-    {125.f,  0.f, 0.f}, {0.f,  0.f, 125.f}, {0.f,  0.f, 0.f}, {0.f,  0.f, 150.f}, {150.f,  0.f, 0.f},
-	{125.f,  0.f, 0.f}, {0.f,  0.f, 125.f}, {0.f,  0.f, 0.f}, {0.f,  0.f, 150.f}, {150.f,  0.f, 0.f},
-	{125.f,  0.f, 0.f}, {0.f,  0.f, 125.f}, {0.f,  0.f, 0.f}, {0.f,  0.f, 150.f}, {150.f,  0.f, 0.f},
-	{125.f,  0.f, 0.f}, {0.f,  0.f, 125.f}, {0.f,  0.f, 0.f}, {0.f,  0.f, 150.f}, {150.f,  0.f, 0.f},
-	{125.f,  0.f, 0.f}, {0.f,  0.f, 125.f}, {0.f,  0.f, 0.f}, {0.f,  0.f, 150.f}, {150.f,  0.f, 0.f},
-	{125.f,  0.f, 0.f}, { 0.f, 0.f, 125.f}, {0.f,  0.f, 0.f}, {0.f,  0.f, 150.f}, {150.f,  0.f, 0.f}
-	};
-
-PrefabId prefabOrder1[] = {
-		PrefabId::Swing,
-		PrefabId::Akican,
-		PrefabId::Desktop,
-		PrefabId::Gomibukuro,
-		PrefabId::Isu,
-		PrefabId::Kuukseizixyoukii,
-		PrefabId::Ningixyou
-};
-
-int prefabCount1 = sizeof(prefabOrder1) / sizeof(prefabOrder1[0]);
-int posCount1 = sizeof(positionsGrade_1) / sizeof(positionsGrade_1[0]);
-int rotCount1 = sizeof(rotationsGrade_1) / sizeof(rotationsGrade_1[0]);
-
-for (int i = 0; i < posCount1; i++) {
-	PrefabId id = prefabOrder1[i % prefabCount1];
-	Rot rot = rotationsGrade_1[i % rotCount1];
-	Prefab::Instantiate(
-		w,
-		id,
-		Vector3(positionsGrade_1[i].x, positionsGrade_1[i].y, positionsGrade_1[i].z),
-		Vector3(rot.x, rot.y, rot.z),
-		Vector3::one()
-	);
-}
-
-	//--------------------------------------
-	// Grade 2
-	//--------------------------------------
-	PrefabId prefabOrder2[] = {
-		PrefabId::Benti,
-		PrefabId::Aircon,
-		PrefabId::Jihanki,
-		PrefabId::Reizouko,
-	};
-
-	int prefabCount2 = sizeof(prefabOrder2) / sizeof(prefabOrder2[0]);
-	int posCount2 = sizeof(positionsGrade_2) / sizeof(positionsGrade_2[0]);
-	int rotCount2 = sizeof(rotationsGrade_2) / sizeof(rotationsGrade_2[0]);
-
-	for (int i = 0; i < posCount2; i++) {
-		PrefabId id = prefabOrder2[i % prefabCount2];
-		Rot rot = rotationsGrade_2[i % rotCount2];
-		Prefab::Instantiate(
-			w,
-			id,
-			Vector3(positionsGrade_2[i].x, positionsGrade_2[i].y, positionsGrade_2[i].z),
-			Vector3(rot.x, rot.y, rot.z),
-			Vector3::one()
-		);
-	}
-
-	//--------------------------------------
-	// Grade 3
-	//--------------------------------------
-	PrefabId prefabOrder3[] = {
-		PrefabId::Ufo,
-		PrefabId::Eisei,
-	};
-
-	int prefabCount3 = sizeof(prefabOrder3) / sizeof(prefabOrder3[0]);
-	int posCount3 = sizeof(positionsGrade_3) / sizeof(positionsGrade_3[0]);
-	int rotCount3 = sizeof(rotationsGrade_3) / sizeof(rotationsGrade_3[0]);
-
-	for (int i = 0; i < posCount3; i++) {
-		PrefabId id = prefabOrder3[i % prefabCount3];
-		Rot rot = rotationsGrade_3[i % rotCount3];
-		Prefab::Instantiate(
-			w,
-			id,
-			Vector3(positionsGrade_3[i].x, positionsGrade_3[i].y, positionsGrade_3[i].z),
-			Vector3(rot.x, rot.y, rot.z),
-			Vector3::one()
-		);
-	}
+//	struct Pos { float x;  float y; float z;};
+//	struct Rot { float x, y, z; };
+//
+//
+//
+//	//ステージ1
+//
+//	//--------------------------------------
+//   // Grade 1
+//   //--------------------------------------
+//
+//	const Pos positionsGrade_1[] = {
+//    { -8.f,-0.9f,-11.f},{ 6.f,-0.6f,-12.f},{ 34.f,-0.6f, -9.f},{  5.f,-0.5f,-14.f},{ 11.f,-0.5f, -3.f},{-3.f,-1.2f, 13.f},{20.f,-1.1f, 39.f},
+//	{-10.f,-1.1f , 7.f},{ 5.f,-0.9f, 11.f},{  1.f,-0.9f,-13.f},{  3.f,-1.1f, 14.f},{ 11.f,-1.1f, 14.f},{ 3.f,-1.2f,  7.f},{-7.f,-1.2f, -5.f},
+//	{  8.f,-1.1f,  4.f},{ 6.f,-1.1f,  9.f},{  2.f,-0.9f, 11.f},{  8.f,-0.9f,  0.f},{  1.f,-1.1f,  9.f},{ 3.f,-1.1f, 12.f},{ 8.f,-1.2f,  9.f},
+//	{-12.f,-1.2f,  4.f},{ 2.f,-1.1f,-13.f},{ -8.f,-1.1f,-13.f},{  7.f,-0.9f,  1.f},{ -2.f,-0.9f, 14.f},{-6.f,-1.1f,-27.f},{12.f,-1.1f, -5.f},
+//	{ 10.f,-1.2f,  2.f},{ 1.f,-1.2f, 12.f},{-12.f,-1.1f,  9.f},{  6.f,-1.1f,  7.f},{  5.f,-0.9f, -8.f},{ 5.f,-0.9f,-26.f},{ 3.f,-1.1f,-14.f}, 
+//	{ 14.f,-1.1f,  0.f},{-9.f,-1.2f,  5.f},{  2.f,-1.2f,  9.f},{ -4.f,-1.1f, -6.f},{ -8.f,-1.1f, -1.f},{14.f,-0.9f, -1.f},{ 7.f,-0.9f, -8.f}, 
+//	{  6.f,-1.1f, 10.f},{-9.f,-1.1f,  4.f},{  6.f,-1.2f, -7.f},{ -6.f,-1.2f, 12.f},{-11.f,-1.1f,  4.f},{-6.f,-1.1f, 13.f},{ 7.f,-0.9f, -5.f},
+//	{ -5.f,-0.9f, -7.f},{ 2.f,-1.1f,-15.f},{ 12.f,-1.1f, -4.f},{ -7.f,-1.2f, -2.f},{-30.f,-1.2f,-25.f},{-6.f,-1.1f,  6.f},{-3.f,-1.1f,-10.f},
+//	{  0.f,-0.9f,-11.f},{-2.f,-0.9f,  6.f},{  7.f,-1.1f,-11.f},{-11.f,-1.1f, -7.f}
+//    };
+//
+//	
+//	const Rot rotationsGrade_1[] = {
+//	{ 0.f,0.f,0.f},{-90.f,0.f,0.f},{90.f,0.f, 0.f},{0.f,0.f,-90.f},{ 0.f,0.f,90.f},{-15.f,0.f,-15.f},{30.f,0.f,30.f},{-30.f,0.f,-30.f},
+//	{45.f,0.f,0.f},{-45.f,0.f,0.f},{ 0.f,0.f,45.f},{0.f,0.f,-45.f},{15.f,0.f,15.f},{-15.f,0.f,-15.f},{30.f,0.f,30.f},{-30.f,0.f,-30.f},
+//	{45.f,0.f,0.f},{-45.f,0.f,0.f},{ 0.f,0.f,45.f},{0.f,0.f,-45.f},{15.f,0.f,15.f},{-15.f,0.f,-15.f},{30.f,0.f,30.f},{-30.f,0.f,-30.f},
+//	{45.f,0.f,0.f},{-45.f,0.f,0.f},{ 0.f,0.f,45.f},{0.f,0.f,-45.f},{15.f,0.f,15.f},{-15.f,0.f,-15.f},{30.f,0.f,30.f},{-30.f,0.f,-30.f},
+//	{45.f,0.f,0.f},{-45.f,0.f,0.f},{ 0.f,0.f,45.f},{0.f,0.f,-45.f},{15.f,0.f,15.f},{-15.f,0.f,-15.f},{30.f,0.f,30.f},{-30.f,0.f,-30.f},
+//	{45.f,0.f,0.f},{-45.f,0.f,0.f},{ 0.f,0.f,45.f},{0.f,0.f,-45.f},{15.f,0.f,15.f},{-15.f,0.f,-15.f},{30.f,0.f,30.f},{-30.f,0.f,-30.f},
+//	{45.f,0.f,0.f},{-45.f,0.f,0.f},{ 0.f,0.f,45.f},{0.f,0.f,-45.f},{15.f,0.f,15.f},{-15.f,0.f,-15.f},{30.f,0.f,30.f},{-30.f,0.f,-30.f},
+//	{45.f,0.f,0.f},{-45.f,0.f,0.f},{ 0.f,0.f,45.f},{0.f,0.f,-45.f}
+//	};
+//
+//
+//	//--------------------------------------
+//	// Grade 2
+//	//--------------------------------------
+//
+//	const Pos positionsGrade_2[] = {
+//
+//	{ -8.f,-0.9f, 17.f},{-21.f,-0.4f,  0.f},{-27.f,-0.4f,  8.f},{ -9.f,-0.4f,-21.f},{-17.f,-0.4f,-21.f},{ 12.f,-1.0f,-16.f},{-27.f,-1.0f, 15.f},
+//	{  7.f,-0.9f,-15.f},{-10.f,-0.5f,-25.f},{ 14.f,-0.5f, -7.f},{  0.f,-0.5f,-16.f},{ 11.f,-0.5f,  9.f},{ 18.f,-1.4f, -6.f},{ 15.f,-1.4f,-13.f},
+//	{ -6.f,-0.9f,-33.f},{ 16.f,-0.5f,  3.f},{-15.f,-0.5f,-15.f},{  6.f,-0.5f, 18.f},{-22.f,-0.5f,-11.f},{ 10.f,-1.4f,-18.f},{ 21.f,-1.4f,-18.f},
+//	{ 15.f,-0.9f,-11.f},{ -5.f,-0.5f,-18.f},{ 25.f,-0.5f,  3.f},{  6.f,-0.5f, 22.f},{ -6.f,-0.5f,-24.f},{  8.f,-1.4f, 22.f},{ 19.f,-1.4f,  9.f},
+//	{ 33.f,-0.9f,-17.f},{-25.f,-0.5f,  8.f},{-12.f,-0.5f, 26.f},{-29.f,-0.5f,-16.f},{  3.f,-0.5f, 25.f},{-16.f,-1.4f,  6.f},{ 21.f,-1.4f, 15.f},
+//	{-12.f,-0.9f,-13.f},{-14.f,-0.5f,-18.f},{-25.f,-0.5f, -8.f},{-28.f,-0.5f, -1.f},{-27.f,-0.5f,  2.f},{ 13.f,-1.4f, -9.f},{-20.f,-1.4f,-10.f},
+//	{-20.f,-0.9f, -2.f},{ 24.f,-0.5f, -7.f},{  1.f,-0.5f,-21.f},{-21.f,-0.5f, 18.f},{-20.f,-0.5f,  9.f},{ 14.f,-1.4f,-22.f},{-17.f,-1.4f, 18.f},
+//	{-10.f,-0.9f, 16.f}
+//	};
+//
+//	const Rot rotationsGrade_2[] = {
+//	{ 0.f,0.f,0.f}, {90.f,0.f,0.f}, {  0.f, 0.f, 90.f}, {90.f,0.f,45.f}, {  45.f, 0.f, 90.f},{  0.f,0.f,10.f}, {  0.f,0.f,-10.f},
+//	{ 0.f,0.f,0.f}, {90.f,0.f,0.f}, {  0.f, 0.f, 90.f}, {90.f,0.f,45.f}, {  45.f, 0.f, 90.f},{  0.f,0.f,10.f}, {  0.f,0.f,-10.f},
+//	{ 0.f,0.f,0.f}, {90.f,0.f,0.f}, {  0.f, 0.f, 90.f}, {90.f,0.f,45.f}, {  45.f, 0.f, 90.f},{  0.f,0.f,10.f}, {  0.f,0.f,-10.f},
+//	{ 0.f,0.f,0.f}, {90.f,0.f,0.f}, {  0.f, 0.f, 90.f}, {90.f,0.f,45.f}, {  45.f, 0.f, 90.f},{  0.f,0.f,10.f}, {  0.f,0.f,-10.f},
+//	{ 0.f,0.f,0.f}, {90.f,0.f,0.f}, {  0.f, 0.f, 90.f}, {90.f,0.f,45.f}, {  45.f, 0.f, 90.f},{  0.f,0.f,10.f}, {  0.f,0.f,-10.f},
+//	{ 0.f,0.f,0.f}, {90.f,0.f,0.f}, {  0.f, 0.f, 90.f}, {90.f,0.f,45.f}, {  45.f, 0.f, 90.f},{  0.f,0.f,10.f}, {  0.f,0.f,-10.f},
+//	{ 0.f,0.f,0.f}, {90.f,0.f,0.f}, {  0.f, 0.f, 90.f}, {90.f,0.f,45.f}, {  45.f, 0.f, 90.f},{  0.f,0.f,10.f}, {  0.f,0.f,-10.f},
+//	{ 0.f,0.f,0.f}
+//	};
+//
+//	//--------------------------------------
+//	// Grade 3
+//	//--------------------------------------
+//
+//	const Pos positionsGrade_3[] = {
+//	{-29.f, 2.f, -25.f}, { 28.f, 2.f, -23.f}, { 12.f, -0.9f, -32.f}, { 17.f ,3.f, 20.f}, { -3.f, 3.f,  36.f},
+//	{-33.f, 1.f, -38.f}, { 22.f, 1.f, -21.f}, { 19.f, -0.9f, -30.f}, {-28.f, 2.f, 17.f}, {-33.f, 2.f,  -5.f},
+//	{ 30.f, 1.f,  11.f}, {  9.f, 1.f,  -8.f}, { 27.f, -0.9f,  17.f}, { -8.f, 2.f, 37.f}, { 15.f, 2.f,  33.f},
+//	{ 21.f, 1.f,  29.f}, {-31.f, 1.f,   9.f}, {  1.f, -0.9f,  27.f}, { 31.f, 2.f, 21.f}, {-25.f, 2.f, -21.f},
+//	{ 28.f, 1.f, -13.f}, { 30.f, 1.f, -18.f}, { 36.f, -0.9f,  -2.f}, {-15.f, 2.f, 34.f}, { 23.f, 2.f,  21.f},
+//	{ 17.f, 1.f,  15.f}, {  6.f, 1.f,  27.f}, {-32.f, -0.9f, -10.f}, { 23.f, 2.f, 24.f}, { 29.f, 2.f,   6.f},
+//	{ -5.f, 1.f, -36.f}, { 32.f, 1.f,   3.f},{ -17.f, -0.9f,  25.f}, { 33.f, 2.f, 11.f}, {-26.f, 2.f, -17.f}
+//	};
+//
+//	const Rot rotationsGrade_3[] = {
+//	{125.f,  0.f, 0.f}, {0.f,  0.f, 125.f}, {0.f,  0.f, 0.f}, {0.f,  0.f, 150.f}, {150.f,  0.f, 0.f},
+//    {125.f,  0.f, 0.f}, {0.f,  0.f, 125.f}, {0.f,  0.f, 0.f}, {0.f,  0.f, 150.f}, {150.f,  0.f, 0.f},
+//	{125.f,  0.f, 0.f}, {0.f,  0.f, 125.f}, {0.f,  0.f, 0.f}, {0.f,  0.f, 150.f}, {150.f,  0.f, 0.f},
+//	{125.f,  0.f, 0.f}, {0.f,  0.f, 125.f}, {0.f,  0.f, 0.f}, {0.f,  0.f, 150.f}, {150.f,  0.f, 0.f},
+//	{125.f,  0.f, 0.f}, {0.f,  0.f, 125.f}, {0.f,  0.f, 0.f}, {0.f,  0.f, 150.f}, {150.f,  0.f, 0.f},
+//	{125.f,  0.f, 0.f}, {0.f,  0.f, 125.f}, {0.f,  0.f, 0.f}, {0.f,  0.f, 150.f}, {150.f,  0.f, 0.f},
+//	{125.f,  0.f, 0.f}, { 0.f, 0.f, 125.f}, {0.f,  0.f, 0.f}, {0.f,  0.f, 150.f}, {150.f,  0.f, 0.f}
+//	};
+//
+//PrefabId prefabOrder1[] = {
+//		PrefabId::Swing,
+//		PrefabId::Akican,
+//		PrefabId::Desktop,
+//		PrefabId::Gomibukuro,
+//		PrefabId::Isu,
+//		PrefabId::Kuukseizixyoukii,
+//		PrefabId::Ningixyou
+//};
+//
+//int prefabCount1 = sizeof(prefabOrder1) / sizeof(prefabOrder1[0]);
+//int posCount1 = sizeof(positionsGrade_1) / sizeof(positionsGrade_1[0]);
+//int rotCount1 = sizeof(rotationsGrade_1) / sizeof(rotationsGrade_1[0]);
+//
+//for (int i = 0; i < posCount1; i++) {
+//	PrefabId id = prefabOrder1[i % prefabCount1];
+//	Rot rot = rotationsGrade_1[i % rotCount1];
+//	Prefab::Instantiate(
+//		w,
+//		id,
+//		Vector3(positionsGrade_1[i].x, positionsGrade_1[i].y, positionsGrade_1[i].z),
+//		Vector3(rot.x, rot.y, rot.z),
+//		Vector3::one()
+//	);
+//}
+//
+//	//--------------------------------------
+//	// Grade 2
+//	//--------------------------------------
+//	PrefabId prefabOrder2[] = {
+//		PrefabId::Benti,
+//		PrefabId::Aircon,
+//		PrefabId::Jihanki,
+//		PrefabId::Reizouko,
+//	};
+//
+//	int prefabCount2 = sizeof(prefabOrder2) / sizeof(prefabOrder2[0]);
+//	int posCount2 = sizeof(positionsGrade_2) / sizeof(positionsGrade_2[0]);
+//	int rotCount2 = sizeof(rotationsGrade_2) / sizeof(rotationsGrade_2[0]);
+//
+//	for (int i = 0; i < posCount2; i++) {
+//		PrefabId id = prefabOrder2[i % prefabCount2];
+//		Rot rot = rotationsGrade_2[i % rotCount2];
+//		Prefab::Instantiate(
+//			w,
+//			id,
+//			Vector3(positionsGrade_2[i].x, positionsGrade_2[i].y, positionsGrade_2[i].z),
+//			Vector3(rot.x, rot.y, rot.z),
+//			Vector3::one()
+//		);
+//	}
+//
+//	//--------------------------------------
+//	// Grade 3
+//	//--------------------------------------
+//	PrefabId prefabOrder3[] = {
+//		PrefabId::Ufo,
+//		PrefabId::Eisei,
+//	};
+//
+//	int prefabCount3 = sizeof(prefabOrder3) / sizeof(prefabOrder3[0]);
+//	int posCount3 = sizeof(positionsGrade_3) / sizeof(positionsGrade_3[0]);
+//	int rotCount3 = sizeof(rotationsGrade_3) / sizeof(rotationsGrade_3[0]);
+//
+//	for (int i = 0; i < posCount3; i++) {
+//		PrefabId id = prefabOrder3[i % prefabCount3];
+//		Rot rot = rotationsGrade_3[i % rotCount3];
+//		Prefab::Instantiate(
+//			w,
+//			id,
+//			Vector3(positionsGrade_3[i].x, positionsGrade_3[i].y, positionsGrade_3[i].z),
+//			Vector3(rot.x, rot.y, rot.z),
+//			Vector3::one()
+//		);
+//	}
 }
 
 void SceneGame::CreateStage2()
