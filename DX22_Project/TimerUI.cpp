@@ -57,3 +57,7 @@ void TimerUI::OnDestroy()
 	uiSecond_[ToIndex(TimerDigits::Ten)] = nullptr;
 	uiSecond_[ToIndex(TimerDigits::One)] = nullptr;
 }
+float TimerUI::GetTime()
+{
+	return timer_;
+}
