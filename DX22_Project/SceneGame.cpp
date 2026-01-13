@@ -731,4 +731,141 @@ void SceneGame::Draw()
 	SkyDomeDorw();
 }
 
+void SceneGame::CreateStageFromCSV(const std::string& filename)
+{
+	std::ifstream file(filename);
+	if (!file.is_open()) {
+		std::string msg = "File Load Failed: " + filename;
+		MessageBox(NULL, msg.c_str(), "Error", MB_OK);
+		return;
+	}
+
+	World& w = GetWorld();
+	std::string line;
+	int lineCount = 0; // 行数のカウント用
+
+	while (std::getline(file, line))
+	{
+		lineCount++;
+
+		// 空行やコメント(#)をスキップ
+		if (lineCount == 1 && line.size() >= 3)
+		{
+			if ((unsigned char)line[0] == 0xEF &&
+				(unsigned char)line[1] == 0xBB &&
+				(unsigned char)line[2] == 0xBF) {
+				line = line.substr(3); // 先頭3文字をカット
+			}
+		}
+
+		std::stringstream ss(line);
+		std::string segment;
+		std::vector<std::string> data;
+
+		while (std::getline(ss, segment, ','))
+		{
+			data.push_back(segment);
+		}
+
+		if (data.size() < 7) continue;
+
+		try // ★ エラー監視開始
+		{
+			// 1. タイプ
+			std::string typeName = data[0];
+			PrefabId id = GetPrefabIdFromString(typeName);
+
+			// 2. 座標
+			float px = std::stof(data[1]);
+			float py = std::stof(data[2]);
+			float pz = std::stof(data[3]);
+
+			// 3. 回転
+			float rx = std::stof(data[4]);
+			float ry = std::stof(data[5]);
+			float rz = std::stof(data[6]);
+
+			// 4. スケール
+			float sx = 1.0f;
+			float sy = 1.0f;
+			float sz = 1.0f;
+
+			if (data.size() >= 10)
+			{
+				sx = std::stof(data[7]);
+				sy = std::stof(data[8]);
+				sz = std::stof(data[9]);
+			}
+
+			// 生成
+			Prefab::Instantiate(
+				w,
+				id,
+				Vector3(px, py, pz),
+				Vector3(rx, ry, rz),
+				Vector3(sx, sy, sz)
+			);
+		}
+		catch (const std::invalid_argument& e) // ★ 変換できない文字があった場合ここに来る
+		{
+			// エラー内容を表示する
+			std::string errorMsg = "CSV Error at Line " + std::to_string(lineCount) + "\n";
+			errorMsg += "Content: " + line + "\n";
+			errorMsg += "Reason: " + std::string(e.what());
+
+			MessageBox(NULL, errorMsg.c_str(), "CSV Format Error", MB_OK);
+		}
+		catch (const std::out_of_range& e)
+		{
+			MessageBox(NULL, "Number out of range in CSV", "Error", MB_OK);
+		}
+	}
+}
+
+
+// 文字列の前後の空白を削除するヘルパー関数
+std::string Trim(const std::string& str)
+{
+	const char* trimChars = " \t\n\r\f\v";
+
+	std::string result = str;
+
+	// 左側の空白削除
+	result.erase(0, result.find_first_not_of(trimChars));
+
+	// 右側の空白削除
+	result.erase(result.find_last_not_of(trimChars) + 1);
+
+	return result;
+}
+
+PrefabId SceneGame::GetPrefabIdFromString(const std::string& rawname)
+{
+	// 空白を削除してきれいにする
+	std::string name = Trim(rawname);
+
+	// CSVに書く名前とPrefabIdの対応付け
+	if (name == "Swing") return PrefabId::Swing;
+	if (name == "Akican") return PrefabId::Akican;
+	if (name == "Desktop") return PrefabId::Desktop;
+	if (name == "Gomibukuro") return PrefabId::Gomibukuro;
+	if (name == "Isu") return PrefabId::Isu;
+	if (name == "Kuukseizixyoukii") return PrefabId::Kuukseizixyoukii;
+	if (name == "Ningixyou") return PrefabId::Ningixyou;
+
+	if (name == "Benti") return PrefabId::Benti;
+	if (name == "Aircon") return PrefabId::Aircon;
+	if (name == "Jihanki") return PrefabId::Jihanki;
+	if (name == "Reizouko") return PrefabId::Reizouko;
+
+	if (name == "Ufo") return PrefabId::Ufo;
+	if (name == "Eisei") return PrefabId::Eisei;
+
+	// 一致するものがなかった場合、勝手にSwingにせず、エラーを出す！
+	std::string errorMsg = "Unknown Prefab Name: [" + name + "]\n(Fallback to Swing)";
+	MessageBox(NULL, errorMsg.c_str(), "Prefab ID Error", MB_OK);
+
+	// とりあえず無効な値を返すか、Swing等をデフォルトにする
+	return PrefabId::Swing;
+}
 
