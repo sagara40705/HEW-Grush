@@ -26,7 +26,7 @@ void UiSpriteRenderer::SetTexture(TextureTag tag)
 
 void UiSpriteRenderer::Render()
 { 
-    // 0) ガード
+    // Guard
     if (!IsVisible()) return;
 
     if (!canvas)
@@ -41,12 +41,12 @@ void UiSpriteRenderer::Render()
         if (!texture_) return;
     }
 
-    // 1) VS/PS 取得（ここで1回だけ）
+    // Get shaders
     auto* vs = ShaderList::GetVS(ShaderList::VS_SPRITE);
     auto* ps = ShaderList::GetPS(ShaderList::PS_SPRITE);
     if (!vs || !ps) return;
 
-    // 2) WVP
+    // Build WVP
     XMMATRIX W = XMMatrixTranspose(XMMatrixIdentity());
     XMMATRIX V = XMMatrixTranspose(XMMatrixIdentity());
     XMMATRIX P = XMMatrixTranspose(XMLoadFloat4x4(&canvas->GetProjMatrix()));
@@ -62,31 +62,30 @@ void UiSpriteRenderer::Render()
     XMStoreFloat4x4(&wvp.view, V);
     XMStoreFloat4x4(&wvp.proj, P);
 
-    // 3) SpriteParam
+    // Sprite param
     Sprite::ParamCB param = GetSpriteParamCB();
 
-    // 4) cbuffer 書き込み
-    vs->WriteBuffer(0, &wvp);     // b0
-    vs->WriteBuffer(1, &param);   // b1
-    ps->WriteBuffer(1, &param);   // b1
+    // Write buffers
+    vs->WriteBuffer(0, &wvp);
+    vs->WriteBuffer(1, &param);
+    ps->WriteBuffer(1, &param);
 
-    // 5) ★ BreakParam(b2) を書く（毎フレーム）
+    // Break param -> b2
     struct CB_BreakParam2
     {
-        float breakParam[4]; // x = breakT
+        float breakParam[4];
     };
 
-    CB_BreakParam2 cb{};
-    cb.breakParam[0] = ShaderList::GetSpriteBreakT(); // 0～1
+    CB_BreakParam2 cb = {};
+    cb.breakParam[0] = ShaderList::GetSpriteBreakT();
+    ps->WriteBuffer(2, &cb);
 
-    ps->WriteBuffer(2, &cb);      // b2
-
-    // 6) テクスチャ等
+    // Texture / states
     ps->SetTexture(0, texture_);
     SetDepthTest(false);
     SetCullingMode(D3D11_CULL_NONE);
 
-    // 7) Bind & Draw
+    // Draw
     vs->Bind();
     ps->Bind();
     Sprite::Draw();

@@ -31,7 +31,7 @@ void SceneTitle::Load()
 
 	//îwåiê∂ê¨
 	GameObject& backGroung = w.CreateGameObject();
-	backGroung.AddComponent<UiSpriteRenderer>(TextureTag::Title_Main , Vector2(0.f, 0.f), Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
+	//backGroung.AddComponent<UiSpriteRenderer>(TextureTag::Title_Main , Vector2(0.f, 0.f), Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
 
 	//ï∂éöê∂ê¨
 	GameObject& player = w.CreateGameObject();
