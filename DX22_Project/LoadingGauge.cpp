@@ -5,6 +5,7 @@
 
 LoadingGauge::LoadingGauge(LoadingScene* loading) : loading_(loading)
 {
+	
 }
 
 void LoadingGauge::Start()
