@@ -12,4 +12,5 @@ void LoadingUI::Start()
 
 void LoadingUI::OnDestroy()
 {
+
 }

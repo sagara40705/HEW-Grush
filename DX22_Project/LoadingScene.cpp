@@ -7,6 +7,7 @@ LoadingScene::LoadingScene()
     , started(false)
     , progress(0.0f)
 {
+
 }
 
 LoadingScene::~LoadingScene() = default;
