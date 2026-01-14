@@ -9,6 +9,8 @@
 
 void SceneTitle::Load()
 {
+	ModelManager::Load(ModelTag::Player);
+	ModelManager::Load(ModelTag::Hammer);
 	//テクスチャーロード
 	TextureManager::Load(TextureTag::Title_BG);
 	//TextureManager::Load(TextureTag::UI_font);
@@ -24,6 +26,9 @@ void SceneTitle::Load()
 	TextureManager::Load(TextureTag::Title_Loge2);
 	InputKeyboard* Input = new InputKeyboard();
 
+	CreateCameraAndPlayer();
+	InitPlayerTex();
+
 	World& w = GetWorld();
 
 	////Canvas
@@ -31,8 +36,9 @@ void SceneTitle::Load()
 	canvas.AddComponent<Canvas>();
 
 	//背景生成
-	GameObject& backGroung = w.CreateGameObject();
-	backGroung.AddComponent<UiSpriteRenderer>(TextureTag::Title_Main , Vector2(0.f, 0.f), Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
+	//3Dオブジェクトとして描画
+	GameObject& backGround = w.CreateGameObject(Vector3(0.f, 0.f,50.f));
+	backGround.AddComponent<Sprite3DRenderer>(TextureTag::Title_Main, Vector2(0.f, -10.f), Vector2(96.0f, 54.0f));
 
 	//文字生成
 	GameObject& player = w.CreateGameObject();
@@ -77,15 +83,106 @@ void SceneTitle::Load()
 	// Update から触れるように保存
 	m_breakButton = &breakUi;
 
-
 	//タイトルマネージャー生成
 	GameObject& manager = w.CreateGameObject();
 	manager.AddComponent<TitleManager>();
+
 }
 
 void SceneTitle::Unload()
 {
 	TextureManager::Clear();
+}
+
+
+void SceneTitle::CreateCameraAndPlayer()
+{
+	World& w = GetWorld();
+
+	// カメラ設定（Gameと同じでOKですが、操作不能ならCameraControlは不要かも）
+
+	//GameObject& cameraPivot = w.CreateGameObject(Vector3::zero(), Vector3(0.f, 180.f, 0.f));
+	GameObject& cameraPivot = w.CreateGameObject(Vector3(0.f, 1.0f, -5.0f), Vector3(0.f, 0.f, 0.f));
+	GameObject& mainCamera = cameraPivot.CreateChild(Camera::kInitPos, Camera::kInitRotate);
+	mainCamera.AddComponent<Camera>();
+
+	// プレイヤー本体（見た目とアニメーションに特化）
+	GameObject& player = w.CreateGameObject(Vector3(0.f, 0.f, 0.f), Vector3(0.f, 0.f, 0.f));
+	//GameObject& player = w.CreateGameObject(Vector3(0.f, 2.f, 0.f), Vector3(0.f, 0.f, 0.f));
+	player.AddComponent<MeshFilter>(ModelTag::Player);
+	player.AddComponent<MeshRenderer>();
+	player.AddComponent<PlayerState>();
+	player.AddComponent<Animator>();        // モーション再生用
+	player.AddComponent<PlayerAnimation>(); // アニメーションの管理用
+
+	// 演出用の専用スクリプト（もし自作するなら）
+	// player.AddComponent<TitlePlayerEffect>(); 
+
+	// ハンマー（見た目だけ）
+
+	GameObject& hummer = player.CreateChild(Hammer::BasePos, Hammer::BaseRota, Vector3(0.2f, 0.2f, 0.2f));
+	hummer.AddComponent<MeshFilter>(ModelTag::Hammer);
+	hummer.AddComponent<MeshRenderer>();
+}
+
+void SceneTitle::InitPlayerTex()
+{
+	// プレイヤーモデル取得
+	Model* model = ModelManager::Get(ModelTag::Player);
+	if (!model)
+	{
+		return; // 読み込み失敗などの保険
+	}
+
+	// 体（lambert1）
+	Texture* texBody = new Texture();
+	texBody->Create("Assets/Model/playerchara_20251202/lambert1.png");
+
+	if (texBody == NULL)
+	{
+		MessageBox(NULL, "a", "Error", MB_OK); // エラーメッセージの表示
+	}
+
+	// 頭皮・顔上部（lambert4）
+	Texture* texFaceA = new Texture();
+	texFaceA->Create("Assets/Model/playerchara_20251202/lambert4.png");
+
+	if (texFaceA == NULL)
+	{
+		MessageBox(NULL, "aaa", "Error", MB_OK); // エラーメッセージの表示
+	}
+
+	// 目・口（lambert5）
+	Texture* texFaceB = new Texture();
+	texFaceB->Create("Assets/Model/playerchara_20251202/lambert5.png");
+
+	if (texFaceB)
+	{
+		//MessageBox(NULL, "aaaa", "Error", MB_OK); // エラーメッセージの表示
+	}
+
+	// MaterialID に応じて割り当てる
+	const unsigned int matNum = model->GetMaterialNum();
+	for (unsigned int i = 0; i < matNum; ++i)
+	{
+		// ★ 非 const のマテリアルを取得（関数名は環境に合わせて）
+		auto* mat = model->GetMaterialNonConst(i);
+
+		if (!mat) continue;
+
+		switch (i)
+		{
+		case 0:
+			mat->pTexture = texFaceA;   // 頭皮
+			break;
+		case 1:
+			mat->pTexture = texFaceB;   // 顔（目）
+			break;
+		case 2:
+			mat->pTexture = texBody;    // 体
+			break;
+		}
+	}
 }
 
 void SceneTitle::Update()
