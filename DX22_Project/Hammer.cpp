@@ -5,7 +5,7 @@
 #include "CameraShake.h"
 #include "GlassGaugeManager.h"
 #include "ScoreManager.h"
-#include "SoundManager.h"
+//#include "SoundManager.h"
 
 #include "GlassObject.h"
 #include "DebugLog.h"
@@ -121,7 +121,6 @@ void Hammer::Attack(GameObject* go)
 
 	if (!shake_) return;
 	shake_->Play(ShakeType::LEVEL_1);
-	PlaySound(SoundManager::GetSound(GlassBreakSE));
 
 	//if (CanBrake(glass->GetGrade()))
 	//{

@@ -1,6 +1,7 @@
 #include "SoundManager.h"
 
 XAUDIO2_BUFFER* SoundManager::s_sounds[SoundTag::Count];
+IXAudio2SourceVoice* SoundManager::speakers[SoundTag::Count];
 
 void SoundManager::Load()
 {
@@ -9,7 +10,9 @@ void SoundManager::Load()
 	s_sounds[SoundTag::NomalAttackSE] = LoadSound("Assets/Sound/attack_v2.wav", false);
 	s_sounds[SoundTag::DashAttackSE]  = LoadSound("Assets/Sound/attack_dash.wav", false);
 	s_sounds[SoundTag::SpinAttackSE]  = LoadSound("Assets/Sound/SpinAttack.mp3", false);
-	s_sounds[SoundTag::GlassBreakSE]  = LoadSound("Assets/Sound/glassbreak.mp3", false);
+	s_sounds[SoundTag::Level1GlassBreakSE]  = LoadSound("Assets/Sound/glassbreak1.mp3", false);
+	s_sounds[SoundTag::Level2GlassBreakSE] = LoadSound("Assets/Sound/glassbreak6.wav", false);
+	s_sounds[SoundTag::Level3GlassBreakSE] = LoadSound("Assets/Sound/glassbreak5.mp3", false);
 	s_sounds[SoundTag::GradeUpSE]     = LoadSound("Assets/Sound/gauge_up.wav", false);
 	s_sounds[SoundTag::GradeDownSE]   = LoadSound("Assets/Sound/gauge_down_v2.wav", false);
 	s_sounds[SoundTag::GaugeDownSE]   = LoadSound("Assets/Sound/GaugeDown.mp3", false);
@@ -31,4 +34,15 @@ void SoundManager::Unload()
 XAUDIO2_BUFFER* SoundManager::GetSound(SoundTag tag)
 {
 	return s_sounds[tag];
+}
+
+void SoundManager::SoundPlay(SoundTag tag,float volume)
+{
+	speakers[tag] = PlaySound(GetSound(tag));
+	speakers[tag]->SetVolume(volume);
+}
+
+void SoundManager::StopSound(SoundTag tag)
+{
+	speakers[tag]->Stop();
 }

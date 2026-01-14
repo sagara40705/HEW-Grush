@@ -6,7 +6,7 @@
 #include "SceneSample.h"// 最初のシーン
 #include "SoundManager.h"
 
-bool Game::CheckSound = false;
+bool Game::CheckTitleSound = false;
 
 void Game::Init()
 {
@@ -29,10 +29,11 @@ void Game::Uninit()
 void Game::Update()
 {
     // 入力更新・サウンド更新などがあればここで
-    if (!CheckSound)
+    if (!CheckTitleSound)
     {
-        PlaySound(SoundManager::GetSound(SceneGameBGM));
-        CheckSound = true;
+//        PlaySound(SoundManager::GetSound(SceneGameBGM));
+        SoundManager::SoundPlay(SceneGameBGM,0.4f);
+        CheckTitleSound = true;
     }
     
     SceneManager::Update();

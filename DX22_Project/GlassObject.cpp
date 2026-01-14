@@ -10,6 +10,7 @@
 #include "ShaderList.h"
 #include "GlassShard.h"
 #include "GlassShardPool.h"
+#include "SoundManager.h"
 
 void GlassObject::Start()
 {
@@ -42,6 +43,22 @@ void GlassObject::TakeDamage(float damage)
 		score_->UpScore(grade_);
 		SpawnShards();
 		DebugLog::OutputValue("GlassObject Destory, ID", gameObject->id);
+		switch (GetGrade())
+		{
+		case GlassGrade::Grade_1:
+//			PlaySound(SoundManager::GetSound(Level1GlassBreakSE));
+			SoundManager::SoundPlay(Level1GlassBreakSE,0.8f);
+			break;
+		case GlassGrade::Grade_2:
+//			PlaySound(SoundManager::GetSound(Level2GlassBreakSE));
+			SoundManager::SoundPlay(Level2GlassBreakSE,0.9f);
+			break;
+		case GlassGrade::Grade_3:
+//			PlaySound(SoundManager::GetSound(Level3GlassBreakSE));
+			SoundManager::SoundPlay(Level3GlassBreakSE,1.0f);
+			break;
+		}
+
 	}
 }
 

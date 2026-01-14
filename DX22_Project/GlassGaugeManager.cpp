@@ -56,6 +56,7 @@ void GlassGaugeManager::Update()
 			isGaugeDecaying = true;
 			gaugeDecayDelayTimer = 0.f;
 			DebugLog::Output("ゲージ減衰開始");
+			SoundManager::SoundPlay(GaugeDownSE,1.0f);
 		}
 	}
 }
@@ -99,7 +100,8 @@ void GlassGaugeManager::GradeUp()
 
 	hammer_->GradeUp();
 
-	PlaySound(SoundManager::GetSound(GradeUpSE));
+//	PlaySound(SoundManager::GetSound(GradeUpSE));
+	SoundManager::SoundPlay(GradeUpSE,1.0f);
 
 	constexpr float kWhenGradeUpMinGauge = 5;
 	gauge_ = kWhenGradeUpMinGauge;
@@ -116,7 +118,8 @@ void GlassGaugeManager::GradeDown()
 	}
 
 	hammer_->GradeDown();
-	PlaySound(SoundManager::GetSound(GradeDownSE));
+//	PlaySound(SoundManager::GetSound(GradeDownSE));
+	SoundManager::SoundPlay(GradeDownSE, 1.0f);
 
 	gauge_ = kMaxGaugeVale[ToIndex(hammer_->GetGrade())];
 }

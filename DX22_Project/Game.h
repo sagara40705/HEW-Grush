@@ -42,5 +42,5 @@ public:
     }
 
 private:
-    static bool CheckSound;
+    static bool CheckTitleSound;
 };
