@@ -12,6 +12,10 @@
 #include "GlassShardPool.h"
 #include "SoundManager.h"
 
+void GlassObject::Awake()
+{
+}
+
 void GlassObject::Start()
 {
 	GameObject* gaugeMgr = gameObject->world->FindWithTag(Tag::GaugeManager);

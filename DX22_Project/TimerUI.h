@@ -23,4 +23,5 @@ public:
 	void Start() override;
 	void Update() override;
 	void OnDestroy() override;
+	float GetTime() const noexcept { return timer_; }
 };
