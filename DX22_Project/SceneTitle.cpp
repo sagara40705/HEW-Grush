@@ -29,6 +29,10 @@ void SceneTitle::Load()
 	CreateCameraAndPlayer();
 	InitPlayerTex();
 
+	// カメラ生成時に指定した座標と同じ値を手動で入れる
+	m_camStartPos = Vector3(0.f, 1.0f, -5.0f);
+
+	
 	World& w = GetWorld();
 
 	////Canvas
@@ -38,7 +42,7 @@ void SceneTitle::Load()
 	//背景生成
 	//3Dオブジェクトとして描画
 	GameObject& backGround = w.CreateGameObject(Vector3(0.f, 0.f,50.f));
-	backGround.AddComponent<Sprite3DRenderer>(TextureTag::Title_Main, Vector2(0.f, -10.f), Vector2(96.0f, 54.0f));
+	backGround.AddComponent<Sprite3DRenderer>(TextureTag::Title_Main, Vector2(0.f, -10.f), Vector2(115.0f, 54.0f));
 
 	//文字生成
 	GameObject& player = w.CreateGameObject();
@@ -65,14 +69,23 @@ void SceneTitle::Load()
 	///////==========================
 	//////ここからロゴ
 	//////==========================
-	GameObject&TitleLogo= w.CreateGameObject();
+	//GameObject&TitleLogo= w.CreateGameObject();
 
-	TitleLogo.AddComponent<UiSpriteRenderer>(
+	//TitleLogo.AddComponent<UiSpriteRenderer>(
+	//	TextureTag::Title_Loge,
+	//	Vector2(1.0f, -100.0f),
+	//	Vector2(650.0f, 650.0f)//100差
+	//);
+	GameObject& TitleLogo = w.CreateGameObject(
+		Vector3(0.f, 0.f, 10.f)    // 座標
+	);   
+
+	TitleLogo.AddComponent<Sprite3DRenderer>(
 		TextureTag::Title_Loge,
-		Vector2(1.0f, -100.0f),
-		Vector2(650.0f, 650.0f)//100差
+		Vector2(0.f, 0.f),
+		Vector2(20.f, 20.f) // 3D空間用のサイズに調整
 	);
-
+	
 	/*====================
 	画面を割る処理を行う
 	====================*/
@@ -99,30 +112,30 @@ void SceneTitle::CreateCameraAndPlayer()
 {
 	World& w = GetWorld();
 
-	// カメラ設定（Gameと同じでOKですが、操作不能ならCameraControlは不要かも）
-
-	//GameObject& cameraPivot = w.CreateGameObject(Vector3::zero(), Vector3(0.f, 180.f, 0.f));
+	// カメラ
 	GameObject& cameraPivot = w.CreateGameObject(Vector3(0.f, 1.0f, -5.0f), Vector3(0.f, 0.f, 0.f));
 	GameObject& mainCamera = cameraPivot.CreateChild(Camera::kInitPos, Camera::kInitRotate);
 	mainCamera.AddComponent<Camera>();
 
-	// プレイヤー本体（見た目とアニメーションに特化）
+	// ★ 保存
+	m_mainCamera = &mainCamera;
+
+	// プレイヤー
 	GameObject& player = w.CreateGameObject(Vector3(0.f, 0.f, 0.f), Vector3(0.f, 0.f, 0.f));
-	//GameObject& player = w.CreateGameObject(Vector3(0.f, 2.f, 0.f), Vector3(0.f, 0.f, 0.f));
 	player.AddComponent<MeshFilter>(ModelTag::Player);
 	player.AddComponent<MeshRenderer>();
 	player.AddComponent<PlayerState>();
-	player.AddComponent<Animator>();        // モーション再生用
-	player.AddComponent<PlayerAnimation>(); // アニメーションの管理用
+	player.AddComponent<Animator>();
+	player.AddComponent<PlayerAnimation>();
 
-	// 演出用の専用スクリプト（もし自作するなら）
-	// player.AddComponent<TitlePlayerEffect>(); 
+	// ★ 保存
+	m_player = &player;
 
-	// ハンマー（見た目だけ）
-
+	// ハンマー
 	GameObject& hummer = player.CreateChild(Hammer::BasePos, Hammer::BaseRota, Vector3(0.2f, 0.2f, 0.2f));
 	hummer.AddComponent<MeshFilter>(ModelTag::Hammer);
 	hummer.AddComponent<MeshRenderer>();
+
 }
 
 void SceneTitle::InitPlayerTex()
@@ -187,14 +200,56 @@ void SceneTitle::InitPlayerTex()
 
 void SceneTitle::Update()
 {
-	// breakuirenderer が存在しない場合は何もしない
+//	// breakuirenderer が存在しない場合は何もしない
+//	if (!m_breakButton) return;
+//
+//	//// エンターキーが「押された瞬間
+//	if (InputKeyboard::GetKeyDown(VK_RETURN))
+//	{
+//		m_breakButton->StartBreak();
+//	}
+
+
 	if (!m_breakButton) return;
 
-	//// エンターキーが「押された瞬間
-	if (InputKeyboard::GetKeyDown(VK_RETURN))
+	if (!m_isStarting && InputKeyboard::GetKeyDown(VK_RETURN))
 	{
-		m_breakButton->StartBreak();
+		m_isStarting = true;
+		m_zoomTimer = 0.0f;
+		//m_breakButton->StartBreak();
+
+		// ★ 保存しておいた m_player を使う
+		if (m_player) {
+			auto* pState = m_player->GetComponent<PlayerState>();
+			if (pState) pState->actionedThisFrame[ToIndex(ActionId::DashAttack)] = true;
+		}
 	}
+
+	if (m_isStarting)
+	{
+		m_zoomTimer += (1.0f / 60.0f);
+		float t = m_zoomTimer / ZOOM_DURATION;
+		if (t > 1.0f) t = 1.0f;
+
+		float easeT = t * t * t;
+
+		if (m_mainCamera)
+		{
+			// 1. Transformコンポーネントを取得
+			auto* transform = m_mainCamera->GetComponent<Transform>();
+
+			if (transform)
+			{
+				Vector3 currentPos = Vector3::Lerp(m_camStartPos, m_camEndPos, easeT);
+
+				// 2. 座標を設定 (SetPosition または pos への代入)
+				transform->SetPosition(currentPos);
+			}
+		}
+
+		if (t >= 1.0f) m_isStarting = false;
+	}
+
 }
 
 void SceneTitle::Draw()

@@ -150,11 +150,9 @@ void PlayerAnimation::CheckDashAttackAnime()
 
 void PlayerAnimation::CheckLeanBackAnime(float duration)
 {
-	
 	isKnockback_ = true; 
 	knockbackTimer_ = 0.0f;
 
-	
 	currentType_ = Type::LeanBack;
 	knockbackDuration_ = duration;
 
@@ -162,6 +160,12 @@ void PlayerAnimation::CheckLeanBackAnime(float duration)
 	anime_->SetTimeSeconds(1.2f);
 
 	state_->actionedThisFrame[ToIndex(ActionId::DashAttack)] = false;
+}
+
+void PlayerAnimation::TitleSceneAttackAnime()
+{
+	currentType_ = Type::DashAttack;
+	anime_->Play(animation_[Type::DashAttack], false, 1.0f);
 }
 
 /*
