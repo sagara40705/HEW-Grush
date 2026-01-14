@@ -42,3 +42,5 @@
 #include "TimerUI.h"
 #include "ScoreManager.h"
 #include "ScoreUI.h"
+
+#include "UIFrostRenderer.h"

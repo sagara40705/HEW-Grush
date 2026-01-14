@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "AllComponent.h"
 #include "TextureManager.h"
+#include "Effekseer.h"
 
 void LoadingScene::OriginalLoad()
 {
@@ -17,4 +18,11 @@ void LoadingScene::OriginalLoad()
 	GameObject& loadGauge = w.CreateGameObject();
 	loadGauge.AddComponent<UiSpriteRenderer>(TextureTag::LoadGauge, Vector2(0.f, 0.f), Vector2(500.f, 50.f));
 
+	
+
+
 }
+//::Effekseer::EffectRef EffekseerSystem::LoadEffect(const char16_t* path)
+//{
+//
+//}

@@ -341,11 +341,8 @@
     <ClCompile Include="GlassObjectSpawnerh.cpp">
       <Filter>Game\Components\Gimmick</Filter>
     </ClCompile>
-    <ClCompile Include="Sound.cpp">
-      <Filter>Engine\Sound</Filter>
-    </ClCompile>
-    <ClCompile Include="SoundManager.cpp">
-      <Filter>Engine\Sound</Filter>
+    <ClCompile Include="UIFrostRenderer.cpp">
+      <Filter>Game\Components\Environment</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -606,11 +603,8 @@
     <ClInclude Include="GlassObjectSpawner.h">
       <Filter>Game\Components\Gimmick</Filter>
     </ClInclude>
-    <ClInclude Include="Sound.h">
-      <Filter>Engine\Sound</Filter>
-    </ClInclude>
-    <ClInclude Include="SoundManager.h">
-      <Filter>Engine\Resources</Filter>
+    <ClInclude Include="UIFrostRenderer.h">
+      <Filter>Game\Components\Environment</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -5,29 +5,31 @@ std::array<std::unique_ptr<Texture>, static_cast<size_t>(TextureTag::Count)> Tex
 
 const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)] =
 {
-    "Assets/Texture/Title_BackGround.png",
-    "Assets/Texture/UIGauge.png",
-    "Assets/Texture/Star.png",
-    "Assets/Texture/GroundTile.png",
-    "Assets/Texture/stage.png",
-    "Assets/Texture/SkyDome.png",
-    "Assets/Texture/lv1_0_b.png",
-    "Assets/Texture/lv1_max_b.png",
-    "Assets/Texture/kirakira.png",
-    "Assets/Texture/ato_kg.png",
-    "Assets/Texture/count_font_ss.png",
-    "Assets/Texture/time_colon.png",
-    "Assets/Texture/time_count_ss.png",
-    "Assets/Texture/UI_rotation_color.png",
-    "Assets/Texture/UI_rotation.png",
-    "Assets/Texture/UI_rotation_moji_color.png",
-    "Assets/Texture/UI_rotation_moji.png",
-    "Assets/Texture/UI_rotation_flash.png",
-    "Assets/Texture/UI_rotation_flash_front.png",
-    "Assets/Texture/UI_dush_color.png",
-    "Assets/Texture/UI_dush.png",
-    "Assets/Texture/UI_dush_moji_color.png",
-    "Assets/Texture/UI_dush_moji.png",
+    "Assets/Texture/Title_BackGround.png",  //0
+    "Assets/Texture/UIGauge.png",   //1
+    "Assets/Texture/Star.png",  //2
+    "Assets/Texture/GroundTile.png",    //3
+    "Assets/Texture/stage.png",    //4
+    "Assets/Texture/SkyDome.png",    //5
+    "Assets/Texture/lv1_0_b.png",    //6
+    "Assets/Texture/lv1_max_b.png",    //7
+    "Assets/Texture/kirakira.png",    //8
+    "Assets/Texture/ato_kg.png",    //9
+    "Assets/Texture/count_font_ss.png",    //10
+    "Assets/Texture/time_colon.png",    //11
+    "Assets/Texture/time_count_ss.png",    //12
+    "Assets/Texture/UI_rotation_color.png",    //13
+    "Assets/Texture/UI_rotation.png",    //14
+    "Assets/Texture/UI_rotation_moji_color.png",    //15
+    "Assets/Texture/UI_rotation_moji.png",    //16
+    "Assets/Texture/UI_rotation_flash.png",    //17
+    "Assets/Texture/UI_rotation_flash_front.png",    //18
+    "Assets/Texture/UI_dush_color.png",    //19
+    "Assets/Texture/UI_dush.png",    //20
+    "Assets/Texture/UI_dush_moji_color.png",    //21
+    "Assets/Texture/UI_dush_moji.png",    //22
+    "Assets/Texture/UIFrostNoise08B.png",    //23
+     "Assets/Texture/effect_lv1_at_long.png",    //24
 };
 
 // 配列のデフォルトパスを使用して登録
