@@ -26,6 +26,7 @@ void ShaderList::Init()
 	MakeSpritePS();
 	MakeGlassPS();
 	MakeGlassShardPS();
+	MakeRainbowPS();
 
 	DirectX::XMFLOAT4X4 mat[250];
 	for (int i = 0; i < 250; ++i)
@@ -341,14 +342,14 @@ cbuffer Matrix : register(b0)
 };
 
 // 破片ごとのランダムパラメータ
-// randParam.xyz : スケール・回転用 (0〜1)
+// randParam.xyz : スケール・回転用 (0-1)
 // randParam.w   : ジャギー用シード
 cbuffer ShardParam : register(b1)
 {
     float4 randParam;
 };
 
-// 簡易ハッシュ（0〜1）
+// 簡易ハッシュ（0-1）
 float Hash(float n)
 {
     return frac(sin(n) * 43758.5453);
@@ -366,12 +367,12 @@ VS_OUT main(VS_IN vin)
     float2 center = float2(0.0f, 1.0f / 3.0f);
     p -= center;
 
-    // ランダムスケール（0.7〜1.3倍）
+    // ランダムスケール（0.7 -- 1.3倍）
     float sx = lerp(0.7f, 1.3f, randParam.x);
     float sy = lerp(0.7f, 1.3f, randParam.y);
     p *= float2(sx, sy);
 
-    // ランダム回転（約 -60〜+60 度）
+    // ランダム回転（約 -60 -- +60 度）
     float angle = (randParam.z * 2.0f - 1.0f) * (60.0f / 180.0f) * 3.14159265f;
     float s = sin(angle);
     float c = cos(angle);
@@ -382,7 +383,7 @@ VS_OUT main(VS_IN vin)
 
     // 先端を少しギザギザに（長さ方向にランダム伸ばす）
     float radial = length(p);
-    float jaggy = 1.0f + (Hash(radial * 17.0f + randParam.w * 13.0f) - 0.5f) * 0.4f;
+    float jaggy = 1.0f + (Hash(radial * 17.0f + randParam.w * 13.0f) - 0.5f) * 0.9f;
     p *= jaggy;
 
     // 中心を戻す
@@ -795,8 +796,8 @@ float4 main(PS_IN pin) : SV_TARGET
     // ==========================
     float baseAlpha = glassTint.a;
 
-    // Fresnel でほんの少しだけ縁を濃くするが、ほぼ一定
-    float fresnelAlpha = lerp(0.9f, 1.0f, fresnel); // 0.9〜1.0 の範囲
+    // Fresnel でほんの少しだけ縁を濃くするが、ほぼ一定// 0.9 - 1.0 の範囲
+    float fresnelAlpha = lerp(0.9f, 1.0f, fresnel); 
 
     float finalA = saturate(baseAlpha * fresnelAlpha);
 
@@ -839,6 +840,7 @@ SamplerState samp : register(s0);
 float4 main(PS_IN pin) : SV_TARGET
 {
     float4 texColor = tex.Sample(samp, pin.uv);
+	//return texColor;
 
     float3 N = normalize(pin.normal);
     float3 L = normalize(-lightDir.xyz);
@@ -862,39 +864,148 @@ float4 main(PS_IN pin) : SV_TARGET
     base += specular;
 
     // ---- ガラス寄せ（PS_GLASS と同系統）----
-    float fresnelPower         = max(glassParams.x, 1.0f);
-    float reflectionStrength   = glassParams.y;
-    float transmissionStrength = glassParams.z;
-    float tintStrength         = glassParams.w;
+	float fresnelPower         = max(glassParams.x, 1.0f);
+	float reflectionStrength   = glassParams.y;
+	float transmissionStrength = glassParams.z;
+	float tintStrength         = glassParams.w;
 
-    float dotNV   = saturate(dot(N, V));
-    float fresnel = pow(1.0f - dotNV, fresnelPower);
+	float dotNV   = saturate(dot(N, V));
+	float fresnel = pow(1.0f - dotNV, fresnelPower);
 
-    const float kTintBase  = 0.25f;
-    const float kTintExtra = 0.25f;
-    float tintFactor = kTintBase + saturate(tintStrength) * kTintExtra; // ~0.25-0.5
+	// 色は維持（必要なら trans を弱める）
+	const float kTintBase  = 0.25f;
+	const float kTintExtra = 0.25f;
+	float tintFactor = kTintBase + saturate(tintStrength) * kTintExtra; // ~0.25-0.5
 
-    float3 targetTint = lerp(base, glassTint.rgb, 0.6f);
-    float3 tintedBase = lerp(base, targetTint, tintFactor);
+	float3 targetTint = lerp(base, glassTint.rgb, 0.6f);
+	float3 tintedBase = lerp(base, targetTint, tintFactor);
 
-    float transFactor = lerp(1.0f, transmissionStrength, 0.1f);
-    tintedBase *= transFactor;
+	// ★透過のし過ぎ抑制（強すぎるなら 0.15 → 0.25 など調整）
+	float transFactor = lerp(1.0f, transmissionStrength, 0.25f);
+	tintedBase *= transFactor;
 
-    float3 reflectionColor = lightDiffuse.rgb * glassTint.rgb;
-    const float kReflMax = 0.2f;
-    float reflFactor = kReflMax * reflectionStrength * fresnel;
+	float3 reflectionColor = lightDiffuse.rgb * glassTint.rgb;
+	const float kReflMax = 0.2f;
+	float reflFactor = kReflMax * reflectionStrength * fresnel;
 
-    float3 finalRGB = tintedBase + reflectionColor * reflFactor;
+	float3 finalRGB = tintedBase + reflectionColor * reflFactor;
 
-    // ---- Alpha（テクスチャ前提：tex.a を活かす）----
-    float baseAlpha = glassTint.a * texColor.a;
-    float fresnelAlpha = lerp(0.9f, 1.0f, fresnel);
-    float finalA = saturate(baseAlpha * fresnelAlpha);
+	// ---- Alpha 改善（ここが本命） ----
+	// 1) ベースアルファの下限を作る（透明すぎを防ぐ）
+	float baseAlpha = glassTint.a * texColor.a;
 
-    return float4(finalRGB, finalA);
+	// ★最低不透明度（見た目に合わせて 0.35 - 0.7 で調整）
+	const float kAlphaMin = 0.55f;
+	baseAlpha = max(baseAlpha, kAlphaMin);
+
+	// 2) フレネルで縁を少し濃くする（“縁だけ濃い”がガラスっぽい）
+	const float kEdgeBoost = 0.25f;        // 縁の追加量
+	float edgeAlpha = saturate(baseAlpha + fresnel * kEdgeBoost);
+
+	// 3) 最終アルファ
+	float finalA = edgeAlpha;
+	
+	return float4(finalRGB, finalA);
+
 }
 )EOT";
 
 	m_pPS[PS_GLASS_SHARD] = new PixelShader();
 	m_pPS[PS_GLASS_SHARD]->Compile(code);
+}
+
+void ShaderList::SetRainbowTime(float time)
+{
+	DirectX::XMFLOAT4 param;
+	param.x = time;
+	m_pPS[PS_RAINBOW]->WriteBuffer(2, &param);
+}
+
+void ShaderList::MakeRainbowPS()
+{
+	const char* code = R"EOT(
+struct PS_IN {
+    float4 pos    : SV_POSITION;
+    float3 normal : NORMAL0;
+    float2 uv     : TEXCOORD0;
+    float4 color  : COLOR0;
+};
+cbuffer Material : register(b0)
+{
+    float4 objDiffuse;   // rgb=diffuse, a=opacity
+    float4 objAmbient;   // rgb=ambient, a=hasTextureFlag(>=1)
+    float4 objSpecular;  // rgb=specular, a=gloss
+};
+cbuffer Light : register(b1)
+{
+    float4 lightDiffuse; // 明るさ係数にだけ使う（不要なら未使用でもOK）
+    float4 lightDir;     // 未使用
+};
+cbuffer Time : register(b2)
+{
+    float4 timeParam;    // x = timeSeconds
+};
+Texture2D tex : register(t0);
+SamplerState samp : register(s0);
+// 疑似乱数
+float Hash(float2 p)
+{
+    return frac(sin(dot(p, float2(127.1, 311.7))) * 43758.5453);
+}
+// HSV -> RGB (h:0-1)
+float3 HSVtoRGB(float3 hsv)
+{
+    float3 p = abs(frac(hsv.x + float3(0, 2.0/3.0, 1.0/3.0)) * 6.0 - 3.0);
+    float3 rgb = saturate(p - 1.0);
+    rgb = rgb * rgb * (3.0 - 2.0 * rgb); // smooth
+    return hsv.z * lerp(float3(1,1,1), rgb, hsv.y);
+}
+float4 main(PS_IN pin) : SV_TARGET
+{
+    float t = timeParam.x;
+
+    // --- Albedo ---
+    bool hasTexture = (objAmbient.a >= 1.0f);
+    float4 albedo = hasTexture ? tex.Sample(samp, pin.uv) : float4(1,1,1,1);
+
+    // =========================
+    // Star / Rainbow (animated)
+    // =========================
+
+    // 虹帯：UV + 時間で流す
+    float hue = frac(pin.uv.x * 1.2 + pin.uv.y * 0.8 + t * 5.0f);
+    float3 rainbow = HSVtoRGB(float3(hue, 1.0, 1.0));
+
+    // キラキラ：セル単位の乱数に「時間で移動する閾値」を掛けて点滅させる
+    float2 cell = floor(pin.uv * 90.0);
+    float n = Hash(cell);
+
+    // 点滅速度・密度（調整用）
+    float blink = frac(t * 3.0 + n);                 // 0..1
+    float sparkle = smoothstep(0.92, 1.0, blink);    // たまに強く光る
+
+	// ★虹の強さ（ここだけで調整）
+	const float kRainbowTint = 0.25;   // 元画像を虹で薄く染める量（0.15～0.35目安）
+	const float kGlow        = 0.18;   // 虹の発光（0.05～0.25目安）
+	const float kSparkle     = 0.35;   // キラの強さ（0.2～0.6目安）
+
+	// 元画像ベース
+	float3 base = albedo.rgb;
+
+	// 虹で薄くティント（上書きしない）
+	float3 tinted = lerp(base, base * rainbow, kRainbowTint);
+
+	// 発光とキラは控えめに加算
+	float3 rgb = tinted + rainbow * kGlow + sparkle * rainbow * kSparkle;
+
+    // 明るさ係数（使わなくてOK。使うなら全体の輝度調整に便利）
+    rgb *= lerp(1.0, max(0.2, dot(lightDiffuse.rgb, float3(0.333,0.333,0.333))), 0.2);
+
+    float a = albedo.a * saturate(objDiffuse.a);
+    return float4(saturate(rgb), a);
+}
+)EOT";
+
+	m_pPS[PS_RAINBOW] = new PixelShader();
+	m_pPS[PS_RAINBOW]->Compile(code);
 }

@@ -344,6 +344,9 @@
     <ClCompile Include="UIFrostRenderer.cpp">
       <Filter>Game\Components\Environment</Filter>
     </ClCompile>
+    <ClCompile Include="PlayerState.cpp">
+      <Filter>Game\Components\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
