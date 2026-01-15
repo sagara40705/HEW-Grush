@@ -82,7 +82,8 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::UIFrostNoise); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::EffectLv1); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GlassShard); });
-
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::FadeIn); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::FadeOut); });
 
 	// プレイハブ設定
 	outTasks.emplace_back([this] { RegisterAllPrefabs(); });
@@ -104,6 +105,8 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 
 	//outTasks.emplace_back([this] { InitPlayerTex(); });
 	outTasks.emplace_back([this] { InitSkyDome(); });
+
+	outTasks.emplace_back([this] { CreateFadeOut(); });
 
 
 	// 最後に Start を流す
@@ -540,6 +543,14 @@ void SceneGame::CreateActionUI()
 	GameObject& actionManager = w.CreateGameObject();
 	actionManager.SetTag(Tag::ActionUI);
 	actionManager.AddComponent<ActionUI>();
+}
+
+void SceneGame::CreateFadeOut()
+{
+	World& w = GetWorld();
+
+	GameObject& fadeOut = w.CreateGameObject();
+	fadeOut.AddComponent<FadeOut>(FadeOut::FadeType::Out);
 }
 
 void SceneGame::CreateGlassObjectSpawner()

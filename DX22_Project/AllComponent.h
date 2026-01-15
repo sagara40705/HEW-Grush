@@ -44,3 +44,5 @@
 #include "ScoreUI.h"
 
 #include "UIFrostRenderer.h"
+
+#include "FadeOut.h"

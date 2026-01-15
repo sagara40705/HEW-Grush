@@ -347,6 +347,11 @@
     <ClCompile Include="PlayerState.cpp">
       <Filter>Game\Components\Player</Filter>
     </ClCompile>
+    <ClCompile Include="Sound.cpp" />
+    <ClCompile Include="SoundManager.cpp" />
+    <ClCompile Include="FadeOut.cpp">
+      <Filter>Game\Components\Loading</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -608,6 +613,11 @@
     </ClInclude>
     <ClInclude Include="UIFrostRenderer.h">
       <Filter>Game\Components\Environment</Filter>
+    </ClInclude>
+    <ClInclude Include="Sound.h" />
+    <ClInclude Include="SoundManager.h" />
+    <ClInclude Include="FadeOut.h">
+      <Filter>Game\Components\Loading</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
