@@ -32,9 +32,9 @@ void PlayerAnimation::Update()
 {
 	//ˆÚ“®‚ğæ‚É”»’è
 	CheckMoveAnime();
-	//CheckNormalAttackAnime();
-	//CheckSpinAttackAnime();
-	//CheckDashAttackAnime();
+	CheckNormalAttackAnime();
+	CheckSpinAttackAnime();
+	CheckDashAttackAnime();
 }
 
 /*
