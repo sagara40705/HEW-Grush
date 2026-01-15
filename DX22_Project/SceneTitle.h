@@ -16,7 +16,19 @@ public:
     void Draw() override;
     void Unload() override;
   
+    void CreateCameraAndPlayer();
+    void InitPlayerTex();
 private:
     // ★ エンターで割る対象のボタン
     BreakUiRenderer* m_breakButton = nullptr;
+
+    GameObject* m_mainCamera = nullptr;
+    GameObject* m_player = nullptr;
+
+    bool m_isStarting = false;    // 演出中フラグ
+    float m_zoomTimer = 0.0f;     // 経過時間
+    const float ZOOM_DURATION = 0.5f; // ズームにかける時間（秒）
+
+    Vector3 m_camStartPos;        // 移動開始時のカメラ座標
+    Vector3 m_camEndPos = Vector3(0.f, 0.5f, 1.f); // 最終的なカメラ座標（プレイヤーの目の前）
 };
