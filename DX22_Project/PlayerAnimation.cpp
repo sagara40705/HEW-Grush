@@ -47,10 +47,16 @@ void PlayerAnimation::Update()
 
 	//ˆÚ“®‚ğæ‚É”»’è
 	CheckMoveAnime();
+<<<<<<< HEAD
 	CheckSpinAttackAnime();
 	CheckDashAttackAnime();
 
 
+=======
+	CheckNormalAttackAnime();
+	CheckSpinAttackAnime();
+	CheckDashAttackAnime();
+>>>>>>> Î²ç‰ˆ_2026/01
 }
 
 /*
