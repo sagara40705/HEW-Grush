@@ -88,6 +88,9 @@
     <Filter Include="Game\Components\Gimmick">
       <UniqueIdentifier>{44d1c6ce-c9cd-4aa6-8a74-78f91fd44392}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Components\Result">
+      <UniqueIdentifier>{bd52bf55-ae66-4356-b983-11c3713ef9ed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectX.cpp">
@@ -346,6 +349,20 @@
     </ClCompile>
     <ClCompile Include="PlayerState.cpp">
       <Filter>Game\Components\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="Sound.cpp" />
+    <ClCompile Include="SoundManager.cpp" />
+    <ClCompile Include="SceneResult.cpp">
+      <Filter>Game\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="ResultTimerUI.cpp">
+      <Filter>Game\Components\Result</Filter>
+    </ClCompile>
+    <ClCompile Include="ResultRankUI.cpp">
+      <Filter>Game\Components\Result</Filter>
+    </ClCompile>
+    <ClCompile Include="ResultGaugeUI.cpp">
+      <Filter>Game\Components\Result</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -608,6 +625,20 @@
     </ClInclude>
     <ClInclude Include="UIFrostRenderer.h">
       <Filter>Game\Components\Environment</Filter>
+    </ClInclude>
+    <ClInclude Include="Sound.h" />
+    <ClInclude Include="SoundManager.h" />
+    <ClInclude Include="SceneResult.h">
+      <Filter>Game\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="ResultTimerUI.h">
+      <Filter>Game\Components\Result</Filter>
+    </ClInclude>
+    <ClInclude Include="ResultRankUI.h">
+      <Filter>Game\Components\Result</Filter>
+    </ClInclude>
+    <ClInclude Include="ResultGaugeUI.h">
+      <Filter>Game\Components\Result</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
