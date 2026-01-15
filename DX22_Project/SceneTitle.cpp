@@ -30,7 +30,7 @@ void SceneTitle::Load()
 	InitPlayerTex();
 
 	// カメラ生成時に指定した座標と同じ値を手動で入れる
-	m_camStartPos = Vector3(0.f, 1.0f, -5.0f);
+	m_camStartPos = Vector3(0.f, 2.0f, -5.0f);
 
 	
 	World& w = GetWorld();
@@ -109,10 +109,11 @@ void SceneTitle::Unload()
 
 void SceneTitle::CreateCameraAndPlayer()
 {
+
 	World& w = GetWorld();
 
 	// カメラ
-	GameObject& cameraPivot = w.CreateGameObject(Vector3(0.f, 1.0f, -5.0f), Vector3(0.f, 0.f, 0.f));
+	GameObject& cameraPivot = w.CreateGameObject(Vector3(0.f, 2.0f, -5.0f), Vector3(0.f, 0.f, 0.f));
 	GameObject& mainCamera = cameraPivot.CreateChild(Camera::kInitPos, Camera::kInitRotate);
 	mainCamera.AddComponent<Camera>();
 
@@ -120,7 +121,7 @@ void SceneTitle::CreateCameraAndPlayer()
 	m_mainCamera = &mainCamera;
 
 	// プレイヤー
-	GameObject& player = w.CreateGameObject(Vector3(0.f, 0.f, 0.f), Vector3(0.f, 0.f, 0.f));
+	GameObject& player = w.CreateGameObject(Vector3(0.f, 0.f, 0.f), Vector3(0.f, 0.f, 0.f), Vector3(2.f, 2.f, 2.f));
 	player.AddComponent<MeshFilter>(ModelTag::Player);
 	player.AddComponent<MeshRenderer>();
 	player.AddComponent<PlayerState>();
@@ -202,7 +203,7 @@ void SceneTitle::Update()
 
 	if (!m_breakButton) return;
 
-	if (!m_isStarting && InputKeyboard::GetKeyDown(VK_RETURN))
+	if (!m_isStarting && InputKeyboard::GetKeyDown(VK_SPACE))
 	{
 		m_isStarting = true;
 		m_zoomTimer = 0.0f;
@@ -213,6 +214,8 @@ void SceneTitle::Update()
 			auto* pState = m_player->GetComponent<PlayerState>();
 			if (pState) pState->actionedThisFrame[ToIndex(ActionId::SpinAttack)] = true;
 		}
+		
+
 	}
 
 	if (m_isStarting)

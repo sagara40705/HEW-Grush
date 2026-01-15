@@ -110,8 +110,8 @@ void PlayerAnimation::CheckNormalAttackAnim()
 		if (state_->actionedThisFrame[ToIndex(ActionId::NormalAttack)])
 		{
 			currentType_ = Type::NormalAttack;
-			anime_->Play(animation_[Type::NormalAttack], false, 1.0f);
-		
+			anime_->Play(animation_[Type::SpinAttack], false, 3.0f);
+			anime_->SetTimeSeconds(1.3f);
 		}
 	}
 }
