@@ -16,11 +16,11 @@ private:
 	{
 		Idle = 0,			// 待機アニメーション
 		Move = 1,			// 移動アニメーション
-		//NormalAttack = ,	// 通常攻撃アニメーション
-		SpinAttack = 2,		// 回転攻撃アニメーション
-		DashAttack = 3,	    // 突進攻撃アニメーション
-		LeanBack = 4,		// のけぞりアニメーション
-		Count = 5,			// アニメーションの総数
+		NormalAttack = 2,	// 通常攻撃アニメーション
+		SpinAttack = 3,		// 回転攻撃アニメーション
+		DashAttack = 4,	    // 突進攻撃アニメーション
+		LeanBack = 5,		// のけぞりアニメーション
+		Count = 6,			// アニメーションの総数
 		None = 99			// 未指定状態
 	};
 
@@ -45,6 +45,7 @@ private:
 
 private:
 	void CheckMoveAnime();
+	void CheckNormalAttackAnim();
 	void CheckSpinAttackAnime();
 	void CheckDashAttackAnime();
 	

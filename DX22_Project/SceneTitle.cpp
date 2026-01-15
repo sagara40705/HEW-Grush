@@ -107,7 +107,6 @@ void SceneTitle::Unload()
 	TextureManager::Clear();
 }
 
-
 void SceneTitle::CreateCameraAndPlayer()
 {
 	World& w = GetWorld();
@@ -200,15 +199,6 @@ void SceneTitle::InitPlayerTex()
 
 void SceneTitle::Update()
 {
-//	// breakuirenderer が存在しない場合は何もしない
-//	if (!m_breakButton) return;
-//
-//	//// エンターキーが「押された瞬間
-//	if (InputKeyboard::GetKeyDown(VK_RETURN))
-//	{
-//		m_breakButton->StartBreak();
-//	}
-
 
 	if (!m_breakButton) return;
 
@@ -221,7 +211,7 @@ void SceneTitle::Update()
 		// ★ 保存しておいた m_player を使う
 		if (m_player) {
 			auto* pState = m_player->GetComponent<PlayerState>();
-			if (pState) pState->actionedThisFrame[ToIndex(ActionId::DashAttack)] = true;
+			if (pState) pState->actionedThisFrame[ToIndex(ActionId::SpinAttack)] = true;
 		}
 	}
 

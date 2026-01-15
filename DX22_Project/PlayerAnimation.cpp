@@ -23,6 +23,7 @@ void PlayerAnimation::Start()
 */
 void PlayerAnimation::OnDestroy()
 {
+
 }
 
 /*
@@ -30,7 +31,6 @@ void PlayerAnimation::OnDestroy()
 */
 void PlayerAnimation::Update()
 {
-
 	// ノックバック優先処理
 	if (isKnockback_)
 	{
@@ -47,9 +47,9 @@ void PlayerAnimation::Update()
 
 	//移動を先に判定
 	CheckMoveAnime();
+	CheckNormalAttackAnim();
 	CheckSpinAttackAnime();
 	CheckDashAttackAnime();
-
 
 }
 
@@ -77,8 +77,6 @@ void PlayerAnimation::CheckMoveAnime()
 			currentType_ = Type::Idle;
 			anime_->Play(animation_[Type::Idle], true, 1.f);
 		}
-
-		
 	}
 	else
 	{
@@ -88,6 +86,32 @@ void PlayerAnimation::CheckMoveAnime()
 			currentType_ = Type::Move;
 			anime_->Play(animation_[Type::Move], false, 1.f);
 			anime_->SetTimeSeconds(0.3f);
+		}
+	}
+}
+
+void PlayerAnimation::CheckNormalAttackAnim()
+{
+	if (currentType_ == Type::NormalAttack)
+	{
+		const float t = anime_->GetCurrentAnimeTime();
+
+		//アニメーション終了したら待機アニメーションへ
+		if (t > 2.5f)
+		{
+			currentType_ = Type::Idle;
+			anime_->Play(animation_[Type::Idle], true, 1.f);
+
+		}
+	}
+	else
+	{
+		//一旦仮置きで通常攻撃アクションを回転アニメーションで
+		if (state_->actionedThisFrame[ToIndex(ActionId::NormalAttack)])
+		{
+			currentType_ = Type::NormalAttack;
+			anime_->Play(animation_[Type::NormalAttack], false, 1.0f);
+		
 		}
 	}
 }
@@ -162,11 +186,6 @@ void PlayerAnimation::CheckLeanBackAnime(float duration)
 	state_->actionedThisFrame[ToIndex(ActionId::DashAttack)] = false;
 }
 
-void PlayerAnimation::TitleSceneAttackAnime()
-{
-	currentType_ = Type::DashAttack;
-	anime_->Play(animation_[Type::DashAttack], false, 1.0f);
-}
 
 /*
 * @brief 全アニメーションをmodelに追加

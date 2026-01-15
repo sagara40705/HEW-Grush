@@ -49,6 +49,8 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Aircon); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Jihanki); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Reizouko); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::AirPurifier); });
+	
 
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Ufo); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Eiseii); });
@@ -401,7 +403,7 @@ for (int i = 0; i < posCount1; i++) {
 		PrefabId::Benti,
 		PrefabId::Aircon,
 		PrefabId::Jihanki,
-		PrefabId::Reizouko,
+		PrefabId::Reizouko
 	};
 
 	int prefabCount2 = sizeof(prefabOrder2) / sizeof(prefabOrder2[0]);
