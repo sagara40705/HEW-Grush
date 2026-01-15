@@ -1,10 +1,14 @@
-ï»¿#include "ShaderList.h"
+#include "ShaderList.h"
+
 
 VertexShader* ShaderList::m_pVS[VS_KIND_MAX];
 PixelShader* ShaderList::m_pPS[PS_KIND_MAX];
+float ShaderList::m_spriteBreakT = 0.0f;
 
 ShaderList::ShaderList()
 {
+	// ShaderList.cppi‚Ç‚±‚Å‚à—Ç‚¢‚ªAstaticƒƒ“ƒo’è‹`‚ª•À‚ñ‚Å‚¢‚éêŠ‚ªˆÀ‘Sj
+	m_spriteBreakT = 0.0f;
 }
 ShaderList::~ShaderList()
 {
@@ -26,6 +30,9 @@ void ShaderList::Init()
 	MakeSpritePS();
 	MakeGlassPS();
 
+	//‰ó‚ê’Ç‰Á
+	MakeBreakUiPS();
+
 	DirectX::XMFLOAT4X4 mat[250];
 	for (int i = 0; i < 250; ++i)
 	{
@@ -41,7 +48,7 @@ void ShaderList::Init()
 		nullptr
 	};
 	SetMaterial(material);
-	SetLight(DirectX::XMFLOAT4(1.f, 1.f, 1.f, 1.f), DirectX::XMFLOAT3(-1.0f, -1.0f, -1.0f));
+	SetLight(DirectX::XMFLOAT4(1.f, 1.1f, 1.f, 1.f), DirectX::XMFLOAT3(-1.0f, -1.0f, -1.0f));
 	SetCameraPos(DirectX::XMFLOAT3(0.0f, 1.0f, -2.0f));
 	SetFog(DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f), 50.0f, 50.0f);
 }
@@ -72,6 +79,10 @@ VertexShader* ShaderList::GetVS(VSKind vs)
 }
 PixelShader* ShaderList::GetPS(PSKind ps)
 {
+	if (ps == PS_SPRITE && m_spriteOverridePS)
+	{
+		return m_spriteOverridePS;
+	}
 	return m_pPS[ps];
 }
 
@@ -96,6 +107,8 @@ void ShaderList::SetMaterial(const Model::Material& material)
 	param[1].w = material.pTexture ? 1.0f : 0.0f;
 	for (int i = 0; i < PS_KIND_MAX; ++i)
 	{
+		if (!m_pPS[i]) continue;  // š ’Ç‰Á
+
 		m_pPS[i]->SetTexture(0, material.pTexture);
 		m_pPS[i]->WriteBuffer(0, param);
 	}
@@ -110,6 +123,8 @@ void ShaderList::SetLight(DirectX::XMFLOAT4 color, DirectX::XMFLOAT3 dir)
 	));
 	for (int i = 0; i < PS_KIND_MAX; ++i)
 	{
+		if (!m_pPS[i]) continue;  // š ’Ç‰Á
+
 		m_pPS[i]->WriteBuffer(1, param);
 	}
 }
@@ -130,17 +145,17 @@ void ShaderList::SetFog(DirectX::XMFLOAT4 color, float start, float range)
 	};
 	m_pPS[PS_FOG]->WriteBuffer(3, param);
 }
-void ShaderList::SetGlassParam(const DirectX::XMFLOAT4& tint, float fresnelPower, float reflectionStrength, float transmissionStrength, float v)
+void ShaderList::SetGlassParam(const DirectX::XMFLOAT4& tint, float fresnelPower, float reflectionStrength, float transmissionStrength)
 {
 	DirectX::XMFLOAT4 param[2];
 
 	// tint
-	param[0] = tint;  // tint = { r, g, b, a } (a ã«ãƒ™ãƒ¼ã‚¹ã‚¢ãƒ«ãƒ•ã‚¡)
+	param[0] = tint;  // tint = { r, g, b, a } (a ‚Éƒx[ƒXƒAƒ‹ƒtƒ@)
 
 	// glassParams = { fresnelPower, reflectionStrength, transmissionStrength, 0 }
-	param[1] = DirectX::XMFLOAT4(fresnelPower, reflectionStrength, transmissionStrength, v);
+	param[1] = DirectX::XMFLOAT4(fresnelPower, reflectionStrength, transmissionStrength, 0.0f);
 
-	// b3 ã«æ›¸ãè¾¼ã‚€
+	// b3 ‚É‘‚«‚Ş
 	m_pPS[PS_GLASS]->WriteBuffer(3, param);
 }
 
@@ -271,16 +286,16 @@ struct VS_OUT {
     float4 color : COLOR0;
 };
 
-// æ—¢å­˜ã® SetWVP ã¨åŒã˜ cbuffer(b0) ã‚’åˆ©ç”¨
+// Šù‘¶‚Ì SetWVP ‚Æ“¯‚¶ cbuffer(b0) ‚ğ—˜—p
 cbuffer WVP : register(b0)
 {
     float4x4 world;
     float4x4 view;
     float4x4 proj;
-    // world/view/proj ã ã‘ä½¿ã†ã€‚æ®‹ã‚Šã®è¦ç´ ãŒã‚ã£ã¦ã‚‚ç„¡è¦–ã•ã‚Œã‚‹å‰æ
+    // world/view/proj ‚¾‚¯g‚¤Bc‚è‚Ì—v‘f‚ª‚ ‚Á‚Ä‚à–³‹‚³‚ê‚é‘O’ñ
 };
 
-// Sprite å°‚ç”¨ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ï¼ˆb1ï¼‰
+// Sprite ê—pƒpƒ‰ƒ[ƒ^ib1j
 cbuffer SpriteParam : register(b1)
 {
     float4 offset_size;   // xy = offset(px), zw = size(px)
@@ -292,7 +307,7 @@ VS_OUT main(VS_IN vin)
 {
     VS_OUT vout;
 
-    // é ‚ç‚¹ä½ç½®ï¼ˆãƒ­ãƒ¼ã‚«ãƒ« [-0.5,0.5] ãªã©ï¼‰ã« size ã‚’æ›ã‘ã¦ offset ã‚’è¶³ã™
+    // ’¸“_ˆÊ’uiƒ[ƒJƒ‹ [-0.5,0.5] ‚È‚Çj‚É size ‚ğŠ|‚¯‚Ä offset ‚ğ‘«‚·
     float2 p = vin.pos.xy * offset_size.zw + offset_size.xy;
 
     float4 pos = float4(p, 0.0f, 1.0f);
@@ -301,7 +316,7 @@ VS_OUT main(VS_IN vin)
     pos = mul(pos, proj);
     vout.pos = pos;
 
-    // UV ã¯ uvScale / uvPos ã§èª¿æ•´
+    // UV ‚Í uvScale / uvPos ‚Å’²®
     float2 uv = vin.uv * uvPos_uvScale.zw + uvPos_uvScale.xy;
     vout.uv = uv;
 
@@ -315,102 +330,6 @@ VS_OUT main(VS_IN vin)
 }
 void ShaderList::MakeShardVS()
 {
-	const char* code = R"EOT(
-struct VS_IN {
-    float3 pos    : POSITION;   // å…¥åŠ›ã¯é€šå¸¸ POSITION
-    float3 normal : NORMAL0;
-    float2 uv     : TEXCOORD0;
-};
-
-struct VS_OUT {
-    float4 pos    : SV_POSITION;
-    float3 normal : NORMAL0;
-    float2 uv     : TEXCOORD0;
-    float4 color  : COLOR0;
-    float4 wPos   : POSITION0;
-};
-
-// WVPï¼ˆSetWVP ã‹ã‚‰æ›¸ãè¾¼ã¾ã‚Œã‚‹ï¼‰
-cbuffer Matrix : register(b0)
-{
-    float4x4 world;
-    float4x4 view;
-    float4x4 proj;
-};
-
-// ç ´ç‰‡ã”ã¨ã®ãƒ©ãƒ³ãƒ€ãƒ ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
-// randParam.xyz : ã‚¹ã‚±ãƒ¼ãƒ«ãƒ»å›è»¢ç”¨ (0ã€œ1)
-// randParam.w   : ã‚¸ãƒ£ã‚®ãƒ¼ç”¨ã‚·ãƒ¼ãƒ‰
-cbuffer ShardParam : register(b1)
-{
-    float4 randParam;
-};
-
-// ç°¡æ˜“ãƒãƒƒã‚·ãƒ¥ï¼ˆ0ã€œ1ï¼‰
-float Hash(float n)
-{
-    return frac(sin(n) * 43758.5453);
-}
-
-VS_OUT main(VS_IN vin)
-{
-    VS_OUT vout;
-
-    // --- å½¢çŠ¶ã„ã˜ã‚Šï¼ˆãƒ­ãƒ¼ã‚«ãƒ« XY å¹³é¢ä¸Šï¼‰ ---
-    float2 p = vin.pos.xy;
-
-    // å…ƒãƒ¡ãƒƒã‚·ãƒ¥ (-0.5,0), (0.5,0), (0,1) ã‚’æƒ³å®šã—ã¦
-    // ãŠãŠã‚ˆãã®é‡å¿ƒä»˜è¿‘ã‚’åŸç‚¹ã«ç§»ã™
-    float2 center = float2(0.0f, 1.0f / 3.0f);
-    p -= center;
-
-    // ãƒ©ãƒ³ãƒ€ãƒ ã‚¹ã‚±ãƒ¼ãƒ«ï¼ˆ0.7ã€œ1.3å€ï¼‰
-    float sx = lerp(0.7f, 1.3f, randParam.x);
-    float sy = lerp(0.7f, 1.3f, randParam.y);
-    p *= float2(sx, sy);
-
-    // ãƒ©ãƒ³ãƒ€ãƒ å›è»¢ï¼ˆç´„ -60ã€œ+60 åº¦ï¼‰
-    float angle = (randParam.z * 2.0f - 1.0f) * (60.0f / 180.0f) * 3.14159265f;
-    float s = sin(angle);
-    float c = cos(angle);
-    float2 r;
-    r.x = p.x * c - p.y * s;
-    r.y = p.x * s + p.y * c;
-    p = r;
-
-    // å…ˆç«¯ã‚’å°‘ã—ã‚®ã‚¶ã‚®ã‚¶ã«ï¼ˆé•·ã•æ–¹å‘ã«ãƒ©ãƒ³ãƒ€ãƒ ä¼¸ã°ã™ï¼‰
-    float radial = length(p);
-    float jaggy = 1.0f + (Hash(radial * 17.0f + randParam.w * 13.0f) - 0.5f) * 0.4f;
-    p *= jaggy;
-
-    // ä¸­å¿ƒã‚’æˆ»ã™
-    p += center;
-
-    // åšã¿ 0 ã®ãƒ—ãƒ¬ãƒ¼ãƒˆã¨ã—ã¦ Z ã¯å…ƒã®å€¤ã‚’ä½¿ç”¨
-    float3 localPos = float3(p, vin.pos.z);
-
-    // --- ãƒ¯ãƒ¼ãƒ«ãƒ‰ãƒ»ãƒ“ãƒ¥ãƒ¼ãƒ»ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ã‚·ãƒ§ãƒ³ ---
-    float4 wp = mul(float4(localPos, 1.0f), world); // ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™
-    vout.wPos = wp;                                 // GlassPS ãŒä½¿ã† POSITION0
-
-    float4 vp = mul(wp, view);
-    vout.pos = mul(vp, proj);                       // ã‚¯ãƒªãƒƒãƒ—åº§æ¨™
-
-    // --- æ³•ç·šãƒ»UVãƒ»ã‚«ãƒ©ãƒ¼ ---
-    float3 nWorld = mul(vin.normal, (float3x3)world);
-    vout.normal = normalize(nWorld);
-
-    vout.uv = vin.uv;
-
-    // é ‚ç‚¹ã‚«ãƒ©ãƒ¼ã‚’ä½¿ã£ã¦ã„ãªã„ã®ã§ç™½å›ºå®š
-    vout.color = float4(1.0f, 1.0f, 1.0f, 1.0f);
-
-    return vout;
-}
-)EOT";
-
-	m_pVS[VS_SHARD] = new VertexShader();
-	m_pVS[VS_SHARD]->Compile(code);
 }
 
 void ShaderList::MakePrimPS()
@@ -467,30 +386,26 @@ Texture2D tex : register(t0);
 SamplerState samp : register(s0);
 float4 main(PS_IN pin) : SV_TARGET
 {
+	float4 color = float4(1.0f, 1.0f, 1.0f, 1.0f);
+	if(objAmbient.a >= 1.0f)
+		color = tex.Sample(samp, pin.uv);
 	float3 N = normalize(pin.normal);
-    float3 L = normalize(-lightDir.xyz);
-
-    // --- Albedo (Texture or White) ---
-    bool hasTexture = (objAmbient.a >= 1.0f);
-    float4 albedo = hasTexture ? tex.Sample(samp, pin.uv) : float4(1,1,1,1);
-
-    // --- Lambert ---
-    float ndl = saturate(dot(N, L));
-
-    float3 ambient = objAmbient.rgb * lightDiffuse.rgb;
-    float3 diffuse = objDiffuse.rgb * lightDiffuse.rgb * ndl;
-
-    float3 rgb = albedo.rgb * (ambient + diffuse);
-
-    // --- Specular (å¼±ã‚) ---
-    float gloss = max(0.01f, objSpecular.a);
-    rgb += objSpecular.rgb * lightDiffuse.rgb * pow(ndl, gloss) * 0.15f;
-
-    // --- Alpha (é€æ˜åº¦) ---
-    // ç”»åƒã®Î±ï¼ˆã‚ã‚Œã°ï¼‰ Ã— ãƒãƒ†ãƒªã‚¢ãƒ«ã®opacityï¼ˆMakeMaterialã§å…¥ã‚ŒãŸ diffuse.wï¼‰
-    float a = albedo.a * saturate(objDiffuse.a);
-
-    return float4(saturate(rgb), a);
+	float3 L = normalize(-lightDir);
+	float dotNL = saturate((dot(N, L) + 0.5f) / 1.5f);
+	float3 diffuse = objDiffuse.rgb * lightDiffuse.rgb;
+	float3 ambient = objAmbient.rgb * lightDiffuse.rgb;
+	float3 specular = objSpecular.rgb * lightDiffuse.rgb;
+	// –{—ˆ‚ÌLambertŠgU”½Ëiv‚Á‚½•\Œ»‚ªo—ˆ‚È‚©‚Á‚½‚Ì‚ÅÌ—p‚¹‚¸
+	// color.rgb *= saturate(diffuse * dotNL + ambient);
+	// ŠÂ‹«Œõ‚ÅŠgU”½Ë•”•ª‚ÌF‚ª•Ï‚í‚ç‚È‚¢‚æ‚¤‚Élerp(ŠÂ‹«Œõ,diffuse,dotNL)‚ÅŒvZ
+	// ŠÂ‹«Œõ‚ªã‚¯‚ê‚Î•(æZ)A‹­‚¯‚ê‚Î”’(‰ÁZ)‚Æ‚È‚é‚æ‚¤‚ÉAŠeŒvZ‚ğüŒ`‚Å•âŠÔ
+	diffuse *= color.rgb;
+	color.rgb = saturate(lerp(
+		lerp(diffuse * ambient, diffuse + ambient, pow(ambient, 4.0f)),
+		diffuse, dotNL));
+	// –{—ˆ‚È‚ç•K—v‚È‚¢‹¾–Ê”½ËALambertŒü‚¯‚ÉáŠ±‚¾‚¯“K—p
+	color.rgb += specular * pow(saturate(dotNL), max(0.01f, objSpecular.a) * 0.5f) * 0.5f;
+	return color;
 })EOT";
 	m_pPS[PS_LAMBERT] = new PixelShader();
 	m_pPS[PS_LAMBERT]->Compile(code);
@@ -536,7 +451,7 @@ float4 main(PS_IN pin) : SV_TARGET
 	float3 diffuse = objDiffuse.rgb * lightDiffuse.rgb;
 	float3 ambient = objAmbient.rgb * lightDiffuse.rgb;
 	float3 specular = objSpecular.rgb * lightDiffuse.rgb;
-	// Lambertã®è¨ˆç®—ã‚’å‚è€ƒ
+	// Lambert‚ÌŒvZ‚ğQl
 	color.rgb *= saturate(lerp(
 		lerp(diffuse * ambient, diffuse + ambient, pow(ambient, 4.0f)),
 		diffuse, dotNL));
@@ -575,12 +490,12 @@ float4 main(PS_IN pin) : SV_TARGET
 		color = tex.Sample(samp, pin.uv);
 	float3 N = normalize(pin.normal);
 	float3 L = normalize(-lightDir);
-	float dotNL = dot(N, L); // ãƒã‚¤ãƒŠã‚¹è¾¼ã§è¨ˆç®—
+	float dotNL = dot(N, L); // ƒ}ƒCƒiƒX‚ÅŒvZ
 	float3 diffuse = objDiffuse.rgb * lightDiffuse.rgb;
 	float3 ambient = objAmbient.rgb * lightDiffuse.rgb;
 	float3 specular = objSpecular.rgb * lightDiffuse.rgb;
-	float toonNL = saturate((dot(N, L) + 0.5f) / 1.5f * 100.0f); // é™°ã®å¢ƒç›®ã‚’æŸ”ã‚‰ã‹ã
-	// Lambertã®è¨ˆç®—ã‚’å‚è€ƒ
+	float toonNL = saturate((dot(N, L) + 0.5f) / 1.5f * 100.0f); // ‰A‚Ì‹«–Ú‚ğ_‚ç‚©‚­
+	// Lambert‚ÌŒvZ‚ğQl
 	color.rgb *= saturate(lerp(
 		lerp(diffuse * ambient, diffuse + ambient, pow(ambient, 4.0f)),
 		diffuse, toonNL));
@@ -591,6 +506,7 @@ float4 main(PS_IN pin) : SV_TARGET
 	m_pPS[PS_TOON] = new PixelShader();
 	m_pPS[PS_TOON]->Compile(code);
 }
+
 void ShaderList::MakeFogPS()
 {
 	const char* code = R"EOT(
@@ -655,19 +571,30 @@ struct PS_IN {
 Texture2D tex    : register(t0);
 SamplerState samp: register(s0);
 
-// VS ã¨åŒã˜ SpriteParamï¼ˆb1ï¼‰ã‚’å®šç¾©ï¼ˆcolor ã‚’ä½¿ã†ï¼‰
+// Šù‘¶
 cbuffer SpriteParam : register(b1)
 {
-    float4 offset_size;   // æœªä½¿ç”¨ã ãŒ VS ã¨ãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã‚’åˆã‚ã›ã¦ãŠã
+    float4 offset_size;
     float4 uvPos_uvScale;
     float4 color;
+};
+
+// š ’Ç‰ÁFBreak —pƒpƒ‰ƒ[ƒ^iBreakUiRenderer ‚ª b2 ‚É‘‚¢‚Ä‚¢‚éj
+cbuffer BreakParam : register(b2)
+{
+    float4 breakParam; // x = breakT
 };
 
 float4 main(PS_IN pin) : SV_TARGET
 {
     float4 texCol = tex.Sample(samp, pin.uv);
-    // å˜ç´”ãªãƒ†ã‚¯ã‚¹ãƒãƒ£ Ã— è‰²
-    return texCol * pin.color;
+    float4 baseCol = texCol * pin.color;
+
+    float breakT = saturate(breakParam.x);
+
+    // š ƒeƒXƒgFbreakT ‚ÅÔ‚­‚·‚éiŠ„‚êÀ‘•‘O‚ÌŠm”Fj
+    float4 red = float4(1, 0, 0, 1);
+    return lerp(baseCol, red, breakT);
 }
 )EOT";
 
@@ -700,107 +627,130 @@ cbuffer Camera : register(b2)
 {
 	float4 cameraPos;
 };
-
-// ã‚¬ãƒ©ã‚¹å›ºæœ‰ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
+// ƒKƒ‰ƒXŒÅ—Lƒpƒ‰ƒ[ƒ^
 cbuffer GlassParam : register(b3)
 {
-    float4 glassTint;   // rgb = ã‚¬ãƒ©ã‚¹è‰², a = ãƒ™ãƒ¼ã‚¹ã‚¢ãƒ«ãƒ•ã‚¡
-    // x = fresnelPower, y = reflectionStrength, z = transmissionStrength, w = tintStrength
-    float4 glassParams;
+    float4 glassTint;        // rgb = ƒKƒ‰ƒX‚ÌF, a = ƒx[ƒXƒAƒ‹ƒtƒ@
+    float4 glassParams;  
 };
-
 Texture2D tex : register(t0);
 SamplerState samp : register(s0);
 float4 main(PS_IN pin) : SV_TARGET
 {
-	 //return float4(1,0,1,1);
-
-    float3 N = normalize(pin.normal);
+	float3 N = normalize(pin.normal);
     float3 L = normalize(-lightDir.xyz);
     float3 V = normalize(cameraPos.xyz - pin.wPos.xyz);
 
-    // ==========================
-    // 1) ãƒ†ã‚¯ã‚¹ãƒãƒ£ï¼‹ã‚·ãƒ³ãƒ—ãƒ« Lambert
-    // ==========================
-    float4 texColor = float4(1, 1, 1, 1);
-	// objAmbient.a ã‚’ã€Œãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚ã‚Šï¼ãªã—ã€ã®ãƒ•ãƒ©ã‚°ã¨ã—ã¦åˆ©ç”¨
-	bool hasTexture = (objAmbient.a >= 1.0f);
-	if (hasTexture)
-	{
-		texColor = tex.Sample(samp, pin.uv);
-	}
+	float dotNL = saturate(dot(N, L));
+    float minNL = 0.3;
+    dotNL = lerp(minNL, 1.0f, dotNL);
 
-    float3 diffuseColor = objDiffuse.rgb * lightDiffuse.rgb;
+	float3 baseColor    = objDiffuse.rgb * lightDiffuse.rgb;
     float3 ambientColor = objAmbient.rgb * lightDiffuse.rgb;
     float3 specColor    = objSpecular.rgb * lightDiffuse.rgb;
 
-	//å½±ã®èª¿æ•´
-	float rawNL = dot(N, L);
-	float dotNL = saturate(rawNL * 0.5f + 0.5f);
-	const float kShadowMin = 0.7f;   
-	dotNL = lerp(kShadowMin, 1.0f, dotNL);
+	float4 texColor = float4(1,1,1,1);
+    if (objAmbient.a >= 1.0f)
+    {
+        texColor = tex.Sample(samp, pin.uv);
+    }
 
-    // ãƒ™ãƒ¼ã‚¹è‰²ï¼ˆå…ƒãƒ¢ãƒ‡ãƒ«ã®è¦‹ãŸç›®ã«ã‹ãªã‚Šè¿‘ã„å½¢ï¼‰
-	float3 baseColor = (hasTexture || glassParams.w != 1) ? texColor.rgb : glassTint.rgb;
-    float3 base = baseColor * (ambientColor + diffuseColor * dotNL);
+	float3 lambert = ambientColor + baseColor * dotNL;
+    lambert *= texColor.rgb;
 
-    // é¡é¢ã¯ã‹ãªã‚Šå¼±ã‚
     float3 R = reflect(-L, N);
-    float dotRV = saturate(dot(R, V));
-    float gloss = max(0.01f, objSpecular.a);
-    float3 specular = specColor * pow(dotRV, gloss * 4.0f);
-    base += specular * 0.2f;   // â† ã“ã“ã§ 0.2 ã¨ã‹ãªã‚Šå¼±ã‚ã«
+    float  dotRV = saturate(dot(R, V));
+    float  gloss = max(0.01f, objSpecular.a);
+    float3 specular = specColor * pow(dotRV, gloss * 4.0f) * 0.5f;
 
-    // ==========================
-    // 2) ã‚¬ãƒ©ã‚¹ç”¨ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ï¼ˆå¼±ãä½¿ã†ï¼‰
-    // ==========================
-    float fresnelPower         = max(glassParams.x, 1.0f);
-    float reflectionStrength   = glassParams.y;
-    float transmissionStrength = glassParams.z;
-    float tintStrength         = glassParams.w;
+    float3 litColor = lambert + specular;
 
-    float dotNV   = saturate(dot(N, V));
+    float fresnelPower        = glassParams.x;
+    float reflectionStrength  = glassParams.y;
+    float transmissionStrength= glassParams.z;
+
+	float dotNV   = saturate(dot(N, V));
     float fresnel = pow(1.0f - dotNV, fresnelPower);
 
-	// ==========================
-	// 3) ã‚¬ãƒ©ã‚¹è‰²ãƒ»åå°„æˆåˆ†ï¼ˆæ§ãˆã‚ï¼‰
-	// ==========================
+    float3 reflectionColor = lightDiffuse.rgb * glassTint.rgb;
+    float3 transmission    = litColor * glassTint.rgb;
 
-	// ã»ã‚“ã®ã‚Šè‰²ã‚’å¯„ã›ãŸã„ã®ã§ã€æœ€ä½ã§ã‚‚å°‘ã—ã¯ Tint ã‚’åŠ¹ã‹ã›ã‚‹
-	const float kTintBase  = 0.25f;      // å¸¸ã« 15% ãã‚‰ã„ã¯è‰²å‘³ã‚’å¯„ã›ã‚‹
-	const float kTintExtra = 0.25f;      // tintStrength ã§å¢—ãˆã‚‹åˆ†
-	float tintFactor = kTintBase + saturate(tintStrength) * kTintExtra; // æœ€å¤§ ~0.4
+    float3 finalRGB = lerp(
+        transmission * transmissionStrength,
+        reflectionColor,
+        saturate(reflectionStrength * fresnel));
 
-	// base â†’ glassTint.rgb ã«å¯„ã›ã‚‹ï¼ˆ0.6 ãã‚‰ã„ glassTint å¯„ã‚Šã®ç›®æ¨™è‰²ï¼‰
-	float3 targetTint = lerp(base, glassTint.rgb, 0.6f);
+	float baseAlpha    = glassTint.a;
+    float alphaFresnel = 0.3 + 0.7 * fresnel;
+    float finalA = saturate(baseAlpha * alphaFresnel);
 
-	// æœ€çµ‚çš„ãªç€è‰²ï¼ˆbase ã‹ã‚‰ targetTint ã¸ tintFactor åˆ†ã ã‘å¯„ã›ã‚‹ï¼‰
-	float3 tintedBase = lerp(base, targetTint, tintFactor);
+	return float4(finalRGB, finalA);
 
-	// é€éãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã¯ 10% ã ã‘åæ˜ ï¼ˆã»ã¼è¦‹ãŸç›®ã¯ç¶­æŒï¼‰
-	float transFactor = lerp(1.0f, transmissionStrength, 0.1f);
-	tintedBase *= transFactor;
-
-	// åå°„è‰²ã‚‚ã‹ãªã‚Šå¼±ãã€Fresnel ä¾å­˜ã§å°‘ã—ã ã‘è¶³ã™
-	float3 reflectionColor = lightDiffuse.rgb * glassTint.rgb;
-	const float kReflMax = 0.2f;
-	float reflFactor = kReflMax * reflectionStrength * fresnel;
-
-	float3 finalRGB = tintedBase + reflectionColor * reflFactor;
-
-    // ==========================
-    // 4) ã‚¢ãƒ«ãƒ•ã‚¡ï¼ˆé€æ˜åº¦ã‚‚å¼±ã‚ï¼‰
-    // ==========================
-    float baseAlpha = glassTint.a;
-
-    // Fresnel ã§ã»ã‚“ã®å°‘ã—ã ã‘ç¸ã‚’æ¿ƒãã™ã‚‹ãŒã€ã»ã¼ä¸€å®š
-    float fresnelAlpha = lerp(0.9f, 1.0f, fresnel); // 0.9ã€œ1.0 ã®ç¯„å›²
-
-    float finalA = saturate(baseAlpha * fresnelAlpha);
-
-    return float4(finalRGB, finalA);
 })EOT";
 	m_pPS[PS_GLASS] = new PixelShader();
 	m_pPS[PS_GLASS]->Compile(code);
 
+}
+//‰ó‚êƒVƒF[ƒ_[ì¬
+//‰ó‚êƒVƒF[ƒ_[ì¬
+void ShaderList::MakeBreakUiPS()
+{
+	const char* code = R"EOT(
+struct PS_IN {
+    float4 pos   : SV_POSITION;
+    float2 uv    : TEXCOORD0;
+    float4 color : COLOR0;
+};
+
+Texture2D tex0 : register(t0);
+SamplerState samp : register(s0);
+
+// UiSpriteRenderer ‚ª–ˆƒtƒŒ[ƒ€‘‚¢‚Ä‚­‚é‚Ì‚Å b1 ‚Íc‚µ‚Ä‚¨‚­
+cbuffer SpriteParam : register(b1)
+{
+    float4 offset_size;
+    float4 uvPos_uvScale;
+    float4 color;
+};
+
+// BreakUiRenderer ‚ª‘‚­ib0j
+cbuffer BreakParam : register(b0)
+{
+    float time;
+    float3 pad;
+};
+
+float4 main(PS_IN pin) : SV_TARGET
+{
+    float4 baseCol = tex0.Sample(samp, pin.uv) * pin.color;
+
+    // time ‚ª 0 ‚æ‚è‘å‚«‚¢ŠÔ‚ÍÔ‚­‚·‚éi“®ìŠm”F—pj
+    if (time > 0.0f)
+    {
+        return float4(1,0,0,1);
+    }
+
+    return baseCol;
+}
+)EOT";
+
+	m_pPS[PS_BREAKUI] = new PixelShader();
+	m_pPS[PS_BREAKUI]->Compile(code);
+}
+
+PixelShader* ShaderList::m_spriteOverridePS = nullptr;
+
+void ShaderList::SetSpritePsOverride(PixelShader* ps)
+{
+	m_spriteOverridePS = ps;
+}
+
+void ShaderList::SetSpriteBreakT(float t)
+{
+	m_spriteBreakT = t;
+}
+
+float ShaderList::GetSpriteBreakT()
+{
+	return m_spriteBreakT;
 }

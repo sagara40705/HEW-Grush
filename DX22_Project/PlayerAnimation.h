@@ -32,11 +32,12 @@ public:
 	void OnDestroy() override;		// 終了処理
 	void Update()  override;		// 更新処理
 
-	void CheckLeanBackAnime(float duration = 0.6f);
+	void CheckLeanBackAnime(float duration = 0.6f);	//のけぞりアニメーションのチェック
+	void TitleSceneAttackAnime();					//タイトルシーン用攻撃アニメーション
 private:
 	Model::AnimeNo animation_[Type::Count]; //アニメーションナンバーの格納先
 	Type currentType_ = Type::None; // 現在のアニメーション
-	Type nextType_	  = Type::None; // 現在のアニメーション
+	Type nextType_	  = Type::None; // 次のアニメーション
 
 	bool isKnockback_ = false;		//のけぞり中かどうか
 	float knockbackTimer_ = 0.0f;	//のけぞり時間

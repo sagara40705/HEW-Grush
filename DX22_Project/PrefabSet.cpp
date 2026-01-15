@@ -118,8 +118,8 @@ void RegisterAllPrefabs()
             auto& mr = go.AddComponent<MeshRenderer>(); (void)mr;
             auto& bc = go.AddComponent<BoxCollider>(
                 true,
-                DirectX::XMFLOAT3{ 0, 1, 0 },
-                DirectX::XMFLOAT3{ 4, 2, 1.8 });
+                DirectX::XMFLOAT3{ 0.f, 1.f,  0.f },
+                DirectX::XMFLOAT3{ 4.f, 2.f, 1.8f });
             (void)bc;
             auto& gs = go.AddComponent<GlassObject>(GlassGrade::Grade_2); (void)gs;
         });
@@ -200,13 +200,13 @@ void RegisterAllPrefabs()
         });
     Prefab::Register(P::GlassShard,
         [](GameObject& go) {
-            auto& mf = go.AddComponent<MeshFilter>(PrimitiveMeshTag::GlassShard);           (void)mf;
+            auto& mf = go.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube);                 (void)mf;
             auto& mr = go.AddComponent<MeshRenderer>();                                     (void)mr;
-            auto& bc = go.AddComponent<BoxCollider>(
-                false,
-                DirectX::XMFLOAT3{ 0.f, 0.5f, 0.f },
-                DirectX::XMFLOAT3{ 0.6f, 1.0f, 0.2f });
-            bc.SetMask(ToBit(Layer::Ground));                                               (void)bc;
+            //auto& bc = go.AddComponent<BoxCollider>(
+            //    false,
+            //    DirectX::XMFLOAT3{ 0.f, 0.5f, 0.f },
+            //    DirectX::XMFLOAT3{ 0.6f, 1.0f, 0.2f });
+            //bc.SetMask(ToBit(Layer::Ground));                                               (void)bc;
             auto& rb = go.AddComponent<Rigidbody>();                                        (void)rb;
             auto& shard = go.AddComponent<GlassShard>();                                    (void)shard;
         });

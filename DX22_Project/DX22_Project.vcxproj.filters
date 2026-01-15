@@ -341,6 +341,12 @@
     <ClCompile Include="GlassObjectSpawnerh.cpp">
       <Filter>Game\Components\Gimmick</Filter>
     </ClCompile>
+    <ClCompile Include="UIFrostRenderer.cpp">
+      <Filter>Game\Components\Environment</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerState.cpp">
+      <Filter>Game\Components\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -599,6 +605,9 @@
     </ClInclude>
     <ClInclude Include="GlassObjectSpawner.h">
       <Filter>Game\Components\Gimmick</Filter>
+    </ClInclude>
+    <ClInclude Include="UIFrostRenderer.h">
+      <Filter>Game\Components\Environment</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

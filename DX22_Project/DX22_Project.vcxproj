@@ -151,6 +151,8 @@
     <ClCompile Include="AudioListener.cpp" />
     <ClCompile Include="AudioSource.cpp" />
     <ClCompile Include="BoxCollider.cpp" />
+    <ClCompile Include="BreakButtonRenderer.cpp" />
+    <ClCompile Include="BreakUiRenderer.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraContorol.cpp" />
     <ClCompile Include="CameraShake.cpp" />
@@ -193,10 +195,12 @@
     <ClCompile Include="MeshRenderer.cpp" />
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="ModelManager.cpp" />
+    <ClCompile Include="OutlineShader.cpp" />
     <ClCompile Include="PhysicsSystem.cpp" />
     <ClCompile Include="PlayerAction.cpp" />
     <ClCompile Include="PlayerAnimation.cpp" />
     <ClCompile Include="PlayerMove.cpp" />
+    <ClCompile Include="PlayerState.cpp" />
     <ClCompile Include="Prefab.cpp" />
     <ClCompile Include="PrefabSet.cpp" />
     <ClCompile Include="PrimitiveMeshManager.cpp" />
@@ -226,6 +230,7 @@
     <ClCompile Include="TimerUI.cpp" />
     <ClCompile Include="TitleManager.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="UIFrostRenderer.cpp" />
     <ClCompile Include="UiSpriteRenderer.cpp" />
     <ClCompile Include="WarpPoint .cpp" />
     <ClCompile Include="World.cpp" />
@@ -239,6 +244,8 @@
     <ClInclude Include="AudioListener.h" />
     <ClInclude Include="AudioSource.h" />
     <ClInclude Include="BoxCollider.h" />
+    <ClInclude Include="BreakButtonRenderer.h" />
+    <ClInclude Include="BreakUiRenderer.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraContorol.h" />
     <ClInclude Include="CameraShake.h" />
@@ -253,6 +260,7 @@
     <ClInclude Include="ElectricFan.h" />
     <ClInclude Include="Event.h" />
     <ClInclude Include="EventComponent.h" />
+    <ClInclude Include="FadeOut.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameState.h" />
@@ -280,6 +288,7 @@
     <ClInclude Include="MeshRenderer.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="ModelManager.h" />
+    <ClInclude Include="OutlineShader.h" />
     <ClInclude Include="PhysicsSystem.h" />
     <ClInclude Include="PlayerAction.h" />
     <ClInclude Include="PlayerAnimation.h" />
@@ -315,6 +324,7 @@
     <ClInclude Include="TimerUI.h" />
     <ClInclude Include="TitleManager.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="UIFrostRenderer.h" />
     <ClInclude Include="UiSpriteRenderer.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vector3.h" />

@@ -49,8 +49,8 @@ void MeshRenderer::Start()
     shard = gameObject->GetComponent<GlassShard>();
     if (shard)
     {
-        vsKind = ShaderList::VS_SHARD;
-        psKind = ShaderList::PS_GLASS;
+        //vsKind = ShaderList::VS_SHARD;
+		psKind = ShaderList::PS_GLASS_SHARD;
     }
 }
 

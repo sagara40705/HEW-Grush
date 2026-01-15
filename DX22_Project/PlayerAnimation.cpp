@@ -32,18 +32,17 @@ void PlayerAnimation::Update()
 {
 
 	// ノックバック優先処理
-	if (isKnockback_) {
-		// 実フレームの delta が取れるならそれを使う（ここでは仮に 1/60 を使う） 
+	if (isKnockback_)
+	{
 		const float dt = 1.0f / 60.0f;
 		knockbackTimer_ += dt; 
-		// アニメの時間で終了判定しても良い（ここではタイマーで） 
-		if (knockbackTimer_ >= knockbackDuration_) 
-		{ 
+
+		if (knockbackTimer_ >= knockbackDuration_)
+		{
 			isKnockback_ = false; currentType_ = Type::Idle;
-			anime_->Play(animation_[Type::Idle], true, 1.0f); 
-			
+			anime_->Play(animation_[Type::Idle], true, 1.0f);
+
 		} // ノックバック中は他のアニメ判定を行わない
-		return; 
 	}
 
 	//移動を先に判定
@@ -124,6 +123,7 @@ void PlayerAnimation::CheckSpinAttackAnime()
 
 void PlayerAnimation::CheckDashAttackAnime()
 {
+	if (isKnockback_) return; // ノックバック中は無視！
 
 	if (currentType_ == Type::DashAttack)
 	{
@@ -150,15 +150,22 @@ void PlayerAnimation::CheckDashAttackAnime()
 
 void PlayerAnimation::CheckLeanBackAnime(float duration)
 {
-	
 	isKnockback_ = true; 
-	knockbackTimer_ = 0.0f; 
+	knockbackTimer_ = 0.0f;
+
 	currentType_ = Type::LeanBack;
 	knockbackDuration_ = duration;
 
 	anime_->Play(animation_[Type::LeanBack], false, 1.0f);
 	anime_->SetTimeSeconds(1.2f);
 
+	state_->actionedThisFrame[ToIndex(ActionId::DashAttack)] = false;
+}
+
+void PlayerAnimation::TitleSceneAttackAnime()
+{
+	currentType_ = Type::DashAttack;
+	anime_->Play(animation_[Type::DashAttack], false, 1.0f);
 }
 
 /*

@@ -10,12 +10,28 @@
 #include "ShaderList.h"
 #include "GlassShard.h"
 #include "GlassShardPool.h"
+#include "Sprite3DRenderer.h"
+#include "SpriteAnimation.h"
 
+void  GlassObject::Awake()
+{
+	// オブジェクトを生成して参照をメンバに保存しておく
+	// *子オブジェクトとして生成すると、親破壊時に一緒に破壊されるので変更
+
+	//破壊エフェクト生成
+	//GameObject& Effkseer = gameObject->world->CreateGameObject();
+	//Effkseer.GetComponent<Transform>()->SetPosition(gameObject->GetComponent<Transform>()->GetPosition());
+	//Effkseer.AddComponent<Sprite3DRenderer>(TextureTag::EffectLv1, Vector2(0, 0), Vector2(5, 5));
+	//m_hitEffekt = &Effkseer.AddComponent<SpriteAnimation>(5, 5, 5, 26, false);
+}
+ 
 void GlassObject::Start()
 {
+	// ゲージマネージャーの参照を取得
 	GameObject* gaugeMgr = gameObject->world->FindWithTag(Tag::GaugeManager);
 	gaude_ = gaugeMgr->GetComponent<GlassGaugeManager>();
 
+	// スコアマネージャーの参照を取得
 	GameObject* score = gameObject->FindWithTag(Tag::ScoreManager);
 	score_ = score->GetComponent<ScoreManager>();
 
@@ -23,6 +39,8 @@ void GlassObject::Start()
 	hp_ = HP[ToIndex(grade_)];
 
 	tf_ = gameObject->GetComponent<Transform>();
+
+	//m_hitEffekt->Start();
 }
 
 void GlassObject::OnDestroy()
@@ -47,12 +65,13 @@ void GlassObject::TakeDamage(float damage)
 
 void GlassObject::SpawnShards()
 {
+	//m_hitEffekt->Play();
 
 	World& W = *gameObject->world;
 	GlassShardPool* pool = GlassShardPool::GetInstanse();
 	Vector3 pos = tf_->GetPosition();
 
-	const int kSpawnNum = 12 + ToIndex(grade_) * 4;
+	const size_t kSpawnNum = 8 + ToIndex(grade_) * ToIndex(grade_) * 4;
 
 	for (int i = 0; i < kSpawnNum; ++i)
 	{
