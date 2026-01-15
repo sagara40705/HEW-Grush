@@ -7,8 +7,8 @@
 #include "InputKeyboard.h"
 #include "ResultTimerUI.h"
 #include "LineManager.h"
-#include "Gauge.h"
-#include "Rank.h"
+#include "ResultGaugeUI.h"
+#include "ResultRankUI.h"
 
 constexpr Vector2 kNumberUVScale = { 0.1f, 1.0f };
 void Result::Load()
@@ -135,8 +135,8 @@ void Result::GaugeDraw()
 	World& w = GetWorld();
 
 	GameObject& Gauge = w.CreateGameObject();
-	Gauge.SetTag(Tag::GaugeUI);
-	Gauge.AddComponent<GaugeUI>();
+	Gauge.SetTag(Tag::ResultGaugeUI);
+	Gauge.AddComponent<ResultGaugeUI>();
 }
 
 void Result::CanvasDraw()
@@ -162,6 +162,6 @@ void Result::RankDraw()
 	World& w = GetWorld();
 
 	GameObject& Rank = w.CreateGameObject();
-	Rank.SetTag(Tag::RankUI);
-	Rank.AddComponent<RankUI>();
+	Rank.SetTag(Tag::ResultRankUI);
+	Rank.AddComponent<ResultRankUI>();
 }

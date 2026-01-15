@@ -32,7 +32,15 @@ enum class TextureTag : uint8_t
 	UIFrostNoise = 23,
 	EffectLv1 = 24,
 	GlassShard = 25,
-    Count = 26
+    Frame,
+    Gauge,
+    ResultUI,
+    RANKS,
+    ResultTimer,
+    ResultNumber,
+    ResultTime,
+    tatu_Arubaita,
+    Count 
 };
 
 class TextureManager
