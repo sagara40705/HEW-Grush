@@ -11,7 +11,7 @@
 enum class TextureTag : uint8_t
 {
     Title_BG,       // タイトル背景
-    FadeOut,
+    FadeIn,        //フェードイン
     LoadGauge,      // UI ロードゲージ
     Star,           // 星アイコン
     GaugeEmpty,     // ゲージ空状態画像
@@ -33,7 +33,8 @@ enum class TextureTag : uint8_t
     Title_Break,    //タイトルを割る
     Title_BreakID,  //タイトル割るID
     Title_Loge,     //タイトルロゴ
-    Title_Loge2,
+    Title_Loge2,    //文字を斜めにする
+    FadeOut,        //フェードアウト
     Count,           // 列挙数（配列確保のためだけに使用）
 };
 

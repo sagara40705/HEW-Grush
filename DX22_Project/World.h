@@ -25,7 +25,8 @@ public:
     std::vector<ObjectId>  toDestroy{};
     ObjectId               nextId = 1;
     bool                   isClearing = true;
-
+private:
+    bool                   m_FadeOut = false;
 private:
     std::vector<GameObject*> pendingStartObjects;
 
