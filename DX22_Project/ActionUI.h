@@ -13,8 +13,13 @@ private: //参照
 	UiSpriteRenderer* spFront_  = nullptr;
 	UiSpriteRenderer* spinMoji_ = nullptr;
 	UiSpriteRenderer* dashMoji_ = nullptr;
+	UiSpriteRenderer* daFlash_ = nullptr;
+	UiSpriteRenderer* daFront_ = nullptr;
 	
-	bool wasSpinReady = false;
+	
+	bool wasSpinReady = false;//回転攻撃の準備完了前フレーム状態
+	bool wasDashReady = false;//ダッシュ攻撃の準備完了前フレーム状態
+
 	float glowTimer = 0.f;
 public:
 	void Awake() override;
