@@ -5,7 +5,7 @@
 #include "GlassObject.h"
 #include "InputKeyboard.h"
 #include "DebugLog.h"
-#include "ShaderList.h"
+#include "SoundManager.h"
 
 constexpr float kMaxGaugeVale[ToIndex(HammerGrade::Count)] 
 				= { 100.f, 200.f, 300.f };
@@ -29,39 +29,6 @@ void GlassGaugeManager::Update()
 #ifdef _DEBUG
 	DebugCommand();
 #endif // DEBUG	
-
-	// ŒÀŠE“Ë”j’†
-	if (isLimitBreak_)
-	{
-		limitBreakDurationTimer_ += 0.1f / 60.f;
-		ShaderList::SetRainbowTime(limitBreakDurationTimer_);
-
-		if (limitBreakDurationTimer_ >= kLimitBreakDuration)
-		{
-			isLimitBreak_ = false;
-			limitBreakDurationTimer_ = 0.f;
-			hammer_->LimitBreakEnd();
-			DebugLog::Output("ŒÀŠE“Ë”jI—¹");
-		}
-		return;
-	}
-	else
-	{
-		if (!IsMaxGauge())
-		{
-			limitBreakTimer_ = 0.f;
-			return;
-		}
-
-		limitBreakTimer_ += 0.1f / 60.f;
-		if (limitBreakTimer_ >= kLimitBreakTime)
-		{
-			isLimitBreak_ = true;
-			limitBreakTimer_ = 0.f;
-			hammer_->LimitBreakStart();
-			DebugLog::Output("ŒÀŠE“Ë”jŠJŽn");
-		}
-	}
 
 	if (isGaugeEmpty) return;
 
@@ -89,6 +56,7 @@ void GlassGaugeManager::Update()
 			isGaugeDecaying = true;
 			gaugeDecayDelayTimer = 0.f;
 			DebugLog::Output("ƒQ[ƒWŒ¸ŠŠJŽn");
+			SoundManager::SoundPlay(GaugeDownSE,1.0f);
 		}
 	}
 }
@@ -132,6 +100,9 @@ void GlassGaugeManager::GradeUp()
 
 	hammer_->GradeUp();
 
+//	PlaySound(SoundManager::GetSound(GradeUpSE));
+	SoundManager::SoundPlay(GradeUpSE,1.0f);
+
 	constexpr float kWhenGradeUpMinGauge = 5;
 	gauge_ = kWhenGradeUpMinGauge;
 }
@@ -147,6 +118,8 @@ void GlassGaugeManager::GradeDown()
 	}
 
 	hammer_->GradeDown();
+//	PlaySound(SoundManager::GetSound(GradeDownSE));
+	SoundManager::SoundPlay(GradeDownSE, 1.0f);
 
 	gauge_ = kMaxGaugeVale[ToIndex(hammer_->GetGrade())];
 }
@@ -167,16 +140,6 @@ HammerGrade GlassGaugeManager::GetHammerGrade()
 	return hammer_->GetGrade();
 }
 
-bool GlassGaugeManager::IsMaxGauge()
-{
-	size_t grade = ToIndex(hammer_->GetGrade());
-	if (gauge_ >= kMaxGaugeVale[grade])
-	{
-		return true;
-	}
-	return false;
-}
-
 #ifdef _DEBUG
 void GlassGaugeManager::DebugCommand()
 {
@@ -184,19 +147,6 @@ void GlassGaugeManager::DebugCommand()
 	{
 		BrakeGlass(GlassGrade::Grade_1);
 		DebugLog::Output("DebugCommand GaugeUp 1");
-	}
-
-	if (InputKeyboard::GetKeyDown('N'))
-	{
-		isLimitBreak_ = true;
-		player_->LimitBreakOn();
-		hammer_->LimitBreakStart();
-	}
-	if (InputKeyboard::GetKeyDown('M'))
-	{
-		isLimitBreak_ = true;
-		player_->LimitBreakOff();
-		hammer_->LimitBreakEnd();
 	}
 }
 #endif // DEBUG	
