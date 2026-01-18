@@ -49,15 +49,20 @@ void SceneStageSelect::CreateStageMap()
 
 void SceneStageSelect::CreateCamera()
 {
-
+	World& world = GetWorld();
+	GameObject& cameraObj = world.CreateGameObject(Vector3(0.f, 10.f, 0.f), Vector3(90.f, 0.f, 0.f));
+	cameraObj.SetTag(Tag::MainCamera);
+	cameraObj.AddComponent<Camera>();
 }
 
 void SceneStageSelect::CreatePlayer()
 {
 	World& world = GetWorld();
 
-	GameObject& playerObj = world.CreateGameObject();
+	GameObject& playerObj = world.CreateGameObject(Vector3(-5.f, 0.f, 0.f));
 	playerObj.SetTag(Tag::Player);
+	playerObj.AddComponent<MeshFilter>(ModelTag::Player);
+	playerObj.AddComponent<MeshRenderer>();
 	playerObj.AddComponent<SelectPlayerControl>();
 }
 
@@ -65,8 +70,8 @@ void SceneStageSelect::CreateGround()
 {
 	World& world = GetWorld();
 
-	GameObject& groundObj = world.CreateGameObject();
-	groundObj.AddComponent<Sprite3DRenderer>(TextureTag::StageMap);
+	GameObject& groundObj = world.CreateGameObject(Vector3::zero(), Vector3(90.f, 0.f, 0.f));
+	groundObj.AddComponent<Sprite3DRenderer>(TextureTag::StageMap, Vector2::zero(), Vector2(16.f, 9.f));
 }
 
 
