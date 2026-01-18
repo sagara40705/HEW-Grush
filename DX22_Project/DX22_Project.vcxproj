@@ -229,6 +229,7 @@
     <ClCompile Include="TimerUI.cpp" />
     <ClCompile Include="TitleManager.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="TutorialManager.cpp" />
     <ClCompile Include="UIFrostRenderer.cpp" />
     <ClCompile Include="UiSpriteRenderer.cpp" />
     <ClCompile Include="WarpPoint .cpp" />
@@ -321,6 +322,7 @@
     <ClInclude Include="TimerUI.h" />
     <ClInclude Include="TitleManager.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="TutorialManager.h" />
     <ClInclude Include="UIFrostRenderer.h" />
     <ClInclude Include="UiSpriteRenderer.h" />
     <ClInclude Include="Vector2.h" />

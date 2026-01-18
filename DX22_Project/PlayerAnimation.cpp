@@ -12,7 +12,7 @@ void PlayerAnimation::Start()
 	state_ = gameObject->GetComponent<PlayerState>();
 	anime_ = gameObject->GetComponent<Animator>();
 	AddAllAnimations();
-	anime_->Play(animation_[Type::DashAttack], true, 1.f);
+	anime_->Play(animation_[Type::Idle], true, 1.f);
 	//anime_->SetTimeSeconds(4.8f);
 
 	assert(state_ && anime_ && "PlayerAnimation	‚Å ƒvƒŒƒCƒ„[‚Ì <PlayerState> ‚© <Animator> ‚ª nullptr ‚Å‚·");
@@ -31,10 +31,10 @@ void PlayerAnimation::OnDestroy()
 void PlayerAnimation::Update()
 {
 	//ˆÚ“®‚ğæ‚É”»’è
-	//CheckMoveAnime();
-	//CheckNormalAttackAnime();
-	//CheckSpinAttackAnime();
-	//CheckDashAttackAnime();
+	CheckMoveAnime();
+	CheckNormalAttackAnime();
+	CheckSpinAttackAnime();
+	CheckDashAttackAnime();
 }
 
 /*
