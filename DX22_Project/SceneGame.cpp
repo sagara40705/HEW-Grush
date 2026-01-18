@@ -82,7 +82,8 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::UIFrostNoise); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::EffectLv1); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GlassShard); });
-
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::TasksUI); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::TutorialLocation); });
 
 	// プレイハブ設定
 	outTasks.emplace_back([this] { RegisterAllPrefabs(); });
@@ -551,6 +552,9 @@ void SceneGame::CreateGlassObjectSpawner()
 
 	GameObject& Frost = w.CreateGameObject(Vector3(0.f, -0.9f, 0.f), Vector3(90.f, 0.f, 0.f));
 	Frost.AddComponent<Sprite3DRenderer>(TextureTag::UIFrostNoise, Vector2::zero(), Vector2(12.8f, 7.2f));
+
+	GameObject& tutorial = w.CreateGameObject();
+	tutorial.AddComponent<TutorialManager>();
 }
 
 void SceneGame::CreateWarp()
