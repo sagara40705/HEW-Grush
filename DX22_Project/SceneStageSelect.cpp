@@ -23,6 +23,7 @@ void SceneStageSelect::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player); });
 
 	// テクスチャーロード	
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::StageMap); });
 
 	// ゲームオブジェクト生成
 	outTasks.emplace_back([this] { CreateStageMap(); });
@@ -62,6 +63,10 @@ void SceneStageSelect::CreatePlayer()
 
 void SceneStageSelect::CreateGround()
 {
+	World& world = GetWorld();
+
+	GameObject& groundObj = world.CreateGameObject();
+	groundObj.AddComponent<Sprite3DRenderer>(TextureTag::StageMap);
 }
 
 
