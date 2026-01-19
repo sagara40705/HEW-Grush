@@ -1,50 +1,57 @@
 [Debug Log Started]
-[05:44:27] Model::Load, material.pTexture: 00000267DB7C2380
-[05:44:27] Model::Load, material.pTexture: 00000267DB7C1F60
-[05:44:27] Model::Load, material.pTexture: 00000267DB7C1360
-[05:44:27] Model::Load, material.pTexture: 00000267DB7C1D20
-[05:44:29] Input Direction dir = %d: 3
-[05:44:29] Player move stage point id = %d: 1
-[05:44:29] Input Direction dir = %d: 0
-[05:44:29] Player move stage point id = %d: 2
-[05:44:30] Input Direction dir = %d: 1
-[05:44:30] Player move stage point id = %d: 3
-[05:44:30] Input Direction dir = %d: 1
-[05:44:30] Player move stage point id = %d: 4
-[05:44:30] Input Direction dir = %d: 2
-[05:44:31] Player move stage point id = %d: 1
-[05:44:31] Input Direction dir = %d: 3
-[05:44:31] Player move stage point id = %d: 3
-[05:44:31] Input Direction dir = %d: 0
-[05:44:32] Player move stage point id = %d: 2
-[05:44:32] Input Direction dir = %d: 1
-[05:44:32] Player move stage point id = %d: 3
-[05:44:32] Input Direction dir = %d: 1
-[05:44:33] Player move stage point id = %d: 4
-[05:44:33] Input Direction dir = %d: 2
-[05:44:33] Player move stage point id = %d: 1
-[05:44:33] Input Direction dir = %d: 2
-[05:44:33] Player move stage point id = %d: 0
-[05:44:33] Input Direction dir = %d: 3
-[05:44:34] Player move stage point id = %d: 1
-[05:44:34] Input Direction dir = %d: 3
-[05:44:34] Player move stage point id = %d: 3
-[05:44:34] Input Direction dir = %d: 0
-[05:44:34] Player move stage point id = %d: 2
-[05:44:35] Input Direction dir = %d: 1
-[05:44:35] Player move stage point id = %d: 3
-[05:44:35] Input Direction dir = %d: 2
-[05:44:35] Player move stage point id = %d: 1
-[05:44:35] Input Direction dir = %d: 0
-[05:44:35] Player move stage point id = %d: 2
-[05:44:36] Input Direction dir = %d: 1
-[05:44:36] Player move stage point id = %d: 3
-[05:44:36] Input Direction dir = %d: 1
-[05:44:37] Player move stage point id = %d: 4
-[05:44:37] Input Direction dir = %d: 2
-[05:44:37] Player move stage point id = %d: 1
-[05:44:37] Input Direction dir = %d: 3
-[05:44:37] Player move stage point id = %d: 3
-[05:44:38] Input Direction dir = %d: 0
-[05:44:38] Player move stage point id = %d: 2
-[Debug Log End]
+[07:32:48] Model::Load, material.pTexture: 000001F01BE2ED50
+[07:32:48] Model::Load, material.pTexture: 000001F01BE2EF30
+[07:32:48] Model::Load, material.pTexture: 000001F01BE2EFF0
+[07:32:51] Input Direction dir = %d: 3
+[07:32:51] Player move stage point id = %d: 1
+[07:32:52] Input Direction dir = %d: 3
+[07:32:52] Player move stage point id = %d: 3
+[07:32:52] Input Direction dir = %d: 0
+[07:32:52] Player move stage point id = %d: 2
+[07:32:53] Input Direction dir = %d: 2
+[07:32:53] Player move stage point id = %d: 1
+[07:32:53] Input Direction dir = %d: 3
+[07:32:53] Player move stage point id = %d: 3
+[07:32:54] Input Direction dir = %d: 1
+[07:32:54] Player move stage point id = %d: 4
+[07:32:54] Input Direction dir = %d: 2
+[07:32:55] Player move stage point id = %d: 1
+[07:32:55] Input Direction dir = %d: 3
+[07:32:55] Player move stage point id = %d: 3
+[07:32:55] Input Direction dir = %d: 2
+[07:32:56] Player move stage point id = %d: 1
+[07:32:56] Input Direction dir = %d: 2
+[07:32:56] Player move stage point id = %d: 0
+[07:32:57] Input Direction dir = %d: 3
+[07:32:57] Player move stage point id = %d: 1
+[07:32:57] Input Direction dir = %d: 3
+[07:32:57] Player move stage point id = %d: 3
+[07:32:58] Input Direction dir = %d: 0
+[07:32:58] Player move stage point id = %d: 2
+[07:32:58] Input Direction dir = %d: 2
+[07:32:58] Player move stage point id = %d: 1
+[07:32:58] Input Direction dir = %d: 2
+[07:32:59] Player move stage point id = %d: 0
+[07:32:59] Model::Load, material.pTexture: 000001F01BE2C110
+[07:33:00] Model::Load, material.pTexture: 000001F01B68FA50
+[07:33:00] Model::Load, material.pTexture: 000001F01B68F270
+[07:33:00] Model::Load, material.pTexture: 000001F01B68EE50
+[07:33:00] Model::Load, material.pTexture: 000001F01B692150
+[07:33:01] Start Player Animation
+[07:33:04] GlassGauge Ratio: 0
+[07:33:13] moveStartedThisFrame
+[07:33:14] NormalAttack 入力受付
+[07:33:14] アクション実行
+[07:33:14] Hammer Attack Glass Object, ID: 29
+[07:33:14] GlassGaugeManager::BrakeGlass, Gauhe: 10
+[07:33:14] Up Score: 497
+[07:33:14] GlassShardPool::Instantiate: 0
+[07:33:14] GlassShardPool::Instantiate: 1
+[07:33:14] GlassShardPool::Instantiate: 2
+[07:33:14] GlassShardPool::Instantiate: 3
+[07:33:14] GlassShardPool::Instantiate: 4
+[07:33:14] GlassShardPool::Instantiate: 5
+[07:33:14] GlassShardPool::Instantiate: 6
+[07:33:14] GlassShardPool::Instantiate: 7
+[07:33:14] GlassObject Destory, ID: 29
+[07:33:14] CameraShake::Play, type: 0

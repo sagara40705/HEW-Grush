@@ -49,7 +49,7 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Aircon); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Jihanki); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Reizouko); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::AirPurifier); });
+	//outTasks.emplace_back([this] { ModelManager::Load(ModelTag::AirPurifier); });
 	
 
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Ufo); });

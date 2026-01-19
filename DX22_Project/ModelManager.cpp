@@ -25,13 +25,13 @@ const ModelLoadData ModelManager::kModelData[static_cast<size_t>(ModelTag::Count
     {"Assets/Model/MD_REbenti_prototype.fbx",                                 0.01f, Model::Flip::ZFlip}, //8
     {"Assets/Model/Grade_2/MD_aircon_251208.fbx",                             0.01f, Model::Flip::ZFlip}, //9
     {"Assets/Model/Grade_2/MD_jihanki_251208.fbx",                            0.006f,Model::Flip::ZFlip}, //10
-    {"Assets/Model/Grade_2/MD_reizouko_20251205.fbx",                         0.5f,  Model::Flip::ZFlip},  //11
+    {"Assets/Model/Grade_2/MD_reizouko_20251205.fbx",                         0.5f,  Model::Flip::ZFlip}, //11
      
     {"Assets/Model/MD_UFO_prototype.fbx",                                     0.01f, Model::Flip::ZFlip},  //12
     {"Assets/Model/MD_eisei_251208.fbx",                                      0.015f,Model::Flip::ZFlip}, //13
 
     {"Assets/Model/MD_player_prototype.fbx",                                  0.01f, Model::Flip::ZFlip}, //14
-    {"Assets/Model/playerchara_20260114/playerchara_20260114.fbx",                   0.01f, Model::Flip::ZFlip}, //15
+    {"Assets/Model/playerchara_20260114/playerchara_20260114.fbx",            0.01f, Model::Flip::ZFlip}, //15
     {"Assets/Model/Hammer/hammer_grade3.fbx",                                 0.08f, Model::Flip::ZFlip}, //16
 };
 
