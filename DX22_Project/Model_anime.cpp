@@ -244,7 +244,7 @@ Model::AnimeNo Model::AddAnimation(const char* file)
 * @param[in] loop ループ再生フラグ
 * @param[in] speed 再生速度
 */
-void Model::PlayAnime(AnimeNo no, bool loop, float speed)
+void Model::PlayAnime(AnimeNo no, bool loop, float speed, bool reverse)
 {
 	// 再生チェック
 	if (!CheckAnimeNo(no)) { return; }
@@ -257,6 +257,8 @@ void Model::PlayAnime(AnimeNo no, bool loop, float speed)
 		InitAnime(no);
 		m_animes[no].info.isLoop	= loop;
 		m_animes[no].info.speed		= speed;
+		m_animes[no].info.reverse   = reverse;
+		
 	}
 	else
 	{
@@ -272,21 +274,9 @@ void Model::PlayAnime(AnimeNo no, bool loop, float speed)
 	m_playNo = no;
 }
 
-/*
-* @brief アニメーションの停止
-*/
 void Model::StopAnime()
 {
-	// 再生アニメ・ブレンド・パラメトリックを全部解除
-	m_playNo = ANIME_NONE;
-	m_blendNo = ANIME_NONE;
-	m_parametric[0] = ANIME_NONE;
-	m_parametric[1] = ANIME_NONE;
-	m_blendTime = 0.0f;
-	m_blendTotalTime = 0.0f;
-	m_parametricBlend = 0.0f;
 }
-
 
 /*
 * @brief ブレンド再生
@@ -375,8 +365,26 @@ void Model::SetAnimeTime(AnimeNo no, AnimeTime time)
 
 	// 再生時間変更
 	Animation& anime = m_animes[no];
+
+	// ループ設定に基づいて時間を補正
+	if (anime.info.isLoop) 
+	{ 
+		while (time < 0.0f) time += anime.info.totalTime;
+		while (time > anime.info.totalTime) time -= anime.info.totalTime; 
+	}
+	else 
+	{ 
+		if (time < 0.0f) time = 0.0f; 
+		if (time > anime.info.totalTime) time = anime.info.totalTime;
+	}
+
 	anime.info.nowTime = time;
 	CheckAnimePlayLoop(anime.info);
+
+	// 時間を更新したあとに姿勢を反映
+	CalcAnime(MAIN, no);
+	CalcBones(0, DirectX::XMMatrixScaling(m_loadScale, m_loadScale, m_loadScale));
+
 }
 
 
@@ -419,7 +427,7 @@ void Model::StepAnime(float tick)
 	{
 		UpdateAnime(m_blendNo, tick);
 		m_blendTime += tick;
-		if (m_blendTime <= m_blendTime)
+		if (m_blendTotalTime <= m_blendTime)
 		{
 			// ブレンドアニメの自動終了
 			m_blendTime = 0.0f;
@@ -464,7 +472,19 @@ void Model::UpdateAnime(AnimeNo no, float tick)
 
 	// アニメーション時間の更新
 	Animation& anime = m_animes[no];
-	SetAnimeTime(no, anime.info.nowTime + anime.info.speed * tick);
+	
+	float delta = anime.info.speed * tick;// 更新時間計算
+
+	// 逆再生かどうかで更新方法を変更
+	if (anime.info.reverse) 
+	{ 
+		SetAnimeTime(no, anime.info.nowTime - delta); //逆再生
+	}
+	else 
+	{ 
+		SetAnimeTime(no, anime.info.nowTime + delta); //通常再生
+	}
+
 }
 
 /*

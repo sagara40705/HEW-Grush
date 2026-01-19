@@ -12,8 +12,8 @@ void PlayerAnimation::Start()
 	state_ = gameObject->GetComponent<PlayerState>();
 	anime_ = gameObject->GetComponent<Animator>();
 	AddAllAnimations();
-	anime_->Play(animation_[Type::Idle], false, 1.f);
-	//anime_->SetTimeSeconds(4.8f);
+	anime_->Play(animation_[Type::Idle], true, 1.f);
+	anime_->SetTimeSeconds(4.8f);
 
 	assert(state_ && anime_ && "PlayerAnimation	で プレイヤーの <PlayerState> か <Animator> が nullptr です");
 }
@@ -30,9 +30,27 @@ void PlayerAnimation::OnDestroy()
 */
 void PlayerAnimation::Update()
 {
+
+	// ノックバック優先処理
+	if (isKnockback_)
+	{
+		const float dt = 1.0f / 60.0f;
+		knockbackTimer_ += dt; 
+
+		if (knockbackTimer_ >= knockbackDuration_)
+		{
+			isKnockback_ = false; currentType_ = Type::Idle;
+			anime_->Play(animation_[Type::Idle], true, 1.0f);
+
+		} // ノックバック中は他のアニメ判定を行わない
+	}
+
 	//移動を先に判定
 	CheckMoveAnime();
-	CheckNormalAttackAnime();
+	CheckSpinAttackAnime();
+	CheckDashAttackAnime();
+
+	//CheckNormalAttackAnime();
 	CheckSpinAttackAnime();
 	CheckDashAttackAnime();
 }
@@ -58,8 +76,11 @@ void PlayerAnimation::CheckMoveAnime()
 		//移動停止したら終了位置まで再生
 		if (state_->moveStoppedThisFrame)
 		{
-			anime_->SetTimeSeconds(4.8f);
+			currentType_ = Type::Idle;
+			anime_->Play(animation_[Type::Idle], true, 1.f);
 		}
+
+		
 	}
 	else
 	{
@@ -73,87 +94,48 @@ void PlayerAnimation::CheckMoveAnime()
 	}
 }
 
-void PlayerAnimation::CheckNormalAttackAnime()
-{
-	if (currentType_ == Type::NormalAttack)
-	{
-		const float t = anime_->GetCurrentAnimeTime();
-
-		//アニメーション終了したら移動アニメーションへ
-		//if (t > 2.5f && t < 3.f)
-		//{
-		//	//anime_->Play(animation_[Type::Move], false, 1.f);
-		//	anime_->SetTimeSeconds(4.4f);
-		//}
-		if (t > 2.3)
-		{
-			anime_->Play(animation_[Type::Move], false, 1.f);
-			anime_->SetTimeSeconds(4.7f);
-			currentType_ = Type::Move;
-		}
-	}
-	else
-	{
-		//ダッシュ攻撃アクションを実行したらダッシュ攻撃アニメーションへ
-		if (state_->actionedThisFrame[ToIndex(ActionId::NormalAttack)])
-		{
-			currentType_ = Type::NormalAttack;
-			anime_->Play(animation_[Type::NormalAttack], false, 2.0f);
-			anime_->SetTimeSeconds(1.2f);
-		}
-
-	}
-}
-
 void PlayerAnimation::CheckSpinAttackAnime()
 {
 	if (currentType_ == Type::SpinAttack)
 	{
 		const float t = anime_->GetCurrentAnimeTime();
 
-		//アニメーション終了したら移動アニメーションへ
-		//if (t > 2.5f && t < 3.f)
-		//{
-		//	//anime_->Play(animation_[Type::Move], false, 1.f);
-		//	anime_->SetTimeSeconds(4.4f);
-		//}
-		if (t > 4.0)
+		//アニメーション終了したら待機アニメーションへ
+		if (t > 2.5f)
 		{
-			anime_->Play(animation_[Type::Move], false, 1.f);
-			anime_->SetTimeSeconds(4.8f);
+			currentType_ = Type::Idle;
+			anime_->Play(animation_[Type::Idle], true, 1.f);
+
 		}
+
+
 	}
 	else
 	{
-		//ダッシュ攻撃アクションを実行したらダッシュ攻撃アニメーションへ
+		//回転攻撃アクションを実行したら回転攻撃アニメーションへ
 		if (state_->actionedThisFrame[ToIndex(ActionId::SpinAttack)])
 		{
 			currentType_ = Type::SpinAttack;
 			anime_->Play(animation_[Type::SpinAttack], false, 1.0f);
-			//anime_->SetTimeSeconds(1.0f);
+			anime_->SetTimeSeconds(1.0f);
 		}
-
 	}
-
 }
+
 
 void PlayerAnimation::CheckDashAttackAnime()
 {
+	if (isKnockback_) return; // ノックバック中は無視！
 
 	if (currentType_ == Type::DashAttack)
 	{
 		const float t = anime_->GetCurrentAnimeTime();
 
-		//アニメーション終了したら移動アニメーションへ
-		if (t > 2.5f && t < 3.f)
+		//アニメーション終了したら待機アニメーションへ
+		if (t > 2.5)
 		{
-			//anime_->Play(animation_[Type::Move], false, 1.f);
-			anime_->SetTimeSeconds(4.4f);
-		}
-		if (t > 5.0)
-		{
-			anime_->Play(animation_[Type::Move], false, 1.f);
-			anime_->SetTimeSeconds(4.8f);
+			currentType_ = Type::Idle;
+			anime_->Play(animation_[Type::Idle], true, 1.f);
 		}
 	}
 	else
@@ -165,9 +147,28 @@ void PlayerAnimation::CheckDashAttackAnime()
 			anime_->Play(animation_[Type::DashAttack], false, 1.0f);
 			anime_->SetTimeSeconds(1.0f);
 		}
-
 	}
 }
+
+void PlayerAnimation::CheckLeanBackAnime(float duration)
+{
+	isKnockback_ = true; 
+	knockbackTimer_ = 0.0f;
+
+	currentType_ = Type::LeanBack;
+	knockbackDuration_ = duration;
+
+	anime_->Play(animation_[Type::LeanBack], false, 1.0f);
+	anime_->SetTimeSeconds(1.2f);
+
+	state_->actionedThisFrame[ToIndex(ActionId::DashAttack)] = false;
+}
+
+//void PlayerAnimation::TitleSceneAttackAnime()
+//{
+//	currentType_ = Type::DashAttack;
+//	anime_->Play(animation_[Type::DashAttack], false, 1.0f);
+//}
 
 /*
 * @brief 全アニメーションをmodelに追加
@@ -179,19 +180,15 @@ void PlayerAnimation::AddAllAnimations()
 	if (!model) return;
 
 	//待機
-	animation_[Type::Idle] = model->AddAnimation("Assets/Animation/animation_taiki2.fbx");
-
+	animation_[Type::Idle] = model->AddAnimation("Assets/Animation/animation_taiki1.fbx");
 	//移動
-	animation_[Type::Move] = model->AddAnimation("Assets/Animation/animation_hashiru_3.fbx");
-
-	// 通常攻撃
-	animation_[Type::NormalAttack] = model->AddAnimation("Assets/Animation/animation_rotateattack.fbx");
-	
-	// 回転攻撃
+	animation_[Type::Move] = model->AddAnimation("Assets/Animation/animation_hashiru_2.fbx");
+	//回転攻撃
 	animation_[Type::SpinAttack] = model->AddAnimation("Assets/Animation/animation_rotateattack.fbx");
-
 	//突進攻撃
 	animation_[Type::DashAttack] = model->AddAnimation("Assets/Animation/animation_dashattack.fbx");
+	//のけぞり
+	animation_[Type::LeanBack] = model->AddAnimation("Assets/Animation/animation_knockback.fbx");
 }
 
 /*

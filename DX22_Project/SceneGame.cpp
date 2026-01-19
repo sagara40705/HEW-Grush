@@ -49,6 +49,8 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Aircon); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Jihanki); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Reizouko); });
+	//outTasks.emplace_back([this] { ModelManager::Load(ModelTag::AirPurifier); });
+	
 
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Ufo); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Eiseii); });
@@ -63,6 +65,7 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Stage); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::SkyDome); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GaugeEmpty); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GaugeFlash); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GaugeMax); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GaugeEffect); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ScoreAtoKg); });
@@ -414,7 +417,7 @@ for (int i = 0; i < posCount1; i++) {
 		PrefabId::Benti,
 		PrefabId::Aircon,
 		PrefabId::Jihanki,
-		PrefabId::Reizouko,
+		PrefabId::Reizouko
 	};
 
 	int prefabCount2 = sizeof(prefabOrder2) / sizeof(prefabOrder2[0]);

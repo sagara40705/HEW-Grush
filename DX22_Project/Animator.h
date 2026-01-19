@@ -13,7 +13,7 @@ public:
 
     void Start() override;
     void Update() override;
-    void Play(Model::AnimeNo animeNo, bool loop = true, float speed = 1.0f);
+    void Play(Model::AnimeNo animeNo, bool loop = true, float speed = 1.0f, bool reverse = false);
     void Stop(); 
     void SetTimeSeconds(float time);
     float GetCurrentAnimeTime() const;

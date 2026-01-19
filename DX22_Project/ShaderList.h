@@ -15,7 +15,8 @@ public:
 		VS_WORLD, // SetWVP
 		VS_ANIME, // SetWVP,SetBones
 		VS_SPRITE,
-		VS_SHARD,
+		//VS_SHARD, // SetWVP
+		
 		VS_KIND_MAX
 	};
 	enum PSKind
@@ -27,8 +28,10 @@ public:
 		PS_FOG, // SetMaterial, SetLight,SetFog
 		PS_SPRITE,
 		PS_GLASS,
+		PS_BREAKUI,
 		PS_GLASS_SHARD,
 		PS_RAINBOW,
+
 		PS_KIND_MAX
 	};
 
@@ -51,8 +54,7 @@ public:
 	static void SetLight(DirectX::XMFLOAT4 color, DirectX::XMFLOAT3 dir);
 	static void SetCameraPos(const DirectX::XMFLOAT3 pos);
 	static void SetFog(DirectX::XMFLOAT4 color, float start, float range);
-	static void SetGlassParam(const DirectX::XMFLOAT4& tint, float fresnelPower, float reflectionStrength, float transmissionStrength, float v = 0.5f);
-	static void SetRainbowTime(float time);
+	static void SetGlassParam(const DirectX::XMFLOAT4& tint, float fresnelPower, float reflectionStrength, float transmissionStrength);
 	
 private:
 	static void MakePrimVS();
@@ -68,13 +70,27 @@ private:
 	static void MakeFogPS();
 	static void MakeSpritePS();
 	static void MakeGlassPS();
-	static void MakeGlassShardPS();
-	static void MakeRainbowPS();
+
+private://壊れるシェーダーの塚点
+	static void MakeBreakUiPS();
 
 private:
 	static VertexShader* m_pVS[VS_KIND_MAX];
 	static PixelShader* m_pPS[PS_KIND_MAX];
-	
+	//========================
+	//追加点
+	//========================
+public:
+	static void SetSpritePsOverride(PixelShader* ps);
+
+private:
+	static PixelShader* m_spriteOverridePS;
+public:
+	static void SetSpriteBreakT(float t);
+	static float GetSpriteBreakT();
+
+private:
+	static float m_spriteBreakT;
 };
 
 #endif // __SHADER_LIST_H__

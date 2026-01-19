@@ -7,20 +7,22 @@
 #include "GameObject.h"
 #include "SpriteAnimation.h"
 
-TitleManager::TitleManager(GameObject* player) : player_(player)
-{
-}
+#include "UiSpriteRenderer.h"
+#include "TextureManager.h"
 
+//FadeOut生成
+void TitleManager::Awake()
+{
+	//エンプティの子オブジェクト化
+	GameObject& fadeOut = gameObject->CreateChild();
+	fadeOut.AddComponent<UiSpriteRenderer>(TextureTag::FadeOut, Vector2(0,0), Vector2(1280, 720));
+	fade_ = &fadeOut.AddComponent<SpriteAnimation>(6, 8, 3, 48, false);
+}
+ 
 void TitleManager::Start()
 {
-	playerAnimation_ = player_->GetComponent<SpriteAnimation>();
-
-	//Spriteアニメーションを開始
-	if (playerAnimation_)
-	{
-		playerAnimation_->Play();
-	}
-	
+	fade_->Stop();
+	//fade_->SetFrame(17);
 }
 
 void TitleManager::Update()
@@ -28,10 +30,8 @@ void TitleManager::Update()
 	//入力があれば次のsceneへ
 	if (InputNext())
 	{
-		playerAnimation_->SetStartFrame(5);
-		playerAnimation_->SetFramCount(20);
-
 		inputNext = true;
+		fade_->Play();
 	}
 
 
