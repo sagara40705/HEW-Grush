@@ -31,5 +31,6 @@ struct GameState
     }
 };
 
+void SetSelectedStage(StageId stage);
 bool HasPlayedIntroMovie();
 void PlayedIntroMovie();
