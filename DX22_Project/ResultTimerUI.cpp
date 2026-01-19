@@ -2,11 +2,12 @@
 #include "GameObject.h"
 #include "UiSpriteRenderer.h"
 #include "TextureManager.h"
-
+#include "GameState.h"
 constexpr Vector2 kNumberUVScale = { 0.2f, 0.5f };
 
 void ResultTimerUI::Start()
 {
+
 	constexpr Vector2 kMinutePos[ToIndex(TimerDigits::Count)] = { {500.f, 500.f}, {590.f, 500.f} };
 	constexpr Vector2 kColonPos = { 700.f,530.f };
 	constexpr Vector2 kSecondPos[ToIndex(TimerDigits::Count)] = { {750.f, 500.f}, {840.f, 500.f} };
@@ -33,8 +34,8 @@ void ResultTimerUI::Start()
 
 void ResultTimerUI::Update()
 {
-
-	int totalSec = static_cast<int>(timer_);
+	float timer = GetRecentClearTimes();
+	int totalSec = static_cast<int>(timer);
 	if (totalSec > MAX_SECONDS) totalSec = MAX_SECONDS;
 
 	// ---- 2) mm:ss ‚É•ª‰ð ----

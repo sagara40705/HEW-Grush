@@ -26,7 +26,7 @@ private:
 	UiSpriteRenderer* uiSecond_[ToIndex(Timer::Count)]{};
 public:
 	//<<<<<<< HEAD
-	float timer_ = 0.f;
+//	float timer_ = 0.f;
 	//=======
 		//float timer_ = 0.f;		//©’Ç‰Á
 	//>>>>>>> e348d9a321fd84f4a3ac8ea23cc62e58cc620fd9

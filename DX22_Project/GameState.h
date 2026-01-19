@@ -1,7 +1,7 @@
 #pragma once
 #include <array>
 #include <cstdint>
-
+//#include "TimerUI.h"
 enum class StageId : std::uint8_t
 {
     Stage1 = 0,
@@ -27,6 +27,7 @@ struct GameState
     {
         hasPlayedIntroMovie = false;
     }
+    
 };
 
 bool HasPlayedIntroMovie();
