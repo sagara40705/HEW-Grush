@@ -1,26 +1,50 @@
 [Debug Log Started]
-[07:03:50] Model::Load, material.pTexture: 000001C294C6AF10
-[07:03:51] Model::Load, material.pTexture: 000001C29A513570
-[07:03:51] Model::Load, material.pTexture: 000001C29A513390
-[07:03:51] Model::Load, material.pTexture: 000001C29A512F10
-[07:03:51] Model::Load, material.pTexture: 000001C29A5134B0
-[07:03:52] Start Player Animation
-[07:03:54] GlassGauge Ratio: 0
-[07:03:55] SpinAttack 入力受付
-[07:03:55] アクション実行
-[07:03:56] アクション終了
-[07:03:57] DashAttack 入力受付
-[07:03:57] アクション実行
-[07:03:58] Hammer Attack Glass Object, ID: 57
-[07:03:58] GlassGaugeManager::BrakeGlass, Gauhe: 10
-[07:03:58] Up Score: 497
-[07:03:58] GlassShardPool::Instantiate: 0
-[07:03:58] GlassShardPool::Instantiate: 1
-[07:03:58] GlassShardPool::Instantiate: 2
-[07:03:58] GlassShardPool::Instantiate: 3
-[07:03:58] GlassShardPool::Instantiate: 4
-[07:03:58] GlassShardPool::Instantiate: 5
-[07:03:58] GlassShardPool::Instantiate: 6
-[07:03:58] GlassShardPool::Instantiate: 7
-[07:03:58] GlassObject Destory, ID: 57
-[07:03:58] CameraShake::Play, type: 0
+[05:44:27] Model::Load, material.pTexture: 00000267DB7C2380
+[05:44:27] Model::Load, material.pTexture: 00000267DB7C1F60
+[05:44:27] Model::Load, material.pTexture: 00000267DB7C1360
+[05:44:27] Model::Load, material.pTexture: 00000267DB7C1D20
+[05:44:29] Input Direction dir = %d: 3
+[05:44:29] Player move stage point id = %d: 1
+[05:44:29] Input Direction dir = %d: 0
+[05:44:29] Player move stage point id = %d: 2
+[05:44:30] Input Direction dir = %d: 1
+[05:44:30] Player move stage point id = %d: 3
+[05:44:30] Input Direction dir = %d: 1
+[05:44:30] Player move stage point id = %d: 4
+[05:44:30] Input Direction dir = %d: 2
+[05:44:31] Player move stage point id = %d: 1
+[05:44:31] Input Direction dir = %d: 3
+[05:44:31] Player move stage point id = %d: 3
+[05:44:31] Input Direction dir = %d: 0
+[05:44:32] Player move stage point id = %d: 2
+[05:44:32] Input Direction dir = %d: 1
+[05:44:32] Player move stage point id = %d: 3
+[05:44:32] Input Direction dir = %d: 1
+[05:44:33] Player move stage point id = %d: 4
+[05:44:33] Input Direction dir = %d: 2
+[05:44:33] Player move stage point id = %d: 1
+[05:44:33] Input Direction dir = %d: 2
+[05:44:33] Player move stage point id = %d: 0
+[05:44:33] Input Direction dir = %d: 3
+[05:44:34] Player move stage point id = %d: 1
+[05:44:34] Input Direction dir = %d: 3
+[05:44:34] Player move stage point id = %d: 3
+[05:44:34] Input Direction dir = %d: 0
+[05:44:34] Player move stage point id = %d: 2
+[05:44:35] Input Direction dir = %d: 1
+[05:44:35] Player move stage point id = %d: 3
+[05:44:35] Input Direction dir = %d: 2
+[05:44:35] Player move stage point id = %d: 1
+[05:44:35] Input Direction dir = %d: 0
+[05:44:35] Player move stage point id = %d: 2
+[05:44:36] Input Direction dir = %d: 1
+[05:44:36] Player move stage point id = %d: 3
+[05:44:36] Input Direction dir = %d: 1
+[05:44:37] Player move stage point id = %d: 4
+[05:44:37] Input Direction dir = %d: 2
+[05:44:37] Player move stage point id = %d: 1
+[05:44:37] Input Direction dir = %d: 3
+[05:44:37] Player move stage point id = %d: 3
+[05:44:38] Input Direction dir = %d: 0
+[05:44:38] Player move stage point id = %d: 2
+[Debug Log End]

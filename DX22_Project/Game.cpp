@@ -4,9 +4,7 @@
 #include "SceneGame.h"  
 #include "SceneTitle.h"// 最初のシーン
 #include "SceneSample.h"// 最初のシーン
-#include "SoundManager.h"
-
-bool Game::CheckTitleSound = false;
+#include "SceneStageSelect.h"
 
 void Game::Init()
 {
@@ -16,8 +14,8 @@ void Game::Init()
 
     // 最初のシーンを予約
     //SceneManager::ChangeScene<SceneSample>();
-    SceneManager::ChangeSceneAsync<SceneGame>();
-    
+	SceneManager::ChangeScene<SceneStageSelect>();
+    //SceneManager::ChangeSceneAsync<SceneGame>();
 }
 
 void Game::Uninit()
@@ -29,13 +27,7 @@ void Game::Uninit()
 void Game::Update()
 {
     // 入力更新・サウンド更新などがあればここで
-    if (!CheckTitleSound)
-    {
-//        PlaySound(SoundManager::GetSound(SceneGameBGM));
-        SoundManager::SoundPlay(SceneGameBGM,0.4f);
-        CheckTitleSound = true;
-    }
-    
+
     SceneManager::Update();
 }
 

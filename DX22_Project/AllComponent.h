@@ -44,3 +44,7 @@
 #include "ScoreUI.h"
 
 #include "UIFrostRenderer.h"
+
+//stageSelect
+#include "StageMap.h"
+#include "SelectPlayerControl.h"
