@@ -30,7 +30,7 @@ void SceneTitle::Load()
 	InitPlayerTex();
 
 	// カメラ生成時に指定した座標と同じ値を手動で入れる
-	m_camStartPos = Vector3(0.f, 1.0f, -5.0f);
+	m_camStartPos = Vector3(0.f, 2.0f, -5.0f);
 
 	
 	World& w = GetWorld();
@@ -41,7 +41,8 @@ void SceneTitle::Load()
 
 	//背景生成
 	//3Dオブジェクトとして描画
-	GameObject& backGround = w.CreateGameObject(Vector3(0.f, 0.f,50.f));
+	GameObject& backGround = w.CreateGameObject
+	(Vector3(0.f, 0.f,50.f));
 	backGround.AddComponent<Sprite3DRenderer>(TextureTag::Title_Main, Vector2(0.f, -10.f), Vector2(115.0f, 54.0f));
 
 	//文字生成
@@ -50,18 +51,13 @@ void SceneTitle::Load()
 	////===================
 	////文字を出力する
 	////===================
-	GameObject& titleFont = w.CreateGameObject();
+	GameObject& titleFont = w.CreateGameObject(
+		Vector3(0.f, 0.f, 5.0f));
 
-	/*titleFont.AddComponent<UiSpriteRenderer>(
+	titleFont.AddComponent<Sprite3DRenderer>(
 		TextureTag::Title_Font,
-		Vector2(700.0f, 60.0f),
-		Vector2(550.0f, 550.0f)
-	);*/
-
-	titleFont.AddComponent<UiSpriteRenderer>(
-		TextureTag::Title_Loge2 ,
-		Vector2(750.0f, 5.0f),
-		Vector2(470.0f, 400.0f)
+		Vector2(7.5f, -2.5f),
+		Vector2(11.0f, 11.0f)//100差
 	);
 
 	GameObject& TitleBreak = w.CreateGameObject();
@@ -82,19 +78,13 @@ void SceneTitle::Load()
 
 	TitleLogo.AddComponent<Sprite3DRenderer>(
 		TextureTag::Title_Loge,
-		Vector2(0.f, 0.f),
-		Vector2(20.f, 20.f) // 3D空間用のサイズに調整
+		Vector2(-4.7f, 5.0f),
+		Vector2(20.0f, 20.0f)//100差
 	);
 	
 	/*====================
 	画面を割る処理を行う
 	====================*/
-	auto& breakUi =
-		titleFont.AddComponent<BreakUiRenderer>
-		(TextureTag::Title_BreakID);
-	
-	// Update から触れるように保存
-	m_breakButton = &breakUi;
 
 	//タイトルマネージャー生成
 	GameObject& manager = w.CreateGameObject();
@@ -107,13 +97,14 @@ void SceneTitle::Unload()
 	TextureManager::Clear();
 }
 
-
 void SceneTitle::CreateCameraAndPlayer()
 {
+
 	World& w = GetWorld();
 
 	// カメラ
-	GameObject& cameraPivot = w.CreateGameObject(Vector3(0.f, 1.0f, -5.0f), Vector3(0.f, 0.f, 0.f));
+	/*GameObject& cameraPivot = w.CreateGameObject(Vector3(0.f, 2.0f, -5.0f), Vector3(0.f, 0.f, 0.f));*/
+	GameObject& cameraPivot = w.CreateGameObject(Vector3(0.f, 0.5f, 1.f), Vector3(0.f, 0.f, 0.f));
 	GameObject& mainCamera = cameraPivot.CreateChild(Camera::kInitPos, Camera::kInitRotate);
 	mainCamera.AddComponent<Camera>();
 
@@ -121,7 +112,7 @@ void SceneTitle::CreateCameraAndPlayer()
 	m_mainCamera = &mainCamera;
 
 	// プレイヤー
-	GameObject& player = w.CreateGameObject(Vector3(0.f, 0.f, 0.f), Vector3(0.f, 0.f, 0.f));
+	GameObject& player = w.CreateGameObject(Vector3(0.f, 0.f, 0.f), Vector3(0.f, 0.f, 0.f), Vector3(2.f, 2.f, 2.f));
 	player.AddComponent<MeshFilter>(ModelTag::Player);
 	player.AddComponent<MeshRenderer>();
 	player.AddComponent<PlayerState>();
@@ -200,19 +191,10 @@ void SceneTitle::InitPlayerTex()
 
 void SceneTitle::Update()
 {
-//	// breakuirenderer が存在しない場合は何もしない
-//	if (!m_breakButton) return;
-//
-//	//// エンターキーが「押された瞬間
-//	if (InputKeyboard::GetKeyDown(VK_RETURN))
-//	{
-//		m_breakButton->StartBreak();
-//	}
-
 
 	if (!m_breakButton) return;
 
-	if (!m_isStarting && InputKeyboard::GetKeyDown(VK_RETURN))
+	if (!m_isStarting && InputKeyboard::GetKeyDown(VK_SPACE))
 	{
 		m_isStarting = true;
 		m_zoomTimer = 0.0f;
@@ -221,8 +203,10 @@ void SceneTitle::Update()
 		// ★ 保存しておいた m_player を使う
 		if (m_player) {
 			auto* pState = m_player->GetComponent<PlayerState>();
-			if (pState) pState->actionedThisFrame[ToIndex(ActionId::DashAttack)] = true;
+			if (pState) pState->actionedThisFrame[ToIndex(ActionId::SpinAttack)] = true;
 		}
+		
+
 	}
 
 	if (m_isStarting)

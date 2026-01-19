@@ -6,8 +6,8 @@
 
 enum class TextureTag : uint8_t
 {
-    Title_BG = 0,
-    LoadGauge = 1,
+	Title_BG = 0,//タイトルの背景画像
+	LoadGauge = 1,//ゲージ画像
     Star = 2,
     GroundTile = 3,
     Stage = 4,
@@ -30,9 +30,11 @@ enum class TextureTag : uint8_t
     DashMono = 21,
     DashMoji = 22,
     DashMojiMono = 23,
-	UIFrostNoise = 24,
-	EffectLv1 = 25,
-	GlassShard = 26,
+    DashFlash = 24,
+    DashFront = 25,
+	UIFrostNoise = 26,
+	EffectLv1 = 27,
+	GlassShard = 28,
     UI_font,        // メニュー UI テキスト画像
     UI_Frame,       // メニュー UI 枠画像
     UI_Break,       // UI 選択時などのハイライト画像
