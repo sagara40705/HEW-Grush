@@ -102,6 +102,7 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 
 	//ÉMÉ~ÉbÉN
 	outTasks.emplace_back([this] { CreateGlassObjectSpawner(); });
+	outTasks.emplace_back([this] { CreateTutorialWall(); });
 
 	//outTasks.emplace_back([this] { InitPlayerTex(); });
 	outTasks.emplace_back([this] { InitSkyDome(); });
@@ -541,6 +542,18 @@ void SceneGame::CreateActionUI()
 	GameObject& actionManager = w.CreateGameObject();
 	actionManager.SetTag(Tag::ActionUI);
 	actionManager.AddComponent<ActionUI>();
+}
+
+void SceneGame::CreateTutorialWall()
+{
+	if (IsEndTutorial()) return;
+
+	World& w = GetWorld();
+
+	GameObject& wall_01 = w.CreateGameObject(Vector3(0.f, 0.f, 5.f), Vector3::zero(), Vector3(5.f, 1.f, 1.f));
+	wall_01.AddComponent<BoxCollider>();
+	wall_01.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube);
+	wall_01.AddComponent<MeshRenderer>();
 }
 
 void SceneGame::CreateGlassObjectSpawner()
