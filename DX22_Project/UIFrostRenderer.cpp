@@ -175,7 +175,7 @@ float4 main(PS_IN pin) : SV_TARGET
     float3 base = tint_opacity.rgb;
 
     // ---- 1) 画像ノイズ（すりガラス粒状） ----
-    // tileScale は 64〜512 くらいで調整
+    // tileScale は 64 - 512 くらいで調整
     float tileScale = max(1.0f, noise.y);
     float t = noise.w;
 

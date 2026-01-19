@@ -36,9 +36,9 @@ void ScoreUI::Update()
 
 	int sc = score_->GetScore();
 
-	ui_[ToIndex(ScoreDigits::One)]->SetUVPosX((sc / 100) % 10 * 0.1);
-	ui_[ToIndex(ScoreDigits::Ten)]->SetUVPosX((sc / 10) % 10 * 0.1);
-	ui_[ToIndex(ScoreDigits::Hundred)]->SetUVPosX(sc % 10 * 0.1);
+	ui_[ToIndex(ScoreDigits::One)]->SetUVPosX(((sc / 100) % 10) * 0.1f);
+	ui_[ToIndex(ScoreDigits::Ten)]->SetUVPosX(((sc / 10) % 10) * 0.1f);
+	ui_[ToIndex(ScoreDigits::Hundred)]->SetUVPosX((sc % 10) * 0.1f);
 }
 
 void ScoreUI::OnDestroy()

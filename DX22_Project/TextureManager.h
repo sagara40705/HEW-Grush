@@ -30,8 +30,9 @@ enum class TextureTag : uint8_t
     DashMoji = 21,
     DashMojiMono = 22,
 	UIFrostNoise = 23,
-    StageMap, //24
-    Count
+	EffectLv1 = 24,
+	GlassShard = 25,
+    Count = 26
 };
 
 class TextureManager

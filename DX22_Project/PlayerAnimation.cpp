@@ -12,8 +12,8 @@ void PlayerAnimation::Start()
 	state_ = gameObject->GetComponent<PlayerState>();
 	anime_ = gameObject->GetComponent<Animator>();
 	AddAllAnimations();
-	anime_->Play(animation_[Type::Move], false, 1.f);
-	anime_->SetTimeSeconds(4.8f);
+	anime_->Play(animation_[Type::Idle], false, 1.f);
+	//anime_->SetTimeSeconds(4.8f);
 
 	assert(state_ && anime_ && "PlayerAnimation	で プレイヤーの <PlayerState> か <Animator> が nullptr です");
 }
@@ -178,8 +178,11 @@ void PlayerAnimation::AddAllAnimations()
 	Model* model = anime_->GetModel();
 	if (!model) return;
 
+	//待機
+	animation_[Type::Idle] = model->AddAnimation("Assets/Animation/animation_taiki2.fbx");
+
 	//移動
-	animation_[Type::Move] = model->AddAnimation("Assets/Animation/animation_hashiru_2.fbx");
+	animation_[Type::Move] = model->AddAnimation("Assets/Animation/animation_hashiru_3.fbx");
 
 	// 通常攻撃
 	animation_[Type::NormalAttack] = model->AddAnimation("Assets/Animation/animation_rotateattack.fbx");

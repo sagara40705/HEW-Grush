@@ -27,7 +27,9 @@ void Sprite3DRenderer::Render()
     // 0) VS / PS ‚ğæ“¾
     VertexShader* vs = Sprite::Get3dVS();
     PixelShader* ps = Sprite::Get3dPS();
-    if (!vs || !ps);
+	if (!vs || !ps) return;
+
+    assert(tf_ && "Transfrom‚ªnullptr");
 
     // 1) WVP ‚ğ\’z
     XMFLOAT4X4 fWVP[3];

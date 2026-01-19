@@ -4,15 +4,15 @@
 #include "Scene.h"
 #include "SkyDomeMesh.h"
 #include "SkyDomeShader.h"
-#include <string> 
-#include <vector>
-#include "Prefab.h"
+#include <cstdint>
+#include <string>
+
+//前方宣言
+enum class PrefabId : std::uint8_t;
 
 class SceneGame : public Scene
 {
 public:
-	SceneGame();
-	~SceneGame();
 	void Update() final;
 	void Draw() final;
 	void Load() final;
@@ -27,8 +27,9 @@ private:
 	void CreateManagers();
 	void CreateCameraAndPlayer();
 	void CreateStage();
-	void CreateStageFromCSV(const std::string& filename);
-	PrefabId GetPrefabIdFromString(const std::string& rawname);
+	void CreateStage1();
+	void CreateStage2();
+	void CreateStage3();
 	void CreateUi();
 	void CreateGaugeUI();
 	void CreateTimerUI();
@@ -38,10 +39,13 @@ private:
 	//ギミック	
 	void CreateGlassObjectSpawner();
 	void CreateWarp();
+
+	void CreateStageFromCSV(const std::string& filename);
+	PrefabId GetPrefabIdFromString(const std::string& rawname);
+
 	void InitPlayerTex();
 	void InitSkyDome();
 	void SkyDomeDorw();
-
 private:
 	DirectX::XMFLOAT4X4 m_world;
 	DirectX::XMFLOAT4X4 m_view;
