@@ -152,9 +152,6 @@ void Result::CanvasDraw()
 	timeGroung.AddComponent<UiSpriteRenderer>(TextureTag::ResultTime, Vector2(600.f, 380.f), Vector2(220, 100));
 	GameObject& tatuGroung = w.CreateGameObject();
 	tatuGroung.AddComponent<UiSpriteRenderer>(TextureTag::tatu_Arubaita, Vector2(500.f, 180.f), Vector2(420, 100));
-
-
-
 }
 
 void Result::RankDraw()
