@@ -33,15 +33,15 @@ void LoadingGauge::Update()
 
 	// 横幅を更新
 	Vector2 size = fullSize_;
-	size.x = fullSize_.x * p;
+	size.x = 1280.f * p;
 	ui_->SetSize(size);
 
 	// 左端固定にするために中心座標を補正
 	// 初期状態の中心X(baseCenterPos_.x)から、縮んだ分の半分だけ左へ寄せる
 	// newCenterX = baseCenterX - (fullW - newW) * 0.5
-	Vector2 pos = baseCenterPos_;
-	pos.x = baseCenterPos_.x - (fullSize_.x - size.x) * 0.5f;
-	ui_->SetOffset(pos);
+	//Vector2 pos = baseCenterPos_;
+	//pos.x = baseCenterPos_.x - (fullSize_.x - size.x) * 0.5f;
+	//ui_->SetOffset(pos);
 }
 
 void LoadingGauge::OnDestroy()

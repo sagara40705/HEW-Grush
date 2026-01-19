@@ -31,8 +31,8 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     "Assets/Texture/UIFrostNoise08B.png",    //23
     "Assets/Texture/effect_lv1_at_long.png",    //24
 	"Assets/Texture/Glass_Shard.png",    //25
-	"Assets/Texture/Load_BG.png",	//26
-	"Assets/Texture/Load_Txt.png",	//27
+	"Assets/Texture/Load_BG.png",
+	"Assets/Texture/Load_Txt.png",
 };
 
 // 配列のデフォルトパスを使用して登録
