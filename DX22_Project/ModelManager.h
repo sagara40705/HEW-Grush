@@ -20,7 +20,6 @@ enum class ModelTag : uint8_t
 	Aircon,
 	Jihanki,
 	Reizouko,
-	//AirPurifier,
 
 	Ufo,
 	Eiseii,

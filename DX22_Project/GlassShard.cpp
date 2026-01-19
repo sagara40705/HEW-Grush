@@ -89,12 +89,12 @@ void GlassShard::SetGlassGrade(GlassGrade g)
 
 void GlassShard::SetShardParamVS()
 {
-    //// VS_SHARD の b1 に書き込む
-    //auto vs = ShaderList::GetVS(ShaderList::VS_SHARD);
-    //if (vs)
-    //{
-    //    vs->WriteBuffer(1, &randParam_);
-    //}
+    // VS_SHARD の b1 に書き込む
+    auto vs = ShaderList::GetVS(ShaderList::VS_SHARD);
+    if (vs)
+    {
+        vs->WriteBuffer(1, &randParam_);
+    }
 }
 
 void GlassShard::SetGlassParamPS()
@@ -105,7 +105,7 @@ void GlassShard::SetGlassParamPS()
        {0.6f, 0.2f, 0.2f, 0.7f}
     };
 
-    ShaderList::SetGlassParam(Tint[ToIndex(grade_)], 5.0f, 3.0f, 1.0f);//, 1.0f);
+    ShaderList::SetGlassParam(Tint[ToIndex(grade_)], 5.0f, 3.0f, 1.0f, 1.0f);
 
     Texture* tex = TextureManager::Get(TextureTag::GlassShard);
 

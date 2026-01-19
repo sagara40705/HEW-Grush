@@ -3,9 +3,10 @@
 class TitleManager : public MonoBehaviour
 {
 private:
-	SpriteAnimation* fade_ = nullptr;
+	GameObject* player_ = nullptr;
+	SpriteAnimation* playerAnimation_ = nullptr;
 public:
-	void Awake() override;
+	TitleManager(GameObject* player);
 	void Start() override;
 	void Update() override;
 	void OnDestroy() override;

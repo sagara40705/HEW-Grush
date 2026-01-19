@@ -12,8 +12,8 @@ void ScoreUI::Start()
 	GameObject* scoreMgr = gameObject->world->FindWithTag(Tag::ScoreManager);
 	score_ = scoreMgr->GetComponent<ScoreManager>();
 
-	constexpr Vector2 kNumberPos[ToIndex(ScoreDigits::Count)] = { {525.f,40.f},{585.f,40.f},{645.f,40.f},{705.f,40.f} };
-	constexpr Vector2 kNumberSize = { 80.f,80.f };
+	constexpr Vector2 kNumberPos[ToIndex(ScoreDigits::Count)] = { {1004.f,50.f},{1062.f,50.f},{1120.f,50.f} };
+	constexpr Vector2 kNumberSize = { 77.f,77.f };
 	for (size_t digits = 0; digits < ToIndex(ScoreDigits::Count); ++digits)
 	{
 		GameObject& go = gameObject->CreateChild();
@@ -21,8 +21,8 @@ void ScoreUI::Start()
 		ui_[digits]->SetUVScale(kNumberUVScale);
 	}
 
-	constexpr Vector2 kAtoKgPos = { 463.f,68.f };
-	constexpr Vector2 kAtoKgSize = { 410.f,55.f };//355,45
+	constexpr Vector2 kAtoKgPos = { 960.f,85.f };
+	constexpr Vector2 kAtoKgSize = { 300.f,40.f };
 
 	GameObject& atoKg = gameObject->CreateChild();
 	uiAtoKg_ = &(atoKg.AddComponent<UiSpriteRenderer>(TextureTag::ScoreAtoKg, kAtoKgPos, kAtoKgSize));
@@ -36,10 +36,9 @@ void ScoreUI::Update()
 
 	int sc = score_->GetScore();
 
-	ui_[ToIndex(ScoreDigits::One)]->SetUVPosX((sc / 1000) % 10 * 0.1);
-	ui_[ToIndex(ScoreDigits::Ten)]->SetUVPosX((sc / 100) % 10 * 0.1);
-	ui_[ToIndex(ScoreDigits::Hundred)]->SetUVPosX((sc / 10) % 10 * 0.1);
-	ui_[ToIndex(ScoreDigits::Thousand)]->SetUVPosX(sc % 10 * 0.1);
+	ui_[ToIndex(ScoreDigits::One)]->SetUVPosX(((sc / 100) % 10) * 0.1f);
+	ui_[ToIndex(ScoreDigits::Ten)]->SetUVPosX(((sc / 10) % 10) * 0.1f);
+	ui_[ToIndex(ScoreDigits::Hundred)]->SetUVPosX((sc % 10) * 0.1f);
 }
 
 void ScoreUI::OnDestroy()

@@ -16,9 +16,6 @@ void ActionUI::Awake()
 	constexpr Vector2 kSpinMojiSize = {  90.f, 32.f };
 	constexpr Vector2 kDashMojiSize = { 135.f, 32.f };
 
-	constexpr Vector2 kSpinFlashPos = { 820.f, 430.f };
-	constexpr Vector2 kFlashSize = { 200.f, 200.f };
-
 	//UV
 	constexpr Vector2 kUVSize = { 1.f, 1.f };
 	constexpr Vector2 kSpinMonoUVPos = { 1.f, 1.f };
@@ -31,7 +28,7 @@ void ActionUI::Awake()
 	GameObject& spinMono = gameObject->CreateChild();
 	spinMono.AddComponent<UiSpriteRenderer>(TextureTag::SpinMono, kSpinPos, kSize, kSpinMonoUVPos, kUVSize);
 
-	// 回転攻撃、色付き(本体光らせる用)
+	// 回転攻撃、色付き(光らせる用)
 	GameObject& spinF = gameObject->CreateChild();
 	spFlash_ = &spinF.AddComponent<UiSpriteRenderer>(TextureTag::SpinFlash, kSpinPos, kSize, kSpinUVPos, kUVSize);
 	spFlash_->SetColor({ 1.f, 1.f, 1.f, 0.f });
@@ -40,7 +37,7 @@ void ActionUI::Awake()
 	GameObject& spin = gameObject->CreateChild();
 	spin_ = &spin.AddComponent<UiSpriteRenderer>(TextureTag::Spin, kSpinPos, kSize, kSpinUVPos, kUVSize);
 
-	// 回転攻撃、色付き(枠光らせる用)
+	// 回転攻撃、色付き(光らせる用)
 	GameObject& spinFr = gameObject->CreateChild();
 	spFront_ = &spinFr.AddComponent<UiSpriteRenderer>(TextureTag::SpinFront, kSpinPos, kSize, kSpinUVPos, kUVSize);
 	spFront_->SetColor({ 1.f, 1.f, 1.f, 0.f });
@@ -57,19 +54,9 @@ void ActionUI::Awake()
 	GameObject& dashMono = gameObject->CreateChild();
 	dashMono.AddComponent<UiSpriteRenderer>(TextureTag::DashMono, kDashPos, kSize, kDashMonoUVPos, kUVSize);
 
-	// ダッシュ、色付き(本体光らせる用)
-	GameObject& dashF = gameObject->CreateChild();
-	daFlash_ = &dashF.AddComponent<UiSpriteRenderer>(TextureTag::DashFlash, kDashPos, kSize, kDashUVPos, kUVSize);
-	daFlash_->SetColor({ 1.f, 1.f, 1.f, 0.f });
-
 	// ダッシュ、色付き
 	GameObject& dash = gameObject->CreateChild();
 	dash_ = &dash.AddComponent<UiSpriteRenderer>(TextureTag::Dash, kDashPos, kSize, kDashUVPos, kUVSize);
-
-	// ダッシュ、色付き(枠光らせる用)
-	GameObject& dashFr = gameObject->CreateChild();
-	daFront_ = &dashFr.AddComponent<UiSpriteRenderer>(TextureTag::DashFront, kDashPos, kSize, kDashUVPos, kUVSize);
-	daFront_->SetColor({ 1.f, 1.f, 1.f, 0.f });
 
 	// ダッシュ、文字
 	GameObject& dashMojiMono = gameObject->CreateChild();
@@ -91,7 +78,6 @@ void ActionUI::Start()
 void ActionUI::Update()
 {
 	constexpr float kGlowDuration = 0.3f; // 0.3秒だけ光る
-	const float dt = 1.0f / 60.0f; // 本来はDeltaTimeを取得すべき
 	float ct;
 	int a;
 	
@@ -111,6 +97,33 @@ void ActionUI::Update()
 	else
 	spinMoji_->SetSize({ 90.f , 32.f });
 
+
+	// ---たまった瞬間光らせる処理(回転攻撃)
+	if (glowTimer > 0.f)
+	{
+		glowTimer -= 1.0f / 60.0f;
+
+		float t = glowTimer / kGlowDuration; // 1.0 → 0.0
+		float alpha = std::sin(t * 3.1415f); // 0→1→0 のカーブ
+
+		spFlash_->SetColor({ 1.f,1.f,1.f, alpha }); // アルファでフェード
+		spFront_->SetColor({ 1.f,1.f,1.f, alpha }); // アルファでフェード
+		spFlash_->SetVisible(true);
+	}
+	else
+	{
+		spFlash_->SetVisible(false); // 消す
+	}
+
+	bool isSpinReady = state_->canUseAction[ToIndex(ActionId::SpinAttack)];
+
+	if (isSpinReady && !wasSpinReady)
+	{
+		glowTimer = kGlowDuration; 
+	}
+	wasSpinReady = isSpinReady;
+
+
 	// ---ダッシュ攻撃
 	if (!state_->canUseAction[ToIndex(ActionId::DashAttack)])
 	{
@@ -127,50 +140,6 @@ void ActionUI::Update()
 	else
 	dashMoji_->SetSize({ 135.f , 32.f });
 
-	// ---たまった瞬間光らせる処理(回転攻撃)
-	if (glowTimerSpin > 0.f)
-	{
-		glowTimerSpin -= dt;
-		float t = glowTimerSpin / kGlowDuration; // 1.0 → 0.0
-		float alpha = std::sin(t * 3.1415f); // 0→1→0 のカーブ
-
-		spFlash_->SetColor({ 2.f,1.2f,2.f, alpha }); // アルファでフェード
-		spFront_->SetColor({ 2.f,1.2f,2.f, alpha }); // アルファでフェード
-		spFlash_->SetVisible(true);
-	}
-	else
-	{
-		spFlash_->SetVisible(false); // 消す
-	}
-	bool isSpinReady = state_->canUseAction[ToIndex(ActionId::SpinAttack)];
-	if (isSpinReady && !wasSpinReady)
-	{
-		glowTimerSpin = kGlowDuration;
-	}
-	wasSpinReady = isSpinReady;
-
-
-	// ---たまった瞬間光らせる処理(ダッシュ攻撃)
-	if (glowTimerDash > 0.f)
-	{
-		glowTimerDash -= dt;
-		float t = glowTimerDash / kGlowDuration; // 1.0 → 0.0
-		float alpha = std::sin(t * 3.1415f); // 0→1→0 のカーブ
-
-		daFlash_->SetColor({ 2.f,1.2f,2.f, alpha }); // アルファでフェード
-		daFront_->SetColor({ 2.f,1.2f,2.f, alpha }); // アルファでフェード
-		daFlash_->SetVisible(true);
-	}
-	else
-	{
-		daFlash_->SetVisible(false); // 消す
-	}
-	bool isDashReady = state_->canUseAction[ToIndex(ActionId::DashAttack)];
-	if (isDashReady && !wasDashReady)
-	{
-		glowTimerDash = kGlowDuration;
-	}
-	wasDashReady = isDashReady;
 }
 
 void ActionUI::OnDestroy()
@@ -179,7 +148,7 @@ void ActionUI::OnDestroy()
 	spin_  = nullptr;
 	dash_  = nullptr;
 	spFlash_ = nullptr;
-	daFlash_ = nullptr;
+	//daFlash_ = nullptr;
 	spinMoji_ = nullptr;
 	dashMoji_ = nullptr;
 }

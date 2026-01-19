@@ -29,7 +29,7 @@ enum class Tag : std::uint8_t
     Hammer,
     Enemy,
     Glass,
-    ActionUI,
+    ActionUI
     // •K—v‚É‰ž‚¶‚Ä’Ç‰Á
 };
 

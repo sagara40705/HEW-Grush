@@ -38,7 +38,7 @@ void Animator::Start()
 //---------------------------------------------------------
 // Play : アニメーション再生
 //---------------------------------------------------------
-void Animator::Play(Model::AnimeNo animeNo, bool loop, float spd, bool reverse)
+void Animator::Play(Model::AnimeNo animeNo, bool loop, float spd)
 {
     if (!model_) return;
     if (animeNo == Model::ANIME_NONE) return;
@@ -49,7 +49,7 @@ void Animator::Play(Model::AnimeNo animeNo, bool loop, float spd, bool reverse)
     speed = spd;
 
     // Model 側に再生を指示
-    model_->PlayAnime(animeNo, loop, speed, reverse);
+    model_->PlayAnime(animeNo, loop, speed);
 }
 
 //---------------------------------------------------------

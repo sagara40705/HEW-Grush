@@ -47,8 +47,6 @@ void TimerUI::Update()
 	uiMinute_[ToIndex(TimerDigits::One)]->SetUVPosX((minutes / 10) % 10 * 0.1f);
 	uiSecond_[ToIndex(TimerDigits::Ten)]->SetUVPosX((seconds % 10) * 0.1f);
 	uiSecond_[ToIndex(TimerDigits::One)]->SetUVPosX((seconds / 10) % 10 * 0.1f);
-
-
 }
 
 void TimerUI::OnDestroy()
