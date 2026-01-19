@@ -6,268 +6,202 @@
 #include "InputKeyboard.h"
 #include "DebugLog.h"
 #include "GameState.h"
+
 #include <assert.h>
+#include <algorithm>
 
 namespace
 {
-	// World::Update が fixedDt=1/60 で回っているため、ここも同じ前提にする
-	constexpr float kFixedDt = 1.0f / 60.0f;
-	constexpr float kAxisEps = 1e-3f;
+    // World::Update が fixedDt=1/60 で回っている前提
+    constexpr float kFixedDt = 1.0f / 60.0f;
 }
-
 
 void SelectPlayerControl::Start()
 {
-	// ステージマップの取得
-	GameObject* stage = gameObject->FindWithTag(Tag::StageMap);
-	assert(stage && "SelectPlayerControl::Start stage is null");
-	stageMap = stage->GetComponent<StageMap>();
-	assert(stageMap && "SelectPlayerControl::Start stageMap is null");
+    GameObject* stage = gameObject->FindWithTag(Tag::StageMap);
+    assert(stage && "SelectPlayerControl::Start stage is null");
+    stageMap = stage->GetComponent<StageMap>();
+    assert(stageMap && "SelectPlayerControl::Start stageMap is null");
 
-	// ステージポイントの初期化
-	currentStagePoint = stageMap->GetStagePoint(StageId::Stage1);
-	nextStagePoint = nullptr;
+    currentStagePoint = stageMap->GetStagePoint(StageId::Stage1);
+    nextStagePoint = nullptr;
 
-	// Transformコンポーネントの取得
-	tf = gameObject->GetComponent<Transform>();
-	assert(tf && "SelectPlayerControl::Start tf is null");
+    tf = gameObject->GetComponent<Transform>();
+    assert(tf && "SelectPlayerControl::Start tf is null");
 
-	// 移動補間初期化
-	isSegmentMoving = false;
-	segmentElapsed = 0.0f;
-	segmentTargetPoint = nullptr;
+    if (currentStagePoint)
+    {
+        tf->SetPosition(currentStagePoint->position);
+    }
 
-	currentState = Idle;
+    isMoving = false;
+    moveElapsed = 0.0f;
+    moveTargetPoint = nullptr;
+
+    currentState = Idle;
 }
 
-// 更新
 void SelectPlayerControl::Update()
 {
-	switch (currentState)
-	{
-	case SelectPlayerControl::Idle:
-		UpdateIdle();
-		break;
-	case SelectPlayerControl::Moving:
-		MoveToStagePoint();
-		break;
-	default:
-		assert(false && "SelectPlayerControl::Update invalid state");
-		break;
-	}
+    switch (currentState)
+    {
+    case SelectPlayerControl::Idle:
+        UpdateIdle();
+        break;
+    case SelectPlayerControl::Moving:
+        MoveToStagePoint();
+        break;
+    default:
+        assert(false && "SelectPlayerControl::Update invalid state");
+        break;
+    }
 }
 
-// 破棄
 void SelectPlayerControl::OnDestroy()
 {
-	nextStagePoint = nullptr;
-	currentStagePoint = nullptr;
-	stageMap = nullptr;
+    nextStagePoint = nullptr;
+    moveTargetPoint = nullptr;
+    currentStagePoint = nullptr;
+    stageMap = nullptr;
+    tf = nullptr;
 }
 
-// 待機状態の更新
 void SelectPlayerControl::UpdateIdle()
 {
-	// 入力による移動確認
-	Direction inputDirection = InputMove();
+    // 外部（クリック等）で目標がセットされている場合は移動開始
+    if (nextStagePoint && currentStagePoint && nextStagePoint != currentStagePoint)
+    {
+        BeginMove(nextStagePoint);
+        currentState = Moving;
+        return;
+    }
 
-	// 入力なし
-	if (inputDirection == Direction::Invalid) return; 
-	DebugLog::OutputValue("Input Direction dir = %d", static_cast<int>(inputDirection));
+    // 入力による移動確認（隣接点へ）
+    Direction inputDirection = InputMove();
 
-	// 移動可能か確認
-	if (CanMove(inputDirection))
-	{
-		currentState = Moving;
-		return;
-	}
+    if (inputDirection != Direction::Invalid)
+    {
+        DebugLog::OutputValue("Input Direction dir = %d", static_cast<int>(inputDirection));
 
-	// 決定ボタンの確認
-	if (InputKeyboard::GetKeyDown(VK_SPACE))
-	{
-		// ゲームシーンへ移動
-		SetSelectedStage(currentStagePoint->stageId);
-		SceneManager::ChangeSceneAsync<SceneGame>();
-		return;
-	}
+        if (CanMove(inputDirection))
+        {
+            BeginMove(nextStagePoint);
+            currentState = Moving;
+            return;
+        }
+    }
+
+    // 決定
+    if (InputKeyboard::GetKeyDown(VK_SPACE))
+    {
+        SetSelectedStage(currentStagePoint->stageId);
+        SceneManager::ChangeSceneAsync<SceneGame>();
+        return;
+    }
 }
 
-// 入力による移動
 Direction SelectPlayerControl::InputMove()
 {
-	if (InputKeyboard::GetKeyDown(VK_LEFT)) return Direction::Left;
-	if (InputKeyboard::GetKeyDown(VK_RIGHT)) return Direction::Right;
-	if (InputKeyboard::GetKeyDown(VK_UP)) return Direction::Up;
-	if (InputKeyboard::GetKeyDown(VK_DOWN)) return Direction::Down;
+    if (InputKeyboard::GetKeyDown(VK_LEFT))  return Direction::Left;
+    if (InputKeyboard::GetKeyDown(VK_RIGHT)) return Direction::Right;
+    if (InputKeyboard::GetKeyDown(VK_UP))    return Direction::Up;
+    if (InputKeyboard::GetKeyDown(VK_DOWN))  return Direction::Down;
 
-	return Direction::Invalid;
+    return Direction::Invalid;
 }
 
-// 移動できるか確認
 bool SelectPlayerControl::CanMove(Direction direction)
 {
-	// 現在のステージポイントの繋がっているステージ情報を取得
-	std::vector<ConnectedStage> connectedStages = currentStagePoint->connectedStages;
+    if (!currentStagePoint || !stageMap) return false;
 
-	// 繋がっているステージを確認
-	for (const ConnectedStage& connectedStage : connectedStages)
-	{
-		// 指定された方向に繋がっているステージがあるか確認
-		if (connectedStage.direction == direction)
-		{
-			// 次のステージポイントを設定
-			StageId nextStageId = connectedStage.stageId;
+    const std::vector<ConnectedStage>& connectedStages = currentStagePoint->connectedStages;
 
-			// ステージマップから次のステージポイントを取得
-			// nextStagePointにセット
-			nextStagePoint = stageMap->GetStagePoint(nextStageId);
+    for (const ConnectedStage& connectedStage : connectedStages)
+    {
+        if (connectedStage.direction == direction)
+        {
+            nextStagePoint = stageMap->GetStagePoint(connectedStage.stageId);
+            return (nextStagePoint != nullptr);
+        }
+    }
 
-			return true; // 移動可能
-		}
-	}
-
-	return false; // 指定された方向に繋がっているステージがない
+    return false;
 }
 
-// 指定方向へ繋がっている隣接 StagePoint を取得
-StagePoint* SelectPlayerControl::GetConnectedPoint(Direction direction) const
+void SelectPlayerControl::BeginMove(StagePoint* goal)
 {
-	if (!currentStagePoint || !stageMap) return nullptr;
+    if (!goal || !tf)
+    {
+        isMoving = false;
+        moveTargetPoint = nullptr;
+        moveElapsed = 0.0f;
+        return;
+    }
 
-	const std::vector<ConnectedStage>& connectedStages = currentStagePoint->connectedStages;
-	for (const ConnectedStage& c : connectedStages)
-	{
-		if (c.direction == direction)
-		{
-			return stageMap->GetStagePoint(c.stageId);
-		}
-	}
-	return nullptr;
+    moveTargetPoint = goal;
+
+    // 現在位置から目標位置までをそのまま線形補間（斜めも許可）
+    moveStartPos = tf->GetPosition();
+    moveEndPos = goal->position;
+
+    moveElapsed = 0.0f;
+    isMoving = true;
 }
 
-// 目標へ近づく方向を優先度（上→右→左→下）で判定して、次の隣接点を返す
-StagePoint* SelectPlayerControl::DecideNextHopTowardGoal(StagePoint* goal) const
-{
-	if (!currentStagePoint || !goal) return nullptr;
-
-	const Vector3 cur = currentStagePoint->position;
-	const Vector3 dst = goal->position;
-
-	const float dx = dst.x - cur.x;
-	const float dz = dst.z - cur.z;
-
-	const bool wantUp = (dz > kAxisEps);
-	const bool wantDown = (dz < -kAxisEps);
-	const bool wantRight = (dx > kAxisEps);
-	const bool wantLeft = (dx < -kAxisEps);
-
-	// 優先度：上 → 右 → 左 → 下
-	if (wantUp)
-	{
-		if (StagePoint* p = GetConnectedPoint(Direction::Up)) return p;
-	}
-	if (wantRight)
-	{
-		if (StagePoint* p = GetConnectedPoint(Direction::Right)) return p;
-	}
-	if (wantLeft)
-	{
-		if (StagePoint* p = GetConnectedPoint(Direction::Left)) return p;
-	}
-	if (wantDown)
-	{
-		if (StagePoint* p = GetConnectedPoint(Direction::Down)) return p;
-	}
-
-	// 目標方向に進めない（接続がない）
-	return nullptr;
-}
-
-// 1区間移動を開始
-void SelectPlayerControl::BeginSegment(StagePoint* to)
-{
-	assert(tf);
-	assert(currentStagePoint);
-	assert(to);
-
-	segmentTargetPoint = to;
-
-	segmentStartPos = currentStagePoint->position;
-	segmentEndPos = to->position;
-
-	segmentElapsed = 0.0f;
-	isSegmentMoving = true;
-
-	// 現在位置がズレていた時のため、開始点へ寄せる
-	tf->SetPosition(segmentStartPos);
-}
-
-// 線形補間でステージポイントへ移動
 void SelectPlayerControl::MoveToStagePoint()
 {
-	// 目標がないなら終了
-	if (!nextStagePoint || !currentStagePoint || !tf)
-	{
-		currentState = Idle;
-		isSegmentMoving = false;
-		segmentTargetPoint = nullptr;
-		nextStagePoint = nullptr;
-		return;
-	}
+    if (!tf || !currentStagePoint)
+    {
+        currentState = Idle;
+        nextStagePoint = nullptr;
+        isMoving = false;
+        moveTargetPoint = nullptr;
+        return;
+    }
 
-	// すでに到達済み
-	if (currentStagePoint == nextStagePoint)
-	{
-		currentState = Idle;
-		isSegmentMoving = false;
-		segmentTargetPoint = nullptr;
-		nextStagePoint = nullptr;
-		return;
-	}
+    // 目標がないなら終了
+    if (!nextStagePoint)
+    {
+        currentState = Idle;
+        isMoving = false;
+        moveTargetPoint = nullptr;
+        return;
+    }
 
-	// セグメント未開始なら、次の1手（十字方向）を決めて開始
-	if (!isSegmentMoving)
-	{
-		StagePoint* hop = DecideNextHopTowardGoal(nextStagePoint);
-		if (!hop)
-		{
-			// 進めない場合は安全に停止（要件外：迂回はしない）
-			DebugLog::OutputValue("SelectPlayerControl: cannot move toward goal. goal=%d", static_cast<int>(nextStagePoint->stageId));
-			currentState = Idle;
-			nextStagePoint = nullptr;
-			return;
-		}
+    // すでに到達済み
+    if (nextStagePoint == currentStagePoint)
+    {
+        currentState = Idle;
+        nextStagePoint = nullptr;
+        isMoving = false;
+        moveTargetPoint = nullptr;
+        return;
+    }
 
-		BeginSegment(hop);
-	}
+    // 途中で目標が変わった / まだ移動開始していない -> ここで開始
+    if (!isMoving || moveTargetPoint != nextStagePoint)
+    {
+        BeginMove(nextStagePoint);
+    }
 
-	// 線形補間でセグメント移動
-	segmentElapsed += kFixedDt;
-	const float t = (segmentDuration <= 1e-6f) ? 1.0f : (segmentElapsed / segmentDuration);
+    // 線形補間
+    const float denom = std::max(1e-6f, moveDuration);
+    moveElapsed += kFixedDt;
+    const float t = std::clamp(moveElapsed / denom, 0.0f, 1.0f);
 
-	tf->SetPosition(Vector3::Lerp(segmentStartPos, segmentEndPos, t));
+    tf->SetPosition(Vector3::Lerp(moveStartPos, moveEndPos, t));
 
-	// セグメント完了
-	if (t >= 1.0f)
-	{
-		tf->SetPosition(segmentEndPos);
-		currentStagePoint = segmentTargetPoint;
+    // 完了（完了まで currentState は Moving のまま）
+    if (t >= 1.0f)
+    {
+        tf->SetPosition(moveEndPos);
 
-		DebugLog::OutputValue("Player move stage point id = %d", static_cast<int>(currentStagePoint->stageId));
+        currentStagePoint = nextStagePoint;
+        DebugLog::OutputValue("Player move stage point id = %d", static_cast<int>(currentStagePoint->stageId));
 
-		// セグメントリセット
-		isSegmentMoving = false;
-		segmentTargetPoint = nullptr;
-
-		// ゴール到達まで Moving のまま
-		if (currentStagePoint == nextStagePoint)
-		{
-			nextStagePoint = nullptr;
-			currentState = Idle;
-		}
-		else
-		{
-			currentState = Moving;
-		}
-	}
+        nextStagePoint = nullptr;
+        isMoving = false;
+        moveTargetPoint = nullptr;
+        currentState = Idle;
+    }
 }
