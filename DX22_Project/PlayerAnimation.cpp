@@ -47,16 +47,12 @@ void PlayerAnimation::Update()
 
 	//移動を先に判定
 	CheckMoveAnime();
-<<<<<<< HEAD
 	CheckSpinAttackAnime();
 	CheckDashAttackAnime();
 
-
-=======
-	CheckNormalAttackAnime();
+	//CheckNormalAttackAnime();
 	CheckSpinAttackAnime();
 	CheckDashAttackAnime();
->>>>>>> ﾎｲ迚�_2026/01
 }
 
 /*
@@ -168,11 +164,11 @@ void PlayerAnimation::CheckLeanBackAnime(float duration)
 	state_->actionedThisFrame[ToIndex(ActionId::DashAttack)] = false;
 }
 
-void PlayerAnimation::TitleSceneAttackAnime()
-{
-	currentType_ = Type::DashAttack;
-	anime_->Play(animation_[Type::DashAttack], false, 1.0f);
-}
+//void PlayerAnimation::TitleSceneAttackAnime()
+//{
+//	currentType_ = Type::DashAttack;
+//	anime_->Play(animation_[Type::DashAttack], false, 1.0f);
+//}
 
 /*
 * @brief 全アニメーションをmodelに追加
