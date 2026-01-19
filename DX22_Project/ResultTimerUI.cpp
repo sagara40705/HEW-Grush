@@ -8,9 +8,9 @@ constexpr Vector2 kNumberUVScale = { 0.2f, 0.5f };
 void ResultTimerUI::Start()
 {
 
-	constexpr Vector2 kMinutePos[ToIndex(TimerDigits::Count)] = { {500.f, 500.f}, {590.f, 500.f} };
-	constexpr Vector2 kColonPos = { 700.f,530.f };
-	constexpr Vector2 kSecondPos[ToIndex(TimerDigits::Count)] = { {750.f, 500.f}, {840.f, 500.f} };
+	constexpr Vector2 kMinutePos[ToIndex(TimerDigits::Count)] = { {700.f, 500.f}, {790.f, 500.f} };
+	constexpr Vector2 kColonPos = { 900.f,530.f };
+	constexpr Vector2 kSecondPos[ToIndex(TimerDigits::Count)] = { {950.f, 500.f}, {1040.f, 500.f} };
 
 	constexpr Vector2 kNumberSize = { 100.f,100.f };
 	constexpr Vector2 kColonSize = { 40.f, 40.f };

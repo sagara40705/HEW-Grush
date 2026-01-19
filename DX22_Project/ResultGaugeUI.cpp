@@ -8,17 +8,17 @@
 #include "TextureManager.h"
 #include "GameState.h"
 constexpr Vector2 kNumberUVScale = { 1.f, 1.0f };
-float point = 0.f;
+float point = 50.f;
 //int ArubaitpLevel = 0;
 void ResultGaugeUI::Start()
 {
 	//Update(GaugePoint);
-	constexpr Vector2 kMinutePos[ToIndex(TimerDigits::Count)] = { {1100.f, 240.f}, {600.f, 300.f} };
+	constexpr Vector2 kMinutePos[ToIndex(TimerDigits::Count)] = { {1200.f, 240.f}, {700.f, 300.f} };
 	//=======
 	//UpdateGaugePoint(GaugePoint);
 
 	constexpr Vector2 kColonPos = { 1165.f,160.f };
-	constexpr Vector2 kSecondPos[ToIndex(TimerDigits::Count)] = { {1175.f, 240.f}, {1200.f, 140.f} };
+	constexpr Vector2 kSecondPos[ToIndex(TimerDigits::Count)] = { {1275.f, 240.f}, {1300.f, 140.f} };
 
 	Vector2 kNumGaugeberSize = { point, 40.f };
 	constexpr Vector2 kNumFrameberSize = { 300.f, 55.f };

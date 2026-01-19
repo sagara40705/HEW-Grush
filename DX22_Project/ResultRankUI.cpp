@@ -6,11 +6,11 @@
 constexpr Vector2 kNumberUVScale = { 1.f, 1.0f };
 void ResultRankUI::Start()
 {
-	constexpr Vector2 kMinutePos[ToIndex(TimerDigits::Count)] = { {300.f, 400.f}, {300.f, 200.f} };
+	constexpr Vector2 kMinutePos[ToIndex(TimerDigits::Count)] = { {000.f, 00.f}, {00.f, 00.f} };
 	constexpr Vector2 kColonPos = { 700.f,430.f };
-	constexpr Vector2 kSecondPos[ToIndex(TimerDigits::Count)] = { {750.f, 400.f}, {840.f, 400.f} };
+	constexpr Vector2 kSecondPos[ToIndex(TimerDigits::Count)] = { {0.f, 0.f}, {0.f, 0.f} };
 
-	constexpr Vector2 kNumberSize = { 200.f,200.f };
+	constexpr Vector2 kNumberSize = { 1280.f,780.f };
 	constexpr Vector2 kColonSize = { 40.f, 40.f };
 
 
