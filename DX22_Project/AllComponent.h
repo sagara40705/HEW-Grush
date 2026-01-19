@@ -47,3 +47,4 @@
 
 //ローディング画面
 #include "LoadingGauge.h"
+#include "LoadingCharacterAnimation.h"

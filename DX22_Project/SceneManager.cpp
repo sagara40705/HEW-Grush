@@ -66,7 +66,12 @@ void SceneManager::PopScene()
 void SceneManager::ChangeSceneAlreadyLoaded(std::unique_ptr<Scene> scene)
 {
     ClearStack();                 // Šù‘¶ƒV[ƒ“‚Í RootUnload ‚µ‚Ä”jŠü
-    s_scenes.emplace_back(std::move(scene));
+
+    if (scene)
+    {
+
+        s_scenes.emplace_back(std::move(scene));
+    }
 }
 
 Scene* SceneManager::GetActiveScene()
