@@ -35,6 +35,8 @@ void PlayedIntroMovie();
 
 // 現在のステージを取得
 StageId GetCurrentStage();
+void SetSelectedStage(StageId stage);
+
 
 // 直近クリアしたステージのタイムを取得・設定
 float GetRecentClearTimes();

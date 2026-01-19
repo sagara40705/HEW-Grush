@@ -190,11 +190,8 @@ void SceneGame::CreateStage()
 	StageId stage = GetCurrentStage();
 
 	// デバック用
-	stage = StageId::Stage1;
+	//stage = StageId::Stage1;
 
-	CreateStageFromCSV("CSV/StageData_Grade1.csv");
-	CreateStageFromCSV("CSV/StageData_Grade2.csv");
-	CreateStageFromCSV("CSV/StageData_Grade3.csv");
 
 	switch (stage)
 	{
@@ -256,7 +253,13 @@ void SceneGame::CreateStage1()
 	BoxCollider& bcL = wL.AddComponent<BoxCollider>(); bcL.layer = Layer::Ground;
 	wL.AddComponent<StageWall>();
 
+	CreateStageFromCSV("CSV/StageData_Grade1.csv");
+	CreateStageFromCSV("CSV/StageData_Grade2.csv");
+	CreateStageFromCSV("CSV/StageData_Grade3.csv");
+
 	return;
+
+	/*
 
 	////Grade_3
 	//Prefab::Instantiate(w, PrefabId::Ufo, Vector3(-5.f, -0.5f, 20.f), Vector3::zero(), Vector3::one());
@@ -288,6 +291,8 @@ void SceneGame::CreateStage1()
 	//Prefab::Instantiate(w, PrefabId::ProtPlay, Vector3(-12, -0.9f, 8), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
 
 	// 座標用構造体（共通）
+
+	
 
 	struct Pos { float x;  float y; float z;};
 	struct Rot { float x, y, z; };
@@ -451,6 +456,8 @@ for (int i = 0; i < posCount1; i++) {
 			Vector3::one()
 		);
 	}
+
+	*/
 }
 
 void SceneGame::CreateStage2()

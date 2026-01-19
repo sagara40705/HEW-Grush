@@ -34,7 +34,6 @@ StageId GetCurrentStage()
 	return Game::GetState()->stage_;
 }
 
-
 // 直近クリアしたステージのタイムを取得・設定
 float GetRecentClearTimes()
 {
