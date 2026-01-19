@@ -5,7 +5,7 @@
 #include "SceneTitle.h"// 最初のシーン
 #include "SceneSample.h"// 最初のシーン
 #include "SoundManager.h"
-
+#include "SceneResult.h"
 bool Game::CheckTitleSound = false;
 
 void Game::Init()
@@ -16,7 +16,7 @@ void Game::Init()
 
     // 最初のシーンを予約
     //SceneManager::ChangeScene<SceneSample>();
-    SceneManager::ChangeSceneAsync<SceneGame>();
+    SceneManager::ChangeSceneAsync<Result>();
     
 }
 

@@ -6,9 +6,9 @@
 #include "Defines.h"
 #include "UiSpriteRenderer.h"
 #include "TextureManager.h"
-
+#include "GameState.h"
 constexpr Vector2 kNumberUVScale = { 1.f, 1.0f };
-
+float point = 0.f;
 //int ArubaitpLevel = 0;
 void ResultGaugeUI::Start()
 {
@@ -20,7 +20,7 @@ void ResultGaugeUI::Start()
 	constexpr Vector2 kColonPos = { 1165.f,160.f };
 	constexpr Vector2 kSecondPos[ToIndex(TimerDigits::Count)] = { {1175.f, 240.f}, {1200.f, 140.f} };
 
-	Vector2 kNumGaugeberSize = { GaugePoint, 40.f };
+	Vector2 kNumGaugeberSize = { point, 40.f };
 	constexpr Vector2 kNumFrameberSize = { 300.f, 55.f };
 	constexpr Vector2 kColonSize = { 10.f, 200.f };
 	//テクスチャーロード
@@ -51,32 +51,48 @@ void ResultGaugeUI::Draw()
 
 }
 
-float ResultGaugeUI::UpdateGaugePoint(float)
+float ResultGaugeUI::GaugePotint()
 {
-	if (timer_ >= 100)
+	float Allpoint;
+	
+	float Gaugepoint = GetRecentClearTimes();
+
+	if (Gaugepoint >= 100)
 	{
-		if (timer_ >= 200)
+		if (Gaugepoint >= 200)
 		{
-			if (timer_ >= 300)
+			if (Gaugepoint >= 300)
 			{
-				GaugePoint = 150.f;
+				point = 90.f;
 			}
 			else
 			{
-				GaugePoint = 90.f;
+				point = 150.f;
 			}
 		}
 		else
 		{
-			GaugePoint = 270.f;
-		}
+			point = 270.f;
 
+		}
 	}
 	else
 	{
-		GaugePoint = 300.f;
+		point = 300.f;
 	}
-	return GaugePoint;
-	//return 0;
+	Allpoint = point;
+	if (Allpoint >= 300)
+	{
+		if (Allpoint >= 600)
+		{
+
+			if (Allpoint >= 900)
+			{
+
+			}
+		}
+	}
+	return point;
 
 }
+

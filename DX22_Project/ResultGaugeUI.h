@@ -10,10 +10,11 @@ public:
 	~ResultGaugeUI() override = default;
 	float GaugePoint = 0.f;
 	void Start() override;
-	float UpdateGaugePoint(float);
+	//float UpdateGaugePoint(float);
 	void Draw()override;
-	float GetGaugePoint() { return GaugePoint; }
-	float timer_ = 0.f;
+	//float GetGaugePoint() { return GaugePoint; }
+//	float timer_ = 0.f;
+	float GaugePotint();
 private:
 	//float timer_ = 0.f;
 	UiSpriteRenderer* uiGauge_ = nullptr;
