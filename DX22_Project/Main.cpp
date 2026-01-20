@@ -12,6 +12,7 @@
 #include "ShaderList.h"
 #include "LineManager.h"
 #include "Game.h"
+#include "SoundManager.h"
 
 
 HRESULT Init(HWND hWnd, UINT width, UINT height)
@@ -28,6 +29,8 @@ HRESULT Init(HWND hWnd, UINT width, UINT height)
 	InputGamepad::Init();
 	ShaderList::Init();
 	LineManager::Init();
+	SoundManager::Load();
+	
 	// ÉVÅ[Éì
 	Game::Init();
 
@@ -38,6 +41,7 @@ void Uninit()
 {
 	Game::Uninit();
 
+	SoundManager::Unload();
 	LineManager::Uninit();
 	ShaderList::Uninit();
 	InputGamepad::Uninit();

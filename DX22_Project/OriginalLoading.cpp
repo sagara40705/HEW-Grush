@@ -83,3 +83,7 @@ void LoadingScene::OriginalLoad()
 
 	
 }
+//::Effekseer::EffectRef EffekseerSystem::LoadEffect(const char16_t* path)
+//{
+//
+//}
