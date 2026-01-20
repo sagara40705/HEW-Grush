@@ -347,6 +347,7 @@
     <ClCompile Include="PlayerState.cpp">
       <Filter>Game\Components\Player</Filter>
     </ClCompile>
+    <ClCompile Include="LoadingCharacterAnimation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -609,6 +610,7 @@
     <ClInclude Include="UIFrostRenderer.h">
       <Filter>Game\Components\Environment</Filter>
     </ClInclude>
+    <ClInclude Include="LoadingCharacterAnimation.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SceneManager.inl">

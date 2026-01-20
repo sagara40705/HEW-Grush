@@ -9,7 +9,6 @@
 #include "BoxCollider.h"
 #include "Rigidbody.h"
 #include <cassert>
-#include"SoundManager.h"
 
 constexpr float kActionTime[ToIndex(ActionId::Count)] = { 0.4f, 1.f, 1.5f };
 constexpr float kCoolDown[ToIndex(ActionId::Count)]  = { 0.1f, 5.f, 5.f };
@@ -78,8 +77,6 @@ void PlayerAction::InputWantAction()
 	{
 		state_->wantUseAction[ToIndex(ActionId::NormalAttack)] = true;
 		DebugLog::Output("NormalAttack 入力受付");
-//		PlaySound(SoundManager::GetSound(NomalAttackSE));
-		SoundManager::SoundPlay(NomalAttackSE,1.0f);
 	}
 
 	//==================== SpinAttack (Rキー / R1ボタン) =====================
@@ -88,9 +85,6 @@ void PlayerAction::InputWantAction()
 	{
 		state_->wantUseAction[ToIndex(ActionId::SpinAttack)] = true;
 		DebugLog::Output("SpinAttack 入力受付");
-		if (state_->canUseAction[ToIndex(ActionId::SpinAttack)]);
-//		PlaySound(SoundManager::GetSound(SpinAttackSE));
-		SoundManager::SoundPlay(SpinAttackSE, 1.0f);
 	}
 
 	//==================== DashAttack (Fキー / L1ボタン) =====================
@@ -99,9 +93,6 @@ void PlayerAction::InputWantAction()
 	{
 		state_->wantUseAction[ToIndex(ActionId::DashAttack)] = true;
 		DebugLog::Output("DashAttack 入力受付");
-		if (state_->canUseAction[ToIndex(ActionId::DashAttack)])
-			//		PlaySound(SoundManager::GetSound(DashAttackSE));
-			SoundManager::SoundPlay(DashAttackSE,1.0f);
 	}
 }
 

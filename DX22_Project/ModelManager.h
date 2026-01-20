@@ -15,6 +15,7 @@ enum class ModelTag : uint8_t
 	Isu,
 	Kuukseizixyoukii,
 	Ningixyou,
+	SagaraDoll,
 
 	Benti,
 	Aircon,

@@ -44,3 +44,9 @@
 #include "ScoreUI.h"
 
 #include "UIFrostRenderer.h"
+
+//ローディング画面
+#include "LoadingGauge.h"
+#include "LoadingCharacterAnimation.h"
+
+#include "TutorialManager.h"

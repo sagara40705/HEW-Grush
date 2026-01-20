@@ -170,6 +170,7 @@
     <ClCompile Include="GroundRenderer.cpp" />
     <ClCompile Include="Hammer.cpp" />
     <ClCompile Include="JumpSki.cpp" />
+    <ClCompile Include="LoadingCharacterAnimation.cpp" />
     <ClCompile Include="LoadingGauge.cpp" />
     <ClCompile Include="Model_anime.cpp" />
     <ClCompile Include="Model_check.cpp" />
@@ -213,9 +214,7 @@
     <ClCompile Include="ShaderList.cpp" />
     <ClCompile Include="SkyDomeMesh.cpp" />
     <ClCompile Include="SkyDomeShader.cpp" />
-    <ClCompile Include="Sound.cpp" />
     <ClCompile Include="SoundBackend.cpp" />
-    <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="SoundSystem.cpp" />
     <ClCompile Include="SphereCollider.cpp" />
     <ClCompile Include="Sprite.cpp" />
@@ -276,6 +275,7 @@
     <ClInclude Include="JumpSki.h" />
     <ClInclude Include="Layer.h" />
     <ClInclude Include="LineManager.h" />
+    <ClInclude Include="LoadingCharacterAnimation.h" />
     <ClInclude Include="LoadingGauge.h" />
     <ClInclude Include="LoadingScene.h" />
     <ClInclude Include="Main.h" />
@@ -305,9 +305,7 @@
     <ClInclude Include="ShaderList.h" />
     <ClInclude Include="SkyDomeMesh.h" />
     <ClInclude Include="SkyDomeShader.h" />
-    <ClInclude Include="Sound.h" />
     <ClInclude Include="SoundBackend.h" />
-    <ClInclude Include="SoundManager.h" />
     <ClInclude Include="SoundSystem.h" />
     <ClInclude Include="SoundType.h" />
     <ClInclude Include="SphereCollider.h" />
