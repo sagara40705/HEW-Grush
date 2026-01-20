@@ -8,27 +8,28 @@
 #include "TextureManager.h"
 #include "GameState.h"
 constexpr Vector2 kNumberUVScale = { 1.f, 1.0f };
-float point = 50.f;
+
+
 //int ArubaitpLevel = 0;
 void ResultGaugeUI::Start()
 {
 	//Update(GaugePoint);
-	constexpr Vector2 kMinutePos[ToIndex(TimerDigits::Count)] = { {1300.f, 240.f}, {800.f, 300.f} };
+	constexpr Vector2 kMinutePos[ToIndex(TimerDigits::Count)] = { {520.f, 1000.f}, {0.f, 0.f} };
 	//=======
-	//UpdateGaugePoint(GaugePoint);
+	pointGauge =GaugePotint();
 
 	constexpr Vector2 kColonPos = { 1165.f,160.f };
-	constexpr Vector2 kSecondPos[ToIndex(TimerDigits::Count)] = { {1375.f, 240.f}, {1500.f, 140.f} };
+	constexpr Vector2 kSecondPos[ToIndex(TimerDigits::Count)] = { {700.f, 240.f}, {680.f, 540.f} };
 
-	Vector2 kNumGaugeberSize = { point, 40.f };
-	constexpr Vector2 kNumFrameberSize = { 300.f, 55.f };
-	constexpr Vector2 kColonSize = { 10.f, 200.f };
+	Vector2 kNumGaugeberSize = { pointGauge, 195.f };
+	constexpr Vector2 kNumFrameberSize = { 1280, 780.f };
+//	constexpr Vector2 kColonSize = { 10.f, 200.f };
 	//テクスチャーロード
 	/*TextureManager::Load(TextureTag::Title_BG);
 	TextureManager::Load(TextureTag::GaugeEffect);*/
 
 	GameObject& Gauge = gameObject->CreateChild();
-	uiGauge_ = &Gauge.AddComponent<UiSpriteRenderer>(TextureTag::Gauge, kMinutePos[ToIndex(TimerDigits::Ten)], kNumGaugeberSize, Vector2::zero(), kNumberUVScale);
+	uiGauge_ = &Gauge.AddComponent<UiSpriteRenderer>(TextureTag::Gauge, kSecondPos[ToIndex(TimerDigits::Ten)], kNumGaugeberSize, Vector2::zero(), kNumberUVScale);
 
 	GameObject& Frame = gameObject->CreateChild();
 	uiFrame_ = &Frame.AddComponent<UiSpriteRenderer>(TextureTag::Frame, kMinutePos[ToIndex(TimerDigits::Ten)], kNumFrameberSize, Vector2::zero(), kNumberUVScale);
@@ -53,10 +54,9 @@ void ResultGaugeUI::Draw()
 
 float ResultGaugeUI::GaugePotint()
 {
-	float Allpoint;
-	
+	//GameSteteからTimerのクリアタイムを取得
 	float Gaugepoint = GetRecentClearTimes();
-
+	//クリアタイムの点数換算
 	if (Gaugepoint >= 100)
 	{
 		if (Gaugepoint >= 200)
@@ -80,7 +80,15 @@ float ResultGaugeUI::GaugePotint()
 	{
 		point = 300.f;
 	}
+	//アルバイトレベルの算出
 	Allpoint = point;
+	return point;
+
+}
+
+float ResultGaugeUI::AllpointGauge()
+{
+	
 	if (Allpoint >= 300)
 	{
 		if (Allpoint >= 600)
@@ -88,11 +96,33 @@ float ResultGaugeUI::GaugePotint()
 
 			if (Allpoint >= 900)
 			{
-
+				arubaitpLevel = 3;
+			}
+			else
+			{
+				arubaitpLevel = 2;
 			}
 		}
-	}
-	return point;
+		else
+		{
+			arubaitpLevel = 1;
 
+		}
+	}
+	else
+	{
+		arubaitpLevel = 1;
+	}
+ 	//return arubaitpLevel;
+	return 0;
 }
+
+int ResultGaugeUI::GetArubaitoLevel()
+{
+	return arubaitpLevel;
+}
+
+
+	
+
 

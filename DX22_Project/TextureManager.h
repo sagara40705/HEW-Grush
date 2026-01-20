@@ -41,6 +41,14 @@ enum class TextureTag : uint8_t
     ResultTime,
     tatu_Arubaita,
 	ResultHaikei,
+    HaikeiBase,
+	ResultC,
+	ResultB,
+	ResultA,
+	pika_Arubaita,
+	sugo_Arubaita,
+	TimerColon02,
+	Next,
     Count 
 };
 

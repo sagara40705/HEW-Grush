@@ -21,6 +21,7 @@ public:
     void CanvasDraw();
     void RankDraw();
 	void SceneTitleDraw();
+	void ArubaitoLevelDraw();
     // ”ñ“¯Šúƒ[ƒh—p
     void BuildLoadTasks(std::vector<LoadTask>& outTasks) override;
 private:
