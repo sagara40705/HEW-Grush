@@ -59,6 +59,9 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player2); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_1); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_2); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_3); });
 
 	// テクスチャーロード
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Star); });
@@ -181,7 +184,7 @@ void SceneGame::CreateCameraAndPlayer()
 
 	GameObject& hummer = player.CreateChild(Hammer::BasePos, Hammer::BaseRota, Vector3(0.2f, 0.2f, 0.2f));
 	hummer.SetTag(Tag::Hammer);
-	hummer.AddComponent<MeshFilter>(ModelTag::Hammer);
+	hummer.AddComponent<MeshFilter>(ModelTag::Hammer_3);
 	hummer.AddComponent<MeshRenderer>();
 	hummer.AddComponent<BoxCollider>(false, Vector3(-3.f, 2.f, -3.f), Vector3(5.f, 5.f, 2.f));
 	hummer.AddComponent<Hammer>();

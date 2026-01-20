@@ -3,11 +3,12 @@
 
 std::array<std::unique_ptr<Model>, static_cast<size_t>(ModelTag::Count)> ModelManager::s_models{};
 std::array<float, static_cast<size_t>(ModelTag::Count)> ModelManager::modelBounds = {
-    0.f,
-    0.7f, 0.5f, 0.8f, 0.7f, 0.9f, 0.9f, 0.9f,
-    1.8f, 1.8f, 1.6f, 1.4f,
-    2.4f, 3.f,
-    0.7f,0.f,0.f
+    0.f, /*0*/
+    0.7f, 0.5f, 0.8f, 0.7f, 0.9f, 0.9f, 0.9f, 0.f,  /*1 - 8*/
+    1.8f, 1.8f, 1.6f, 1.4f, /*9 - 12*/
+	2.4f, 3.f,  /*13 - 14*/
+    0.7f,0.f,0.f,   /*15 - 17*/
+    0.f,0.f,0.f,0.f,   /*18 - 21*/
 };
 
 const ModelLoadData ModelManager::kModelData[static_cast<size_t>(ModelTag::Count)] =
@@ -35,6 +36,9 @@ const ModelLoadData ModelManager::kModelData[static_cast<size_t>(ModelTag::Count
     {"Assets/Model/playerchara_20251202/space_suit_12.fbx",                   0.01f, Model::Flip::ZFlip}, //16
      {"Assets/Model/Player/playerchara_20260114.fbx",                         0.01f, Model::Flip::ZFlip}, //16
     {"Assets/Model/Hammer/hammer_grade3.fbx",                                 0.08f, Model::Flip::ZFlip}, //17
+    {"Assets/Model/Hammer/Grade_1/new_hammer_grade1.fbx",                     0.08f, Model::Flip::ZFlip}, //18
+    {"Assets/Model/Hammer/Grade_2/hammer_grade2.fbx",                         0.08f, Model::Flip::ZFlip}, //19
+    {"Assets/Model/Hammer/Grade_3/hammer_grade3.fbx",                         0.08f, Model::Flip::ZFlip}, //20
 };
 
 bool ModelManager::Load(ModelTag tag)

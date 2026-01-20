@@ -37,7 +37,6 @@ void ResultTimerUI::Start()
 	GameObject& oneSecond = gameObject->CreateChild();
 	uiSecond_[ToIndex(TimerDigits::One)] = &oneSecond.AddComponent<UiSpriteRenderer>(TextureTag::ResultTimer, kSecondPos[ToIndex(TimerDigits::One)], kNumberSize, Vector2::zero(), kNumberUVScale);
 
-	SetRecentClearTimes(59);
 }
 
 void ResultTimerUI::Update()

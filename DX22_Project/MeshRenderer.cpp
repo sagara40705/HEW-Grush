@@ -136,36 +136,9 @@ void MeshRenderer::ModelRender()
         SetCullingMode(D3D11_CULL_NONE);
     }
 
-
     Model* model = mf->GetModel();
     if (!model) return;
 
-    //=== ① VS_ANIME のときだけボーン行列を設定 ===
-    /*
-    if (vsKind == ShaderList::VS_ANIME)
-    {
-        for (unsigned int i = 0; i < model->GetMeshNum(); ++i)
-        {
-            const Model::Mesh* mesh = model->GetMesh(i);
-            if (!mesh) continue;
-
-            // ボーン行列をシェーダーに設定
-            DirectX::XMFLOAT4X4 bones[200]; // Model::MAX_BONE を使ってもOK
-            for (int boneIdx = 0; boneIdx < mesh->bones.size(); ++boneIdx)
-            {
-                const Model::Bone& bone = mesh->bones[boneIdx];
-                DirectX::XMStoreFloat4x4(
-                    &bones[boneIdx],
-                    DirectX::XMMatrixTranspose(
-                        bone.invOffset * model->GetBoneMatrix(bone.nodeIndex)
-                    )
-                );
-            }
-
-            ShaderList::SetBones(bones);
-        }
-    }
-    */
 
     //=== VS / PS を取得 ===
     VertexShader* vs = ShaderList::GetVS(vsKind);
@@ -177,21 +150,6 @@ void MeshRenderer::ModelRender()
     model->SetVertexShader(vs);
     model->SetPixelShader(ps);
     
-    // マテリアル別にメッシュを表示 
-    /*
-    for (unsigned int i = 0; i < model->GetMeshNum(); ++i) {
-        // モデルのメッシュを取得 
-        const Model::Mesh* mesh = model->GetMesh(i);
-        // メッシュに割り当てられているマテリアルを取得 
-        Model::Material material = *model->GetMaterial(mesh->materialID);
-        // シェーダーへマテリアルを設定 
-        ShaderList::SetMaterial(material);
-        
-        // モデルの描画 
-        model->Draw(i);
-    }
-    */
-
     for (unsigned int i = 0; i < model->GetMeshNum(); ++i)
     {
         const Model::Mesh* mesh = model->GetMesh(i);

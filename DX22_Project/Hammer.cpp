@@ -2,6 +2,8 @@
 #include "GameObject.h"
 #include "Transform.h"
 #include "BoxCollider.h"
+#include "ModelManager.h"
+#include "MeshFilter.h"
 #include "MeshRenderer.h"
 #include "CameraShake.h"
 #include "GlassGaugeManager.h"
@@ -14,6 +16,7 @@ void Hammer::Start()
 { 
 	tf_ = gameObject->GetComponent<Transform>();
 	bc_ = gameObject->GetComponent<BoxCollider>();
+	mf_ = gameObject->GetComponent<MeshFilter>();
 	renderer_ = gameObject->GetComponent<MeshRenderer>();
 
 	GameObject* camera = gameObject->FindWithTag(Tag::MainCamera);
@@ -30,6 +33,8 @@ void Hammer::Start()
 
 	bc_->isTrigger = true;
 	bc_->isStatic = false;
+
+	SetModel();
 }
 
 void Hammer::Update()
@@ -43,6 +48,7 @@ void Hammer::OnDestroy()
 {
 	tf_ = nullptr;
 	bc_ = nullptr;
+	mf_ = nullptr;
 	renderer_ = nullptr;
 	shake_ = nullptr;
 	gauge_ = nullptr;
@@ -62,14 +68,16 @@ void Hammer::OnTriggerEnter(const TriggerInfo& info)
 void Hammer::GradeUp()
 {
 	grade_ = NextGrade(grade_);
-	SetScale();
+	//SetScale();
+	SetModel();
 	DebugLog::OutputValue("Hammer::GradeUp, Grade", static_cast<int>(grade_) + 1);
 }
 
 void Hammer::GradeDown()
 {
 	grade_ = PrevGrade(grade_);
-	SetScale();
+	//SetScale();
+	SetModel();
 	DebugLog::OutputValue("Hammer::GradeDown, Grade", static_cast<int>(grade_) + 1);
 }
 
@@ -77,8 +85,15 @@ void Hammer::SetScale()
 {
 	constexpr Vector3 Size[ToIndex(HammerGrade::Count)] = { {0.3f,0.3f,0.8f}, {0.5f,0.5f,0.8f}, {0.8f,0.8f,0.8f} };
 
-	//tf_->SetScale(Size[ToIndex(grade_)]);
+	tf_->SetScale(Size[ToIndex(grade_)]);
 	DebugLog::OutputValue("Hammer::Scale, Grade", static_cast<int>(grade_) + 1);
+}
+
+void Hammer::SetModel()
+{
+	constexpr ModelTag models[ToIndex(HammerGrade::Count)] = { ModelTag::Hammer_1, ModelTag::Hammer_2, ModelTag::Hammer_3 };
+
+	mf_->SetModel(models[ToIndex(grade_)]);
 }
 
 void Hammer::UpdateNormalAttack(float r)
