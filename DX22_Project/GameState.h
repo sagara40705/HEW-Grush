@@ -17,6 +17,7 @@ constexpr size_t ToIndex(StageId stage) noexcept {
 
 struct GameState
 {
+	bool endTutorial_ = false;
     bool hasPlayedIntroMovie = false;
     StageId stage_ = StageId::Stage1;
 
@@ -28,6 +29,9 @@ struct GameState
         hasPlayedIntroMovie = false;
     }
 };
+
+void EndTutorial();
+bool IsEndTutorial();
 
 bool HasPlayedIntroMovie();
 void PlayedIntroMovie();

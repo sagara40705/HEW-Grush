@@ -35,6 +35,7 @@ private:
 	void CreateTimerUI();
 	void CreateScoreUI();
 	void CreateActionUI();
+	void CreateTutorialWall();
 
 	//ÉMÉ~ÉbÉN	
 	void CreateGlassObjectSpawner();

@@ -83,7 +83,8 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::UIFrostNoise); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::EffectLv1); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GlassShard); });
-
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::TasksUI); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::TutorialLocation); });
 
 	// プレイハブ設定
 	outTasks.emplace_back([this] { RegisterAllPrefabs(); });
@@ -102,6 +103,7 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 
 	//ギミック
 	outTasks.emplace_back([this] { CreateGlassObjectSpawner(); });
+	outTasks.emplace_back([this] { CreateTutorialWall(); });
 
 	//outTasks.emplace_back([this] { InitPlayerTex(); });
 	outTasks.emplace_back([this] { InitSkyDome(); });
@@ -543,6 +545,18 @@ void SceneGame::CreateActionUI()
 	actionManager.AddComponent<ActionUI>();
 }
 
+void SceneGame::CreateTutorialWall()
+{
+	if (IsEndTutorial()) return;
+
+	World& w = GetWorld();
+
+	GameObject& wall_01 = w.CreateGameObject(Vector3(0.f, 0.f, 5.f), Vector3::zero(), Vector3(5.f, 1.f, 1.f));
+	wall_01.AddComponent<BoxCollider>();
+	wall_01.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube);
+	wall_01.AddComponent<MeshRenderer>();
+}
+
 void SceneGame::CreateGlassObjectSpawner()
 {
 	World& w = GetWorld();
@@ -550,8 +564,11 @@ void SceneGame::CreateGlassObjectSpawner()
 	GameObject& glassObjectSpawner = w.CreateGameObject();
 	//glassObjectSpawner.AddComponent<GlassObjectSpawner>();
 
-	GameObject& Frost = w.CreateGameObject();
-	//Frost.AddComponent<Sprite3DRenderer>(TextureTag::UIFrostNoise, Vector2::zero(), Vector2(12.8f, 7.2f));
+	GameObject& Frost = w.CreateGameObject(Vector3(0.f, -0.9f, 0.f), Vector3(90.f, 0.f, 0.f));
+	Frost.AddComponent<Sprite3DRenderer>(TextureTag::UIFrostNoise, Vector2::zero(), Vector2(12.8f, 7.2f));
+
+	GameObject& tutorial = w.CreateGameObject();
+	tutorial.AddComponent<TutorialManager>();
 }
 
 void SceneGame::CreateWarp()

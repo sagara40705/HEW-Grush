@@ -39,3 +39,13 @@ void SetRecentClearTimes(float time)
 {
 	Game::GetState()->recentClearTimes_ = time;
 }
+
+void EndTutorial()
+{
+	Game::GetState()->endTutorial_ = true;
+}
+
+bool IsEndTutorial()
+{
+	return Game::GetState()->endTutorial_;
+}
