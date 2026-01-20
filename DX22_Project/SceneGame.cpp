@@ -567,6 +567,7 @@ void SceneGame::CreateGlassObjectSpawner()
 	GameObject& Frost = w.CreateGameObject(Vector3(0.f, -0.9f, 0.f), Vector3(90.f, 0.f, 0.f));
 	Frost.AddComponent<Sprite3DRenderer>(TextureTag::UIFrostNoise, Vector2::zero(), Vector2(12.8f, 7.2f));
 
+	if (IsEndTutorial()) return;
 	GameObject& tutorial = w.CreateGameObject();
 	tutorial.AddComponent<TutorialManager>();
 }

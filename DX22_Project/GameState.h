@@ -17,7 +17,7 @@ constexpr size_t ToIndex(StageId stage) noexcept {
 
 struct GameState
 {
-	bool endTutorial_ = false;
+	bool endTutorial_ = true;
     bool hasPlayedIntroMovie = false;
     StageId stage_ = StageId::Stage1;
 
