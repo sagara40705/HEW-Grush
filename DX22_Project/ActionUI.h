@@ -13,9 +13,14 @@ private: //éQè∆
 	UiSpriteRenderer* spFront_  = nullptr;
 	UiSpriteRenderer* spinMoji_ = nullptr;
 	UiSpriteRenderer* dashMoji_ = nullptr;
+	UiSpriteRenderer* daFlash_ = nullptr;
+	UiSpriteRenderer* daFront_ = nullptr;
 	
+	float glowTimerDash = 0.f;
+	float glowSpinTimer = 0.f;
 	bool wasSpinReady = false;
-	float glowTimer = 0.f;
+	bool wasDashReady = false;
+
 public:
 	void Awake() override;
 	void Start() override;

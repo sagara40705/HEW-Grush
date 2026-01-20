@@ -28,6 +28,8 @@ public:
 	bool dirty_ = true;
 	bool up_ = false;
 	float GetGaugeRatio();
+	float GetGaugeDecayTimer() { return gaugeDecayDelayTimer; }
+	bool  IsGaugeDecaying() { return isGaugeDecaying; }
 	HammerGrade GetHammerGrade();
 private:
 	//ŒÀŠE“Ë”j

@@ -54,9 +54,19 @@ void ActionUI::Awake()
 	GameObject& dashMono = gameObject->CreateChild();
 	dashMono.AddComponent<UiSpriteRenderer>(TextureTag::DashMono, kDashPos, kSize, kDashMonoUVPos, kUVSize);
 
+	// ダッシュ、色付き(本体光らせる用)
+	GameObject& dashF = gameObject->CreateChild();
+	daFlash_ = &dashF.AddComponent<UiSpriteRenderer>(TextureTag::DashFlash, kDashPos, kSize, kDashUVPos, kUVSize);
+	daFlash_->SetColor({ 1.f, 1.f, 1.f, 0.f });
+
 	// ダッシュ、色付き
 	GameObject& dash = gameObject->CreateChild();
 	dash_ = &dash.AddComponent<UiSpriteRenderer>(TextureTag::Dash, kDashPos, kSize, kDashUVPos, kUVSize);
+
+	// ダッシュ、色付き(枠光らせる用)
+	GameObject& dashFr = gameObject->CreateChild();
+	daFront_ = &dashFr.AddComponent<UiSpriteRenderer>(TextureTag::DashFront, kDashPos, kSize, kDashUVPos, kUVSize);
+	daFront_->SetColor({ 1.f, 1.f, 1.f, 0.f });
 
 	// ダッシュ、文字
 	GameObject& dashMojiMono = gameObject->CreateChild();
@@ -99,15 +109,15 @@ void ActionUI::Update()
 
 
 	// ---たまった瞬間光らせる処理(回転攻撃)
-	if (glowTimer > 0.f)
+	if (glowSpinTimer > 0.f)
 	{
-		glowTimer -= 1.0f / 60.0f;
+		glowSpinTimer -= 1.0f / 60.0f;
 
-		float t = glowTimer / kGlowDuration; // 1.0 → 0.0
+		float t = glowSpinTimer / kGlowDuration; // 1.0 → 0.0
 		float alpha = std::sin(t * 3.1415f); // 0→1→0 のカーブ
 
-		spFlash_->SetColor({ 1.f,1.f,1.f, alpha }); // アルファでフェード
-		spFront_->SetColor({ 1.f,1.f,1.f, alpha }); // アルファでフェード
+		spFlash_->SetColor({ 2.f,1.2f,2.f, alpha }); // アルファでフェード
+		spFront_->SetColor({ 2.f,1.2f,2.f, alpha }); // アルファでフェード
 		spFlash_->SetVisible(true);
 	}
 	else
@@ -119,7 +129,7 @@ void ActionUI::Update()
 
 	if (isSpinReady && !wasSpinReady)
 	{
-		glowTimer = kGlowDuration; 
+		glowSpinTimer = kGlowDuration; 
 	}
 	wasSpinReady = isSpinReady;
 
@@ -140,6 +150,11 @@ void ActionUI::Update()
 	else
 	dashMoji_->SetSize({ 135.f , 32.f });
 
+	// ---たまった瞬間光らせる処理(ダッシュ攻撃)
+		
+
+
+
 }
 
 void ActionUI::OnDestroy()
@@ -148,7 +163,7 @@ void ActionUI::OnDestroy()
 	spin_  = nullptr;
 	dash_  = nullptr;
 	spFlash_ = nullptr;
-	//daFlash_ = nullptr;
+	daFlash_ = nullptr;
 	spinMoji_ = nullptr;
 	dashMoji_ = nullptr;
 }
