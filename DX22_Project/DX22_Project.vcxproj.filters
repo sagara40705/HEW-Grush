@@ -364,6 +364,7 @@
     <ClCompile Include="ResultGaugeUI.cpp">
       <Filter>Game\Components\Result</Filter>
     </ClCompile>
+    <ClCompile Include="ResultManeger.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -640,6 +641,7 @@
     <ClInclude Include="ResultGaugeUI.h">
       <Filter>Game\Components\Result</Filter>
     </ClInclude>
+    <ClInclude Include="ResultManeger.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SceneManager.inl">

@@ -203,6 +203,7 @@
     <ClCompile Include="PrimitiveMeshManager.cpp" />
     <ClCompile Include="Raycast.cpp" />
     <ClCompile Include="ResultGaugeUI.cpp" />
+    <ClCompile Include="ResultManeger.cpp" />
     <ClCompile Include="ResultRankUI.cpp" />
     <ClCompile Include="ResultTimerUI.cpp" />
     <ClCompile Include="Rigidbody.cpp" />
@@ -299,6 +300,7 @@
     <ClInclude Include="Raycast.h" />
     <ClInclude Include="RenderSystem.h" />
     <ClInclude Include="ResultGaugeUI.h" />
+    <ClInclude Include="ResultManeger.h" />
     <ClInclude Include="ResultRankUI.h" />
     <ClInclude Include="ResultTimerUI.h" />
     <ClInclude Include="Rigidbody.h" />

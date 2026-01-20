@@ -9,9 +9,10 @@
 #include "LineManager.h"
 #include "ResultGaugeUI.h"
 #include "ResultRankUI.h"
+#include  "ResultManeger.h"
 
 constexpr Vector2 kNumberUVScale = { 0.1f, 1.0f };
-void Result::Load()
+void SceneResult::Load()
 {
 
 	//テクスチャーロード
@@ -67,7 +68,7 @@ void Result::Load()
 }
 
 
-void Result::BuildLoadTasks(std::vector<LoadTask>& outTasks)
+void SceneResult::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 {
 	// World の中身を消す
 	outTasks.emplace_back([this]
@@ -95,6 +96,7 @@ void Result::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	//<<<<<<< HEAD
 	outTasks.emplace_back([this] { GaugeDraw(); });
 	outTasks.emplace_back([this] { RankDraw(); });
+	outTasks.emplace_back([this] { SceneTitleDraw(); });
 	//=======
 		//outTasks.emplace_back([this] { GaugeDraw(); });
 		//outTasks.emplace_back([this] { RankDraw(); });
@@ -109,19 +111,19 @@ void Result::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 }
 
 
-void Result::Update()
+void SceneResult::Update()
 {
 }
 
-void Result::Draw()
+void SceneResult::Draw()
 {
 }
 
-void Result::Unload()
+void SceneResult::Unload()
 {
 }
 
-void Result::TimerUIDeaw()
+void SceneResult::TimerUIDeaw()
 {
 	World& w = GetWorld();
 
@@ -131,7 +133,7 @@ void Result::TimerUIDeaw()
 
 }
 
-void Result::GaugeDraw()
+void SceneResult::GaugeDraw()
 {
 	World& w = GetWorld();
 
@@ -140,7 +142,7 @@ void Result::GaugeDraw()
 	Gauge.AddComponent<ResultGaugeUI>();
 }
 
-void Result::CanvasDraw()
+void SceneResult::CanvasDraw()
 {
 	World& w = GetWorld();
 	//Canvas
@@ -158,7 +160,7 @@ void Result::CanvasDraw()
 	tatuGroung.AddComponent<UiSpriteRenderer>(TextureTag::tatu_Arubaita, Vector2(700.f, 180.f), Vector2(420, 100));
 }
 
-void Result::RankDraw()
+void SceneResult::RankDraw()
 {
 	World& w = GetWorld();
 
@@ -166,3 +168,16 @@ void Result::RankDraw()
 	Rank.SetTag(Tag::ResultRankUI);
 	Rank.AddComponent<ResultRankUI>();
 }
+
+void SceneResult::SceneTitleDraw()
+{
+	World& w = GetWorld();
+	//Canvas
+	GameObject& canvas = w.CreateGameObject();
+	canvas.AddComponent<Canvas>();
+	//背景生成
+	//タイトルマネージャー生成
+	GameObject& manager = w.CreateGameObject();
+	manager.AddComponent<ResultManeger>();
+}
+
