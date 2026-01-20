@@ -103,8 +103,8 @@ void SceneTitle::CreateCameraAndPlayer()
 	World& w = GetWorld();
 
 	// ÉJÉÅÉâ
-	/*GameObject& cameraPivot = w.CreateGameObject(Vector3(0.f, 2.0f, -5.0f), Vector3(0.f, 0.f, 0.f));*/
-	GameObject& cameraPivot = w.CreateGameObject(Vector3(0.f, 0.5f, 1.f), Vector3(0.f, 0.f, 0.f));
+	GameObject& cameraPivot = w.CreateGameObject(Vector3(0.f, 2.0f, -5.0f), Vector3(0.f, 0.f, 0.f));
+	/*GameObject& cameraPivot = w.CreateGameObject(Vector3(0.f, 0.5f, 1.f), Vector3(0.f, 0.f, 0.f));*/
 	GameObject& mainCamera = cameraPivot.CreateChild(Camera::kInitPos, Camera::kInitRotate);
 	mainCamera.AddComponent<Camera>();
 
@@ -192,7 +192,7 @@ void SceneTitle::InitPlayerTex()
 void SceneTitle::Update()
 {
 
-	if (!m_breakButton) return;
+	//if (!m_breakButton) return;
 
 	if (!m_isStarting && InputKeyboard::GetKeyDown(VK_SPACE))
 	{
