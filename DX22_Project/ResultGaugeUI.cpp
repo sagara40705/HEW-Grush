@@ -33,14 +33,6 @@ void ResultGaugeUI::Start()
 	GameObject& Frame = gameObject->CreateChild();
 	uiFrame_ = &Frame.AddComponent<UiSpriteRenderer>(TextureTag::Frame, kMinutePos[ToIndex(TimerDigits::Ten)], kNumFrameberSize, Vector2::zero(), kNumberUVScale);
 
-	/*if (GaugePoint >= 300)
-	{
-		GaugePoint = 0.f;
-		ArubaitpLevel++;
-	}
-	*/
-
-
 }
 
 void ResultGaugeUI::Draw()

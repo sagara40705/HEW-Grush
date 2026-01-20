@@ -15,7 +15,6 @@ public:
     void Draw() override;
     void Unload() override;
 
-    void CreateCanvas();
     void TimerUIDeaw();
     void GaugeDraw();
     void CanvasDraw();
