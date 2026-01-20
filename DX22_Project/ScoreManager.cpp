@@ -4,7 +4,8 @@
 #include "DebugLog.h"
 #include "Game.h"
 #include "GameState.h"
-#include "SceneTitle.h"
+#include "SceneResult.h"
+#include "SceneManager.h"
 #include "TimerUI.h"
 #include <cassert>
 
@@ -53,5 +54,5 @@ void ScoreManager::GoToResultScene()
 
 	// ===== ƒV[ƒ“Ø‚è‘Ö‚¦ =====
 	DebugLog::Output("Clear Stage");
-	SceneManager::ChangeScene<SceneTitle>();
+	SceneManager::ChangeScene<Result>();
 }
