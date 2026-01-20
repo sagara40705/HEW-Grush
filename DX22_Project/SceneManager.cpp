@@ -1,10 +1,20 @@
 #include "SceneManager.h"
 #include "Scene.h"
+#include "GameObject.h"
+#include "UiSpriteRenderer.h"
+#include "SpriteAnimation.h"
+#include <cassert>
 
 // 静的メンバ定義
 std::vector<std::unique_ptr<Scene>> SceneManager::s_scenes;
 std::unique_ptr<Scene>              SceneManager::s_nextScene;
 SceneManager::PendingOp             SceneManager::s_pendingOp = SceneManager::PendingOp::None;
+
+SceneManager::State 			    SceneManager::s_state = SceneManager::State::Idle;
+Timer SceneManager::s_timer;
+SpriteAnimation* SceneManager::s_fadeOutAnime = nullptr;
+SpriteAnimation* SceneManager::s_fadeInAnime = nullptr;
+
 
 //--------------------------------------------------
 // 初期化 / 終了
@@ -18,6 +28,7 @@ void SceneManager::Initialize()
 
 void SceneManager::Finalize()
 {
+
     ClearStack();
     s_nextScene.reset();
     s_pendingOp = PendingOp::None;
@@ -28,18 +39,17 @@ void SceneManager::Finalize()
 //--------------------------------------------------
 void SceneManager::Update()
 {
-    // まず前フレームで予約された操作を反映
-    ApplyNextScene();
-
-    // アクティブシーンを更新
-    if (Scene* active = GetActiveScene())
+    switch (s_state)
     {
-        active->RootUpdate();
+    case SceneManager::FadeOut: UpdateFadeOut();
+        break;
+	case SceneManager::Idle:    UpdateIdle();
+        break;
+	case SceneManager::FadeIn:  UpdateFadeIn();
+        break;
+    default:
+        break;
     }
-
-    // Update 中に新たに ChangeScene / PushScene / PopScene が呼ばれていたら、
-    // その結果もこのフレームの終わりで反映しておく
-    ApplyNextScene();
 }
 
 void SceneManager::Draw()
@@ -143,4 +153,96 @@ void SceneManager::ClearStack()
         s_scenes.back()->RootUnload();
         s_scenes.pop_back();
     }
+}
+
+void SceneManager::StartFadeOut()
+{
+	Scene* active = GetActiveScene();
+	assert(active && "SceneManager::StartFadeOut() active scene is null.");
+
+	s_state = State::FadeOut;
+	s_timer.Start();
+
+	assert(s_fadeOutAnime && "SceneManager::StartFadeOut() fadeOutAnime is null.");
+    s_fadeOutAnime->Play();
+
+}
+
+void SceneManager::StartFadeIn()
+{
+	Scene* active = GetActiveScene();
+	assert(active && "SceneManager::StartFadeIn() active scene is null.");
+
+	s_state = State::FadeIn;
+	s_timer.Start();
+
+	assert(s_fadeInAnime && "SceneManager::StartFadeIn() fadeInAnime is null.");
+	s_fadeInAnime->Play();
+}
+
+void SceneManager::UpdateIdle()
+{
+    // まず前フレームで予約された操作を反映
+    ApplyNextScene();
+
+    // アクティブシーンを更新
+    if (Scene* active = GetActiveScene())
+    {
+        active->RootUpdate();
+    }
+
+    // Update 中に新たに ChangeScene / PushScene / PopScene が呼ばれていたら、
+    // その結果もこのフレームの終わりで反映しておく
+    ApplyNextScene();
+}
+
+void SceneManager::UpdateFadeOut()
+{
+	assert(s_state == State::FadeOut && " SceneManager::UpdateFadeOut()");
+
+	if (!s_timer.IsRunning()) assert(false && "FadeOut timer is not running.");
+
+	if (s_timer.ElapsedSeconds() >= FadeDuration)
+	{
+		// フェードアウト完了
+		s_timer.Stop();
+		s_state = State::Idle;
+
+        //ロードsceneへ遷移する
+	}
+}
+
+void SceneManager::UpdateFadeIn()
+{
+	assert(s_state == State::FadeIn && " SceneManager::UpdateFadeIn()");
+
+	if (!s_timer.IsRunning()) assert(false && "FadeIn timer is not running.");
+
+	if (s_timer.ElapsedSeconds() >= FadeDuration)
+	{
+		// フェードイン完了
+		s_timer.Stop();
+		s_state = State::Idle;
+	}   
+}
+
+
+void SceneManager::CreateFadeAnimations()
+{
+	Scene* active = GetActiveScene();
+	assert(active && "SceneManager::CreateFadeAnimations() active scene is null.");
+
+    TextureManager::Load(TextureTag::FadeOut);
+    TextureManager::Load(TextureTag::FadeIn);
+
+	World& world = active->GetWorld();
+
+	GameObject* fadeOutObj = &world.CreateGameObject();
+    fadeOutObj->AddComponent<UiSpriteRenderer>(TextureTag::FadeOut, Vector2::zero(), Vector2(1280.f, 720.f));
+	s_fadeOutAnime = &fadeOutObj->AddComponent<SpriteAnimation>(6, 8, 1, 48, false);
+
+    GameObject* fadeInObj = &world.CreateGameObject();
+    fadeInObj->AddComponent<UiSpriteRenderer>(TextureTag::FadeOut, Vector2::zero(), Vector2(1280.f, 720.f));
+    s_fadeInAnime = &fadeOutObj->AddComponent<SpriteAnimation>(6, 8, 1, 48, false);
+
 }

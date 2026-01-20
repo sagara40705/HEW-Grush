@@ -49,17 +49,17 @@ void ResultTimerUI::Update()
 	int minutes = totalSec / 60;
 	int seconds = totalSec % 60;
 
-	uiMinute_[ToIndex(Timer::Ten)]->SetUVPos(kNumberUVPos[minutes / 10]);
-	uiMinute_[ToIndex(Timer::One)]->SetUVPos(kNumberUVPos[minutes % 10]);
-	uiSecond_[ToIndex(Timer::Ten)]->SetUVPos(kNumberUVPos[seconds / 10]);
-	uiSecond_[ToIndex(Timer::One)]->SetUVPos(kNumberUVPos[seconds % 10]);
+	uiMinute_[ToIndex(TimerDigits::Ten)]->SetUVPos(kNumberUVPos[minutes / 10]);
+	uiMinute_[ToIndex(TimerDigits::One)]->SetUVPos(kNumberUVPos[minutes % 10]);
+	uiSecond_[ToIndex(TimerDigits::Ten)]->SetUVPos(kNumberUVPos[seconds / 10]);
+	uiSecond_[ToIndex(TimerDigits::One)]->SetUVPos(kNumberUVPos[seconds % 10]);
 }
 
 void ResultTimerUI::OnDestroy()
 {
-	uiMinute_[ToIndex(Timer::Ten)] = nullptr;
-	uiMinute_[ToIndex(Timer::One)] = nullptr;
+	uiMinute_[ToIndex(TimerDigits::Ten)] = nullptr;
+	uiMinute_[ToIndex(TimerDigits::One)] = nullptr;
 	uiColon_ = nullptr;
-	uiSecond_[ToIndex(Timer::Ten)] = nullptr;
-	uiSecond_[ToIndex(Timer::One)] = nullptr;
+	uiSecond_[ToIndex(TimerDigits::Ten)] = nullptr;
+	uiSecond_[ToIndex(TimerDigits::One)] = nullptr;
 }

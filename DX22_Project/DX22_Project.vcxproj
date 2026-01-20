@@ -233,6 +233,7 @@
     <ClCompile Include="TexutureManager.cpp" />
     <ClCompile Include="SceneTitle.cpp" />
     <ClCompile Include="TimerUI.cpp" />
+    <ClCompile Include="Time\Time.cpp" />
     <ClCompile Include="TitleManager.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TutorialManager.cpp" />
@@ -333,6 +334,9 @@
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="SceneTitle.h" />
     <ClInclude Include="TimerUI.h" />
+    <ClInclude Include="Time\Stopwatch.h" />
+    <ClInclude Include="Time\Time.h" />
+    <ClInclude Include="Time\Timer.h" />
     <ClInclude Include="TitleManager.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TutorialManager.h" />

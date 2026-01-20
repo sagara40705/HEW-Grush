@@ -16,9 +16,6 @@
     <Filter Include="Engine\Debug">
       <UniqueIdentifier>{ea770509-0d5f-42a8-aafa-00927f29bda8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Engine\Math">
-      <UniqueIdentifier>{b3abd392-69f7-459a-9b68-5d97e9c97146}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine\Physics">
       <UniqueIdentifier>{89d535b2-ceda-44e4-8910-c7b250788f18}</UniqueIdentifier>
     </Filter>
@@ -93,6 +90,9 @@
     </Filter>
     <Filter Include="Game\Components\StageSelect">
       <UniqueIdentifier>{8b8e778e-922c-4f0b-b5c6-1b1df669a220}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Util">
+      <UniqueIdentifier>{b3abd392-69f7-459a-9b68-5d97e9c97146}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -378,6 +378,9 @@
     <ClCompile Include="TutorialManager.cpp">
       <Filter>Game\Components\GameManager</Filter>
     </ClCompile>
+    <ClCompile Include="Time\Time.cpp">
+      <Filter>Engine\Util</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -429,7 +432,7 @@
       <Filter>Engine\Core</Filter>
     </ClInclude>
     <ClInclude Include="Vector3.h">
-      <Filter>Engine\Math</Filter>
+      <Filter>Engine\Util</Filter>
     </ClInclude>
     <ClInclude Include="Transform.h">
       <Filter>Engine\Core</Filter>
@@ -477,7 +480,7 @@
       <Filter>Engine\Rendering\UI</Filter>
     </ClInclude>
     <ClInclude Include="Vector2.h">
-      <Filter>Engine\Math</Filter>
+      <Filter>Engine\Util</Filter>
     </ClInclude>
     <ClInclude Include="TextureManager.h">
       <Filter>Engine\Resources</Filter>
@@ -667,6 +670,15 @@
     </ClInclude>
     <ClInclude Include="TutorialManager.h">
       <Filter>Game\Components\GameManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Time\Stopwatch.h">
+      <Filter>Engine\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Time\Time.h">
+      <Filter>Engine\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Time\Timer.h">
+      <Filter>Engine\Util</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

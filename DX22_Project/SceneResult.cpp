@@ -78,7 +78,7 @@ void Result::Update()
 {
 	if (InputKeyboard::GetKeyDown(VK_SPACE))
 	{
-		SceneManager::ChangeScene<SceneStageSelect>();
+		SceneManager::ChangeSceneAsync<SceneStageSelect>();
 	}
 }
 
