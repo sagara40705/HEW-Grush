@@ -120,6 +120,19 @@ void GlassGaugeManager::BrakeGlass(GlassGrade grade)
 	{
 		GradeUp();
 	}
+
+	if (isTutorial_ && warkingTask_)
+	{
+		if (hammer_->GetGrade() == HammerGrade::Grade_1)
+		{
+			endTask_02_ = true;
+		}
+
+		if (hammer_->GetGrade() == HammerGrade::Grade_2)
+		{
+			endTask_04_ = true;
+		}
+	}
 }
 
 void GlassGaugeManager::GradeUp()
