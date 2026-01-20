@@ -572,17 +572,79 @@ void SceneGame::CreateOptionUI()
 {
 	World& w = GetWorld();
 
-	// UI Root（非表示スタート）
+	// Option UI の Root（これを ON/OFF する）
 	GameObject& optionRoot = w.CreateGameObject();
-	optionRoot.SetActive(false);
+	optionRoot.SetActive(false); // 最初は非表示
 
-	// ここから先のUiSpriteRendererは全部 optionRoot.CreateChild() で作る
-	// （あなたが直した構造のままでOK）
+	// 開閉管理コンポーネント（Escで開閉）
+	optionRoot.AddComponent<OptionUIController>();
 
-	// Controller（常にActive）
-	GameObject& optionCtrl = w.CreateGameObject();
-	auto& ctrl = optionCtrl.AddComponent<OptionUIController>();
-	ctrl.SetOptionRoot(&optionRoot);
+	// ここから下は全部 Root の子にする（まとめて管理できる）
+	// 背景
+	GameObject& backGround = optionRoot.CreateChild();
+	backGround.AddComponent<UiSpriteRenderer>(
+		TextureTag::option_Back,
+		Vector2(0.f, 0.f),
+		Vector2(SCREEN_WIDTH, SCREEN_HEIGHT)
+	);
+
+	// 背景パーツ（必要なものだけ残してOK）
+	GameObject& optionBack = optionRoot.CreateChild();
+	optionBack.AddComponent<UiSpriteRenderer>(
+		TextureTag::option_Font1_Back,
+		Vector2(0.f, 0.f),
+		Vector2(SCREEN_WIDTH, SCREEN_HEIGHT)
+	);
+
+	GameObject& optionBack2 = optionRoot.CreateChild();
+	optionBack2.AddComponent<UiSpriteRenderer>(
+		TextureTag::option_Font2_Back,
+		Vector2(0.f, 0.f),
+		Vector2(SCREEN_WIDTH, SCREEN_HEIGHT)
+	);
+
+	GameObject& optionBack3 = optionRoot.CreateChild();
+	optionBack3.AddComponent<UiSpriteRenderer>(
+		TextureTag::option_Font3_Back,
+		Vector2(0.f, 0.f),
+		Vector2(SCREEN_WIDTH, SCREEN_HEIGHT)
+	);
+
+	// フォント
+	GameObject& optionFont = optionRoot.CreateChild();
+	optionFont.AddComponent<UiSpriteRenderer>(
+		TextureTag::option_Font1,
+		Vector2(0.f, 0.f),
+		Vector2(SCREEN_WIDTH, SCREEN_HEIGHT)
+	);
+
+	GameObject& optionFont2 = optionRoot.CreateChild();
+	optionFont2.AddComponent<UiSpriteRenderer>(
+		TextureTag::option_Font2,
+		Vector2(0.f, 0.f),
+		Vector2(SCREEN_WIDTH, SCREEN_HEIGHT)
+	);
+
+	GameObject& optionFont3 = optionRoot.CreateChild();
+	optionFont3.AddComponent<UiSpriteRenderer>(
+		TextureTag::option_Font3,
+		Vector2(0.f, 0.f),
+		Vector2(SCREEN_WIDTH, SCREEN_HEIGHT)
+	);
+
+	GameObject& optionFont4 = optionRoot.CreateChild();
+	optionFont4.AddComponent<UiSpriteRenderer>(
+		TextureTag::option_Font4,
+		Vector2(0.f, 0.f),
+		Vector2(SCREEN_WIDTH, SCREEN_HEIGHT)
+	);
+
+	GameObject& optionFont5 = optionRoot.CreateChild();
+	optionFont5.AddComponent<UiSpriteRenderer>(
+		TextureTag::option_Font5,
+		Vector2(0.f, 0.f),
+		Vector2(SCREEN_WIDTH, SCREEN_HEIGHT)
+	);
 }
 
 void SceneGame::CreateGlassObjectSpawner()
