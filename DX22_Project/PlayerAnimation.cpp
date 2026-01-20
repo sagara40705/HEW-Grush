@@ -220,4 +220,12 @@ void PlayerAnimation::UpdateCurrentState()
 
 }
 
+void PlayerAnimation::AddHummerAllAnimations()
+{
+	GameObject* hummer = gameObject->FindChildWithTag(Tag::Hammer);
+	if (!hummer) return;
+
+
+}
+
 

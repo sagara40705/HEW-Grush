@@ -65,4 +65,11 @@ private:
 	* @brief 現在アニメーションの更新処理
 	*/
 	void UpdateCurrentState();
+
+private:
+	// ハンマー用
+	Model::AnimeNo hummerAnimation_[Type::Count]; //アニメーションナンバーの格納先
+	Animator* hummerAnime_ = nullptr;		//アニメーター
+private:
+	void AddHummerAllAnimations();
 };
