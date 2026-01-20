@@ -27,29 +27,13 @@ void LoadingScene::SetNextScene(std::unique_ptr<Scene> next)
 // このシーン自身のロード
 void LoadingScene::Load()
 {
-    std::cout << "LoadingScene::Load() - START" << std::endl;
+    //std::cout << "LoadingScene::Load() - START" << std::endl;
     
     OriginalLoad();
     
-    std::cout << "LoadingScene::Load() - Before World::Start()" << std::endl;
+    //std::cout << "LoadingScene::Load() - Before World::Start()" << std::endl;
     GetWorld().Start();
-    
-    std::cout << "LoadingScene::Load() - After World::Start()" << std::endl;
-    
-    // デバッグ: カメラの存在確認
-	auto* mainCam = Camera::Main();
-    if (mainCam)
-    {
-        std::cout << "Main Camera found!" << std::endl;
-    }
-    else
-    {
-        std::cout << "ERROR: Main Camera NOT found!" << std::endl;
-    }
-    
-    // デバッグ: レンダラーの数を確認
-    const auto& renderers = GetWorld().GetRenderers();
-    std::cout << "Number of renderers: " << renderers.size() << std::endl;
+   
 }
 
 // 毎フレーム呼ばれる
