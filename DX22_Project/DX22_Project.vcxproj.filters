@@ -354,7 +354,6 @@
       <Filter>Game\Components\Player</Filter>
     </ClCompile>
     <ClCompile Include="LoadingCharacterAnimation.cpp" />
-    <ClCompile Include="TutorialManager.cpp" />
     <ClCompile Include="SceneResult.cpp">
       <Filter>Game\Scenes</Filter>
     </ClCompile>
@@ -375,6 +374,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\..\..\Users\sgr12\OneDrive\デスクトップ\sss\SelectPlayerControl.cpp">
       <Filter>Game\Components\StageSelect</Filter>
+    </ClCompile>
+    <ClCompile Include="TutorialManager.cpp">
+      <Filter>Game\Components\GameManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -639,7 +641,6 @@
       <Filter>Game\Components\Environment</Filter>
     </ClInclude>
     <ClInclude Include="LoadingCharacterAnimation.h" />
-    <ClInclude Include="TutorialManager.h" />
     <ClInclude Include="SceneResult.h">
       <Filter>Game\Scenes</Filter>
     </ClInclude>
@@ -663,6 +664,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\..\..\Users\sgr12\OneDrive\デスクトップ\sss\SelectPlayerControl.h">
       <Filter>Game\Components\StageSelect</Filter>
+    </ClInclude>
+    <ClInclude Include="TutorialManager.h">
+      <Filter>Game\Components\GameManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

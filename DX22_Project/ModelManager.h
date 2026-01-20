@@ -27,6 +27,7 @@ enum class ModelTag : uint8_t
 
 	ProtPlay,
 	Player,
+	Player2,
 	Hammer,
 	Count
 };

@@ -14,7 +14,7 @@ void Game::Init()
 
     SceneManager::Initialize();
 
-	SceneManager::ChangeScene<Result>();
+	SceneManager::ChangeScene<SceneGame>();
 }
 
 void Game::Uninit()

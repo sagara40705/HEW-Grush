@@ -56,6 +56,7 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::ProtPlay); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player2); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer); });
 
 	// テクスチャーロード
@@ -167,7 +168,7 @@ void SceneGame::CreateCameraAndPlayer()
 	GameObject& player = w.CreateGameObject(Vector3(0.f, 2.f, 0.f), Vector3(0.f, 0.f, 0.f));
 	 
 	player.SetTag(Tag::Player);
-	player.AddComponent<MeshFilter>(ModelTag::Player);
+	player.AddComponent<MeshFilter>(ModelTag::Player2);
 	player.AddComponent<MeshRenderer>();
 	player.AddComponent<Rigidbody>();
 	player.AddComponent<BoxCollider>(false, Vector3(0.f, 0.5f, 0.f));
