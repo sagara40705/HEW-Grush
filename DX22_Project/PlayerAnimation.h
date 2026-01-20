@@ -18,8 +18,9 @@ private:
 		Move = 1,			// 移動アニメーション
 		NormalAttack = 2,	// 通常攻撃アニメーション
 		SpinAttack = 3,		// 回転攻撃アニメーション
-		DashAttack = 4,	// 突進攻撃アニメーション
-		Count = 5,			// アニメーションの総数
+		DashAttack = 4,		// 突進攻撃アニメーション
+		NockBack = 5,		// ノックバックアニメーション
+		Count = 6,			// アニメーションの総数
 		None = 99			// 未指定状態
 	};
 
