@@ -13,7 +13,7 @@ void Game::Init()
 
     SceneManager::Initialize();
 
-	SceneManager::ChangeSceneAsync<SceneGame>();
+	SceneManager::ChangeSceneAsync<SceneTitle>();
 }
 
 void Game::Uninit()
