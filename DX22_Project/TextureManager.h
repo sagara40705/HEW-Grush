@@ -50,6 +50,8 @@ enum class TextureTag : uint8_t
     /*41*/Title_Loge,
     /*42*/Title_Loge2,
     /*43*/FadeOut,
+    /*44*/Loading_BG,
+    /*45*/Loading_Txt,
     Count,
 };
 
