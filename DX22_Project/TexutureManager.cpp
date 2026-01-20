@@ -30,7 +30,22 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     "Assets/Texture/UI_dush_moji.png",    //22
     "Assets/Texture/UIFrostNoise08B.png",    //23
     "Assets/Texture/effect_lv1_at_long.png",    //24
-	"Assets/Texture/Glass_Shard.png",    //25
+    "Assets/Texture/Glass_Shard.png",    //25
+    "Assets/Texture/option/menu_bace.png",            //26
+    "Assets/Texture/option/hammer_cursor_02_m.png",   //27
+    "Assets/Texture/option/GS/GS_back_to_work.png",      //28
+    "Assets/Texture/option/GS/GS_back_to_work_color.png",//29
+    "Assets/Texture/option/GS/GS_retry.png",              //30
+    "Assets/Texture/option/GS/GS_retry_color.png",        //31
+    "Assets/Texture/option/GS/GS_back_to_stage.png",      //32
+    "Assets/Texture/option/GS/GS_back_to_stage_color.png",//33
+    "Assets/Texture/option/GS/GS_go_title_color.png",     //34
+    "Assets/Texture/option/GS/GS_how_to.png",             //35
+    "Assets/Texture/option/GS/GS_go_title.pngg",          //36
+    "Assets/Texture/option/GS/GS_how_to_color.png",       //37
+    "Assets/Texture/option/GS/GS_back_to_work_Frame.png",
+    "Assets/Texture/option/GS/GS_retry_Frame.png",
+    "Assets/Texture/option/GS/GS_back_to_stage_Frame.png",
 };
 
 // 配列のデフォルトパスを使用して登録

@@ -83,6 +83,14 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::EffectLv1); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GlassShard); });
 
+	//オプションのロード
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Back); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_icon); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Back); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Back); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Back); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Back); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Back); });
 
 	// プレイハブ設定
 	outTasks.emplace_back([this] { RegisterAllPrefabs(); });
@@ -161,7 +169,8 @@ void SceneGame::CreateCameraAndPlayer()
 	mainCamera.AddComponent<CameraShake>();
 
 	//70×70 ①
-	GameObject& player = w.CreateGameObject(Vector3(0.f, 2.f, 0.f), Vector3(0.f, 0.f, 0.f));
+	GameObject& player = w.CreateGameObject
+	(Vector3(0.f, 2.f, 0.f), Vector3(0.f, 0.f, 0.f));
 	 
 	player.SetTag(Tag::Player);
 	player.AddComponent<MeshFilter>(ModelTag::Player);
@@ -174,7 +183,10 @@ void SceneGame::CreateCameraAndPlayer()
 	player.AddComponent<Animator>();
 	player.AddComponent<PlayerAnimation>();
 
-	GameObject& hummer = player.CreateChild(Hammer::BasePos, Hammer::BaseRota, Vector3(0.2f, 0.2f, 0.2f));
+	GameObject& hummer = player.CreateChild
+	(Hammer::BasePos,
+		Hammer::BaseRota,
+		Vector3(0.2f, 0.2f, 0.2f));
 	hummer.SetTag(Tag::Hammer);
 	hummer.AddComponent<MeshFilter>(ModelTag::Hammer);
 	hummer.AddComponent<MeshRenderer>();

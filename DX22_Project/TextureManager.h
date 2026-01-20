@@ -32,7 +32,22 @@ enum class TextureTag : uint8_t
 	UIFrostNoise = 23,
 	EffectLv1 = 24,
 	GlassShard = 25,
-    Count = 26
+    option_Back,//オプションの背景26
+    option_icon,//オプションのアイコン27
+    option_Font1,//仕事に戻る28
+    option_Font1_OK,//仕事に戻る選択29
+    option_Font2,//やり直す30
+    option_Font2_OK,//やり直す選択31
+    option_Font3,//ステージセレクト32
+    option_Font3_OK,//ステージセレクト選択33
+    option_Font4,//操作方法34
+    option_Font4_OK,//操作方法選択35
+    option_Font5,//タイトルに戻る36
+    option_Font5_OK,//タイトルに戻る選択37
+    option_Font1_Back,
+    option_Font2_Back,
+    option_Font3_Back,
+    Count
 };
 
 class TextureManager
