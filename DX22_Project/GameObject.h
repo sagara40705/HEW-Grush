@@ -18,6 +18,7 @@
 enum class Tag : std::uint8_t
 {
     None,
+    StageMap,
     GameManager,
     GaugeManager,
     ScoreManager,

@@ -158,6 +158,9 @@
     <ClCompile Include="CapsuleCollider.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Collision.cpp" />
+    <ClCompile Include="SelectPlayerControl.cpp" />
+    <ClCompile Include="StageMap.cpp" />
+    <ClCompile Include="StageSelectSystem.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="DirectX.cpp" />
     <ClCompile Include="ElectricFan.cpp" />
@@ -207,13 +210,16 @@
     <ClCompile Include="SceneGame.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SceneSample.cpp" />
+    <ClCompile Include="SceneStageSelect.cpp" />
     <ClCompile Include="ScoreManager.cpp" />
     <ClCompile Include="ScoreUI.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderList.cpp" />
     <ClCompile Include="SkyDomeMesh.cpp" />
     <ClCompile Include="SkyDomeShader.cpp" />
+    <ClCompile Include="Sound.cpp" />
     <ClCompile Include="SoundBackend.cpp" />
+    <ClCompile Include="SoundManager.cpp" />
     <ClCompile Include="SoundSystem.cpp" />
     <ClCompile Include="SphereCollider.cpp" />
     <ClCompile Include="Sprite.cpp" />
@@ -248,6 +254,10 @@
     <ClInclude Include="CapsuleCollider.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Collision.h" />
+    <ClInclude Include="SelectPlayerControl.h" />
+    <ClInclude Include="StageMap.h" />
+    <ClInclude Include="StagePoint.h" />
+    <ClInclude Include="StageSelectSystem.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="DebugLog.h" />
     <ClInclude Include="Defines.h" />
@@ -297,13 +307,16 @@
     <ClInclude Include="SceneGame.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SceneSmaple.h" />
+    <ClInclude Include="SceneStageSelect.h" />
     <ClInclude Include="ScoreManager.h" />
     <ClInclude Include="ScoreUI.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderList.h" />
     <ClInclude Include="SkyDomeMesh.h" />
     <ClInclude Include="SkyDomeShader.h" />
+    <ClInclude Include="Sound.h" />
     <ClInclude Include="SoundBackend.h" />
+    <ClInclude Include="SoundManager.h" />
     <ClInclude Include="SoundSystem.h" />
     <ClInclude Include="SoundType.h" />
     <ClInclude Include="SphereCollider.h" />
@@ -323,6 +336,7 @@
     <ClInclude Include="Vector3.h" />
     <ClInclude Include="WarpPoint.h" />
     <ClInclude Include="World.h" />
+    <ClInclude Include="x64\Csv.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SceneManager.inl" />

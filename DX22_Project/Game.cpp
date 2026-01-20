@@ -4,6 +4,7 @@
 #include "SceneGame.h"  
 #include "SceneTitle.h"// 最初のシーン
 #include "SceneSample.h"// 最初のシーン
+#include "SceneStageSelect.h"
 
 void Game::Init()
 {
@@ -13,7 +14,8 @@ void Game::Init()
 
     // 最初のシーンを予約
     //SceneManager::ChangeScene<SceneSample>();
-    SceneManager::ChangeSceneAsync<SceneGame>();
+	SceneManager::ChangeScene<SceneStageSelect>();
+    //SceneManager::ChangeSceneAsync<SceneGame>();
 }
 
 void Game::Uninit()

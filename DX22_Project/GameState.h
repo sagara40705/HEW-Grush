@@ -6,9 +6,10 @@ enum class StageId : std::uint8_t
 {
     Stage1 = 0,
     Stage2 = 1,
-    Stage3 = 2,
-    // ...
-    Count,
+    Stage3a = 2,
+    Stage3b = 3,
+    Stage3c = 4,
+    Count = 5,
 	None = 255
 };
 constexpr size_t ToIndex(StageId stage) noexcept {
@@ -34,6 +35,8 @@ void PlayedIntroMovie();
 
 // 現在のステージを取得
 StageId GetCurrentStage();
+void SetSelectedStage(StageId stage);
+
 
 // 直近クリアしたステージのタイムを取得・設定
 float GetRecentClearTimes();
