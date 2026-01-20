@@ -81,6 +81,7 @@
 
 #include "UiSpriteRenderer.h"
 #include "TextureManager.h"
+#include "SceneStageSelect.h"
 
 //FadeOutê∂ê¨
 void TitleManager::Awake()
@@ -140,5 +141,5 @@ void TitleManager::AnimationTimer()
 
 void TitleManager::GoNext()
 {
-	SceneManager::ChangeSceneAsync<SceneGame>();
+	SceneManager::ChangeSceneAsync<SceneStageSelect>();
 }

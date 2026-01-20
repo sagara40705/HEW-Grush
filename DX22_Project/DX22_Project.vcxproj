@@ -146,6 +146,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\Users\sgr12\OneDrive\デスクトップ\sss\SceneStageSelect.cpp" />
+    <ClCompile Include="..\..\..\..\..\Users\sgr12\OneDrive\デスクトップ\sss\SelectPlayerControl.cpp" />
+    <ClCompile Include="..\..\..\..\..\Users\sgr12\OneDrive\デスクトップ\sss\StageMap.cpp" />
     <ClCompile Include="ActionUI.cpp" />
     <ClCompile Include="Animator.cpp" />
     <ClCompile Include="AudioListener.cpp" />
@@ -237,6 +240,10 @@
     <ClCompile Include="_model.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\Users\sgr12\OneDrive\デスクトップ\sss\SceneStageSelect.h" />
+    <ClInclude Include="..\..\..\..\..\Users\sgr12\OneDrive\デスクトップ\sss\SelectPlayerControl.h" />
+    <ClInclude Include="..\..\..\..\..\Users\sgr12\OneDrive\デスクトップ\sss\StageMap.h" />
+    <ClInclude Include="..\..\..\..\..\Users\sgr12\OneDrive\デスクトップ\sss\StagePoint.h" />
     <ClInclude Include="ActionUI.h" />
     <ClInclude Include="AllComponent.h" />
     <ClInclude Include="Animator.h" />

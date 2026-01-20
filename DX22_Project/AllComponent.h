@@ -49,4 +49,10 @@
 #include "LoadingGauge.h"
 #include "LoadingCharacterAnimation.h"
 
+// チュートリアル
 #include "TutorialManager.h"
+
+// ステージセレクト
+#include "StageMap.h"
+#include "SelectPlayerControl.h"
+

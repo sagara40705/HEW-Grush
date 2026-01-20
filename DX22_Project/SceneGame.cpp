@@ -205,7 +205,11 @@ void SceneGame::CreateStage()
 		break;
 	case StageId::Stage2:	CreateStage2();
 		break;
-	case StageId::Stage3:	CreateStage3();
+	case StageId::Stage3a:	CreateStage3();
+		break;
+	case StageId::Stage3b:	CreateStage3();
+		break;
+	case StageId::Stage3c:	CreateStage3();
 		break;
 	default:
 		assert(false && "不正なステージID");

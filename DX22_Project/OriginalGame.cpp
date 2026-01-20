@@ -28,6 +28,10 @@ StageId GetCurrentStage()
 {
 	return Game::GetState()->stage_;
 }
+void SetSelectedStage(StageId id)
+{
+	Game::GetState()->stage_ = id;
+}
 
 
 // 直近クリアしたステージのタイムを取得・設定
