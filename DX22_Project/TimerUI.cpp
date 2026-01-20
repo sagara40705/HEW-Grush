@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "UiSpriteRenderer.h"
 #include "TextureManager.h"
+#include "GameState.h"
 
 constexpr Vector2 kNumberUVScale = { 0.1f, 1.0f };
 
@@ -51,6 +52,8 @@ void TimerUI::Update()
 
 void TimerUI::OnDestroy()
 {
+	SetRecentClearTimes(timer_);
+
 	uiMinute_[ToIndex(TimerDigits::Ten)] = nullptr;
 	uiMinute_[ToIndex(TimerDigits::One)] = nullptr;
 	uiColon_ = nullptr;
