@@ -105,7 +105,7 @@ void ShaderList::SetMaterial(const Model::Material& material)
 void ShaderList::SetLight(DirectX::XMFLOAT4 color, DirectX::XMFLOAT3 dir)
 {
 	DirectX::XMFLOAT4 param[2] = {
-		color
+		color, {0,0,0,0}
 	};
 	DirectX::XMStoreFloat4(&param[1], DirectX::XMVector3Normalize(
 		DirectX::XMVectorSet(dir.x, dir.y, dir.z, 0.0f)
@@ -123,6 +123,7 @@ void ShaderList::SetCameraPos(const DirectX::XMFLOAT3 pos)
 	m_pPS[PS_SPECULAR]->WriteBuffer(2, param);
 	m_pPS[PS_TOON]->WriteBuffer(2, param);
 	m_pPS[PS_GLASS]->WriteBuffer(2, param);
+	m_pPS[PS_GLASS_SHARD]->WriteBuffer(2, param);
 }
 void ShaderList::SetFog(DirectX::XMFLOAT4 color, float start, float range)
 {
@@ -654,7 +655,10 @@ struct PS_IN {
     float2 uv    : TEXCOORD0;
     float4 color : COLOR0;
 };
-
+cbuffer Material : register(b0)
+{
+    float4 dummy0;
+};
 Texture2D tex    : register(t0);
 SamplerState samp: register(s0);
 
@@ -817,7 +821,12 @@ struct PS_IN {
     float4 color : COLOR0;
     float4 wPos  : POSITION0;
 };
-
+cbuffer Material : register(b0)
+{
+	float4 objDiffuse;
+	float4 objAmbient;
+	float4 objSpecular;
+};
 cbuffer Light : register(b1)
 {
     float4 lightDiffuse;

@@ -226,4 +226,16 @@ void RegisterAllPrefabs()
             auto& rb = go.AddComponent<Rigidbody>();                                        (void)rb;
             auto& shard = go.AddComponent<GlassShard>();                                    (void)shard;
         });
+    Prefab::Register(P::StageWall,
+        [](GameObject& go) {
+            auto& mf = go.AddComponent<MeshFilter>(ModelTag::Fence); mf.SetBoundsOffset({ -0.2f, 0.8f, 0.f });     (void)mf;
+            auto& mr = go.AddComponent<MeshRenderer>(); (void)mr;
+            auto& bc = go.AddComponent<BoxCollider>(
+                true,
+                DirectX::XMFLOAT3{ 0.f, 3, 0 },
+                DirectX::XMFLOAT3{ 9, 6, 1 });
+            (void)bc;
+            auto& gs = go.AddComponent<GlassObject>(GlassGrade::Grade_1); (void)gs;
+     
+        });
 }

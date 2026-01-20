@@ -33,6 +33,9 @@ enum class ModelTag : uint8_t
 	Hammer_1,
 	Hammer_2,
 	Hammer_3,
+
+	Fence,
+
 	Count
 };
 constexpr size_t ToIndex(ModelTag tag) noexcept

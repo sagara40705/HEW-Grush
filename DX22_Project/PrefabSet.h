@@ -25,6 +25,9 @@ enum class PrefabId : std::uint8_t
 
     ProtPlay,
     GlassShard,
+
+    StageWall,
+
     Count
 };
 
