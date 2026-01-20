@@ -45,6 +45,6 @@
 
 #include "UIFrostRenderer.h"
 
-//stageSelect
-#include "StageMap.h"
-#include "SelectPlayerControl.h"
+//ローディング画面
+#include "LoadingGauge.h"
+#include "LoadingCharacterAnimation.h"

@@ -69,6 +69,7 @@ private:
 
     // 全シーン Unload + 破棄
     static void ClearStack();
+
 };
 
 // テンプレート関数の実装

@@ -88,9 +88,6 @@
     <Filter Include="Game\Components\Gimmick">
       <UniqueIdentifier>{44d1c6ce-c9cd-4aa6-8a74-78f91fd44392}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Game\Components\StageSelect">
-      <UniqueIdentifier>{313011ab-2058-419b-bbec-c43b6387d9a3}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectX.cpp">
@@ -347,16 +344,10 @@
     <ClCompile Include="UIFrostRenderer.cpp">
       <Filter>Game\Components\Environment</Filter>
     </ClCompile>
-    <ClCompile Include="SceneStageSelect.cpp">
-      <Filter>Game\Scenes</Filter>
+    <ClCompile Include="PlayerState.cpp">
+      <Filter>Game\Components\Player</Filter>
     </ClCompile>
-    <ClCompile Include="StageSelectSystem.cpp" />
-    <ClCompile Include="SelectPlayerControl.cpp">
-      <Filter>Game\Components\StageSelect</Filter>
-    </ClCompile>
-    <ClCompile Include="StageMap.cpp">
-      <Filter>Game\Components\StageSelect</Filter>
-    </ClCompile>
+    <ClCompile Include="LoadingCharacterAnimation.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -619,20 +610,7 @@
     <ClInclude Include="UIFrostRenderer.h">
       <Filter>Game\Components\Environment</Filter>
     </ClInclude>
-    <ClInclude Include="SceneStageSelect.h">
-      <Filter>Game\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="StageSelectSystem.h" />
-    <ClInclude Include="x64\Csv.h" />
-    <ClInclude Include="StageMap.h">
-      <Filter>Game\Components\StageSelect</Filter>
-    </ClInclude>
-    <ClInclude Include="StagePoint.h">
-      <Filter>Game\Components\StageSelect</Filter>
-    </ClInclude>
-    <ClInclude Include="SelectPlayerControl.h">
-      <Filter>Game\Components\StageSelect</Filter>
-    </ClInclude>
+    <ClInclude Include="LoadingCharacterAnimation.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SceneManager.inl">

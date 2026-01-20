@@ -130,42 +130,27 @@ void MeshRenderer::PrimitiveRender()
 
 void MeshRenderer::ModelRender()
 {
-    if (glass)
-    {
-        glass->SetGlassParamPS();
+    if (glass) 
+    { 
+        glass->SetGlassParamPS(); 
         SetCullingMode(D3D11_CULL_NONE);
     }
+
 
     Model* model = mf->GetModel();
     if (!model) return;
 
-    VertexShader* vs = ShaderList::GetVS(vsKind);
-    PixelShader* ps = ShaderList::GetPS(psKind);
-    if (!vs || !ps) return;
-
-    model->SetVertexShader(vs);
-    model->SetPixelShader(ps);
-
-    for (unsigned int i = 0; i < model->GetMeshNum(); ++i)
+    //=== ① VS_ANIME のときだけボーン行列を設定 ===
+    if (vsKind == ShaderList::VS_ANIME)
     {
-        const Model::Mesh* mesh = model->GetMesh(i);
-        if (!mesh) continue;
-
-        // ★描画直前に、そのメッシュの bones を入れる
-        if (vsKind == ShaderList::VS_ANIME)
+        for (unsigned int i = 0; i < model->GetMeshNum(); ++i)
         {
-            DirectX::XMFLOAT4X4 bones[200];
+            const Model::Mesh* mesh = model->GetMesh(i);
+            if (!mesh) continue;
 
-            // 念のため全て identity（未使用領域のゴミ混入対策）
-            for (int k = 0; k < 200; ++k)
-            {
-                DirectX::XMStoreFloat4x4(&bones[k], DirectX::XMMatrixIdentity());
-            }
-
-            const int boneCount = (int)mesh->bones.size();
-            const int writeCount = (boneCount > 200) ? 200 : boneCount;
-
-            for (int boneIdx = 0; boneIdx < writeCount; ++boneIdx)
+            // ボーン行列をシェーダーに設定
+            DirectX::XMFLOAT4X4 bones[200]; // Model::MAX_BONE を使ってもOK
+            for (int boneIdx = 0; boneIdx < mesh->bones.size(); ++boneIdx)
             {
                 const Model::Bone& bone = mesh->bones[boneIdx];
                 DirectX::XMStoreFloat4x4(
@@ -178,10 +163,29 @@ void MeshRenderer::ModelRender()
 
             ShaderList::SetBones(bones);
         }
+    }
 
-        const Model::Material* mat = model->GetMaterial(mesh->materialID);
-        if (mat) ShaderList::SetMaterial(*mat);
+    //=== VS / PS を取得 ===
+    VertexShader* vs = ShaderList::GetVS(vsKind);
+    PixelShader* ps = ShaderList::GetPS(psKind);
 
+    if (!vs || !ps) return;
+
+    // ModelRenderer と同じ流れ
+    model->SetVertexShader(vs);
+    model->SetPixelShader(ps);
+    
+    // マテリアル別にメッシュを表示 
+    for (unsigned int i = 0; i < model->GetMeshNum(); ++i) {
+        // モデルのメッシュを取得 
+        const Model::Mesh* mesh = model->GetMesh(i);
+        // メッシュに割り当てられているマテリアルを取得 
+        Model::Material material = *model->GetMaterial(mesh->materialID);
+        // シェーダーへマテリアルを設定 
+        ShaderList::SetMaterial(material);
+        
+        // モデルの描画 
         model->Draw(i);
     }
+  
 }
