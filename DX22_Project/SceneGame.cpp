@@ -82,7 +82,6 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::UIFrostNoise); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::EffectLv1); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GlassShard); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::TutorialTarget); });
 
 
 	// プレイハブ設定
@@ -102,8 +101,6 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 
 	//ギミック
 	outTasks.emplace_back([this] { CreateGlassObjectSpawner(); });
-	outTasks.emplace_back([this] { CreateTutorial(); });
-	
 
 	//outTasks.emplace_back([this] { InitPlayerTex(); });
 	outTasks.emplace_back([this] { InitSkyDome(); });
@@ -552,8 +549,8 @@ void SceneGame::CreateGlassObjectSpawner()
 	GameObject& glassObjectSpawner = w.CreateGameObject();
 	//glassObjectSpawner.AddComponent<GlassObjectSpawner>();
 
-//	GameObject& Frost1 = w.CreateGameObject(Vector3(0.f, -0.99f, 0.f), Vector3(90.f, 0.f, 0.f));
-//	Frost1.AddComponent<Sprite3DRenderer>(TextureTag::UIFrostNoise, Vector2::zero(), Vector2(12.8f, 3.6f));
+	GameObject& Frost = w.CreateGameObject();
+	//Frost.AddComponent<Sprite3DRenderer>(TextureTag::UIFrostNoise, Vector2::zero(), Vector2(12.8f, 7.2f));
 }
 
 void SceneGame::CreateWarp()
@@ -572,24 +569,6 @@ void SceneGame::CreateWarp()
 	BoxCollider& bcB = warpB.AddComponent<BoxCollider>(true); bcB.isTrigger = true;
 	warpB.AddComponent<WarpPoint>(Point::BtoA);
 
-}
-
-void SceneGame::CreateTutorial()
-{
-	World& w = GetWorld();
-
-	GameObject& Frost1 = w.CreateGameObject(Vector3(0.f, -0.99f, 0.f), Vector3(90.f, 0.f, 0.f));
-//	Frost1.AddComponent<Sprite3DRenderer>(TextureTag::UIFrostNoise, Vector2::zero(), Vector2(12.8f, 3.6f));
-	Frost1.AddComponent<Sprite3DRenderer>(TextureTag::UIFrostNoise, Vector2(0.f,-4.f), Vector2(3.6f, 8.f));
-
-	GameObject& Frost2 = w.CreateGameObject(Vector3(0.f, -0.99f, 0.f), Vector3(90.f, 0.f, 0.f));
-	Frost2.AddComponent<Sprite3DRenderer>(TextureTag::TutorialTarget, Vector2(0.f, -11.f), Vector2(5.6f, 5.6f));
-
-	GameObject& Frost3 = w.CreateGameObject(Vector3(0.f, -0.99f, 0.f), Vector3(90.f, 0.f, -50.f));
-	Frost3.AddComponent<Sprite3DRenderer>(TextureTag::UIFrostNoise, Vector2(10.f, -12.f), Vector2(3.6f, 6.f));
-
-//	GameObject& Frost2 = w.CreateGameObject(Vector3(0.f, -0.99f, 0.f), Vector3(90.f, 0.f, 0.f));
-//	Frost2.AddComponent<Sprite3DRenderer>(TextureTag::TutorialTarget, Vector2(0.f, -11.f), Vector2(5.6f, 5.6f));
 }
 
 void SceneGame::InitPlayerTex()

@@ -347,9 +347,6 @@
     <ClCompile Include="PlayerState.cpp">
       <Filter>Game\Components\Player</Filter>
     </ClCompile>
-    <ClCompile Include="Sound.cpp" />
-    <ClCompile Include="SoundManager.cpp" />
-    <ClCompile Include="TutorialScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -612,9 +609,6 @@
     <ClInclude Include="UIFrostRenderer.h">
       <Filter>Game\Components\Environment</Filter>
     </ClInclude>
-    <ClInclude Include="Sound.h" />
-    <ClInclude Include="SoundManager.h" />
-    <ClInclude Include="TutorialScene.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SceneManager.inl">

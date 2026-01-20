@@ -32,9 +32,7 @@ enum class TextureTag : uint8_t
 	UIFrostNoise = 23,
 	EffectLv1 = 24,
 	GlassShard = 25,
-    TutorialLoad = 26,
-    TutorialTarget = 27,
-    Count
+    Count = 26
 };
 
 class TextureManager

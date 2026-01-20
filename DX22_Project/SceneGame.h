@@ -39,7 +39,6 @@ private:
 	//ÉMÉ~ÉbÉN	
 	void CreateGlassObjectSpawner();
 	void CreateWarp();
-	void CreateTutorial();
 
 	void CreateStageFromCSV(const std::string& filename);
 	PrefabId GetPrefabIdFromString(const std::string& rawname);
