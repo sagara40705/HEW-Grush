@@ -9,6 +9,8 @@
 #include "LineManager.h"
 #include "ResultGaugeUI.h"
 #include "ResultRankUI.h"
+#include "SceneStageSelect.h"
+
 
 constexpr Vector2 kNumberUVScale = { 0.1f, 1.0f };
 void Result::Load()
@@ -74,6 +76,10 @@ void Result::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 
 void Result::Update()
 {
+	if (InputKeyboard::GetKeyDown(VK_SPACE))
+	{
+		SceneManager::ChangeScene<SceneStageSelect>();
+	}
 }
 
 void Result::Draw()
@@ -82,6 +88,7 @@ void Result::Draw()
 
 void Result::Unload()
 {
+	TextureManager::Clear();
 }
 
 void Result::TimerUIDeaw()

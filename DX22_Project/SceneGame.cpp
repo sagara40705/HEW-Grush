@@ -21,7 +21,8 @@ void SceneGame::Load()
 
 void SceneGame::Unload()
 {
-
+	TextureManager::Clear();
+	ModelManager::Clear();
 }
 
 void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
