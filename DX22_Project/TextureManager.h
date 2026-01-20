@@ -54,6 +54,15 @@ enum class TextureTag : uint8_t
     /*45*/Loading_Txt,
     /*46*/TasksUI,
     /*47*/TutorialLocation,
+    Frame,
+    Gauge,
+    ResultUI,
+    RANKS,
+    ResultTimer,
+    ResultNumber,
+    ResultTime,
+    tatu_Arubaita,
+    ResultHaikei,
     Count,
 };
 

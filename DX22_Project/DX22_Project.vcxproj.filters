@@ -88,6 +88,12 @@
     <Filter Include="Game\Components\Gimmick">
       <UniqueIdentifier>{44d1c6ce-c9cd-4aa6-8a74-78f91fd44392}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Game\Components\Result">
+      <UniqueIdentifier>{ee38e0d9-221e-48df-a0d8-541d8e3e0931}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Components\StageSelect">
+      <UniqueIdentifier>{8b8e778e-922c-4f0b-b5c6-1b1df669a220}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DirectX.cpp">
@@ -348,6 +354,28 @@
       <Filter>Game\Components\Player</Filter>
     </ClCompile>
     <ClCompile Include="LoadingCharacterAnimation.cpp" />
+    <ClCompile Include="TutorialManager.cpp" />
+    <ClCompile Include="SceneResult.cpp">
+      <Filter>Game\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Users\sgr12\OneDrive\デスクトップ\sss\SceneStageSelect.cpp">
+      <Filter>Game\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="ResultGaugeUI.cpp">
+      <Filter>Game\Components\Result</Filter>
+    </ClCompile>
+    <ClCompile Include="ResultRankUI.cpp">
+      <Filter>Game\Components\Result</Filter>
+    </ClCompile>
+    <ClCompile Include="ResultTimerUI.cpp">
+      <Filter>Game\Components\Result</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Users\sgr12\OneDrive\デスクトップ\sss\StageMap.cpp">
+      <Filter>Game\Components\StageSelect</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\Users\sgr12\OneDrive\デスクトップ\sss\SelectPlayerControl.cpp">
+      <Filter>Game\Components\StageSelect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -611,6 +639,31 @@
       <Filter>Game\Components\Environment</Filter>
     </ClInclude>
     <ClInclude Include="LoadingCharacterAnimation.h" />
+    <ClInclude Include="TutorialManager.h" />
+    <ClInclude Include="SceneResult.h">
+      <Filter>Game\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Users\sgr12\OneDrive\デスクトップ\sss\SceneStageSelect.h">
+      <Filter>Game\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="ResultGaugeUI.h">
+      <Filter>Game\Components\Result</Filter>
+    </ClInclude>
+    <ClInclude Include="ResultRankUI.h">
+      <Filter>Game\Components\Result</Filter>
+    </ClInclude>
+    <ClInclude Include="ResultTimerUI.h">
+      <Filter>Game\Components\Result</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Users\sgr12\OneDrive\デスクトップ\sss\StagePoint.h">
+      <Filter>Game\Components\StageSelect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Users\sgr12\OneDrive\デスクトップ\sss\StageMap.h">
+      <Filter>Game\Components\StageSelect</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\Users\sgr12\OneDrive\デスクトップ\sss\SelectPlayerControl.h">
+      <Filter>Game\Components\StageSelect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="SceneManager.inl">

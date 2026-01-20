@@ -53,6 +53,15 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     /*45*/"Assets/Texture/Load_Txt.png",
     /*46*/"Assets/Texture/TasksUI.png",
     /*47*/"Assets/Texture/TutorialLocation.png",
+    "Assets/Texture/UIFrame.png",
+    "Assets/Texture/UIGauge.png",
+    "Assets/Texture/Result.png",
+    "Assets/Texture/result_S.png",
+    "Assets/Texture/Timer_countr.png",
+    "Assets/Texture/time_count_ss.png",
+    "Assets/Texture/time.png",
+    "Assets/Texture/tatu_arubaita-.png",
+    "Assets/Texture/bg_fn.png",
 };
 
 // 配列のデフォルトパスを使用して登録

@@ -4,6 +4,7 @@
 #include "SceneGame.h"  
 #include "SceneTitle.h"// 最初のシーン
 #include "SceneSample.h"// 最初のシーン
+#include "SceneResult.h"
 #include "LoadingScene.h"
 #include <memory>
 
@@ -13,7 +14,7 @@ void Game::Init()
 
     SceneManager::Initialize();
 
-	SceneManager::ChangeScene<SceneTitle>();
+	SceneManager::ChangeScene<Result>();
 }
 
 void Game::Uninit()
