@@ -88,6 +88,21 @@ void GlassGaugeManager::BrakeGlass(GlassGrade grade)
 	{
 		GradeUp();
 	}
+
+	if (isTutorial_ && warkingTask_)
+	{
+		switch (grade)
+		{
+		case GlassGrade::Grade_1:	endTask_02_ = true;
+			break;
+		case GlassGrade::Grade_2:	endTask_04_ = true;
+			break;
+		case GlassGrade::Grade_3:
+			break;
+		default:
+			break;
+		}
+	}
 }
 
 void GlassGaugeManager::GradeUp()
@@ -140,7 +155,9 @@ HammerGrade GlassGaugeManager::GetHammerGrade()
 	return hammer_->GetGrade();
 }
 
+
 #ifdef _DEBUG
+
 void GlassGaugeManager::DebugCommand()
 {
 	if (InputKeyboard::GetKeyDown('B'))
