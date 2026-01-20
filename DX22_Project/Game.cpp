@@ -16,7 +16,7 @@ void Game::Init()
 
     // Å‰‚ÌƒV[ƒ“‚ğ—\–ñ
     //SceneManager::ChangeScene<SceneSample>();
-    SceneManager::ChangeSceneAsync <SceneGame> ();
+    SceneManager::ChangeSceneAsync <Result> ();
     
 }
 

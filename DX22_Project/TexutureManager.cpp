@@ -39,7 +39,7 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     "Assets/Texture/time_count_ss.png",
     "Assets/Texture/time.png",
     "Assets/Texture/tatu_arubaita-.png",
-     "Assets/Texture/bg_5.6.png",
+     "Assets/Texture/bg_fn.png",
 };
 
 // 配列のデフォルトパスを使用して登録

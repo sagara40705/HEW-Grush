@@ -13,12 +13,12 @@ float point = 50.f;
 void ResultGaugeUI::Start()
 {
 	//Update(GaugePoint);
-	constexpr Vector2 kMinutePos[ToIndex(TimerDigits::Count)] = { {1200.f, 240.f}, {700.f, 300.f} };
+	constexpr Vector2 kMinutePos[ToIndex(TimerDigits::Count)] = { {1300.f, 240.f}, {800.f, 300.f} };
 	//=======
 	//UpdateGaugePoint(GaugePoint);
 
 	constexpr Vector2 kColonPos = { 1165.f,160.f };
-	constexpr Vector2 kSecondPos[ToIndex(TimerDigits::Count)] = { {1275.f, 240.f}, {1300.f, 140.f} };
+	constexpr Vector2 kSecondPos[ToIndex(TimerDigits::Count)] = { {1375.f, 240.f}, {1500.f, 140.f} };
 
 	Vector2 kNumGaugeberSize = { point, 40.f };
 	constexpr Vector2 kNumFrameberSize = { 300.f, 55.f };
