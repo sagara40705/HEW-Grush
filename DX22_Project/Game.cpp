@@ -13,20 +13,7 @@ void Game::Init()
 
     SceneManager::Initialize();
 
-    // ★修正: LoadingScene を直接作成してロード
-    auto loadingScene = std::make_unique<LoadingScene>();
-
-    // 次のシーン（SceneGame）を作成
-    auto gameScene = std::make_unique<SceneGame>();
-
-    // LoadingScene に次のシーンを設定
-    loadingScene->SetNextScene(std::move(gameScene));
-
-    // LoadingScene を手動でロード
-    loadingScene->RootLoad();
-
-    // SceneManager に登録（ChangeSceneAlreadyLoaded を使用）
-    SceneManager::ChangeSceneAlreadyLoaded(std::move(loadingScene));
+	SceneManager::ChangeSceneAsync<SceneGame>();
 }
 
 void Game::Uninit()
