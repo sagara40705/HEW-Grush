@@ -347,6 +347,9 @@
     <ClCompile Include="PlayerState.cpp">
       <Filter>Game\Components\Player</Filter>
     </ClCompile>
+    <ClCompile Include="OptionUIController.cpp">
+      <Filter>Engine\Rendering\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -608,6 +611,9 @@
     </ClInclude>
     <ClInclude Include="UIFrostRenderer.h">
       <Filter>Game\Components\Environment</Filter>
+    </ClInclude>
+    <ClInclude Include="OptionUIController.h">
+      <Filter>Engine\Rendering\UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

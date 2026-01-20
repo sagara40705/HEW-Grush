@@ -33,7 +33,6 @@ enum class TextureTag : uint8_t
 	EffectLv1 = 24,
 	GlassShard = 25,
     option_Back,//オプションの背景26
-    option_icon,//オプションのアイコン27
     option_Font1,//仕事に戻る28
     option_Font1_OK,//仕事に戻る選択29
     option_Font2,//やり直す30
@@ -44,9 +43,9 @@ enum class TextureTag : uint8_t
     option_Font4_OK,//操作方法選択35
     option_Font5,//タイトルに戻る36
     option_Font5_OK,//タイトルに戻る選択37
-    option_Font1_Back,
-    option_Font2_Back,
-    option_Font3_Back,
+    option_Font1_Back,//38
+    option_Font2_Back,//39
+    option_Font3_Back,//40
     Count
 };
 

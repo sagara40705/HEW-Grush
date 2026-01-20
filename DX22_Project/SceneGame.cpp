@@ -9,7 +9,8 @@
 #include "GlassObjectSpawner.h"
 #include "GameState.h"
 #include "DebugLog.h"
-
+#include <Defines.h>
+#include <OptionUIController.h>
 
 void SceneGame::Load()
 {
@@ -85,12 +86,19 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 
 	//オプションのロード
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Back); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_icon); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Back); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Back); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Back); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Back); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Back); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font1); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font1_Back); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font1_OK); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font2); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font2_Back); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font2_OK); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font3); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font3_Back); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font3_OK); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font4); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font4_OK); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font5); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font5_OK); });
 
 	// プレイハブ設定
 	outTasks.emplace_back([this] { RegisterAllPrefabs(); });
@@ -106,6 +114,12 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { CreateTimerUI(); });
 	outTasks.emplace_back([this] { CreateScoreUI(); });
 	outTasks.emplace_back([this] { CreateActionUI(); });
+
+	//=================================
+	//オプションのUI
+	//=================================
+	outTasks.emplace_back([this] { CreateOptionUI(); });
+
 
 	//ギミック
 	outTasks.emplace_back([this] { CreateGlassObjectSpawner(); });
@@ -552,6 +566,23 @@ void SceneGame::CreateActionUI()
 	GameObject& actionManager = w.CreateGameObject();
 	actionManager.SetTag(Tag::ActionUI);
 	actionManager.AddComponent<ActionUI>();
+}
+
+void SceneGame::CreateOptionUI()
+{
+	World& w = GetWorld();
+
+	// UI Root（非表示スタート）
+	GameObject& optionRoot = w.CreateGameObject();
+	optionRoot.SetActive(false);
+
+	// ここから先のUiSpriteRendererは全部 optionRoot.CreateChild() で作る
+	// （あなたが直した構造のままでOK）
+
+	// Controller（常にActive）
+	GameObject& optionCtrl = w.CreateGameObject();
+	auto& ctrl = optionCtrl.AddComponent<OptionUIController>();
+	ctrl.SetOptionRoot(&optionRoot);
 }
 
 void SceneGame::CreateGlassObjectSpawner()

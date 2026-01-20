@@ -3,6 +3,7 @@
 #include "Canvas.h"
 #include "DirectX.h"
 #include <cassert>
+#include "GameObject.h"
 using namespace DirectX;
 
 void UiSpriteRenderer::Start()
@@ -26,6 +27,9 @@ void UiSpriteRenderer::SetTexture(TextureTag tag)
 
 void UiSpriteRenderer::Render()
 { 
+    // 追加：非アクティブなら描画しない（これが無いと SetActive(false) が効かない）
+    if (!gameObject) return;
+    if (!gameObject->IsActiveInHierarchy()) return;
     //assert(canvas && texture && "UiSpriteRenderer::Render()でnullptr");
     // 0) ガード
     if (!IsVisible()) return;
