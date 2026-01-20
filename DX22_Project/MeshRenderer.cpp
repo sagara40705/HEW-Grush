@@ -141,7 +141,6 @@ void MeshRenderer::ModelRender()
     if (!model) return;
 
     //=== ① VS_ANIME のときだけボーン行列を設定 ===
-    /*
     if (vsKind == ShaderList::VS_ANIME)
     {
         for (unsigned int i = 0; i < model->GetMeshNum(); ++i)
@@ -165,7 +164,6 @@ void MeshRenderer::ModelRender()
             ShaderList::SetBones(bones);
         }
     }
-    */
 
     //=== VS / PS を取得 ===
     VertexShader* vs = ShaderList::GetVS(vsKind);
@@ -178,7 +176,6 @@ void MeshRenderer::ModelRender()
     model->SetPixelShader(ps);
     
     // マテリアル別にメッシュを表示 
-    /*
     for (unsigned int i = 0; i < model->GetMeshNum(); ++i) {
         // モデルのメッシュを取得 
         const Model::Mesh* mesh = model->GetMesh(i);
@@ -190,44 +187,5 @@ void MeshRenderer::ModelRender()
         // モデルの描画 
         model->Draw(i);
     }
-    */
-
-    for (unsigned int i = 0; i < model->GetMeshNum(); ++i)
-    {
-        const Model::Mesh* mesh = model->GetMesh(i);
-        if (!mesh) continue;
-
-        // ★描画直前に、そのメッシュの bones を入れる
-        if (vsKind == ShaderList::VS_ANIME)
-        {
-            DirectX::XMFLOAT4X4 bones[200];
-
-            // 念のため全て identity（未使用領域のゴミ混入対策）
-            for (int k = 0; k < 200; ++k)
-            {
-                DirectX::XMStoreFloat4x4(&bones[k], DirectX::XMMatrixIdentity());
-            }
-
-            const int boneCount = (int)mesh->bones.size();
-            const int writeCount = (boneCount > 200) ? 200 : boneCount;
-
-            for (int boneIdx = 0; boneIdx < writeCount; ++boneIdx)
-            {
-                const Model::Bone& bone = mesh->bones[boneIdx];
-                DirectX::XMStoreFloat4x4(
-                    &bones[boneIdx],
-                    DirectX::XMMatrixTranspose(
-                        bone.invOffset * model->GetBoneMatrix(bone.nodeIndex)
-                    )
-                );
-            }
-
-            ShaderList::SetBones(bones);
-        }
-
-        const Model::Material* mat = model->GetMaterial(mesh->materialID);
-        if (mat) ShaderList::SetMaterial(*mat);
-
-        model->Draw(i);
-    }
+  
 }
