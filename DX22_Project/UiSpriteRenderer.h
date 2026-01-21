@@ -34,6 +34,7 @@ public:
     void Start() override;
     void OnDestroy() override;
 
+	Vector2 GetOffset() { return offset; }
     Vector2& GetSize() { return size; }
 
     // Renderer::Render ‚ÌŽÀ‘•

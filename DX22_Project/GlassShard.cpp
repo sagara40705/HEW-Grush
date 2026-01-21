@@ -83,8 +83,11 @@ void GlassShard::SetGlassGrade(GlassGrade g)
 {
 	grade_ = g;
 
-	constexpr Vector3 kSize[ToIndex(GlassGrade::Count)] = {{1.0f, 1.0f, 1.0f},{1.5f, 1.5f, 1.5f},{2.0f, 2.0f, 2.0f}};
-	tf_->SetScale(kSize[ToIndex(grade_)]);
+}
+
+void GlassShard::SetGlassScale(float s)
+{
+    tf_->SetScale(Vector3(s, s, s));
 }
 
 void GlassShard::SetShardParamVS()
@@ -100,9 +103,9 @@ void GlassShard::SetShardParamVS()
 void GlassShard::SetGlassParamPS()
 {
     DirectX::XMFLOAT4 Tint[ToIndex(GlassGrade::Count)] = {
-       {0.2f, 0.5f, 0.7f, 0.7f},
-       {0.2f, 0.7f, 0.4f, 0.7f},
-       {0.6f, 0.2f, 0.2f, 0.7f}
+       {0.2f, 0.5f, 0.9f, 0.7f},
+       {0.2f, 0.9f, 0.4f, 0.7f},
+       {0.9f, 0.2f, 0.2f, 0.7f}
     };
 
     ShaderList::SetGlassParam(Tint[ToIndex(grade_)], 5.0f, 3.0f, 1.0f, 1.0f);

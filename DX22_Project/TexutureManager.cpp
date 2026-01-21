@@ -5,32 +5,69 @@ std::array<std::unique_ptr<Texture>, static_cast<size_t>(TextureTag::Count)> Tex
 
 const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)] =
 {
-    "Assets/Texture/Title_BackGround.png",  //0
-    "Assets/Texture/UIGauge.png",   //1
-    "Assets/Texture/Star.png",  //2
-    "Assets/Texture/GroundTile.png",    //3
-    "Assets/Texture/stage.png",    //4
-    "Assets/Texture/SkyDome.png",    //5
-    "Assets/Texture/lv1_0_b.png",    //6
-    "Assets/Texture/lv1_max_b.png",    //7
-    "Assets/Texture/kirakira.png",    //8
-    "Assets/Texture/ato_kg.png",    //9
-    "Assets/Texture/count_font_ss.png",    //10
-    "Assets/Texture/time_colon.png",    //11
-    "Assets/Texture/time_count_ss.png",    //12
-    "Assets/Texture/UI_rotation_color.png",    //13
-    "Assets/Texture/UI_rotation.png",    //14
-    "Assets/Texture/UI_rotation_moji_color.png",    //15
-    "Assets/Texture/UI_rotation_moji.png",    //16
-    "Assets/Texture/UI_rotation_flash.png",    //17
-    "Assets/Texture/UI_rotation_flash_front.png",    //18
-    "Assets/Texture/UI_dush_color.png",    //19
-    "Assets/Texture/UI_dush.png",    //20
-    "Assets/Texture/UI_dush_moji_color.png",    //21
-    "Assets/Texture/UI_dush_moji.png",    //22
-    "Assets/Texture/UIFrostNoise08B.png",    //23
-    "Assets/Texture/effect_lv1_at_long.png",    //24
-	"Assets/Texture/Glass_Shard.png",    //25
+    /*00*/"Assets/Texture/Title_BackGround.png",
+    /*01*/"Assets/Texture/UIGauge.png",
+    /*02*/"Assets/Texture/Star.png",
+    /*03*/"Assets/Texture/GroundTile.png",
+    /*04*/"Assets/Texture/stage.png",
+    /*05*/"Assets/Texture/SkyDome.png",
+    /*06*/"Assets/Texture/lv1_0_b.png",
+    /*07*/"Assets/Texture/lv1_max_b.png",
+    /*08*/"Assets/Texture/lv1_0_g.png",
+    /*09*/"Assets/Texture/kirakira.png",
+    /*10*/"Assets/Texture/ato_kg.png",
+    /*11*/"Assets/Texture/count_font_ss.png",
+    /*12*/"Assets/Texture/time_colon.png",
+    /*13*/"Assets/Texture/time_count_ss.png",
+    /*14*/"Assets/Texture/UI_rotation_color.png",
+    /*15*/"Assets/Texture/UI_rotation.png",
+    /*16*/"Assets/Texture/UI_rotation_moji_color.png",
+    /*17*/"Assets/Texture/UI_rotation_moji.png",
+    /*18*/"Assets/Texture/UI_rotation_flash.png",
+    /*19*/"Assets/Texture/UI_rotation_flash_front.png",
+    /*20*/"Assets/Texture/UI_dush_color.png",
+    /*21*/"Assets/Texture/UI_dush.png",
+    /*22*/"Assets/Texture/UI_dush_moji_color.png",
+    /*23*/"Assets/Texture/UI_dush_moji.png",
+    /*24*/"Assets/Texture/UI_dush_flash.png",
+    /*25*/"Assets/Texture/UI_dush_flash_front.png",
+    /*26*/"Assets/Texture/UIFrostNoise08B.png",
+    /*27*/"Assets/Texture/effect_lv1_at_long.png",
+    /*28*/"Assets/Texture/Glass_Shard.png",
+    /*29*/"Assets/Texture/StageMap.png",
+    /*30*/"Assets/Texture/option/UI_sigotonimodoru.png",
+    /*31*/"Assets/Texture/option/UI_sigotonimodoru_waku.png",
+    /*32*/"Assets/Texture/option/UI_sigotonimodoru_sentaku.png",
+    /*33*/"Assets/Texture/option/UI_sigotonimodoru_sentakuBreakID.png",
+    /*34*/"Assets/Texture/proto.png",
+    /*35*/"Assets/Texture/bg_2048_1024.png",
+    /*36*/"Assets/Texture/bg_4096_2048.png",
+    /*37*/"Assets/Texture/Titele/title_bg.png",
+    /*38*/"Assets/Texture/Titele/title_hakaisuru2.png",
+    /*39*/"Assets/Texture/Titele/fadein.png",
+    /*40*/"Assets/Texture/Titele/fadeinID.png",
+    /*41*/"Assets/Texture/Titele/title_Logo.png",
+    /*42*/"Assets/Texture/Titele/title_hakaisuru2.png",
+    /*43*/"Assets/Texture/fead_out_2_ss.png",
+    /*44*/"Assets/Texture/fead_in_2_ss.png",
+    /*45*/"Assets/Texture/load_backscreen.png",
+    /*46*/"Assets/Texture/Load_Txt.png",
+    /*47*/"Assets/Texture/TasksUI.png",
+    /*48*/"Assets/Texture/TutorialLocation.png",
+    /*49*/"Assets/Texture/UIFrame.png",
+    /*50*/"Assets/Texture/UIGauge.png",
+    /*51*/"Assets/Texture/Result.png",
+    /*52*/"Assets/Texture/result_S.png",
+    /*53*/"Assets/Texture/Timer_countr.png",
+    /*54*/"Assets/Texture/time_count_ss.png",
+    /*55*/"Assets/Texture/time.png",
+    /*56*/"Assets/Texture/tatu_arubaita-.png",
+    /*57*/"Assets/Texture/bg_fn.png",
+    /*58*/"Assets/Texture/GradeUpEffect.png",
+    /*59*/"Assets/Texture/GradeUpEffect.png",
+    /*60*/"Assets/Texture/GradeUpEffect.png",
+	/*61*/"Assets/Texture/StageSelect/PlayerIcon.png",
+	/*62*/"Assets/Texture/StageSelect/LoadCharacter.png",
 };
 
 // 配列のデフォルトパスを使用して登録

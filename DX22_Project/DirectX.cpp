@@ -277,6 +277,16 @@ void SetDepthTest(bool enable)
 	g_pContext->OMSetDepthStencilState(
 		g_pDepthStencilState[enable ? 0 : 1], 1);
 }
+
+void SetDepthTest(bool enable, bool writeEnable)
+{
+	ID3D11DepthStencilState* s =
+		(!enable) ? g_pDepthStencilState[1] :
+		(writeEnable ? g_pDepthStencilState[0] : g_pDepthStencilState[2]);
+
+	g_pContext->OMSetDepthStencilState(s, 1);
+}
+
 void SetBlendMode(BlendMode blend)
 {
 	if (blend < 0 || blend >= BLEND_MAX) return;

@@ -7,6 +7,7 @@ enum class ScoreDigits : std::uint8_t
 	One,
 	Ten,
 	Hundred,
+	Thousand,
 	Count
 };
 constexpr size_t ToIndex(ScoreDigits d) noexcept { return static_cast<size_t>(d); }
@@ -21,6 +22,7 @@ private:
 	UiSpriteRenderer* ui_[ToIndex(ScoreDigits::Count)]{};
 	UiSpriteRenderer* uiAtoKg_ = nullptr;
 public:
+	void Awake() override;
 	void Start() override;
 	void Update() override;
 	void OnDestroy() override;

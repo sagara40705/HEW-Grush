@@ -9,6 +9,10 @@
 #include "GlassObjectSpawner.h"
 #include "GameState.h"
 #include "DebugLog.h"
+#include "InputKeyboard.h"
+#include "SceneManager.h"
+#include "SceneStageSelect.h"
+#include "SceneResult.h"
 
 
 void SceneGame::Load()
@@ -21,7 +25,9 @@ void SceneGame::Load()
 
 void SceneGame::Unload()
 {
-
+	SceneManager::ReleaseFadeAnimations();
+	TextureManager::Clear();
+	ModelManager::Clear();
 }
 
 void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
@@ -44,6 +50,7 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Isu); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Kuukseizixyoukii); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Ningixyou); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::SagaraDoll); });
 
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Benti); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Aircon); });
@@ -52,10 +59,16 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Ufo); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Eiseii); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Star); });
 
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::ProtPlay); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer); });
+	//outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player2); });
+	//outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_1); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_2); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_3); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Fence); });
 
 	// テクスチャーロード
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Star); });
@@ -82,7 +95,8 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::UIFrostNoise); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::EffectLv1); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GlassShard); });
-
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::TasksUI); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::TutorialLocation); });
 
 	// プレイハブ設定
 	outTasks.emplace_back([this] { RegisterAllPrefabs(); });
@@ -101,9 +115,12 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 
 	//ギミック
 	outTasks.emplace_back([this] { CreateGlassObjectSpawner(); });
+	outTasks.emplace_back([this] { CreateTutorialWall(); });
 
 	//outTasks.emplace_back([this] { InitPlayerTex(); });
 	outTasks.emplace_back([this] { InitSkyDome(); });
+
+	outTasks.emplace_back([this] { SceneManager::CreateFadeAnimations(this); });
 
 
 	// 最後に Start を流す
@@ -111,26 +128,6 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 		{
 		GetWorld().Start();
 		});
-}
-
-void SceneGame::LoadModels()
-{
-	ModelManager::Load(ModelTag::Karubi);
-	ModelManager::Load(ModelTag::Swing);
-	ModelManager::Load(ModelTag::Benti);
-	ModelManager::Load(ModelTag::Ufo);
-	ModelManager::Load(ModelTag::ProtPlay);
-	ModelManager::Load(ModelTag::Player);
-}
-
-void SceneGame::LoadTextures()
-{
-	TextureManager::Load(TextureTag::Star);
-	TextureManager::Load(TextureTag::GaugeEffect);
-	TextureManager::Load(TextureTag::ScoreAtoKg);
-	TextureManager::Load(TextureTag::ScoreNumber);
-	TextureManager::Load(TextureTag::TimerColon);
-	TextureManager::Load(TextureTag::TimerNumber);
 }
 
 void SceneGame::CreateManagers()
@@ -164,7 +161,7 @@ void SceneGame::CreateCameraAndPlayer()
 	GameObject& player = w.CreateGameObject(Vector3(0.f, 2.f, 0.f), Vector3(0.f, 0.f, 0.f));
 	 
 	player.SetTag(Tag::Player);
-	player.AddComponent<MeshFilter>(ModelTag::Player);
+	player.AddComponent<MeshFilter>(ModelTag::Player2);
 	player.AddComponent<MeshRenderer>();
 	player.AddComponent<Rigidbody>();
 	player.AddComponent<BoxCollider>(false, Vector3(0.f, 0.5f, 0.f));
@@ -176,10 +173,12 @@ void SceneGame::CreateCameraAndPlayer()
 
 	GameObject& hummer = player.CreateChild(Hammer::BasePos, Hammer::BaseRota, Vector3(0.2f, 0.2f, 0.2f));
 	hummer.SetTag(Tag::Hammer);
-	hummer.AddComponent<MeshFilter>(ModelTag::Hammer);
+	hummer.AddComponent<MeshFilter>(ModelTag::Hammer_1);
 	hummer.AddComponent<MeshRenderer>();
 	hummer.AddComponent<BoxCollider>(false, Vector3(-3.f, 2.f, -3.f), Vector3(5.f, 5.f, 2.f));
 	hummer.AddComponent<Hammer>();
+	hummer.AddComponent<Animator>();
+	hummer.AddComponent<HammerEffects>();
 
 	GameObject& glassShardPool = w.CreateGameObject();
 	glassShardPool.AddComponent<GlassShardPool>();
@@ -190,11 +189,7 @@ void SceneGame::CreateStage()
 	StageId stage = GetCurrentStage();
 
 	// デバック用
-	stage = StageId::Stage1;
-
-	CreateStageFromCSV("CSV/StageData_Grade1.csv");
-	CreateStageFromCSV("CSV/StageData_Grade2.csv");
-	CreateStageFromCSV("CSV/StageData_Grade3.csv");
+	//stage = StageId::Stage1;
 
 	switch (stage)
 	{
@@ -202,7 +197,11 @@ void SceneGame::CreateStage()
 		break;
 	case StageId::Stage2:	CreateStage2();
 		break;
-	case StageId::Stage3:	CreateStage3();
+	case StageId::Stage3a:	CreateStage3();
+		break;
+	case StageId::Stage3b:	CreateStage3();
+		break;
+	case StageId::Stage3c:	CreateStage3();
 		break;
 	default:
 		assert(false && "不正なステージID");
@@ -252,201 +251,15 @@ void SceneGame::CreateStage1()
 	BoxCollider& bcL = wL.AddComponent<BoxCollider>(); bcL.layer = Layer::Ground;
 	wL.AddComponent<StageWall>();
 
+	CreateStageFromCSV("CSV/StageData_Grade1.csv");
+	CreateStageFromCSV("CSV/StageData_Grade2.csv");
+	CreateStageFromCSV("CSV/StageData_Grade3.csv");
+
+	//Prefab::Instantiate(w, PrefabId::StageWall, Vector3(5.f, -0.8f, -20.f), Vector3(0.f, 0.f, 0.f), Vector3(0.2f, 0.2f, 1.0f));
+	//Prefab::Instantiate(w, PrefabId::StageWall, Vector3(0.f, -0.8f, -20.f), Vector3(0.f, 0.f, 0.f), Vector3(0.3f, 0.3f, 1.0f));
+	//Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-5.f, -0.8f, -20.f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+
 	return;
-
-	////Grade_3
-	//Prefab::Instantiate(w, PrefabId::Ufo, Vector3(-5.f, -0.5f, 20.f), Vector3::zero(), Vector3::one());
-	//Prefab::Instantiate(w, PrefabId::Eisei, Vector3(5.f, -0.5f, 20.f), Vector3::zero(), Vector3::one());
-
-	//Grade_2
-	//Prefab::Instantiate(w, PrefabId::Benti, Vector3(-10.f, -0.9f, 10.f), Vector3::zero(), Vector3::one());
-	//Prefab::Instantiate(w, PrefabId::Aircon, Vector3(-5.f, -0.9f, 10.f), Vector3::zero(), Vector3::one());
-	//Prefab::Instantiate(w, PrefabId::Jihanki, Vector3(0.f, -0.9f, 10.f), Vector3::zero(), Vector3::one());
-	//Prefab::Instantiate(w, PrefabId::Reizouko, Vector3(5.f, -0.9f, 10.f), Vector3::zero(), Vector3::one());
-
-	//Grade_1
-	//Prefab::Instantiate(w, PrefabId::Swing, Vector3(-10.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());
-	//Prefab::Instantiate(w, PrefabId::Akican, Vector3(-8.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());
-	//Prefab::Instantiate(w, PrefabId::Desktop, Vector3(-6.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());
-	//Prefab::Instantiate(w, PrefabId::Gomibukuro, Vector3(-4.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());
-	//Prefab::Instantiate(w, PrefabId::Isu, Vector3(-2.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());
-	//Prefab::Instantiate(w, PrefabId::Kuukseizixyoukii, Vector3(-0.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());
-	//Prefab::Instantiate(w, PrefabId::Ningixyou, Vector3(2.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());
-	//Prefab::Instantiate(w, PrefabId::Swing, Vector3(-10.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());
-	//Prefab::Instantiate(w, PrefabId::Akican, Vector3(-8.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());
-	//Prefab::Instantiate(w, PrefabId::Desktop, Vector3(-6.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());
-	//Prefab::Instantiate(w, PrefabId::Gomibukuro, Vector3(-4.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());
-	//Prefab::Instantiate(w, PrefabId::Isu, Vector3(-2.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());
-	//Prefab::Instantiate(w, PrefabId::Kuukseizixyoukii, Vector3(-0.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());
-	//Prefab::Instantiate(w, PrefabId::Ningixyou, Vector3(2.f, -0.9f, 5.f), Vector3::zero(), Vector3::one());
-     
-	//プロト
-	//Prefab::Instantiate(w, PrefabId::ProtPlay, Vector3(-12, -0.9f, 8), Vector3::zero(), Vector3(0.8f, 0.8f, 0.8f));
-
-	// 座標用構造体（共通）
-
-	struct Pos { float x;  float y; float z;};
-	struct Rot { float x, y, z; };
-
-
-
-	//ステージ1
-
-	//--------------------------------------
-   // Grade 1
-   //--------------------------------------
-
-	const Pos positionsGrade_1[] = {
-    { -8.f,-0.9f,-11.f},{ 6.f,-0.6f,-12.f},{ 34.f,-0.6f, -9.f},{  5.f,-0.5f,-14.f},{ 11.f,-0.5f, -3.f},{-3.f,-1.2f, 13.f},{20.f,-1.1f, 39.f},
-	{-10.f,-1.1f , 7.f},{ 5.f,-0.9f, 11.f},{  1.f,-0.9f,-13.f},{  3.f,-1.1f, 14.f},{ 11.f,-1.1f, 14.f},{ 3.f,-1.2f,  7.f},{-7.f,-1.2f, -5.f},
-	{  8.f,-1.1f,  4.f},{ 6.f,-1.1f,  9.f},{  2.f,-0.9f, 11.f},{  8.f,-0.9f,  0.f},{  1.f,-1.1f,  9.f},{ 3.f,-1.1f, 12.f},{ 8.f,-1.2f,  9.f},
-	{-12.f,-1.2f,  4.f},{ 2.f,-1.1f,-13.f},{ -8.f,-1.1f,-13.f},{  7.f,-0.9f,  1.f},{ -2.f,-0.9f, 14.f},{-6.f,-1.1f,-27.f},{12.f,-1.1f, -5.f},
-	{ 10.f,-1.2f,  2.f},{ 1.f,-1.2f, 12.f},{-12.f,-1.1f,  9.f},{  6.f,-1.1f,  7.f},{  5.f,-0.9f, -8.f},{ 5.f,-0.9f,-26.f},{ 3.f,-1.1f,-14.f}, 
-	{ 14.f,-1.1f,  0.f},{-9.f,-1.2f,  5.f},{  2.f,-1.2f,  9.f},{ -4.f,-1.1f, -6.f},{ -8.f,-1.1f, -1.f},{14.f,-0.9f, -1.f},{ 7.f,-0.9f, -8.f}, 
-	{  6.f,-1.1f, 10.f},{-9.f,-1.1f,  4.f},{  6.f,-1.2f, -7.f},{ -6.f,-1.2f, 12.f},{-11.f,-1.1f,  4.f},{-6.f,-1.1f, 13.f},{ 7.f,-0.9f, -5.f},
-	{ -5.f,-0.9f, -7.f},{ 2.f,-1.1f,-15.f},{ 12.f,-1.1f, -4.f},{ -7.f,-1.2f, -2.f},{-30.f,-1.2f,-25.f},{-6.f,-1.1f,  6.f},{-3.f,-1.1f,-10.f},
-	{  0.f,-0.9f,-11.f},{-2.f,-0.9f,  6.f},{  7.f,-1.1f,-11.f},{-11.f,-1.1f, -7.f}
-    };
-
-	
-	const Rot rotationsGrade_1[] = {
-	{ 0.f,0.f,0.f},{-90.f,0.f,0.f},{90.f,0.f, 0.f},{0.f,0.f,-90.f},{ 0.f,0.f,90.f},{-15.f,0.f,-15.f},{30.f,0.f,30.f},{-30.f,0.f,-30.f},
-	{45.f,0.f,0.f},{-45.f,0.f,0.f},{ 0.f,0.f,45.f},{0.f,0.f,-45.f},{15.f,0.f,15.f},{-15.f,0.f,-15.f},{30.f,0.f,30.f},{-30.f,0.f,-30.f},
-	{45.f,0.f,0.f},{-45.f,0.f,0.f},{ 0.f,0.f,45.f},{0.f,0.f,-45.f},{15.f,0.f,15.f},{-15.f,0.f,-15.f},{30.f,0.f,30.f},{-30.f,0.f,-30.f},
-	{45.f,0.f,0.f},{-45.f,0.f,0.f},{ 0.f,0.f,45.f},{0.f,0.f,-45.f},{15.f,0.f,15.f},{-15.f,0.f,-15.f},{30.f,0.f,30.f},{-30.f,0.f,-30.f},
-	{45.f,0.f,0.f},{-45.f,0.f,0.f},{ 0.f,0.f,45.f},{0.f,0.f,-45.f},{15.f,0.f,15.f},{-15.f,0.f,-15.f},{30.f,0.f,30.f},{-30.f,0.f,-30.f},
-	{45.f,0.f,0.f},{-45.f,0.f,0.f},{ 0.f,0.f,45.f},{0.f,0.f,-45.f},{15.f,0.f,15.f},{-15.f,0.f,-15.f},{30.f,0.f,30.f},{-30.f,0.f,-30.f},
-	{45.f,0.f,0.f},{-45.f,0.f,0.f},{ 0.f,0.f,45.f},{0.f,0.f,-45.f},{15.f,0.f,15.f},{-15.f,0.f,-15.f},{30.f,0.f,30.f},{-30.f,0.f,-30.f},
-	{45.f,0.f,0.f},{-45.f,0.f,0.f},{ 0.f,0.f,45.f},{0.f,0.f,-45.f}
-	};
-
-
-	//--------------------------------------
-	// Grade 2
-	//--------------------------------------
-
-	const Pos positionsGrade_2[] = {
-
-	{ -8.f,-0.9f, 17.f},{-21.f,-0.4f,  0.f},{-27.f,-0.4f,  8.f},{ -9.f,-0.4f,-21.f},{-17.f,-0.4f,-21.f},{ 12.f,-1.0f,-16.f},{-27.f,-1.0f, 15.f},
-	{  7.f,-0.9f,-15.f},{-10.f,-0.5f,-25.f},{ 14.f,-0.5f, -7.f},{  0.f,-0.5f,-16.f},{ 11.f,-0.5f,  9.f},{ 18.f,-1.4f, -6.f},{ 15.f,-1.4f,-13.f},
-	{ -6.f,-0.9f,-33.f},{ 16.f,-0.5f,  3.f},{-15.f,-0.5f,-15.f},{  6.f,-0.5f, 18.f},{-22.f,-0.5f,-11.f},{ 10.f,-1.4f,-18.f},{ 21.f,-1.4f,-18.f},
-	{ 15.f,-0.9f,-11.f},{ -5.f,-0.5f,-18.f},{ 25.f,-0.5f,  3.f},{  6.f,-0.5f, 22.f},{ -6.f,-0.5f,-24.f},{  8.f,-1.4f, 22.f},{ 19.f,-1.4f,  9.f},
-	{ 33.f,-0.9f,-17.f},{-25.f,-0.5f,  8.f},{-12.f,-0.5f, 26.f},{-29.f,-0.5f,-16.f},{  3.f,-0.5f, 25.f},{-16.f,-1.4f,  6.f},{ 21.f,-1.4f, 15.f},
-	{-12.f,-0.9f,-13.f},{-14.f,-0.5f,-18.f},{-25.f,-0.5f, -8.f},{-28.f,-0.5f, -1.f},{-27.f,-0.5f,  2.f},{ 13.f,-1.4f, -9.f},{-20.f,-1.4f,-10.f},
-	{-20.f,-0.9f, -2.f},{ 24.f,-0.5f, -7.f},{  1.f,-0.5f,-21.f},{-21.f,-0.5f, 18.f},{-20.f,-0.5f,  9.f},{ 14.f,-1.4f,-22.f},{-17.f,-1.4f, 18.f},
-	{-10.f,-0.9f, 16.f}
-	};
-
-	const Rot rotationsGrade_2[] = {
-	{ 0.f,0.f,0.f}, {90.f,0.f,0.f}, {  0.f, 0.f, 90.f}, {90.f,0.f,45.f}, {  45.f, 0.f, 90.f},{  0.f,0.f,10.f}, {  0.f,0.f,-10.f},
-	{ 0.f,0.f,0.f}, {90.f,0.f,0.f}, {  0.f, 0.f, 90.f}, {90.f,0.f,45.f}, {  45.f, 0.f, 90.f},{  0.f,0.f,10.f}, {  0.f,0.f,-10.f},
-	{ 0.f,0.f,0.f}, {90.f,0.f,0.f}, {  0.f, 0.f, 90.f}, {90.f,0.f,45.f}, {  45.f, 0.f, 90.f},{  0.f,0.f,10.f}, {  0.f,0.f,-10.f},
-	{ 0.f,0.f,0.f}, {90.f,0.f,0.f}, {  0.f, 0.f, 90.f}, {90.f,0.f,45.f}, {  45.f, 0.f, 90.f},{  0.f,0.f,10.f}, {  0.f,0.f,-10.f},
-	{ 0.f,0.f,0.f}, {90.f,0.f,0.f}, {  0.f, 0.f, 90.f}, {90.f,0.f,45.f}, {  45.f, 0.f, 90.f},{  0.f,0.f,10.f}, {  0.f,0.f,-10.f},
-	{ 0.f,0.f,0.f}, {90.f,0.f,0.f}, {  0.f, 0.f, 90.f}, {90.f,0.f,45.f}, {  45.f, 0.f, 90.f},{  0.f,0.f,10.f}, {  0.f,0.f,-10.f},
-	{ 0.f,0.f,0.f}, {90.f,0.f,0.f}, {  0.f, 0.f, 90.f}, {90.f,0.f,45.f}, {  45.f, 0.f, 90.f},{  0.f,0.f,10.f}, {  0.f,0.f,-10.f},
-	{ 0.f,0.f,0.f}
-	};
-
-	//--------------------------------------
-	// Grade 3
-	//--------------------------------------
-
-	const Pos positionsGrade_3[] = {
-	{-29.f, 2.f, -25.f}, { 28.f, 2.f, -23.f}, { 12.f, -0.9f, -32.f}, { 17.f ,3.f, 20.f}, { -3.f, 3.f,  36.f},
-	{-33.f, 1.f, -38.f}, { 22.f, 1.f, -21.f}, { 19.f, -0.9f, -30.f}, {-28.f, 2.f, 17.f}, {-33.f, 2.f,  -5.f},
-	{ 30.f, 1.f,  11.f}, {  9.f, 1.f,  -8.f}, { 27.f, -0.9f,  17.f}, { -8.f, 2.f, 37.f}, { 15.f, 2.f,  33.f},
-	{ 21.f, 1.f,  29.f}, {-31.f, 1.f,   9.f}, {  1.f, -0.9f,  27.f}, { 31.f, 2.f, 21.f}, {-25.f, 2.f, -21.f},
-	{ 28.f, 1.f, -13.f}, { 30.f, 1.f, -18.f}, { 36.f, -0.9f,  -2.f}, {-15.f, 2.f, 34.f}, { 23.f, 2.f,  21.f},
-	{ 17.f, 1.f,  15.f}, {  6.f, 1.f,  27.f}, {-32.f, -0.9f, -10.f}, { 23.f, 2.f, 24.f}, { 29.f, 2.f,   6.f},
-	{ -5.f, 1.f, -36.f}, { 32.f, 1.f,   3.f},{ -17.f, -0.9f,  25.f}, { 33.f, 2.f, 11.f}, {-26.f, 2.f, -17.f}
-	};
-
-	const Rot rotationsGrade_3[] = {
-	{125.f,  0.f, 0.f}, {0.f,  0.f, 125.f}, {0.f,  0.f, 0.f}, {0.f,  0.f, 150.f}, {150.f,  0.f, 0.f},
-    {125.f,  0.f, 0.f}, {0.f,  0.f, 125.f}, {0.f,  0.f, 0.f}, {0.f,  0.f, 150.f}, {150.f,  0.f, 0.f},
-	{125.f,  0.f, 0.f}, {0.f,  0.f, 125.f}, {0.f,  0.f, 0.f}, {0.f,  0.f, 150.f}, {150.f,  0.f, 0.f},
-	{125.f,  0.f, 0.f}, {0.f,  0.f, 125.f}, {0.f,  0.f, 0.f}, {0.f,  0.f, 150.f}, {150.f,  0.f, 0.f},
-	{125.f,  0.f, 0.f}, {0.f,  0.f, 125.f}, {0.f,  0.f, 0.f}, {0.f,  0.f, 150.f}, {150.f,  0.f, 0.f},
-	{125.f,  0.f, 0.f}, {0.f,  0.f, 125.f}, {0.f,  0.f, 0.f}, {0.f,  0.f, 150.f}, {150.f,  0.f, 0.f},
-	{125.f,  0.f, 0.f}, { 0.f, 0.f, 125.f}, {0.f,  0.f, 0.f}, {0.f,  0.f, 150.f}, {150.f,  0.f, 0.f}
-	};
-
-PrefabId prefabOrder1[] = {
-		PrefabId::Swing,
-		PrefabId::Akican,
-		PrefabId::Desktop,
-		PrefabId::Gomibukuro,
-		PrefabId::Isu,
-		PrefabId::Kuukseizixyoukii,
-		PrefabId::Ningixyou
-};
-
-int prefabCount1 = sizeof(prefabOrder1) / sizeof(prefabOrder1[0]);
-int posCount1 = sizeof(positionsGrade_1) / sizeof(positionsGrade_1[0]);
-int rotCount1 = sizeof(rotationsGrade_1) / sizeof(rotationsGrade_1[0]);
-
-for (int i = 0; i < posCount1; i++) {
-	PrefabId id = prefabOrder1[i % prefabCount1];
-	Rot rot = rotationsGrade_1[i % rotCount1];
-	Prefab::Instantiate(
-		w,
-		id,
-		Vector3(positionsGrade_1[i].x, positionsGrade_1[i].y, positionsGrade_1[i].z),
-		Vector3(rot.x, rot.y, rot.z),
-		Vector3::one()
-	);
-}
-
-	//--------------------------------------
-	// Grade 2
-	//--------------------------------------
-	PrefabId prefabOrder2[] = {
-		PrefabId::Benti,
-		PrefabId::Aircon,
-		PrefabId::Jihanki,
-		PrefabId::Reizouko,
-	};
-
-	int prefabCount2 = sizeof(prefabOrder2) / sizeof(prefabOrder2[0]);
-	int posCount2 = sizeof(positionsGrade_2) / sizeof(positionsGrade_2[0]);
-	int rotCount2 = sizeof(rotationsGrade_2) / sizeof(rotationsGrade_2[0]);
-
-	for (int i = 0; i < posCount2; i++) {
-		PrefabId id = prefabOrder2[i % prefabCount2];
-		Rot rot = rotationsGrade_2[i % rotCount2];
-		Prefab::Instantiate(
-			w,
-			id,
-			Vector3(positionsGrade_2[i].x, positionsGrade_2[i].y, positionsGrade_2[i].z),
-			Vector3(rot.x, rot.y, rot.z),
-			Vector3::one()
-		);
-	}
-
-	//--------------------------------------
-	// Grade 3
-	//--------------------------------------
-	PrefabId prefabOrder3[] = {
-		PrefabId::Ufo,
-		PrefabId::Eisei,
-	};
-
-	int prefabCount3 = sizeof(prefabOrder3) / sizeof(prefabOrder3[0]);
-	int posCount3 = sizeof(positionsGrade_3) / sizeof(positionsGrade_3[0]);
-	int rotCount3 = sizeof(rotationsGrade_3) / sizeof(rotationsGrade_3[0]);
-
-	for (int i = 0; i < posCount3; i++) {
-		PrefabId id = prefabOrder3[i % prefabCount3];
-		Rot rot = rotationsGrade_3[i % rotCount3];
-		Prefab::Instantiate(
-			w,
-			id,
-			Vector3(positionsGrade_3[i].x, positionsGrade_3[i].y, positionsGrade_3[i].z),
-			Vector3(rot.x, rot.y, rot.z),
-			Vector3::one()
-		);
-	}
 }
 
 void SceneGame::CreateStage2()
@@ -542,6 +355,18 @@ void SceneGame::CreateActionUI()
 	actionManager.AddComponent<ActionUI>();
 }
 
+void SceneGame::CreateTutorialWall()
+{
+	if (IsEndTutorial()) return;
+
+	World& w = GetWorld();
+
+	GameObject& wall_01 = w.CreateGameObject(Vector3(0.f, 0.f, 5.f), Vector3::zero(), Vector3(5.f, 1.f, 1.f));
+	wall_01.AddComponent<BoxCollider>();
+	wall_01.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube);
+	wall_01.AddComponent<MeshRenderer>();
+}
+
 void SceneGame::CreateGlassObjectSpawner()
 {
 	World& w = GetWorld();
@@ -549,8 +374,12 @@ void SceneGame::CreateGlassObjectSpawner()
 	GameObject& glassObjectSpawner = w.CreateGameObject();
 	//glassObjectSpawner.AddComponent<GlassObjectSpawner>();
 
-	GameObject& Frost = w.CreateGameObject();
-	//Frost.AddComponent<Sprite3DRenderer>(TextureTag::UIFrostNoise, Vector2::zero(), Vector2(12.8f, 7.2f));
+	GameObject& Frost = w.CreateGameObject(Vector3(0.f, -0.9f, 0.f), Vector3(90.f, 0.f, 0.f));
+	Frost.AddComponent<Sprite3DRenderer>(TextureTag::UIFrostNoise, Vector2::zero(), Vector2(12.8f, 7.2f));
+
+	if (IsEndTutorial()) return;
+	GameObject& tutorial = w.CreateGameObject();
+	tutorial.AddComponent<TutorialManager>();
 }
 
 void SceneGame::CreateWarp()
@@ -569,66 +398,6 @@ void SceneGame::CreateWarp()
 	BoxCollider& bcB = warpB.AddComponent<BoxCollider>(true); bcB.isTrigger = true;
 	warpB.AddComponent<WarpPoint>(Point::BtoA);
 
-}
-
-void SceneGame::InitPlayerTex()
-{
-	// プレイヤーモデル取得
-	Model * model = ModelManager::Get(ModelTag::Player);
-	if (!model)
-	{
-		return; // 読み込み失敗などの保険
-	}
-
-	// 体（lambert1）
-	Texture* texBody = new Texture();
-	texBody->Create("Assets/Model/playerchara_20251202/lambert1.png");
-
-	if (texBody == NULL)
-	{
-		MessageBox(NULL, "a", "Error", MB_OK); // エラーメッセージの表示
-	}
-
-	// 頭皮・顔上部（lambert4）
-	Texture* texFaceA = new Texture();
-	texFaceA->Create("Assets/Model/playerchara_20251202/lambert4.png");
-
-	if (texFaceA == NULL)
-	{
-		MessageBox(NULL, "aaa", "Error", MB_OK); // エラーメッセージの表示
-	}
-
-	// 目・口（lambert5）
-	Texture* texFaceB = new Texture();
-	texFaceB->Create("Assets/Model/playerchara_20251202/lambert5.png");
-
-	if (texFaceB)
-	{
-		//MessageBox(NULL, "aaaa", "Error", MB_OK); // エラーメッセージの表示
-	}
-
-	// MaterialID に応じて割り当てる
-	const unsigned int matNum = model->GetMaterialNum();
-	for (unsigned int i = 0; i < matNum; ++i)
-	{
-		// ★ 非 const のマテリアルを取得（関数名は環境に合わせて）
-		auto* mat = model->GetMaterialNonConst(i);
-
-		if (!mat) continue;
-
-		switch (i)
-		{
-		case 0:
-			mat->pTexture = texFaceA;   // 頭皮
-			break;
-		case 1:
-			mat->pTexture = texFaceB;   // 顔（目）
-			break;
-		case 2:
-			mat->pTexture = texBody;    // 体
-			break;
-		}
-	}
 }
 
 void SceneGame::InitSkyDome()
@@ -729,6 +498,10 @@ void SceneGame::SkyDomeDorw()
 
 void SceneGame::Update()
 {
+	if (InputKeyboard::GetKey(VK_SPACE) && InputKeyboard::GetKeyDown('Q'))
+	{
+		SceneManager::ChangeSceneAsync<SceneStageSelect>();
+	}
 }
 
 void SceneGame::Draw()
@@ -827,7 +600,6 @@ void SceneGame::CreateStageFromCSV(const std::string& filename)
 	}
 }
 
-
 // 文字列の前後の空白を削除するヘルパー関数
 std::string Trim(const std::string& str)
 {
@@ -857,6 +629,7 @@ PrefabId SceneGame::GetPrefabIdFromString(const std::string& rawname)
 	if (name == "Isu") return PrefabId::Isu;
 	if (name == "Kuukseizixyoukii") return PrefabId::Kuukseizixyoukii;
 	if (name == "Ningixyou") return PrefabId::Ningixyou;
+	if(name == "SagaraDoll") return PrefabId::SagaraDoll;
 
 	if (name == "Benti") return PrefabId::Benti;
 	if (name == "Aircon") return PrefabId::Aircon;
