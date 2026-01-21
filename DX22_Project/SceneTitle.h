@@ -30,7 +30,6 @@ public:
     void Unload() override;
 
     void CreateCameraAndPlayer();
-    void InitPlayerTex();
 private:
     // ★ エンターで割る対象のボタン
     //BreakUiRenderer* m_breakButton = nullptr;

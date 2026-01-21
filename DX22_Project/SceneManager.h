@@ -95,7 +95,9 @@ private:
 
 	static SpriteAnimation* s_fadeOutAnime;     // フェードアウト用アニメーション
 	static SpriteAnimation* s_fadeInAnime; ;    // フェードイン用アニメーション
-	static void CreateFadeAnimations();         // フェード用アニメーション作成
+public:
+    static void CreateFadeAnimations(Scene* scene);         // フェード用アニメーション作成
+	static void ReleaseFadeAnimations();        // フェード用アニメーション解放
 };
 
 // テンプレート関数の実装

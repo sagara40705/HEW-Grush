@@ -77,10 +77,12 @@ void SceneManager::ChangeSceneAlreadyLoaded(std::unique_ptr<Scene> scene)
 {
     ClearStack();                 // 既存シーンは RootUnload して破棄
 
+    assert(scene && "SceneManager::ChangeSceneAlreadyLoaded() scene is null.");
     if (scene)
     {
-
         s_scenes.emplace_back(std::move(scene));
+        //s_state = State::FadeIn;
+        //s_timer.Start();
     }
 }
 
@@ -109,12 +111,9 @@ void SceneManager::ApplyNextScene()
 
     case PendingOp::Change:
         // 既存スタックを全て破棄して、新しいシーンだけ積む
-        ClearStack();
-        if (s_nextScene)
-        {
-            s_nextScene->RootLoad();                // World.Load() + Start() まで
-            s_scenes.emplace_back(std::move(s_nextScene));
-        }
+        s_state = State::FadeIn;
+		s_timer.Start();
+  
         break;
 
     case PendingOp::Push:
@@ -136,13 +135,19 @@ void SceneManager::ApplyNextScene()
         break;
     }
 
+    // Push のときに使い終わった nextScene を念のためクリア
+	if (s_pendingOp == PendingOp::Push)
+	{
+		s_nextScene.reset();
+	}
+
     // 操作が終わったのでクリア
     s_pendingOp = PendingOp::None;
-    // Change / Push のときに使い終わった nextScene を念のためクリア
-    if (s_pendingOp != PendingOp::Change && s_pendingOp != PendingOp::Push)
-    {
-        s_nextScene.reset();
-    }
+    //// Change / Push のときに使い終わった nextScene を念のためクリア
+    //if (s_pendingOp != PendingOp::Change && s_pendingOp != PendingOp::Push)
+    //{
+    //    s_nextScene.reset();
+    //}
 }
 
 void SceneManager::ClearStack()
@@ -183,7 +188,7 @@ void SceneManager::StartFadeIn()
 void SceneManager::UpdateIdle()
 {
     // まず前フレームで予約された操作を反映
-    ApplyNextScene();
+    //ApplyNextScene();
 
     // アクティブシーンを更新
     if (Scene* active = GetActiveScene())
@@ -206,14 +211,13 @@ void SceneManager::UpdateFadeOut()
 	{
 		// フェードアウト完了
 		s_timer.Stop();
-		s_state = State::Idle;
-
-        //ロードsceneへ遷移する
+        s_state = State::Idle;
 	}
 }
 
 void SceneManager::UpdateFadeIn()
 {
+
 	assert(s_state == State::FadeIn && " SceneManager::UpdateFadeIn()");
 
 	if (!s_timer.IsRunning()) assert(false && "FadeIn timer is not running.");
@@ -222,27 +226,38 @@ void SceneManager::UpdateFadeIn()
 	{
 		// フェードイン完了
 		s_timer.Stop();
-		s_state = State::Idle;
+
+        //ロードsceneへ遷移する
+        ClearStack();
+        if (s_nextScene)
+        {
+            s_nextScene->RootLoad();
+            s_scenes.emplace_back(std::move(s_nextScene));
+        }
+
+        s_state = State::Idle;
 	}   
 }
 
-
-void SceneManager::CreateFadeAnimations()
+void SceneManager::CreateFadeAnimations(Scene* scene)
 {
-	Scene* active = GetActiveScene();
-	assert(active && "SceneManager::CreateFadeAnimations() active scene is null.");
-
     TextureManager::Load(TextureTag::FadeOut);
     TextureManager::Load(TextureTag::FadeIn);
 
-	World& world = active->GetWorld();
+	World& world = scene->GetWorld();
 
-	GameObject* fadeOutObj = &world.CreateGameObject();
-    fadeOutObj->AddComponent<UiSpriteRenderer>(TextureTag::FadeOut, Vector2::zero(), Vector2(1280.f, 720.f));
-	s_fadeOutAnime = &fadeOutObj->AddComponent<SpriteAnimation>(6, 8, 1, 48, false);
+    GameObject* fadeOutObj = &world.CreateGameObject();
+    fadeOutObj->AddComponent<UiSpriteRenderer>(TextureTag::FadeOut, Vector2::zero(), Vector2(128.f, 72.f));
+    s_fadeOutAnime = &fadeOutObj->AddComponent<SpriteAnimation>(6, 8, 1, 48, false);
+	fadeOutObj->SetActive(false); // 最初は非表示にしておく
 
     GameObject* fadeInObj = &world.CreateGameObject();
-    fadeInObj->AddComponent<UiSpriteRenderer>(TextureTag::FadeOut, Vector2::zero(), Vector2(1280.f, 720.f));
-    s_fadeInAnime = &fadeOutObj->AddComponent<SpriteAnimation>(6, 8, 1, 48, false);
+    fadeInObj->AddComponent<UiSpriteRenderer>(TextureTag::FadeIn, Vector2::zero(), Vector2(128.f, 72.f));
+    s_fadeInAnime = &fadeInObj->AddComponent<SpriteAnimation>(6, 8, 1, 48, false);
+}
 
+void SceneManager::ReleaseFadeAnimations()
+{
+	s_fadeOutAnime = nullptr;
+	s_fadeInAnime = nullptr;
 }

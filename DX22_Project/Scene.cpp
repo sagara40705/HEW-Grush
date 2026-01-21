@@ -1,4 +1,5 @@
 #include "Scene.h"
+#include "SceneManager.h"
 
 //====================== ctor / dtor ======================
 
@@ -53,6 +54,8 @@ void Scene::RootUnload()
 
     // ユーザー実装の解放処理
     Unload();
+
+	SceneManager::ReleaseFadeAnimations();  // フェードアニメーション解放
 
     // World の中身を全破棄
     world.ClearAll();

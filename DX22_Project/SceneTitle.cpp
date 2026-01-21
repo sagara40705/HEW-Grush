@@ -176,66 +176,6 @@ void SceneTitle::CreateCameraAndPlayer()
 
 }
 
-void SceneTitle::InitPlayerTex()
-{
-	// プレイヤーモデル取得
-	Model* model = ModelManager::Get(ModelTag::Player);
-	if (!model)
-	{
-		return; // 読み込み失敗などの保険
-	}
-
-	// 体（lambert1）
-	Texture* texBody = new Texture();
-	texBody->Create("Assets/Model/playerchara_20251202/lambert1.png");
-
-	if (texBody == NULL)
-	{
-		MessageBox(NULL, "a", "Error", MB_OK); // エラーメッセージの表示
-	}
-
-	// 頭皮・顔上部（lambert4）
-	Texture* texFaceA = new Texture();
-	texFaceA->Create("Assets/Model/playerchara_20251202/lambert4.png");
-
-	if (texFaceA == NULL)
-	{
-		MessageBox(NULL, "aaa", "Error", MB_OK); // エラーメッセージの表示
-	}
-
-	// 目・口（lambert5）
-	Texture* texFaceB = new Texture();
-	texFaceB->Create("Assets/Model/playerchara_20251202/lambert5.png");
-
-	if (texFaceB)
-	{
-		//MessageBox(NULL, "aaaa", "Error", MB_OK); // エラーメッセージの表示
-	}
-
-	// MaterialID に応じて割り当てる
-	const unsigned int matNum = model->GetMaterialNum();
-	for (unsigned int i = 0; i < matNum; ++i)
-	{
-		// ★ 非 const のマテリアルを取得（関数名は環境に合わせて）
-		auto* mat = model->GetMaterialNonConst(i);
-
-		if (!mat) continue;
-
-		switch (i)
-		{
-		case 0:
-			mat->pTexture = texFaceA;   // 頭皮
-			break;
-		case 1:
-			mat->pTexture = texFaceB;   // 顔（目）
-			break;
-		case 2:
-			mat->pTexture = texBody;    // 体
-			break;
-		}
-	}
-}
-
 void SceneTitle::Update()
 {
 
