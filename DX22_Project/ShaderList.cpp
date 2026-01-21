@@ -661,9 +661,13 @@ cbuffer Material : register(b0)
 };
 Texture2D tex    : register(t0);
 SamplerState samp: register(s0);
-
-// VS と同じ SpriteParam（b1）を定義（color を使う）
-cbuffer SpriteParam : register(b1)
+cbuffer Light : register(b1)
+{
+	float4 lightDiffuse;
+	float4 lightDir;
+};
+// VS と同じ SpriteParam（b2）を定義（color を使う）
+cbuffer SpriteParam : register(b2)
 {
     float4 offset_size;   // 未使用だが VS とレイアウトを合わせておく
     float4 uvPos_uvScale;
@@ -848,6 +852,8 @@ SamplerState samp : register(s0);
 
 float4 main(PS_IN pin) : SV_TARGET
 {
+	 float dummy  = objDiffuse.x * 0.0;
+
     float4 texColor = tex.Sample(samp, pin.uv);
 	//return texColor;
 

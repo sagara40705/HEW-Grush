@@ -197,6 +197,7 @@ void SceneGame::CreateCameraAndPlayer()
 	hummer.AddComponent<BoxCollider>(false, Vector3(-3.f, 2.f, -3.f), Vector3(5.f, 5.f, 2.f));
 	hummer.AddComponent<Hammer>();
 	hummer.AddComponent<Animator>();
+	hummer.AddComponent<HammerEffects>();
 
 	GameObject& glassShardPool = w.CreateGameObject();
 	glassShardPool.AddComponent<GlassShardPool>();

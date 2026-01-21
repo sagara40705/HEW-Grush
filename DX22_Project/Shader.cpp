@@ -77,6 +77,7 @@ void Shader::WriteBuffer(UINT slot, void* pData)
 	if(slot < m_pBuffers.size())
 		GetContext()->UpdateSubresource(m_pBuffers[slot], 0, nullptr, pData, 0, 0);
 }
+
 void Shader::SetTexture(UINT slot, Texture* tex)
 {
 	if (!tex || slot >= m_pTextures.size()) { return; }
@@ -88,6 +89,65 @@ void Shader::SetTexture(UINT slot, Texture* tex)
 	case Pixel:		GetContext()->PSSetShaderResources(slot, 1, &pTex); break;
 	}
 }
+
+/*
+HRESULT Shader::Make(void* pData, UINT size)
+{
+	HRESULT hr;
+	ID3D11Device* pDevice = GetDevice();
+
+	ID3D11ShaderReflection* pReflection = nullptr;
+	hr = D3DReflect(pData, size, IID_PPV_ARGS(&pReflection));
+	if (FAILED(hr)) return hr;
+
+	D3D11_SHADER_DESC shaderDesc{};
+	pReflection->GetDesc(&shaderDesc);
+
+	// まず最大BindPointを調べる（cbufferのみ）
+	UINT maxCBSlot = 0;
+	for (UINT i = 0; i < shaderDesc.ConstantBuffers; ++i)
+	{
+		ID3D11ShaderReflectionConstantBuffer* cbuf = pReflection->GetConstantBufferByIndex(i);
+		D3D11_SHADER_BUFFER_DESC cbDesc{};
+		cbuf->GetDesc(&cbDesc);
+
+		D3D11_SHADER_INPUT_BIND_DESC bindDesc{};
+		hr = pReflection->GetResourceBindingDescByName(cbDesc.Name, &bindDesc);
+		if (FAILED(hr)) continue;
+
+		maxCBSlot = (std::max)(maxCBSlot, bindDesc.BindPoint);
+	}
+
+	m_pBuffers.assign(maxCBSlot + 1, nullptr);
+
+	// BindPointで作る
+	for (UINT i = 0; i < shaderDesc.ConstantBuffers; ++i)
+	{
+		ID3D11ShaderReflectionConstantBuffer* cbuf = pReflection->GetConstantBufferByIndex(i);
+		D3D11_SHADER_BUFFER_DESC cbDesc{};
+		cbuf->GetDesc(&cbDesc);
+
+		D3D11_SHADER_INPUT_BIND_DESC bindDesc{};
+		hr = pReflection->GetResourceBindingDescByName(cbDesc.Name, &bindDesc);
+		if (FAILED(hr)) continue;
+
+		D3D11_BUFFER_DESC bufDesc{};
+		bufDesc.ByteWidth = cbDesc.Size;                 // 16の倍数になっているはず
+		bufDesc.Usage = D3D11_USAGE_DEFAULT;
+		bufDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
+
+		SAFE_RELEASE(m_pBuffers[bindDesc.BindPoint]);
+		hr = pDevice->CreateBuffer(&bufDesc, nullptr, &m_pBuffers[bindDesc.BindPoint]);
+		if (FAILED(hr)) return hr;
+	}
+
+	// Texture周りは現状のままでOK（省略）
+
+	pReflection->Release();
+	return MakeShader(pData, size);
+}
+*/
+
 
 HRESULT Shader::Make(void* pData, UINT size)
 {
@@ -144,6 +204,7 @@ HRESULT Shader::Make(void* pData, UINT size)
 
 	return MakeShader(pData, size);
 }
+
 
 //----------
 // 頂点シェーダ

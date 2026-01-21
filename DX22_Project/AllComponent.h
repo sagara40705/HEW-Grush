@@ -29,6 +29,7 @@
 #include "ActionUI.h"
 #include "Hammer.h"
 #include "PlayerAnimation.h"
+#include "HammerEffects.h"
 
 #include "GlassObject.h"
 #include "GlassGaugeManager.h"
