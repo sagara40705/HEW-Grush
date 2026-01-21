@@ -67,7 +67,7 @@ enum class TextureTag : uint8_t
     /*58*/GradeUpEffect,
     /*59*/GradeDownEffect,
     /*60*/HitEffect,
-	/*61*/Loading_Charaacter,
+	/*61*/PlayerIcon,
     Count,
 };
 

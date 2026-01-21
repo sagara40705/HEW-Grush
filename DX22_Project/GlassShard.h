@@ -21,7 +21,8 @@ public:
 public:
 	void OnActive(const Vector3& pos);
 	void AddForce(const Vector3& dir, float impulsePower);
-	void SetGlassGrade(GlassGrade g); 
+	void SetGlassGrade(GlassGrade g);
+	void SetGlassScale(float s);
 	void SetShardParamVS();
 	void SetGlassParamPS();
 };
