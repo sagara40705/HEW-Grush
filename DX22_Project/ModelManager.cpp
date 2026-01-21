@@ -6,9 +6,9 @@ std::array<float, static_cast<size_t>(ModelTag::Count)> ModelManager::modelBound
     0.f, /*0*/
     0.7f, 0.5f, 0.8f, 0.7f, 0.9f, 0.9f, 0.9f, 0.f,  /*1 - 8*/
     1.8f, 1.8f, 1.6f, 1.4f, /*9 - 12*/
-	2.4f, 3.f,  /*13 - 14*/
-    0.7f,0.f,0.f,   /*15 - 17*/
-    0.f,0.f,0.f,0.f,   /*18 - 21*/
+	2.4f, 3.f, 3.f,  /*13 - 15*/
+    0.7f,0.f,0.f,   /*16 - 18*/
+    0.f,0.f,0.f,0.f,   /*19 - 22*/
 	0.f  /*22*/
 };
 
@@ -31,17 +31,19 @@ const ModelLoadData ModelManager::kModelData[static_cast<size_t>(ModelTag::Count
     {"Assets/Model/Grade_2/MD_reizouko_20251205.fbx",                         0.5f,  Model::Flip::ZFlip},  //12
      
     {"Assets/Model/MD_UFO_prototype.fbx",                                     0.01f, Model::Flip::ZFlip},  //13
-    {"Assets/Model/MD_eisei_251208.fbx",                                      0.015f,Model::Flip::ZFlip}, //14
+    {"Assets/Model/Grade_3/MD_eisei_251208.fbx",                              0.015f,Model::Flip::ZFlip}, //14
+    {"Assets/Model/Grade_3/MD_star_251231.fbx",                               0.015f,Model::Flip::ZFlip}, //15
 
-    {"Assets/Model/MD_player_prototype.fbx",                                  0.01f, Model::Flip::ZFlip}, //15
-    {"Assets/Model/playerchara_20251202/space_suit_12.fbx",                   0.01f, Model::Flip::ZFlip}, //16
-    {"Assets/Model/Player/playerchara_20260114.fbx",                          0.01f, Model::Flip::ZFlip}, //17
-    {"Assets/Model/Hammer/hammer_grade3.fbx",                                 0.08f, Model::Flip::ZFlip}, //18
-    {"Assets/Model/Hammer/Grade_1/new_hammer_grade1.fbx",                     0.08f, Model::Flip::ZFlip}, //19
-    {"Assets/Model/Hammer/Grade_2/hammer_grade2.fbx",                         0.08f, Model::Flip::ZFlip}, //20
-    {"Assets/Model/Hammer/Grade_3/hammer_grade3.fbx",                         0.08f, Model::Flip::ZFlip}, //21
 
-    {"Assets/Model/Stage/MD_fence_260118.fbx",                                0.04f, Model::Flip::ZFlip}, //22
+    {"Assets/Model/MD_player_prototype.fbx",                                  0.01f, Model::Flip::ZFlip}, //16
+    {"Assets/Model/playerchara_20251202/space_suit_12.fbx",                   0.01f, Model::Flip::ZFlip}, //17
+    {"Assets/Model/Player/playerchara_20260114.fbx",                          0.01f, Model::Flip::ZFlip}, //18
+    {"Assets/Model/Hammer/hammer_grade3.fbx",                                 0.08f, Model::Flip::ZFlip}, //19
+    {"Assets/Model/Hammer/Grade_1/new_hammer_grade1.fbx",                     0.08f, Model::Flip::ZFlip}, //20
+    {"Assets/Model/Hammer/Grade_2/hammer_grade2.fbx",                         0.08f, Model::Flip::ZFlip}, //21
+    {"Assets/Model/Hammer/Grade_3/hammer_grade3.fbx",                         0.08f, Model::Flip::ZFlip}, //22
+
+    {"Assets/Model/Stage/MD_fence_260118.fbx",                                0.04f, Model::Flip::ZFlip}, //23
 };
 
 bool ModelManager::Load(ModelTag tag)

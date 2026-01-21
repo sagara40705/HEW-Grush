@@ -24,6 +24,7 @@ enum class ModelTag : uint8_t
 
 	Ufo,
 	Eiseii,
+	Star,
 
 	ProtPlay,
 	Player,

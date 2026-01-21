@@ -20,10 +20,6 @@ public:
 	// ”ñ“¯Šúƒ[ƒh—p
 	void BuildLoadTasks(std::vector<LoadTask>& outTasks) override;
 private:
-	void LoadModels();
-	void LoadTextures();
-	void LoadSound() {}
-
 	void CreateManagers();
 	void CreateCameraAndPlayer();
 	void CreateStage();
