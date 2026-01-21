@@ -11,6 +11,7 @@
 #include <vector>
 #include "Sprite3DRenderer.h" 
 
+
 inline void Render(const World& w)
 {
     auto isPending = [&w](ObjectId id)
@@ -21,8 +22,8 @@ inline void Render(const World& w)
     SetBlendMode(BLEND_ALPHA);
 
     // --- 1) Opaque パス（ZWrite ON） ---
-    SetDepthTest(true, true);
-	SetCullingMode(D3D11_CULL_BACK);
+    SetDepthTest(true);
+	SetCullingMode(D3D11_CULL_NONE);
 
     std::vector<Sprite3DRenderer*> transparentSprites;
 
@@ -52,12 +53,11 @@ inline void Render(const World& w)
 
     // --- 3) Transparent パス（ZWrite OFF、奥→手前ソート推奨） ---
     SetDepthTest(true);
-
     // ソート（カメラから遠い順）
-    
+    //
     //Transform* camTf = nullptr;
     //if (auto* cam = Camera::Main()) camTf = cam->gameObject ? cam->gameObject->GetComponent<Transform>() : nullptr;
-
+    //
     //if (camTf)
     //{
     //    const auto camPos = camTf->GetWorldPosition();
