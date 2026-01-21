@@ -281,6 +281,13 @@ void SceneGame::CreateStage2()
 	collider2.layer = Layer::Ground;
 
 	CreateWarp();
+
+	CreateStageFromCSV("CSV/Stage2LeftData_Grade1.csv");
+	CreateStageFromCSV("CSV/Stage2LeftData_Grade2.csv");
+	CreateStageFromCSV("CSV/Stage2LeftData_Grade3.csv");
+	CreateStageFromCSV("CSV/Stage2RightData_Grade1.csv");
+	CreateStageFromCSV("CSV/Stage2RightData_Grade2.csv");
+	CreateStageFromCSV("CSV/Stage2RightData_Grade3.csv");
 }
 
 void SceneGame::CreateStage3()
