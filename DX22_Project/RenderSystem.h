@@ -17,12 +17,12 @@ inline void Render(const World& w)
     // 1) 3D / 通常描画
     SetDepthTest(true);
     SetBlendMode(BLEND_ALPHA);
-    //SetCullingMode(D3D11_CULL_BACK);
+    SetCullingMode(D3D11_CULL_BACK);
 
     for (auto* r : w.GetRenderers())
     {
         if (!r) continue;
-        if (dynamic_cast<UiSpriteRenderer*>(r)) continue; // UI はここでは描かない
+        if (dynamic_cast<UiSpriteRenderer*>(r) ) continue; // UI はここでは描かない
 
         auto* c = dynamic_cast<Component*>(r);
         if (!c || !c->IsEnabled()) continue;

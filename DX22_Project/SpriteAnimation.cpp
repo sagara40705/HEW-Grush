@@ -1,5 +1,6 @@
 #include "SpriteAnimation.h"
 #include "UiSpriteRenderer.h"
+#include "Sprite3DRenderer.h"
 #include "GameObject.h"
 #include "DebugLog.h"
 
@@ -27,13 +28,14 @@ void SpriteAnimation::Awake()
 void SpriteAnimation::Start()
 {
     uiRenderer = gameObject->GetComponent<UiSpriteRenderer>();
+	sprite3DRenderer = gameObject->GetComponent<Sprite3DRenderer>();
     ApplyFrame();
 }
 
 void SpriteAnimation::Update()
 {
     // 対象が無ければ何もしない
-    if (!uiRenderer /* && !spriteRenderer3D */) return;
+    if (!uiRenderer && !sprite3DRenderer) return;
 
     if (!play)  return;
 
@@ -56,6 +58,7 @@ void SpriteAnimation::Update()
             play = false;
             currentFrame = frameCount - 1; // 最終コマで停止
             currentFrame = 0;
+			gameObject->SetActive(false);
             DebugLog::Output("Animation End OneLoop");
             return;
         }
@@ -67,6 +70,7 @@ void SpriteAnimation::Update()
 //開始
 void SpriteAnimation::Play()
 {
+    Reset();
     play = true;
 }
 
@@ -104,7 +108,7 @@ void SpriteAnimation::SetFrame(int frame)
 
 void SpriteAnimation::ApplyFrame()
 {
-    if (!uiRenderer /* && !spriteRenderer3D */) return;
+    if (!uiRenderer  && !sprite3DRenderer) return;
 
     // currentFrame → (col, row) へ変換（左上から右→下）
     const int col = currentFrame % columns;
@@ -119,6 +123,6 @@ void SpriteAnimation::ApplyFrame()
         uiRenderer->SetUV(uvPos, uvCellSize);
 
     // 3D 用 SpriteRenderer を実装したらここで同様に UV を適用すればよい
-    // if (spriteRenderer3D)
-    //     spriteRenderer3D->SetUV(uvPos, uvCellSize);
+    if (sprite3DRenderer)
+        sprite3DRenderer->SetUV(uvPos, uvCellSize);
 }

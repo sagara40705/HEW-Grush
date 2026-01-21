@@ -27,5 +27,23 @@ public:
     void Start() override;
     void OnDestroy() override;
     void Render() override;
+public:
+    // ê›íËån
+    //void SetTexture(TextureTag tag);
+    void SetOffset(const Vector2& o) { offset = o; }
+    void SetSize(const Vector2& s) { size = s; }
 
+    void SetUV(const Vector2& pos, const Vector2& scale)
+    {
+        uvPos = pos;
+        uvScale = scale;
+    }
+    void SetUVPos(const Vector2& p) { uvPos = p; }
+    void SetUVPosX(float x) { uvPos.x = x; }
+    void SetUVPosY(float y) { uvPos.y = y; }
+    void SetUVScale(const Vector2& s) { uvScale = s; }
+    void SetUVScaleX(float x) { uvScale.x = x; }
+    void SetUVScaleY(float y) { uvScale.y = y; }
+
+    void SetColor(const DirectX::XMFLOAT4& c) { color = c; }
 };

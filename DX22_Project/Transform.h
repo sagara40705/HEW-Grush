@@ -60,7 +60,7 @@ public:
 
     // --- Matrix / Position (world) ---
     const DirectX::XMFLOAT4X4& GetMatrix();       // 親込みのワールド行列
-    DirectX::XMFLOAT3          GetWorldPosition();// worldMatrix の平行移動成分
+    Vector3         GetWorldPosition();// worldMatrix の平行移動成分
 
 
 private:

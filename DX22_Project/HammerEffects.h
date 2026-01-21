@@ -8,12 +8,16 @@ public:
 	enum Type
 	{
 		GradeUp,
+		GradeDown,
+		Hit,
 		Count,
 	};
 private:
-	static constexpr int MAX_EFFECTS[Type::Count] = { 2 };
+	static constexpr int MAX_EFFECTS[Type::Count] = { 2, 2 , 16};
 private:
-	GameObject* gardeUp_[MAX_EFFECTS[GradeUp]]{};
+	GameObject* gradeUp_[MAX_EFFECTS[GradeUp]]{};
+	GameObject* gradeDown_[MAX_EFFECTS[GradeDown]]{};
+	GameObject* hit_[MAX_EFFECTS[Hit]]{};
 public:
 	void Awake() override;
 	void Start() override;
@@ -27,4 +31,10 @@ private:
 private:
 	void CreateGradeUpEffect();
 	GameObject* GetFreeGradeUpEffect();
+private:
+	void CreateGradeDownEffect();
+	GameObject* GetFreeGradeDownEffect();
+private:
+	void CreateHitEffect();
+	GameObject* GetFreeHitEffect();
 };
