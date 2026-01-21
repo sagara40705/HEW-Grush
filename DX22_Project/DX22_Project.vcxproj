@@ -170,6 +170,7 @@
     <ClCompile Include="GlassObjectSpawnerh.cpp" />
     <ClCompile Include="GlassShard.cpp" />
     <ClCompile Include="GlassShardPool.cpp" />
+    <ClCompile Include="HammerEffects.cpp" />
     <ClCompile Include="GroundRenderer.cpp" />
     <ClCompile Include="Hammer.cpp" />
     <ClCompile Include="JumpSki.cpp" />
@@ -279,6 +280,7 @@
     <ClInclude Include="GlassObjectSpawner.h" />
     <ClInclude Include="GlassShard.h" />
     <ClInclude Include="GlassShardPool.h" />
+    <ClInclude Include="HammerEffects.h" />
     <ClInclude Include="GroundRenderer.h" />
     <ClInclude Include="Hammer.h" />
     <ClInclude Include="Input.h" />

@@ -381,6 +381,9 @@
     <ClCompile Include="Time\Time.cpp">
       <Filter>Engine\Util</Filter>
     </ClCompile>
+    <ClCompile Include="HammerEffects.cpp">
+      <Filter>Game\Components\Player</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -679,6 +682,9 @@
     </ClInclude>
     <ClInclude Include="Time\Timer.h">
       <Filter>Engine\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="HammerEffects.h">
+      <Filter>Game\Components\Player</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
