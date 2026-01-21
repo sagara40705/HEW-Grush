@@ -54,6 +54,7 @@ enum class TextureTag : uint8_t
     /*45*/Loading_Txt,
     /*46*/TasksUI,
     /*47*/TutorialLocation,
+    /*48*/Loading_Character,
     Count,
 };
 

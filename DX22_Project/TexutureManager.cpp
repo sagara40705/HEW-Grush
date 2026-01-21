@@ -53,6 +53,7 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     /*45*/"Assets/Texture/Load_Txt.png",
     /*46*/"Assets/Texture/TasksUI.png",
     /*47*/"Assets/Texture/TutorialLocation.png",
+	/*48*/"Assets/Texture/LoadCharacter.png",
 };
 
 // 配列のデフォルトパスを使用して登録

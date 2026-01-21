@@ -107,18 +107,9 @@ void SceneTitle::Load()
 		Vector2(11.0f, 11.0f)//100差
 	);
 
-	GameObject& TitleBreak = w.CreateGameObject();
-
 	///////==========================
 	//////ここからロゴ
 	//////==========================
-	//GameObject&TitleLogo= w.CreateGameObject();
-
-	//TitleLogo.AddComponent<UiSpriteRenderer>(
-	//	TextureTag::Title_Loge,
-	//	Vector2(1.0f, -100.0f),
-	//	Vector2(650.0f, 650.0f)//100差
-	//);
 	GameObject& TitleLogo = w.CreateGameObject(
 		Vector3(0.f, 0.f, 10.f)    // 座標
 	);
@@ -132,6 +123,14 @@ void SceneTitle::Load()
 	/*====================
 	画面を割る処理を行う
 	====================*/
+	GameObject& TitleBreak = w.CreateGameObject();
+	break_ = &TitleBreak.AddComponent<UiSpriteRenderer>(
+		TextureTag::Title_Break,
+		Vector2(0.f, 0.f),
+		Vector2(1920.0f, 1080.0f)
+	);
+	break_->SetColor({ 1.f, 1.f, 1.f, 0.f });
+
 
 	//タイトルマネージャー生成
 	GameObject& manager = w.CreateGameObject();
@@ -243,6 +242,7 @@ void SceneTitle::Update()
 
 	if (!m_isStarting && InputKeyboard::GetKeyDown(VK_SPACE))
 	{
+		
 		m_isStarting = true;
 		m_zoomTimer = 0.0f;
 		//m_breakButton->StartBreak();
@@ -278,9 +278,12 @@ void SceneTitle::Update()
 			}
 		}
 
-		if (t >= 1.0f) m_isStarting = false;
+		if (t >= 1.0f)
+		{
+			m_isStarting = false;
+			break_->SetColor({ 1.f, 1.f, 1.f, 1.f });
+		}
 	}
-
 }
 
 void SceneTitle::Draw()
