@@ -50,7 +50,7 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     /*42*/"Assets/Texture/Titele/title_hakaisuru2.png",
     /*43*/"Assets/Texture/fead_out_2_ss.png",
     /*44*/"Assets/Texture/fead_in_2_ss.png",
-    /*45*/"Assets/Texture/Load_BG.png",
+    /*45*/"Assets/Texture/load_backscreen.png",
     /*46*/"Assets/Texture/Load_Txt.png",
     /*47*/"Assets/Texture/TasksUI.png",
     /*48*/"Assets/Texture/TutorialLocation.png",

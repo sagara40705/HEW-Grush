@@ -51,6 +51,7 @@ void Sprite3DRenderer::Render()
 
     // 3) テクスチャ・サンプラ・ステート
     ps->SetTexture(0, texture_);
+    //SetDepthTest(false);
 
 	// 4) Sharderをバインド / 描画
     vs->Bind();
