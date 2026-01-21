@@ -189,11 +189,7 @@ void SceneGame::CreateStage()
 	StageId stage = GetCurrentStage();
 
 	// デバック用
-	stage = StageId::Stage1;
-
-	CreateStageFromCSV("CSV/StageData_Grade1.csv");
-	CreateStageFromCSV("CSV/StageData_Grade2.csv");
-	CreateStageFromCSV("CSV/StageData_Grade3.csv");
+	//stage = StageId::Stage1;
 
 	switch (stage)
 	{
@@ -255,9 +251,13 @@ void SceneGame::CreateStage1()
 	BoxCollider& bcL = wL.AddComponent<BoxCollider>(); bcL.layer = Layer::Ground;
 	wL.AddComponent<StageWall>();
 
-	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(5.f, -0.8f, -20.f), Vector3(0.f, 0.f, 0.f), Vector3(0.2f, 0.2f, 1.0f));
-	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(0.f, -0.8f, -20.f), Vector3(0.f, 0.f, 0.f), Vector3(0.3f, 0.3f, 1.0f));
-	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-5.f, -0.8f, -20.f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	CreateStageFromCSV("CSV/StageData_Grade1.csv");
+	CreateStageFromCSV("CSV/StageData_Grade2.csv");
+	CreateStageFromCSV("CSV/StageData_Grade3.csv");
+
+	//Prefab::Instantiate(w, PrefabId::StageWall, Vector3(5.f, -0.8f, -20.f), Vector3(0.f, 0.f, 0.f), Vector3(0.2f, 0.2f, 1.0f));
+	//Prefab::Instantiate(w, PrefabId::StageWall, Vector3(0.f, -0.8f, -20.f), Vector3(0.f, 0.f, 0.f), Vector3(0.3f, 0.3f, 1.0f));
+	//Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-5.f, -0.8f, -20.f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
 
 	return;
 }
