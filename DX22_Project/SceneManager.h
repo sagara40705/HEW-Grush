@@ -84,7 +84,7 @@ private:
     };
 	static State s_state;   // 現在のフェード状態
 	static Timer s_timer;   // フェードタイマー(FadeOut/in共通)
-	static constexpr float FadeDuration = 48.f / 60.f; // フェード時間(秒)(FadeOut/in共通)(48フレーム)
+	static constexpr float FadeDuration = 48.f / 60.f * 3.0f; // フェード時間(秒)(FadeOut/in共通)(48フレーム * 2)
 
 	static void StartFadeOut();
 	static void StartFadeIn();

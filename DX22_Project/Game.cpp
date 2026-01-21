@@ -16,7 +16,7 @@ void Game::Init()
     SceneManager::Initialize();
 
    // SceneManager::ChangeScene<SceneTitle>();
-	SceneManager::ChangeSceneAsync<SceneStageSelect>();
+	SceneManager::ChangeSceneAsync<Result>();
 }
 
 void Game::Uninit()

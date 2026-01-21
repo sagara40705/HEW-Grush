@@ -40,8 +40,6 @@ void Result::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 			GetWorld().ClearAll();        // 既存の World API に合わせる
 		});
 
-
-
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::TimerColon); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ResultTime); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Frame); });
@@ -51,8 +49,6 @@ void Result::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ResultTimer); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::tatu_Arubaita); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ResultHaikei); });
-
-
 
 	// 各種オブジェクト生成タスクを追加
 	outTasks.emplace_back([this] { CanvasDraw(); });
