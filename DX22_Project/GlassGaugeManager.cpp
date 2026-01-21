@@ -6,6 +6,7 @@
 #include "InputKeyboard.h"
 #include "DebugLog.h"
 #include "ShaderList.h"
+#include "SoundManager.h"
 
 constexpr float kMaxGaugeVale[ToIndex(HammerGrade::Count)] 
 				= { 100.f, 200.f, 300.f };
@@ -89,6 +90,7 @@ void GlassGaugeManager::Update()
 			isGaugeDecaying = true;
 			gaugeDecayDelayTimer = 0.f;
 			DebugLog::Output("ゲージ減衰開始");
+			SoundManager::SoundPlay(SoundTag::GaugeDownSE, 1.0f);
 		}
 	}
 }
@@ -144,6 +146,7 @@ void GlassGaugeManager::GradeUp()
 	}
 
 	hammer_->GradeUp();
+	SoundManager::SoundPlay(SoundTag::GradeUpSE, 1.0f);
 
 	constexpr float kWhenGradeUpMinGauge = 5;
 	gauge_ = kWhenGradeUpMinGauge;
@@ -156,6 +159,7 @@ void GlassGaugeManager::GradeDown()
 		isGaugeEmpty = true;
 		gauge_ = 0.f;
 		DebugLog::Output("GlassGauge, is Empty");
+		SoundManager::SoundPlay(SoundTag::GradeDownSE ,1.0f);
 		return;
 	}
 

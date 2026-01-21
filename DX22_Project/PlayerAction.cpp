@@ -8,6 +8,7 @@
 #include "InputGamepad.h"  
 #include "BoxCollider.h"
 #include "Rigidbody.h"
+#include "SoundManager.h"
 #include <cassert>
 
 constexpr float kActionTime[ToIndex(ActionId::Count)] = { 0.4f, 1.f, 1.5f };
@@ -77,6 +78,7 @@ void PlayerAction::InputWantAction()
 	{
 		state_->wantUseAction[ToIndex(ActionId::NormalAttack)] = true;
 		DebugLog::Output("NormalAttack 入力受付");
+		SoundManager::SoundPlay(SoundTag::NomalAttackSE, 1.0f);
 	}
 
 	//==================== SpinAttack (Rキー / R1ボタン) =====================
@@ -85,6 +87,7 @@ void PlayerAction::InputWantAction()
 	{
 		state_->wantUseAction[ToIndex(ActionId::SpinAttack)] = true;
 		DebugLog::Output("SpinAttack 入力受付");
+		SoundManager::SoundPlay(SoundTag::SpinAttackSE, 1.0f);
 	}
 
 	//==================== DashAttack (Fキー / L1ボタン) =====================
@@ -93,6 +96,7 @@ void PlayerAction::InputWantAction()
 	{
 		state_->wantUseAction[ToIndex(ActionId::DashAttack)] = true;
 		DebugLog::Output("DashAttack 入力受付");
+		SoundManager::SoundPlay(SoundTag::DashAttackSE, 1.0f);
 	}
 }
 
