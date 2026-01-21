@@ -18,7 +18,6 @@
 enum class Tag : std::uint8_t
 {
     None,
-    StageMap,
     GameManager,
     GaugeManager,
     ScoreManager,
@@ -29,7 +28,11 @@ enum class Tag : std::uint8_t
     Hammer,
     Enemy,
     Glass,
-    ActionUI
+    ActionUI,
+    StageMap,
+    ResultTimerUI,
+    ResultGaugeUI,
+    ResultRankUI,
     // •K—v‚É‰ž‚¶‚Ä’Ç‰Á
 };
 

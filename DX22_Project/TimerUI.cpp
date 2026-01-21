@@ -2,10 +2,11 @@
 #include "GameObject.h"
 #include "UiSpriteRenderer.h"
 #include "TextureManager.h"
+#include "GameState.h"
 
 constexpr Vector2 kNumberUVScale = { 0.1f, 1.0f };
 
-void TimerUI::Start()
+void TimerUI::Awake()
 {
 	constexpr Vector2 kMinutePos[ToIndex(TimerDigits::Count)] = { {1085.f, 17.f}, {1110.f, 17.f} };
 	constexpr Vector2 kColonPos = { 1140.f,19.f };
@@ -16,19 +17,28 @@ void TimerUI::Start()
 
 
 	GameObject& tenMinute = gameObject->CreateChild();
-	uiMinute_[ToIndex(TimerDigits::Ten)] = &tenMinute.AddComponent<UiSpriteRenderer>(TextureTag::TimerNumber, kMinutePos[ToIndex(TimerDigits::Ten)], kNumberSize, Vector2::zero(), kNumberUVScale);
+	uiMinute_[ToIndex(TimerDigits::Ten)] = &tenMinute.AddComponent<UiSpriteRenderer>
+		(TextureTag::TimerNumber, kMinutePos[ToIndex(TimerDigits::Ten)], kNumberSize, Vector2::zero(), kNumberUVScale);
 
 	GameObject& oneMinute = gameObject->CreateChild();
-	uiMinute_[ToIndex(TimerDigits::One)] = &oneMinute.AddComponent<UiSpriteRenderer>(TextureTag::TimerNumber, kMinutePos[ToIndex(TimerDigits::One)], kNumberSize, Vector2::zero(), kNumberUVScale);
+	uiMinute_[ToIndex(TimerDigits::One)] = &oneMinute.AddComponent<UiSpriteRenderer>
+		(TextureTag::TimerNumber, kMinutePos[ToIndex(TimerDigits::One)], kNumberSize, Vector2::zero(), kNumberUVScale);
 
-	GameObject& colon	  = gameObject->CreateChild();
+	GameObject& colon = gameObject->CreateChild();
 	uiColon_ = &colon.AddComponent<UiSpriteRenderer>(TextureTag::TimerColon, kColonPos, kColonSize);
 
 	GameObject& tenSecond = gameObject->CreateChild();
-	uiSecond_[ToIndex(TimerDigits::Ten)] = &tenSecond.AddComponent<UiSpriteRenderer>(TextureTag::TimerNumber, kSecondPos[ToIndex(TimerDigits::Ten)], kNumberSize, Vector2::zero(), kNumberUVScale);
+	uiSecond_[ToIndex(TimerDigits::Ten)] = &tenSecond.AddComponent<UiSpriteRenderer>
+		(TextureTag::TimerNumber, kSecondPos[ToIndex(TimerDigits::Ten)], kNumberSize, Vector2::zero(), kNumberUVScale);
 
 	GameObject& oneSecond = gameObject->CreateChild();
-	uiSecond_[ToIndex(TimerDigits::One)] = &oneSecond.AddComponent<UiSpriteRenderer>(TextureTag::TimerNumber, kSecondPos[ToIndex(TimerDigits::One)], kNumberSize, Vector2::zero(), kNumberUVScale);
+	uiSecond_[ToIndex(TimerDigits::One)] = &oneSecond.AddComponent<UiSpriteRenderer>
+		(TextureTag::TimerNumber, kSecondPos[ToIndex(TimerDigits::One)], kNumberSize, Vector2::zero(), kNumberUVScale);
+}
+
+void TimerUI::Start()
+{
+	timer_ = 0.f;
 }
 
 void TimerUI::Update()
@@ -51,6 +61,8 @@ void TimerUI::Update()
 
 void TimerUI::OnDestroy()
 {
+	SetRecentClearTimes(timer_);
+
 	uiMinute_[ToIndex(TimerDigits::Ten)] = nullptr;
 	uiMinute_[ToIndex(TimerDigits::One)] = nullptr;
 	uiColon_ = nullptr;

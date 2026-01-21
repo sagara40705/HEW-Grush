@@ -15,6 +15,7 @@ enum class ModelTag : uint8_t
 	Isu,
 	Kuukseizixyoukii,
 	Ningixyou,
+	SagaraDoll,
 
 	Benti,
 	Aircon,
@@ -23,10 +24,19 @@ enum class ModelTag : uint8_t
 
 	Ufo,
 	Eiseii,
+	Star,
 
 	ProtPlay,
 	Player,
+	Player2,
+
 	Hammer,
+	Hammer_1,
+	Hammer_2,
+	Hammer_3,
+
+	Fence,
+
 	Count
 };
 constexpr size_t ToIndex(ModelTag tag) noexcept

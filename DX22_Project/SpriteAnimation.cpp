@@ -34,6 +34,7 @@ void SpriteAnimation::Update()
 {
     // 対象が無ければ何もしない
     if (!uiRenderer /* && !spriteRenderer3D */) return;
+
     if (!play)  return;
 
     // コマ送りタイミング管理
