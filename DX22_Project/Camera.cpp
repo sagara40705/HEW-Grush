@@ -14,7 +14,11 @@ void Camera::Awake()
 
 void Camera::OnDestroy()
 {
-	s_main = nullptr;
+    if (s_main == this) s_main = nullptr;
+
+    // 自分をリストから削除
+    auto it = std::remove(s_cameras.begin(), s_cameras.end(), this);
+    s_cameras.erase(it, s_cameras.end());
 }
 
 Camera* Camera::Main()

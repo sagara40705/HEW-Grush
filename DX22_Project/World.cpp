@@ -212,6 +212,8 @@ void World::ClearAll()
     lateUpdateList.clear();
     rendererList.clear();
     colliderList.clear();
+	pendingStartObjects.clear();
+
 
     isClearing = false;
 }

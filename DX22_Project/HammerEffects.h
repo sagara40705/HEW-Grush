@@ -13,7 +13,7 @@ public:
 		Count,
 	};
 private:
-	static constexpr int MAX_EFFECTS[Type::Count] = { 2, 2 , 16};
+	static constexpr int MAX_EFFECTS[Type::Count] = { 1, 1 , 8};
 private:
 	GameObject* gradeUp_[MAX_EFFECTS[GradeUp]]{};
 	GameObject* gradeDown_[MAX_EFFECTS[GradeDown]]{};

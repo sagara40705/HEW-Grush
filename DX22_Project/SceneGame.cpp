@@ -41,7 +41,7 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	// ==== タスク設定 ====
 
 	// モデルロード
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Karubi); });
+	//outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Karubi); });
 
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Swing); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Akican); });
@@ -61,17 +61,17 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Eiseii); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Star); });
 
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::ProtPlay); });
+	//outTasks.emplace_back([this] { ModelManager::Load(ModelTag::ProtPlay); });
 	//outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player2); });
 	//outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_1); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_2); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_3); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Fence); });
+	//outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Fence); });
 
 	// テクスチャーロード
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Star); });
+	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Star); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GroundTile); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Stage); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::SkyDome); });
@@ -92,11 +92,11 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::DashMono); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::DashMoji); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::DashMojiMono); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::UIFrostNoise); });
+	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::UIFrostNoise); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::EffectLv1); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GlassShard); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::TasksUI); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::TutorialLocation); });
+	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::TasksUI); });
+	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::TutorialLocation); });
 
 	// プレイハブ設定
 	outTasks.emplace_back([this] { RegisterAllPrefabs(); });
@@ -378,11 +378,11 @@ void SceneGame::CreateGlassObjectSpawner()
 {
 	World& w = GetWorld();
 
-	GameObject& glassObjectSpawner = w.CreateGameObject();
+	//GameObject& glassObjectSpawner = w.CreateGameObject();
 	//glassObjectSpawner.AddComponent<GlassObjectSpawner>();
 
-	GameObject& Frost = w.CreateGameObject(Vector3(0.f, -0.9f, 0.f), Vector3(90.f, 0.f, 0.f));
-	Frost.AddComponent<Sprite3DRenderer>(TextureTag::UIFrostNoise, Vector2::zero(), Vector2(12.8f, 7.2f));
+	//GameObject& Frost = w.CreateGameObject(Vector3(0.f, -0.9f, 0.f), Vector3(90.f, 0.f, 0.f));
+	//Frost.AddComponent<Sprite3DRenderer>(TextureTag::UIFrostNoise, Vector2::zero(), Vector2(12.8f, 7.2f));
 
 	if (IsEndTutorial()) return;
 	GameObject& tutorial = w.CreateGameObject();
