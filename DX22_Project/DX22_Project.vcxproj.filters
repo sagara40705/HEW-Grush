@@ -246,20 +246,8 @@
     <ClCompile Include="LoadingScene.cpp">
       <Filter>Engine\Scene</Filter>
     </ClCompile>
-    <ClCompile Include="SoundBackend.cpp">
-      <Filter>Engine\Sound</Filter>
-    </ClCompile>
-    <ClCompile Include="SoundSystem.cpp">
-      <Filter>Engine\Sound</Filter>
-    </ClCompile>
     <ClCompile Include="Animator.cpp">
       <Filter>Engine\Rendering\Animation</Filter>
-    </ClCompile>
-    <ClCompile Include="AudioListener.cpp">
-      <Filter>Engine\Sound</Filter>
-    </ClCompile>
-    <ClCompile Include="AudioSource.cpp">
-      <Filter>Engine\Sound</Filter>
     </ClCompile>
     <ClCompile Include="OriginalLoading.cpp">
       <Filter>Game\Scenes</Filter>
@@ -356,6 +344,13 @@
     </ClCompile>
     <ClCompile Include="StageMap.cpp">
       <Filter>Game\Components\StageSelect</Filter>
+    </ClCompile>
+    <ClCompile Include="PlayerState.cpp" />
+    <ClCompile Include="Sound.cpp">
+      <Filter>Engine\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundManager.cpp">
+      <Filter>Engine\Sound</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -527,23 +522,8 @@
     <ClInclude Include="LoadingScene.h">
       <Filter>Engine\Scene</Filter>
     </ClInclude>
-    <ClInclude Include="SoundType.h">
-      <Filter>Engine\Sound</Filter>
-    </ClInclude>
-    <ClInclude Include="SoundBackend.h">
-      <Filter>Engine\Sound</Filter>
-    </ClInclude>
-    <ClInclude Include="SoundSystem.h">
-      <Filter>Engine\Sound</Filter>
-    </ClInclude>
     <ClInclude Include="Animator.h">
       <Filter>Engine\Rendering\Animation</Filter>
-    </ClInclude>
-    <ClInclude Include="AudioListener.h">
-      <Filter>Engine\Sound</Filter>
-    </ClInclude>
-    <ClInclude Include="AudioSource.h">
-      <Filter>Engine\Sound</Filter>
     </ClInclude>
     <ClInclude Include="SceneTitle.h">
       <Filter>Game\Scenes</Filter>
@@ -632,6 +612,12 @@
     </ClInclude>
     <ClInclude Include="SelectPlayerControl.h">
       <Filter>Game\Components\StageSelect</Filter>
+    </ClInclude>
+    <ClInclude Include="Sound.h">
+      <Filter>Engine\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundManager.h">
+      <Filter>Engine\Sound</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
