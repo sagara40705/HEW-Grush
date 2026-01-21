@@ -41,7 +41,4 @@ public:
     {
         SceneManager::PopScene();
     }
-
-private:
-    static bool CheckTitleSound;
 };

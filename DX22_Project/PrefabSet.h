@@ -13,6 +13,7 @@ enum class PrefabId : std::uint8_t
     Isu,
     Kuukseizixyoukii,
     Ningixyou,
+    SagaraDoll,
 
     Benti,
     Aircon,
@@ -24,6 +25,9 @@ enum class PrefabId : std::uint8_t
 
     ProtPlay,
     GlassShard,
+
+    StageWall,
+
     Count
 };
 

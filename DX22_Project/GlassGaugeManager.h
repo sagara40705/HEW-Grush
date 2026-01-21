@@ -39,6 +39,13 @@ private:
 
 	bool IsMaxGauge(); //ゲージが最大値か？
 	bool isLimitBreak_ = false; //限界突破中か？
+public:
+	// チュートリアル用フラグ
+	bool isTutorial_ = false; // チュートリアル中か？
+	bool warkingTask_ = false; // チュートリアルのタスクを進行中か？
+	bool endTask_02_ = false; // チュートリアルのタスク2をクリアしたか？
+	bool endTask_04_ = false; // チュートリアルのタスク3をクリアしたか？
+
 private:
 #ifdef _DEBUG
 	void DebugCommand();

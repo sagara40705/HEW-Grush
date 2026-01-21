@@ -20,10 +20,6 @@ public:
 	// 非同期ロード用
 	void BuildLoadTasks(std::vector<LoadTask>& outTasks) override;
 private:
-	void LoadModels();
-	void LoadTextures();
-	void LoadSound() {}
-
 	void CreateManagers();
 	void CreateCameraAndPlayer();
 	void CreateStage();
@@ -35,6 +31,7 @@ private:
 	void CreateTimerUI();
 	void CreateScoreUI();
 	void CreateActionUI();
+	void CreateTutorialWall();
 
 	//ギミック	
 	void CreateGlassObjectSpawner();

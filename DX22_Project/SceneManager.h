@@ -3,6 +3,10 @@
 #include <vector>
 #include <memory>
 #include <type_traits>
+#include "Time/Timer.h"
+#include "Texture.h"
+
+class SpriteAnimation;
 
 // UnityEngine.SceneManagement.SceneManager に相当するクラス
 class SceneManager
@@ -69,6 +73,31 @@ private:
 
     // 全シーン Unload + 破棄
     static void ClearStack();
+
+private:
+	// シーン遷移時のフェード管理
+    enum State
+    {
+		FadeOut,
+		Idle,
+		FadeIn,
+    };
+	static State s_state;   // 現在のフェード状態
+	static Timer s_timer;   // フェードタイマー(FadeOut/in共通)
+	static constexpr float FadeDuration = 48.f / 60.f * 3.0f; // フェード時間(秒)(FadeOut/in共通)(48フレーム * 2)
+
+	static void StartFadeOut();
+	static void StartFadeIn();
+
+	static void UpdateIdle();
+	static void UpdateFadeOut();
+    static void UpdateFadeIn();
+
+	static SpriteAnimation* s_fadeOutAnime;     // フェードアウト用アニメーション
+	static SpriteAnimation* s_fadeInAnime; ;    // フェードイン用アニメーション
+public:
+    static void CreateFadeAnimations(Scene* scene);         // フェード用アニメーション作成
+	static void ReleaseFadeAnimations();        // フェード用アニメーション解放
 };
 
 // テンプレート関数の実装

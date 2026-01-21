@@ -13,11 +13,6 @@ void Game::OriginalUninit()
 	s_state.reset();
 }
 
-void SetSelectedStage(StageId stage)
-{
-	Game::GetState()->stage_ = stage;
-}
-
 bool HasPlayedIntroMovie()
 {
 	return Game::GetState()->hasPlayedIntroMovie;
@@ -33,6 +28,11 @@ StageId GetCurrentStage()
 {
 	return Game::GetState()->stage_;
 }
+void SetSelectedStage(StageId id)
+{
+	Game::GetState()->stage_ = id;
+}
+
 
 // 直近クリアしたステージのタイムを取得・設定
 float GetRecentClearTimes()
@@ -42,4 +42,14 @@ float GetRecentClearTimes()
 void SetRecentClearTimes(float time)
 {
 	Game::GetState()->recentClearTimes_ = time;
+}
+
+void EndTutorial()
+{
+	Game::GetState()->endTutorial_ = true;
+}
+
+bool IsEndTutorial()
+{
+	return Game::GetState()->endTutorial_;
 }

@@ -146,6 +146,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\Users\sgr12\OneDrive\デスクトップ\sss\SceneStageSelect.cpp" />
+    <ClCompile Include="..\..\..\..\..\Users\sgr12\OneDrive\デスクトップ\sss\SelectPlayerControl.cpp" />
+    <ClCompile Include="..\..\..\..\..\Users\sgr12\OneDrive\デスクトップ\sss\StageMap.cpp" />
     <ClCompile Include="ActionUI.cpp" />
     <ClCompile Include="Animator.cpp" />
     <ClCompile Include="BoxCollider.cpp" />
@@ -156,9 +159,6 @@
     <ClCompile Include="CapsuleCollider.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Collision.cpp" />
-    <ClCompile Include="SelectPlayerControl.cpp" />
-    <ClCompile Include="StageMap.cpp" />
-    <ClCompile Include="StageSelectSystem.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="DirectX.cpp" />
     <ClCompile Include="ElectricFan.cpp" />
@@ -168,9 +168,11 @@
     <ClCompile Include="GlassObjectSpawnerh.cpp" />
     <ClCompile Include="GlassShard.cpp" />
     <ClCompile Include="GlassShardPool.cpp" />
+    <ClCompile Include="HammerEffects.cpp" />
     <ClCompile Include="GroundRenderer.cpp" />
     <ClCompile Include="Hammer.cpp" />
     <ClCompile Include="JumpSki.cpp" />
+    <ClCompile Include="LoadingCharacterAnimation.cpp" />
     <ClCompile Include="LoadingGauge.cpp" />
     <ClCompile Include="Model_anime.cpp" />
     <ClCompile Include="Model_check.cpp" />
@@ -203,12 +205,15 @@
     <ClCompile Include="PrefabSet.cpp" />
     <ClCompile Include="PrimitiveMeshManager.cpp" />
     <ClCompile Include="Raycast.cpp" />
+    <ClCompile Include="ResultGaugeUI.cpp" />
+    <ClCompile Include="ResultRankUI.cpp" />
+    <ClCompile Include="ResultTimerUI.cpp" />
     <ClCompile Include="Rigidbody.cpp" />
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneGame.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="SceneResult.cpp" />
     <ClCompile Include="SceneSample.cpp" />
-    <ClCompile Include="SceneStageSelect.cpp" />
     <ClCompile Include="ScoreManager.cpp" />
     <ClCompile Include="ScoreUI.cpp" />
     <ClCompile Include="Shader.cpp" />
@@ -227,8 +232,10 @@
     <ClCompile Include="TexutureManager.cpp" />
     <ClCompile Include="SceneTitle.cpp" />
     <ClCompile Include="TimerUI.cpp" />
+    <ClCompile Include="Time\Time.cpp" />
     <ClCompile Include="TitleManager.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="TutorialManager.cpp" />
     <ClCompile Include="UIFrostRenderer.cpp" />
     <ClCompile Include="UiSpriteRenderer.cpp" />
     <ClCompile Include="WarpPoint .cpp" />
@@ -237,6 +244,10 @@
     <ClCompile Include="_model.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\..\Users\sgr12\OneDrive\デスクトップ\sss\SceneStageSelect.h" />
+    <ClInclude Include="..\..\..\..\..\Users\sgr12\OneDrive\デスクトップ\sss\SelectPlayerControl.h" />
+    <ClInclude Include="..\..\..\..\..\Users\sgr12\OneDrive\デスクトップ\sss\StageMap.h" />
+    <ClInclude Include="..\..\..\..\..\Users\sgr12\OneDrive\デスクトップ\sss\StagePoint.h" />
     <ClInclude Include="ActionUI.h" />
     <ClInclude Include="AllComponent.h" />
     <ClInclude Include="Animator.h" />
@@ -248,10 +259,6 @@
     <ClInclude Include="CapsuleCollider.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Collision.h" />
-    <ClInclude Include="SelectPlayerControl.h" />
-    <ClInclude Include="StageMap.h" />
-    <ClInclude Include="StagePoint.h" />
-    <ClInclude Include="StageSelectSystem.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="DebugLog.h" />
     <ClInclude Include="Defines.h" />
@@ -269,6 +276,7 @@
     <ClInclude Include="GlassObjectSpawner.h" />
     <ClInclude Include="GlassShard.h" />
     <ClInclude Include="GlassShardPool.h" />
+    <ClInclude Include="HammerEffects.h" />
     <ClInclude Include="GroundRenderer.h" />
     <ClInclude Include="Hammer.h" />
     <ClInclude Include="Input.h" />
@@ -278,6 +286,7 @@
     <ClInclude Include="JumpSki.h" />
     <ClInclude Include="Layer.h" />
     <ClInclude Include="LineManager.h" />
+    <ClInclude Include="LoadingCharacterAnimation.h" />
     <ClInclude Include="LoadingGauge.h" />
     <ClInclude Include="LoadingScene.h" />
     <ClInclude Include="Main.h" />
@@ -296,12 +305,15 @@
     <ClInclude Include="PrimitiveMeshManager.h" />
     <ClInclude Include="Raycast.h" />
     <ClInclude Include="RenderSystem.h" />
+    <ClInclude Include="ResultGaugeUI.h" />
+    <ClInclude Include="ResultRankUI.h" />
+    <ClInclude Include="ResultTimerUI.h" />
     <ClInclude Include="Rigidbody.h" />
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneGame.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="SceneResult.h" />
     <ClInclude Include="SceneSmaple.h" />
-    <ClInclude Include="SceneStageSelect.h" />
     <ClInclude Include="ScoreManager.h" />
     <ClInclude Include="ScoreUI.h" />
     <ClInclude Include="Shader.h" />
@@ -319,15 +331,18 @@
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="SceneTitle.h" />
     <ClInclude Include="TimerUI.h" />
+    <ClInclude Include="Time\Stopwatch.h" />
+    <ClInclude Include="Time\Time.h" />
+    <ClInclude Include="Time\Timer.h" />
     <ClInclude Include="TitleManager.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="TutorialManager.h" />
     <ClInclude Include="UIFrostRenderer.h" />
     <ClInclude Include="UiSpriteRenderer.h" />
     <ClInclude Include="Vector2.h" />
     <ClInclude Include="Vector3.h" />
     <ClInclude Include="WarpPoint.h" />
     <ClInclude Include="World.h" />
-    <ClInclude Include="x64\Csv.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="SceneManager.inl" />

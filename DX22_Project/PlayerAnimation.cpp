@@ -12,7 +12,7 @@ void PlayerAnimation::Start()
 	state_ = gameObject->GetComponent<PlayerState>();
 	anime_ = gameObject->GetComponent<Animator>();
 	AddAllAnimations();
-	anime_->Play(animation_[Type::Idle], false, 1.f);
+	anime_->Play(animation_[Type::NormalAttack], false, 1.f);
 	//anime_->SetTimeSeconds(4.8f);
 
 	assert(state_ && anime_ && "PlayerAnimation	で プレイヤーの <PlayerState> か <Animator> が nullptr です");
@@ -79,13 +79,7 @@ void PlayerAnimation::CheckNormalAttackAnime()
 	{
 		const float t = anime_->GetCurrentAnimeTime();
 
-		//アニメーション終了したら移動アニメーションへ
-		//if (t > 2.5f && t < 3.f)
-		//{
-		//	//anime_->Play(animation_[Type::Move], false, 1.f);
-		//	anime_->SetTimeSeconds(4.4f);
-		//}
-		if (t > 2.3)
+		if (t > 1.7f)
 		{
 			anime_->Play(animation_[Type::Move], false, 1.f);
 			anime_->SetTimeSeconds(4.7f);
@@ -94,11 +88,10 @@ void PlayerAnimation::CheckNormalAttackAnime()
 	}
 	else
 	{
-		//ダッシュ攻撃アクションを実行したらダッシュ攻撃アニメーションへ
 		if (state_->actionedThisFrame[ToIndex(ActionId::NormalAttack)])
 		{
 			currentType_ = Type::NormalAttack;
-			anime_->Play(animation_[Type::NormalAttack], false, 2.0f);
+			anime_->Play(animation_[Type::NormalAttack], false, 1.0f);
 			anime_->SetTimeSeconds(1.2f);
 		}
 
@@ -179,19 +172,17 @@ void PlayerAnimation::AddAllAnimations()
 	if (!model) return;
 
 	//待機
-	animation_[Type::Idle] = model->AddAnimation("Assets/Animation/animation_taiki2.fbx");
-
+	animation_[Type::Idle] = model->AddAnimation("Assets/Animation/taiki/body_taiki.fbx");
 	//移動
-	animation_[Type::Move] = model->AddAnimation("Assets/Animation/animation_hashiru_3.fbx");
-
+	animation_[Type::Move] = model->AddAnimation("Assets/Animation/hashiru/body_hashiru.fbx");
 	// 通常攻撃
-	animation_[Type::NormalAttack] = model->AddAnimation("Assets/Animation/animation_rotateattack.fbx");
-	
+	animation_[Type::NormalAttack] = model->AddAnimation("Assets/Animation/rotateattack/body_rotateattack.fbx");
 	// 回転攻撃
-	animation_[Type::SpinAttack] = model->AddAnimation("Assets/Animation/animation_rotateattack.fbx");
-
+	animation_[Type::SpinAttack] = model->AddAnimation("Assets/Animation/rotateattack/body_rotateattack.fbx");
 	//突進攻撃
-	animation_[Type::DashAttack] = model->AddAnimation("Assets/Animation/animation_dashattack.fbx");
+	animation_[Type::DashAttack] = model->AddAnimation("Assets/Animation/dashattack/body_dashattack.fbx");
+	//ノックバック
+	animation_[Type::NockBack] = model->AddAnimation("Assets/Animation/knockback/body_knockback.fbx");
 }
 
 /*
@@ -217,6 +208,14 @@ void PlayerAnimation::ChangeState()
 */
 void PlayerAnimation::UpdateCurrentState()
 {
+
+}
+
+void PlayerAnimation::AddHummerAllAnimations()
+{
+	GameObject* hummer = gameObject->FindChildWithTag(Tag::Hammer);
+	if (!hummer) return;
+
 
 }
 
