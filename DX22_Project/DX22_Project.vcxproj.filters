@@ -198,9 +198,6 @@
     <ClCompile Include="SpriteAnimation.cpp">
       <Filter>Engine\Rendering\UI</Filter>
     </ClCompile>
-    <ClCompile Include="EventComponent.cpp">
-      <Filter>Engine\Core</Filter>
-    </ClCompile>
     <ClCompile Include="Prefab.cpp">
       <Filter>Engine\Core</Filter>
     </ClCompile>
@@ -490,12 +487,6 @@
     </ClInclude>
     <ClInclude Include="SpriteAnimation.h">
       <Filter>Engine\Rendering\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Event.h">
-      <Filter>Engine\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="EventComponent.h">
-      <Filter>Engine\Core</Filter>
     </ClInclude>
     <ClInclude Include="Prefab.h">
       <Filter>Engine\Core</Filter>

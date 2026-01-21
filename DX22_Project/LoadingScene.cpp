@@ -69,19 +69,22 @@ void LoadingScene::Update()
     {
         shouldChangeScene = true;
     }
+
+    if (shouldChangeScene && nextScene)
+    {
+        // unique_ptr ‚©‚ç shared_ptr ‚Ö•ÏŠ·‚µ‚Ä“n‚·
+        shouldChangeScene = false;
+        SceneManager::ChangeSceneAlreadyLoaded(std::move(nextScene));
+        return;
+    }
 }
 
 void LoadingScene::Draw()
 {
-    GetWorld().Draw();
+	if (shouldChangeScene) return;
+	if (!nextScene) return;
 
-    // •`‰æŠ®—¹Œã‚ÉƒV[ƒ“Ø‚è‘Ö‚¦
-    if (shouldChangeScene && nextScene)
-    {
-        // unique_ptr ‚©‚ç shared_ptr ‚Ö•ÏŠ·‚µ‚Ä“n‚·
-        SceneManager::ChangeSceneAlreadyLoaded(std::move(nextScene));
-        shouldChangeScene = false;
-    }
+    GetWorld().Draw();
 }
 
 void LoadingScene::Unload()

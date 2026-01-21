@@ -80,25 +80,16 @@ void SceneManager::PopScene()
     }
 }
 
-void SceneManager::ChangeSceneAlreadyLoaded(std::unique_ptr<Scene> scene)
+void SceneManager::ChangeSceneAlreadyLoaded(std::unique_ptr<Scene> next)
 {
-    ClearStack();                 // 既存シーンは RootUnload して破棄
+    if (!next) return;
+    if (s_nextScene) return;    //次のsceneはないはず
+    if (s_pendingOp != PendingOp::None) return;
 
-    assert(scene && "SceneManager::ChangeSceneAlreadyLoaded() scene is null.");
-    if (scene)
-    {
-        s_scenes.emplace_back(std::move(scene));
+	s_nextScene = std::move(next); // 所有権移動
 
-        StartFadeOut();
-
-   //     if (s_fadeOutAnime)
-   //     {
-			//s_fadeOutAnime->gameObject->SetActive(true);
-   //         s_fadeOutAnime->Play();
-   //     }
-        //s_state = State::FadeIn;
-        //s_timer.Start();
-    }
+    s_pendingOp = PendingOp::LoadedChange;
+    s_state = State::Idle;
 }
 
 Scene* SceneManager::GetActiveScene()
@@ -127,8 +118,18 @@ void SceneManager::ApplyNextScene()
     case PendingOp::Change:
 		// FadeIn 開始
 		StartFadeIn();
-  
         break;
+
+	case PendingOp::LoadedChange:
+		// スタック全消去 + 新しいシーンに切り替え
+		ClearStack();
+        if (s_nextScene)
+        {
+			//s_nextScene->RootLoad();  // ロード済みなので呼ばない
+			s_scenes.emplace_back(std::move(s_nextScene));  // 所有権移動のみ
+			StartFadeOut(); // FadeOut 開始
+        }
+		break;
 
     case PendingOp::Push:
         // 上に新しいシーンを積む
@@ -149,19 +150,14 @@ void SceneManager::ApplyNextScene()
         break;
     }
 
-    // Push のときに使い終わった nextScene を念のためクリア
-	if (s_pendingOp == PendingOp::Push)
+    // 使い終わった nextScene を念のためクリア
+	if (s_pendingOp == PendingOp::Push || s_pendingOp == PendingOp::LoadedChange)
 	{
 		s_nextScene.reset();
 	}
 
     // 操作が終わったのでクリア
     s_pendingOp = PendingOp::None;
-    //// Change / Push のときに使い終わった nextScene を念のためクリア
-    //if (s_pendingOp != PendingOp::Change && s_pendingOp != PendingOp::Push)
-    //{
-    //    s_nextScene.reset();
-    //}
 }
 
 void SceneManager::ClearStack()
@@ -211,11 +207,6 @@ void SceneManager::StartFadeIn()
 
 void SceneManager::UpdateIdle()
 {
-    // まず前フレームで予約された操作を反映
-    //ApplyNextScene();
-
-    // Update 中に新たに ChangeScene / PushScene / PopScene が呼ばれていたら、
-    // その結果もこのフレームの終わりで反映しておく
     ApplyNextScene();
 }
 

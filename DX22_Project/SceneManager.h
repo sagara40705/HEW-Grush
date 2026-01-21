@@ -44,7 +44,7 @@ public:
     static void ChangeSceneAsync(Args&&... args);
 
     // すでに StepLoad / BuildLoadTasks でロード済みのシーンをそのまま採用する
-    static void ChangeSceneAlreadyLoaded(std::unique_ptr<Scene> scene);
+    static void ChangeSceneAlreadyLoaded(std::unique_ptr<Scene> next);
 
     // アクティブシーン（スタックのトップ）
     static Scene* GetActiveScene();
@@ -54,7 +54,8 @@ private:
     enum class PendingOp
     {
         None,
-        Change, // スタック全破棄して切り替え
+		Change, // フェードインしてシーンを入れ替える
+		LoadedChange, // すでにロード済みのシーンに切り替える(フェードなし)
         Push,   // スタックの上に積む
         Pop,    // スタックの上を 1 枚はがす
     };

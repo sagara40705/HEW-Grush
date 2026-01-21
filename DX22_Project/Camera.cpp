@@ -5,39 +5,28 @@
 using namespace DirectX;
 
 Camera* Camera::s_main = nullptr;
-std::vector<Camera*> Camera::s_cameras{};
 
 void Camera::Awake()
 {
-	s_cameras.push_back(this);
+}
+
+void Camera::Start()
+{
+	if (s_main == nullptr)
+	{
+		s_main = this;
+	}
 }
 
 void Camera::OnDestroy()
 {
     if (s_main == this) s_main = nullptr;
 
-    // 自分をリストから削除
-    auto it = std::remove(s_cameras.begin(), s_cameras.end(), this);
-    s_cameras.erase(it, s_cameras.end());
 }
 
 Camera* Camera::Main()
 {
-	// 優先：tag == Main のカメラ
-		for (auto* cam : s_cameras)
-		{
-			if (cam && cam->tag == CameraTag::Main && cam->IsActiveAndEnabled())
-				return cam;
-		}
-
-	// フォールバック：最初の有効なカメラ
-	for (auto* cam : s_cameras)
-	{
-		if (cam && cam->IsActiveAndEnabled())
-			return cam;
-	}
-
-	return nullptr;
+	return s_main;
 }
 
 void Camera::SetPerspective(float fovYRad, float aspectRatio, float nearPlane, float farPlane)
