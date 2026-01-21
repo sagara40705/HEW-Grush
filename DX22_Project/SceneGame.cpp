@@ -517,7 +517,7 @@ void SceneGame::SkyDomeDorw()
 
 void SceneGame::Update()
 {
-	if (InputKeyboard::GetKeyDown(VK_SPACE))
+	if (InputKeyboard::GetKeyDown(VK_SPACE) && InputKeyboard::GetKeyDown('Q'))
 	{
 		SceneManager::ChangeSceneAsync<SceneStageSelect>();
 	}
