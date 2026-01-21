@@ -1,11 +1,27 @@
 [Debug Log Started]
-[14:20:36] Model::Load, material.pTexture: 00000244375231D0
-[14:20:36] Model::Load, material.pTexture: 0000024437524190
-[14:20:36] Model::Load, material.pTexture: 0000024437523DD0
-[14:20:37] Model::Load, material.pTexture: 0000024437524010
-[14:20:37] Model::Load, material.pTexture: 000002443751DE30
-[14:20:37] Start Player Animation
-[14:21:19] Model::Load, material.pTexture: 0000024437744A40
-[14:21:20] Start Player Animation
-[14:21:22] GlassGauge Ratio: 0
+[15:29:17] Model::Load, material.pTexture: 000001D2148D6880
+[15:29:17] Model::Load, material.pTexture: 000001D2148D6760
+[15:29:17] Model::Load, material.pTexture: 000001D2148D6460
+[15:29:17] Model::Load, material.pTexture: 000001D2148D6F40
+[15:29:17] Model::Load, material.pTexture: 000001D2148CFB00
+[15:29:18] Start Player Animation
+[15:29:27] Model::Load, material.pTexture: 000001D2155AF070
+[15:29:28] Start Player Animation
+[15:29:29] GlassGauge Ratio: 0
+[15:29:32] GlassGaugeManager::BrakeGlass, Gauhe: 10
+[15:29:32] DebugCommand GaugeUp 1
+[15:29:32] CameraShake::Play, type: 0
+[15:29:32] DebugCommand Camera Shake
+[15:29:32] GlassGauge Effect Play
+[15:29:32] GlassGauge Ratio: 0.1
+[15:29:33] CameraShake::Stop
+[15:29:34] Animation End OneLoop
+[15:29:34] GlassGaugeManager::BrakeGlass, Gauhe: 20
+[15:29:34] DebugCommand GaugeUp 1
+[15:29:34] CameraShake::Play, type: 0
+[15:29:34] DebugCommand Camera Shake
+[15:29:34] GlassGauge Effect Play
+[15:29:34] GlassGauge Ratio: 0.2
+[15:29:35] CameraShake::Stop
+[15:29:36] Animation End OneLoop
 [Debug Log End]
