@@ -21,7 +21,6 @@ void Result::Load()
 	for (auto& t : tasks) t();
 }
 
-
 void Result::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 {
 	// World ‚Ì’†g‚ğÁ‚·
@@ -55,7 +54,6 @@ void Result::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 		});
 
 }
-
 
 void Result::Update()
 {

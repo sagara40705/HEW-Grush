@@ -60,7 +60,6 @@ void SceneTitle::Unload()
 
 void SceneTitle::CreateCameraAndPlayer()
 {
-
 	World& w = GetWorld();
 
 	// ƒJƒƒ‰
@@ -146,7 +145,6 @@ void SceneTitle::CreateTitleManager()
 
 void SceneTitle::Update()
 {
-
 	//if (!m_breakButton) return;
 
 	if (!m_isStarting && InputKeyboard::GetKeyDown(VK_SPACE))

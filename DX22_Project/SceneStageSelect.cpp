@@ -1,6 +1,7 @@
 #include "SceneStageSelect.h"
 #include "GameObject.h"
 #include "AllComponent.h"
+#include "SceneManager.h"
 
 void SceneStageSelect::Load()
 {
@@ -26,16 +27,26 @@ void SceneStageSelect::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::StageMap); });
 
 	// ゲームオブジェクト生成
+	outTasks.emplace_back([this] { CreateCanvas(); });
 	outTasks.emplace_back([this] { CreateStageMap(); });
 	outTasks.emplace_back([this] { CreateCamera(); });
 	outTasks.emplace_back([this] { CreatePlayer(); });
 	outTasks.emplace_back([this] { CreateGround(); });
+	outTasks.emplace_back([this] { SceneManager::CreateFadeAnimations(this); });
 
 	// 最後に Start を流す
 	outTasks.emplace_back([this]
 		{
 			GetWorld().Start();
 		});
+}
+
+void SceneStageSelect::CreateCanvas()
+{
+	World& world = GetWorld();
+
+	GameObject& canvasObj = world.CreateGameObject();
+	canvasObj.AddComponent<Canvas>();
 }
 
 void SceneStageSelect::CreateStageMap()
@@ -77,8 +88,9 @@ void SceneStageSelect::CreateGround()
 
 void SceneStageSelect::Unload()
 {
+	SceneManager::ReleaseFadeAnimations();
 	TextureManager::Clear();
-	ModelManager::Clear();
+	//ModelManager::Clear();
 }
 
 

@@ -8,6 +8,7 @@
 #include "CameraShake.h"
 #include "GlassGaugeManager.h"
 #include "ScoreManager.h"
+#include "PlayerAnimation.h"
 #include "HammerEffects.h"
 #include "GlassObject.h"
 #include "DebugLog.h"
@@ -18,6 +19,7 @@ void Hammer::Start()
 	bc_ = gameObject->GetComponent<BoxCollider>();
 	mf_ = gameObject->GetComponent<MeshFilter>();
 	renderer_ = gameObject->GetComponent<MeshRenderer>();
+	playerAnim_ = gameObject->GetComponent<PlayerAnimation>();
 	effects_ = gameObject->GetComponent<HammerEffects>();
 
 	GameObject* camera = gameObject->FindWithTag(Tag::MainCamera);
@@ -140,6 +142,12 @@ void Hammer::Attack(GameObject* go)
 
 	if (!shake_) return;
 	shake_->Play(ShakeType::LEVEL_1);
+
+	if (ToIndex(glass->GetGrade()) > ToIndex(grade_))
+	{
+		if (playerAnim_)
+			playerAnim_->CheckNockBackAnime(0.5f);
+	}
 
 	//if (CanBrake(glass->GetGrade()))
 	//{
