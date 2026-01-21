@@ -352,6 +352,12 @@
     <ClCompile Include="SoundManager.cpp">
       <Filter>Engine\Sound</Filter>
     </ClCompile>
+    <ClCompile Include="Sound.cpp">
+      <Filter>Engine\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundManager.cpp">
+      <Filter>Engine\Sound</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -612,6 +618,12 @@
     </ClInclude>
     <ClInclude Include="SelectPlayerControl.h">
       <Filter>Game\Components\StageSelect</Filter>
+    </ClInclude>
+    <ClInclude Include="Sound.h">
+      <Filter>Engine\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundManager.h">
+      <Filter>Engine\Sound</Filter>
     </ClInclude>
     <ClInclude Include="Sound.h">
       <Filter>Engine\Sound</Filter>

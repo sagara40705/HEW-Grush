@@ -5,6 +5,7 @@
 #include "GlassObject.h"
 #include "InputKeyboard.h"
 #include "DebugLog.h"
+#include "ShaderList.h"
 #include "SoundManager.h"
 
 constexpr float kMaxGaugeVale[ToIndex(HammerGrade::Count)] 
@@ -29,6 +30,39 @@ void GlassGaugeManager::Update()
 #ifdef _DEBUG
 	DebugCommand();
 #endif // DEBUG	
+
+	// ŒÀŠE“Ë”j’†
+	if (isLimitBreak_)
+	{
+		limitBreakDurationTimer_ += 0.1f / 60.f;
+		ShaderList::SetRainbowTime(limitBreakDurationTimer_);
+
+		if (limitBreakDurationTimer_ >= kLimitBreakDuration)
+		{
+			isLimitBreak_ = false;
+			limitBreakDurationTimer_ = 0.f;
+			hammer_->LimitBreakEnd();
+			DebugLog::Output("ŒÀŠE“Ë”jI—¹");
+		}
+		return;
+	}
+	else
+	{
+		if (!IsMaxGauge())
+		{
+			limitBreakTimer_ = 0.f;
+			return;
+		}
+
+		limitBreakTimer_ += 0.1f / 60.f;
+		if (limitBreakTimer_ >= kLimitBreakTime)
+		{
+			isLimitBreak_ = true;
+			limitBreakTimer_ = 0.f;
+			hammer_->LimitBreakStart();
+			DebugLog::Output("ŒÀŠE“Ë”jŠJŽn");
+		}
+	}
 
 	if (isGaugeEmpty) return;
 
@@ -56,7 +90,7 @@ void GlassGaugeManager::Update()
 			isGaugeDecaying = true;
 			gaugeDecayDelayTimer = 0.f;
 			DebugLog::Output("ƒQ[ƒWŒ¸ŠŠJŽn");
-			SoundManager::SoundPlay(GaugeDownSE,1.0f);
+			SoundManager::SoundPlay(SoundTag::GaugeDownSE, 1.0f);
 		}
 	}
 }
@@ -88,6 +122,19 @@ void GlassGaugeManager::BrakeGlass(GlassGrade grade)
 	{
 		GradeUp();
 	}
+
+	if (isTutorial_ && warkingTask_)
+	{
+		if (hammer_->GetGrade() == HammerGrade::Grade_1)
+		{
+			endTask_02_ = true;
+		}
+
+		if (hammer_->GetGrade() == HammerGrade::Grade_2)
+		{
+			endTask_04_ = true;
+		}
+	}
 }
 
 void GlassGaugeManager::GradeUp()
@@ -99,9 +146,7 @@ void GlassGaugeManager::GradeUp()
 	}
 
 	hammer_->GradeUp();
-
-//	PlaySound(SoundManager::GetSound(GradeUpSE));
-	SoundManager::SoundPlay(GradeUpSE,1.0f);
+	SoundManager::SoundPlay(SoundTag::GradeUpSE, 1.0f);
 
 	constexpr float kWhenGradeUpMinGauge = 5;
 	gauge_ = kWhenGradeUpMinGauge;
@@ -114,12 +159,11 @@ void GlassGaugeManager::GradeDown()
 		isGaugeEmpty = true;
 		gauge_ = 0.f;
 		DebugLog::Output("GlassGauge, is Empty");
+		SoundManager::SoundPlay(SoundTag::GradeDownSE ,1.0f);
 		return;
 	}
 
 	hammer_->GradeDown();
-//	PlaySound(SoundManager::GetSound(GradeDownSE));
-	SoundManager::SoundPlay(GradeDownSE, 1.0f);
 
 	gauge_ = kMaxGaugeVale[ToIndex(hammer_->GetGrade())];
 }
@@ -140,6 +184,16 @@ HammerGrade GlassGaugeManager::GetHammerGrade()
 	return hammer_->GetGrade();
 }
 
+bool GlassGaugeManager::IsMaxGauge()
+{
+	size_t grade = ToIndex(hammer_->GetGrade());
+	if (gauge_ >= kMaxGaugeVale[grade])
+	{
+		return true;
+	}
+	return false;
+}
+
 #ifdef _DEBUG
 void GlassGaugeManager::DebugCommand()
 {
@@ -147,6 +201,19 @@ void GlassGaugeManager::DebugCommand()
 	{
 		BrakeGlass(GlassGrade::Grade_1);
 		DebugLog::Output("DebugCommand GaugeUp 1");
+	}
+
+	if (InputKeyboard::GetKeyDown('N'))
+	{
+		isLimitBreak_ = true;
+		player_->LimitBreakOn();
+		hammer_->LimitBreakStart();
+	}
+	if (InputKeyboard::GetKeyDown('M'))
+	{
+		isLimitBreak_ = true;
+		player_->LimitBreakOff();
+		hammer_->LimitBreakEnd();
 	}
 }
 #endif // DEBUG	
