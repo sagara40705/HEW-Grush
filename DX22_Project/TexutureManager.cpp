@@ -10,7 +10,7 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     /*02*/"Assets/Texture/Star.png",
     /*03*/"Assets/Texture/GroundTile.png",
     /*04*/"Assets/Texture/stage.png",
-    /*05*/"Assets/Texture/SkyDome.png",
+    /*05*/"Assets/Texture/bg_4096_2048.png.png",
     /*06*/"Assets/Texture/lv1_0_b.png",
     /*07*/"Assets/Texture/lv1_max_b.png",
     /*08*/"Assets/Texture/lv1_0_g.png",
