@@ -24,12 +24,20 @@ public:
     SceneTitle() = default;
     ~SceneTitle() override = default;
 
+    // 非同期ロード用
+    void BuildLoadTasks(std::vector<LoadTask>& outTasks) override;
+
     void Load() override;
     void Update() override;
     void Draw() override;
     void Unload() override;
-
+private:
     void CreateCameraAndPlayer();
+    void CreateCanvas();
+    void CreateBackGround();
+    void CreateTitleFont();
+    void CreateTitleLogo();
+    void CreateTitleManager();
 private:
     // ★ エンターで割る対象のボタン
     //BreakUiRenderer* m_breakButton = nullptr;

@@ -86,16 +86,11 @@
 //FadeOut生成
 void TitleManager::Awake()
 {
-	//エンプティの子オブジェクト化
-	GameObject& fadeOut = gameObject->CreateChild();
-	fadeOut.AddComponent<UiSpriteRenderer>(TextureTag::FadeOut, Vector2(0, 0), Vector2(1280, 720));
-	fade_ = &fadeOut.AddComponent<SpriteAnimation>(6, 8, 3, 48, false);
 }
 
 void TitleManager::Start()
 {
-	fade_->Stop();
-	//fade_->SetFrame(17);
+
 }
 
 void TitleManager::Update()
@@ -104,7 +99,6 @@ void TitleManager::Update()
 	if (InputNext())
 	{
 		inputNext = true;
-		fade_->Play();
 	}
 
 
@@ -129,7 +123,7 @@ bool TitleManager::InputNext()
 
 void TitleManager::AnimationTimer()
 {
-	constexpr float AnimationTime = 2.0f;
+	constexpr float AnimationTime = 1.0f;
 	constexpr float DT = 1.f / 60.f;
 
 	timer += DT;

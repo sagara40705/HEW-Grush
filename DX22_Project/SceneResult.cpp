@@ -15,16 +15,6 @@
 constexpr Vector2 kNumberUVScale = { 0.1f, 1.0f };
 void Result::Load()
 {
-
-	//テクスチャーロード
-	//TextureManager::Load(TextureTag::Title_BG);
-	World& w = GetWorld();
-	//Canvas
-	GameObject& canvas = w.CreateGameObject();
-	canvas.AddComponent<Canvas>();
-
-
-
 	// 従来の同期ロードが必要なら、タスクを構築して全部回す
 	std::vector<LoadTask> tasks;
 	BuildLoadTasks(tasks);
