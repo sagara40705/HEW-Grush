@@ -67,6 +67,7 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     /*59*/"Assets/Texture/GradeUpEffect.png",
     /*60*/"Assets/Texture/GradeUpEffect.png",
 	/*61*/"Assets/Texture/StageSelect/PlayerIcon.png",
+	/*62*/"Assets/Texture/StageSelect/LoadCharacter.png",
 };
 
 // 配列のデフォルトパスを使用して登録

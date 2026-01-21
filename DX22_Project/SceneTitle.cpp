@@ -25,8 +25,7 @@ void SceneTitle::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Title_BreakID); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Title_Loge); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Title_Loge2); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Loading_Charaacter); });
-
+	
 	// 各種オブジェクト生成タスクを追加
 	outTasks.emplace_back([this] { CreateCameraAndPlayer(); });
 	outTasks.emplace_back([this] { CreateCanvas(); });

@@ -13,7 +13,7 @@ void LoadingScene::OriginalLoad()
 	TextureManager::Load(TextureTag::LoadGauge);
 	TextureManager::Load(TextureTag::Loading_BG);
 	TextureManager::Load(TextureTag::Loading_Txt);
-	TextureManager::Load(TextureTag::Loading_Charaacter);
+	TextureManager::Load(TextureTag::Loading_Character);
 	
 	// ★重要: 3Dモデルのロード
 	ModelManager::Load(ModelTag::Player);
@@ -40,7 +40,7 @@ void LoadingScene::OriginalLoad()
 
 	// ロード中キャラアニメーション
 	GameObject& loadCharaObj = w.CreateGameObject();
-	loadCharaObj.AddComponent<UiSpriteRenderer>(TextureTag::Loading_Charaacter, Vector2(860.0f,400.0f), Vector2(400.0f, 300.0f));
+	loadCharaObj.AddComponent<UiSpriteRenderer>(TextureTag::Loading_Character, Vector2(860.0f,400.0f), Vector2(400.0f, 300.0f));
 	loadChara = &loadCharaObj.AddComponent<SpriteAnimation>(1, 10, 3, 10, true);
 
 	loadChara->Play();// アニメーション再生
