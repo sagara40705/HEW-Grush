@@ -4,10 +4,14 @@
 #include "UiSpriteRenderer.h"
 #include "TextureManager.h"
 
+
 constexpr Vector2 kNumberUVScale = { 0.1f,1.0f };
 
-void ScoreUI::Awake()
+void ScoreUI::Start()
 {
+	GameObject* scoreMgr = gameObject->world->FindWithTag(Tag::ScoreManager);
+	score_ = scoreMgr->GetComponent<ScoreManager>();
+
 	constexpr Vector2 kNumberPos[ToIndex(ScoreDigits::Count)] = { {1004.f,50.f},{1062.f,50.f},{1120.f,50.f} };
 	constexpr Vector2 kNumberSize = { 77.f,77.f };
 	for (size_t digits = 0; digits < ToIndex(ScoreDigits::Count); ++digits)
@@ -22,12 +26,6 @@ void ScoreUI::Awake()
 
 	GameObject& atoKg = gameObject->CreateChild();
 	uiAtoKg_ = &(atoKg.AddComponent<UiSpriteRenderer>(TextureTag::ScoreAtoKg, kAtoKgPos, kAtoKgSize));
-}
-
-void ScoreUI::Start()
-{
-	GameObject* scoreMgr = gameObject->world->FindWithTag(Tag::ScoreManager);
-	score_ = scoreMgr->GetComponent<ScoreManager>();
 }
 
 void ScoreUI::Update()

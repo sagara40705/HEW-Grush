@@ -39,7 +39,6 @@ private:
 private:
 	Transform* tf_ = nullptr;
 	BoxCollider* bc_ = nullptr;
-	MeshFilter* mf_ = nullptr;
 	MeshRenderer* renderer_ = nullptr;
 	CameraShake* shake_ = nullptr;
 	GlassGaugeManager* gauge_ = nullptr;
@@ -54,7 +53,6 @@ public:
 	void GradeUp();
 	void GradeDown();
 	void SetScale();
-	void SetModel();
 	void UpdateNormalAttack(float dt);
 	void ResetPos();
 	void UpdateSpinAttack();

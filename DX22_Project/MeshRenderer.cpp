@@ -130,26 +130,22 @@ void MeshRenderer::PrimitiveRender()
 
 void MeshRenderer::ModelRender()
 {
-    if (glass) 
-    { 
-        glass->SetGlassParamPS(); 
+    if (glass)
+    {
+        glass->SetGlassParamPS();
         SetCullingMode(D3D11_CULL_NONE);
     }
 
     Model* model = mf->GetModel();
     if (!model) return;
 
-
-    //=== VS / PS を取得 ===
     VertexShader* vs = ShaderList::GetVS(vsKind);
     PixelShader* ps = ShaderList::GetPS(psKind);
-
     if (!vs || !ps) return;
 
-    // ModelRenderer と同じ流れ
     model->SetVertexShader(vs);
     model->SetPixelShader(ps);
-    
+
     for (unsigned int i = 0; i < model->GetMeshNum(); ++i)
     {
         const Model::Mesh* mesh = model->GetMesh(i);

@@ -5,14 +5,6 @@
 #include "DebugLog.h"
 
 using namespace DirectX;
-
-void MeshFilter::SetModel(ModelTag tag)
-{
-	source = MeshSource::Model;
-	model = ModelManager::Get(tag);
-	boundsRadius = ModelManager::GetBounds(tag);          // ‚ ‚ê‚Î
-}
-
 void MeshFilter::DebugDrawBounds() const
 {
 	const auto& m = gameObject->transform->GetMatrix(); //

@@ -13,7 +13,6 @@ private:
 	Animator* animator = nullptr;
 	GlassObject* glass = nullptr;
 	GlassShard* shard = nullptr;
-
 public:
 	ShaderList::VSKind vsKind = ShaderList::VS_WORLD;
 	ShaderList::PSKind psKind = ShaderList::PS_LAMBERT; 

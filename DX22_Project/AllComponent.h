@@ -29,7 +29,6 @@
 #include "ActionUI.h"
 #include "Hammer.h"
 #include "PlayerAnimation.h"
-#include "HammerEffects.h"
 
 #include "GlassObject.h"
 #include "GlassGaugeManager.h"
@@ -46,14 +45,6 @@
 
 #include "UIFrostRenderer.h"
 
-//ローディング画面
-#include "LoadingGauge.h"
-#include "LoadingCharacterAnimation.h"
-
-// チュートリアル
-#include "TutorialManager.h"
-
-// ステージセレクト
+//stageSelect
 #include "StageMap.h"
 #include "SelectPlayerControl.h"
-

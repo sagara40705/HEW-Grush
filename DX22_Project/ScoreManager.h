@@ -10,7 +10,6 @@ private:
 	int score_ = 500;
 	bool dirty_ = true;
 	TimerUI* timer_ = nullptr;
-	bool isLock_ = false;
 public:
 	void Start() override;
 public:

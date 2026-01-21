@@ -1,5 +1,4 @@
 #include "Scene.h"
-#include "SceneManager.h"
 
 //====================== ctor / dtor ======================
 

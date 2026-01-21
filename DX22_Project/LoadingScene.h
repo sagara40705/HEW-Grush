@@ -35,5 +35,4 @@ private:
     float                  progress;    // 進捗率（次シーンの GetLoadProgress を反映）
 
     static constexpr int TasksPerFrame = 1; // 1 フレームに何タスク進めるか
-	bool 				 shouldChangeScene; // シーン切り替えフラグ
 };

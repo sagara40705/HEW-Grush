@@ -72,7 +72,7 @@ void UiSpriteRenderer::Render()
     vs->WriteBuffer(0, &wvp);
     // b1 : SpriteParam
     vs->WriteBuffer(1, &param);
-    ps->WriteBuffer(2, &param);
+    ps->WriteBuffer(1, &param);
 
     // 5) テクスチャ・サンプラ・ステート
     ps->SetTexture(0, texture_);

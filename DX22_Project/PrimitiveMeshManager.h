@@ -11,7 +11,6 @@ enum class PrimitiveMeshTag : uint8_t
     Plane,
     Cylinder,
     GlassShard,
-    Quad,
     Count
 };
 

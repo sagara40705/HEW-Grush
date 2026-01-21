@@ -20,7 +20,6 @@ private:
 	UiSpriteRenderer* uiColon_ = nullptr;
 	UiSpriteRenderer* uiSecond_[ToIndex(TimerDigits::Count)]{};
 public:
-	void Awake() override;
 	void Start() override;
 	void Update() override;
 	void OnDestroy() override;

@@ -74,14 +74,9 @@ HRESULT Shader::Compile(const char *pCode)
 
 void Shader::WriteBuffer(UINT slot, void* pData)
 {
-	if (!pData) return;
-	if (slot >= m_pBuffers.size()) return;
-	if (!m_pBuffers[slot]) return;
-
 	if(slot < m_pBuffers.size())
 		GetContext()->UpdateSubresource(m_pBuffers[slot], 0, nullptr, pData, 0, 0);
 }
-
 void Shader::SetTexture(UINT slot, Texture* tex)
 {
 	if (!tex || slot >= m_pTextures.size()) { return; }
@@ -94,7 +89,6 @@ void Shader::SetTexture(UINT slot, Texture* tex)
 	}
 }
 
-/*
 HRESULT Shader::Make(void* pData, UINT size)
 {
 	HRESULT hr;
@@ -150,110 +144,6 @@ HRESULT Shader::Make(void* pData, UINT size)
 
 	return MakeShader(pData, size);
 }
-*/
-
-HRESULT Shader::Make(void* pData, UINT size)
-{
-	HRESULT hr;
-	ID3D11Device* pDevice = GetDevice();
-
-	// 既存を解放（再Compile/Load対策）
-	for (auto& b : m_pBuffers) SAFE_RELEASE(b);
-	m_pBuffers.clear();
-
-	// Reflection
-	ID3D11ShaderReflection* pReflection = nullptr;
-	hr = D3DReflect(pData, size, IID_PPV_ARGS(&pReflection));
-	if (FAILED(hr)) { return hr; }
-
-	D3D11_SHADER_DESC shaderDesc{};
-	pReflection->GetDesc(&shaderDesc);
-
-	// -----------------------------
-	// ConstantBuffer: BindPoint(register bN) で配置して作る
-	// -----------------------------
-	UINT maxCBEnd = 0;
-	bool hasCB = false;
-
-	for (UINT i = 0; i < shaderDesc.BoundResources; ++i)
-	{
-		D3D11_SHADER_INPUT_BIND_DESC bindDesc{};
-		pReflection->GetResourceBindingDesc(i, &bindDesc);
-
-		if (bindDesc.Type == D3D_SIT_CBUFFER)
-		{
-			hasCB = true;
-			const UINT endPoint = bindDesc.BindPoint + (std::max)(1u, bindDesc.BindCount);
-			maxCBEnd = (std::max)(maxCBEnd, endPoint);
-		}
-	}
-
-	m_pBuffers.assign(hasCB ? maxCBEnd : 0, nullptr);
-
-	for (UINT i = 0; i < shaderDesc.BoundResources; ++i)
-	{
-		D3D11_SHADER_INPUT_BIND_DESC bindDesc{};
-		pReflection->GetResourceBindingDesc(i, &bindDesc);
-
-		if (bindDesc.Type != D3D_SIT_CBUFFER) continue;
-
-		// 名前から cbuffer のサイズを取る
-		ID3D11ShaderReflectionConstantBuffer* cbuf = pReflection->GetConstantBufferByName(bindDesc.Name);
-		if (!cbuf) continue;
-
-		D3D11_SHADER_BUFFER_DESC cbDesc{};
-		cbuf->GetDesc(&cbDesc);
-
-		// 16byte境界
-		UINT byteWidth = (cbDesc.Size + 15u) & ~15u;
-
-		D3D11_BUFFER_DESC bufDesc{};
-		bufDesc.ByteWidth = byteWidth;
-		bufDesc.Usage = D3D11_USAGE_DEFAULT;
-		bufDesc.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-
-		// BindCount(配列cbuffer)にも対応（基本は1）
-		const UINT count = (std::max)(1u, bindDesc.BindCount);
-		for (UINT j = 0; j < count; ++j)
-		{
-			const UINT slot = bindDesc.BindPoint + j;
-			if (slot >= m_pBuffers.size()) continue;
-
-			SAFE_RELEASE(m_pBuffers[slot]);
-			hr = pDevice->CreateBuffer(&bufDesc, nullptr, &m_pBuffers[slot]);
-			if (FAILED(hr))
-			{
-				SAFE_RELEASE(pReflection);
-				return hr;
-			}
-		}
-	}
-
-	// -----------------------------
-	// Texture SRV: 現行ロジックのままでOK
-	// -----------------------------
-	UINT maxBindPoint = 0;
-	bool hasTexture = false;
-
-	for (UINT i = 0; i < shaderDesc.BoundResources; ++i)
-	{
-		D3D11_SHADER_INPUT_BIND_DESC bindDesc{};
-		pReflection->GetResourceBindingDesc(i, &bindDesc);
-
-		if (bindDesc.Type == D3D_SIT_TEXTURE)
-		{
-			hasTexture = true;
-			const UINT endPoint = bindDesc.BindPoint + (std::max)(1u, bindDesc.BindCount);
-			maxBindPoint = (std::max)(maxBindPoint, endPoint);
-		}
-	}
-	m_pTextures.assign(hasTexture ? maxBindPoint : 0, nullptr);
-
-	SAFE_RELEASE(pReflection);
-
-	return MakeShader(pData, size);
-}
-
 
 //----------
 // 頂点シェーダ
@@ -270,7 +160,6 @@ VertexShader::~VertexShader()
 	SAFE_RELEASE(m_pVS);
 }
 
-/*
 void VertexShader::Bind(void)
 {
 	ID3D11DeviceContext* pContext =	GetContext();
@@ -281,7 +170,6 @@ void VertexShader::Bind(void)
 	for (int i = 0; i < m_pTextures.size(); ++i)
 		pContext->VSSetShaderResources(i, 1, &m_pTextures[i]);
 }
-*/
 
 HRESULT VertexShader::MakeShader(void* pData, UINT size)
 {
@@ -378,7 +266,6 @@ PixelShader::~PixelShader()
 {
 	SAFE_RELEASE(m_pPS);
 }
-/*
 void PixelShader::Bind(void)
 {
 	ID3D11DeviceContext* pContext = GetContext();
@@ -388,39 +275,7 @@ void PixelShader::Bind(void)
 	for (int i = 0; i < m_pTextures.size(); ++i)
 		pContext->PSSetShaderResources(i, 1, &m_pTextures[i]);
 }
-*/
 HRESULT PixelShader::MakeShader(void* pData, UINT size)
 {
 	return GetDevice()->CreatePixelShader(pData, size, NULL, &m_pPS);
-}
-
-void VertexShader::Bind(void)
-{
-	ID3D11DeviceContext* pContext = GetContext();
-	pContext->VSSetShader(m_pVS, NULL, 0);
-	pContext->IASetInputLayout(m_pInputLayout);
-
-	for (UINT i = 0; i < (UINT)m_pBuffers.size(); ++i)
-	{
-		ID3D11Buffer* b = m_pBuffers[i]; // nullptrならクリア
-		pContext->VSSetConstantBuffers(i, 1, &b);
-	}
-
-	for (UINT i = 0; i < (UINT)m_pTextures.size(); ++i)
-		pContext->VSSetShaderResources(i, 1, &m_pTextures[i]);
-}
-
-void PixelShader::Bind(void)
-{
-	ID3D11DeviceContext* pContext = GetContext();
-	pContext->PSSetShader(m_pPS, nullptr, 0);
-
-	for (UINT i = 0; i < (UINT)m_pBuffers.size(); ++i)
-	{
-		ID3D11Buffer* b = m_pBuffers[i]; // nullptr ならクリアになる
-		pContext->PSSetConstantBuffers(i, 1, &b);
-	}
-
-	for (UINT i = 0; i < (UINT)m_pTextures.size(); ++i)
-		pContext->PSSetShaderResources(i, 1, &m_pTextures[i]);
 }

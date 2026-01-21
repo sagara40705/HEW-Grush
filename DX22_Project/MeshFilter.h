@@ -29,7 +29,6 @@ public:
 
     MeshSource GetSource() const { return source; }
     MeshBuffer* GetPrimitive() const { return primitive; }
-    void SetModel(ModelTag tag);
     Model* GetModel()     const { return model; }
 
     float boundsRadius = 5.0f;
