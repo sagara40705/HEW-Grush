@@ -215,7 +215,7 @@ void PlayerAction::UpdateNormalAttack()
 // ƒ_ƒ~[ŽÀ‘•
 void PlayerAction::UpdateSpinAttack()
 {
-	constexpr Vector3 delta = { 0.f, 18.f, 0.f };
+	constexpr Vector3 delta = { 0.f, -18.f, 0.f };
 
 	tf_->AddRotate(delta);
 	hammer_->UpdateSpinAttack();

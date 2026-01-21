@@ -25,13 +25,14 @@ void SceneTitle::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Title_BreakID); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Title_Loge); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Title_Loge2); });
-
+	
 	// 各種オブジェクト生成タスクを追加
 	outTasks.emplace_back([this] { CreateCameraAndPlayer(); });
 	outTasks.emplace_back([this] { CreateCanvas(); });
 	outTasks.emplace_back([this] { CreateBackGround(); });
 	outTasks.emplace_back([this] { CreateTitleFont(); });
 	outTasks.emplace_back([this] { CreateTitleLogo(); });
+	outTasks.emplace_back([this] { CreateBreakTexture(); });
 	outTasks.emplace_back([this] { CreateTitleManager(); });
 	outTasks.emplace_back([this] { SceneManager::CreateFadeAnimations(this); });
 
@@ -126,6 +127,15 @@ void SceneTitle::CreateTitleLogo()
 	TitleLogo.AddComponent<Sprite3DRenderer>(TextureTag::Title_Loge, Vector2(-4.7f, 5.0f), Vector2(20.0f, 20.0f)/*100差*/);
 }
 
+void SceneTitle::CreateBreakTexture()
+{
+	World& w = GetWorld();
+	GameObject& breakTexture = w.CreateGameObject(Vector3(0.f, -3.f, 5.0f));
+	break_ = &breakTexture.AddComponent<UiSpriteRenderer>(TextureTag::Title_Break, Vector2(0.0f, 0.0f), Vector2(1920.0f, 1080.0f));
+	break_->SetColor({ 1.0f, 1.0f, 1.0f, 0.0f });
+
+}
+
 void SceneTitle::CreateTitleManager()
 {
 	World& w = GetWorld();
@@ -174,7 +184,11 @@ void SceneTitle::Update()
 			}
 		}
 
-		if (t >= 1.0f) m_isStarting = false;
+		if (t >= 1.0f)
+		{
+			m_isStarting = false;
+			break_->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
+		}
 	}
 
 }

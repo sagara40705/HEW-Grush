@@ -7,6 +7,7 @@ enum class ScoreDigits : std::uint8_t
 	One,
 	Ten,
 	Hundred,
+	Thousand,
 	Count
 };
 constexpr size_t ToIndex(ScoreDigits d) noexcept { return static_cast<size_t>(d); }

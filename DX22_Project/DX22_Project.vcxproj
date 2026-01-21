@@ -146,9 +146,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\..\Users\sgr12\OneDrive\デスクトップ\sss\SceneStageSelect.cpp" />
-    <ClCompile Include="..\..\..\..\..\Users\sgr12\OneDrive\デスクトップ\sss\SelectPlayerControl.cpp" />
-    <ClCompile Include="..\..\..\..\..\Users\sgr12\OneDrive\デスクトップ\sss\StageMap.cpp" />
     <ClCompile Include="ActionUI.cpp" />
     <ClCompile Include="Animator.cpp" />
     <ClCompile Include="BoxCollider.cpp" />
@@ -214,8 +211,10 @@
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="SceneResult.cpp" />
     <ClCompile Include="SceneSample.cpp" />
+    <ClCompile Include="SceneStageSelect.cpp" />
     <ClCompile Include="ScoreManager.cpp" />
     <ClCompile Include="ScoreUI.cpp" />
+    <ClCompile Include="SelectPlayerControl.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderList.cpp" />
     <ClCompile Include="SkyDomeMesh.cpp" />
@@ -226,6 +225,7 @@
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Sprite3DRenderer.cpp" />
     <ClCompile Include="SpriteAnimation.cpp" />
+    <ClCompile Include="StageMap.cpp" />
     <ClCompile Include="StageWall.cpp" />
     <ClCompile Include="Startup.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -244,10 +244,6 @@
     <ClCompile Include="_model.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\..\Users\sgr12\OneDrive\デスクトップ\sss\SceneStageSelect.h" />
-    <ClInclude Include="..\..\..\..\..\Users\sgr12\OneDrive\デスクトップ\sss\SelectPlayerControl.h" />
-    <ClInclude Include="..\..\..\..\..\Users\sgr12\OneDrive\デスクトップ\sss\StageMap.h" />
-    <ClInclude Include="..\..\..\..\..\Users\sgr12\OneDrive\デスクトップ\sss\StagePoint.h" />
     <ClInclude Include="ActionUI.h" />
     <ClInclude Include="AllComponent.h" />
     <ClInclude Include="Animator.h" />
@@ -314,8 +310,10 @@
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="SceneResult.h" />
     <ClInclude Include="SceneSmaple.h" />
+    <ClInclude Include="SceneStageSelect.h" />
     <ClInclude Include="ScoreManager.h" />
     <ClInclude Include="ScoreUI.h" />
+    <ClInclude Include="SelectPlayerControl.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderList.h" />
     <ClInclude Include="SkyDomeMesh.h" />
@@ -326,6 +324,8 @@
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Sprite3DRenderer.h" />
     <ClInclude Include="SpriteAnimation.h" />
+    <ClInclude Include="StageMap.h" />
+    <ClInclude Include="StagePoint.h" />
     <ClInclude Include="StageWall.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureManager.h" />
