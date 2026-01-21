@@ -83,8 +83,11 @@ void GlassShard::SetGlassGrade(GlassGrade g)
 {
 	grade_ = g;
 
-	constexpr Vector3 kSize[ToIndex(GlassGrade::Count)] = {{0.7f, 0.7f, 0.7f},{1.f, 1.f, 1.f},{1.3f, 1.3f, 1.3f}};
-	tf_->SetScale(kSize[ToIndex(grade_)]);
+}
+
+void GlassShard::SetGlassScale(float s)
+{
+    tf_->SetScale(Vector3(s, s, s));
 }
 
 void GlassShard::SetShardParamVS()

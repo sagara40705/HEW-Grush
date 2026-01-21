@@ -50,7 +50,7 @@ void GlassShardPool::OnDestroy()
 	s_instance = nullptr;
 }
 
-GameObject* GlassShardPool::Instantiate(const Vector3& pos, GlassGrade grade)
+GameObject* GlassShardPool::Instantiate(const Vector3& pos, GlassGrade grade, float scale)
 {
 	//ビルボード処理
 	Vector3 rotate = CalcBillboard(pos);
@@ -68,6 +68,7 @@ GameObject* GlassShardPool::Instantiate(const Vector3& pos, GlassGrade grade)
 		float impulsePower = MakeImpulsePower();
 		shard->AddForce(impulseDir, impulsePower);
 		shard->SetGlassGrade(grade);
+		shard->SetGlassScale(scale);
 		DebugLog::OutputValue("GlassShardPool::Instantiate", i);
 		return pool_[i];
 	}
