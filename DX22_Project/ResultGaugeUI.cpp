@@ -9,8 +9,8 @@
 #include "GameState.h"
 constexpr Vector2 kNumberUVScale = { 1.f, 1.0f };
 float point = 50.f;
-//int ArubaitpLevel = 0;
-void ResultGaugeUI::Start()
+
+void ResultGaugeUI::Awake()
 {
 	//Update(GaugePoint);
 	constexpr Vector2 kMinutePos[ToIndex(TimerDigits::Count)] = { {1300.f, 240.f}, {800.f, 300.f} };
@@ -32,15 +32,14 @@ void ResultGaugeUI::Start()
 
 	GameObject& Frame = gameObject->CreateChild();
 	uiFrame_ = &Frame.AddComponent<UiSpriteRenderer>(TextureTag::Frame, kMinutePos[ToIndex(TimerDigits::Ten)], kNumFrameberSize, Vector2::zero(), kNumberUVScale);
-
+}
+//int ArubaitpLevel = 0;
+void ResultGaugeUI::Start()
+{
 }
 
 void ResultGaugeUI::Draw()
 {
-
-
-
-
 }
 
 float ResultGaugeUI::GaugePotint()

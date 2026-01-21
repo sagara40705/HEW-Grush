@@ -88,6 +88,14 @@ void SceneManager::ChangeSceneAlreadyLoaded(std::unique_ptr<Scene> scene)
     if (scene)
     {
         s_scenes.emplace_back(std::move(scene));
+
+        StartFadeOut();
+
+   //     if (s_fadeOutAnime)
+   //     {
+			//s_fadeOutAnime->gameObject->SetActive(true);
+   //         s_fadeOutAnime->Play();
+   //     }
         //s_state = State::FadeIn;
         //s_timer.Start();
     }
@@ -168,15 +176,13 @@ void SceneManager::ClearStack()
 
 void SceneManager::StartFadeOut()
 {
-	Scene* active = GetActiveScene();
-	assert(active && "SceneManager::StartFadeOut() active scene is null.");
-
-	s_state = State::FadeOut;
-	s_timer.Start();
-
-	assert(s_fadeOutAnime && "SceneManager::StartFadeOut() fadeOutAnime is null.");
-    s_fadeOutAnime->Play();
-
+    if (s_fadeOutAnime)
+    {
+        s_state = State::FadeOut;
+        s_fadeOutAnime->gameObject->SetActive(true);
+        s_fadeOutAnime->Play();
+        s_timer.Start();
+    }
 }
 
 void SceneManager::StartFadeIn()
@@ -257,10 +263,10 @@ void SceneManager::CreateFadeAnimations(Scene* scene)
 
 	World& world = scene->GetWorld();
 
- //   GameObject* fadeOutObj = &world.CreateGameObject();
- //   fadeOutObj->AddComponent<UiSpriteRenderer>(TextureTag::FadeOut, Vector2::zero(), Vector2(128.f, 72.f));
- //   s_fadeOutAnime = &fadeOutObj->AddComponent<SpriteAnimation>(6, 8, 1, 48, false);
-	//fadeOutObj->SetActive(false); // Å‰‚Í”ñ•\Ž¦‚É‚µ‚Ä‚¨‚­
+    GameObject* fadeOutObj = &world.CreateGameObject();
+    fadeOutObj->AddComponent<UiSpriteRenderer>(TextureTag::FadeOut, Vector2::zero(), Vector2(1280.f, 720.f));
+    s_fadeOutAnime = &fadeOutObj->AddComponent<SpriteAnimation>(6, 8, 3, 48, false);
+	fadeOutObj->SetActive(false); // Å‰‚Í”ñ•\Ž¦‚É‚µ‚Ä‚¨‚­
 
     GameObject* fadeInObj = &world.CreateGameObject();
     fadeInObj->AddComponent<UiSpriteRenderer>(TextureTag::FadeIn, Vector2::zero(), Vector2(1280.f, 720.f));

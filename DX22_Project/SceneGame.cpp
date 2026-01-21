@@ -9,6 +9,10 @@
 #include "GlassObjectSpawner.h"
 #include "GameState.h"
 #include "DebugLog.h"
+#include "InputKeyboard.h"
+#include "SceneManager.h"
+#include "SceneStageSelect.h"
+#include "SceneResult.h"
 
 
 void SceneGame::Load()
@@ -21,6 +25,7 @@ void SceneGame::Load()
 
 void SceneGame::Unload()
 {
+	SceneManager::ReleaseFadeAnimations();
 	TextureManager::Clear();
 	ModelManager::Clear();
 }
@@ -113,6 +118,8 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 
 	//outTasks.emplace_back([this] { InitPlayerTex(); });
 	outTasks.emplace_back([this] { InitSkyDome(); });
+
+	outTasks.emplace_back([this] { SceneManager::CreateFadeAnimations(this); });
 
 
 	// ÅŒã‚É Start ‚ğ—¬‚·
@@ -509,6 +516,10 @@ void SceneGame::SkyDomeDorw()
 
 void SceneGame::Update()
 {
+	if (InputKeyboard::GetKeyDown(VK_SPACE))
+	{
+		SceneManager::ChangeSceneAsync<SceneStageSelect>();
+	}
 }
 
 void SceneGame::Draw()
@@ -606,7 +617,6 @@ void SceneGame::CreateStageFromCSV(const std::string& filename)
 		}
 	}
 }
-
 
 // •¶š—ñ‚Ì‘OŒã‚Ì‹ó”’‚ğíœ‚·‚éƒwƒ‹ƒp[ŠÖ”
 std::string Trim(const std::string& str)

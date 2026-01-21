@@ -9,6 +9,7 @@ public:
 	ResultGaugeUI() = default;
 	~ResultGaugeUI() override = default;
 	float GaugePoint = 0.f;
+	void Awake() override;
 	void Start() override;
 	//float UpdateGaugePoint(float);
 	void Draw()override;

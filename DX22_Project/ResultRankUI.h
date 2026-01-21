@@ -22,6 +22,7 @@ public:
 	ResultRankUI() = default;
 	~ResultRankUI() = default;
 
+	void Awake();
 	void Start();
 	void Update(float);
 	void Draw();
