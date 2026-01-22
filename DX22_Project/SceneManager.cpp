@@ -138,6 +138,7 @@ void SceneManager::ApplyNextScene()
             s_nextScene->RootLoad();
             s_scenes.emplace_back(std::move(s_nextScene));
         }
+		s_state = State::Idle;
         break;
 
     case PendingOp::Pop:
