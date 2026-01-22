@@ -61,5 +61,8 @@ void TitleManager::AnimationTimer()
 
 void TitleManager::GoNext()
 {
+	if (isLoadNext) return;
+
+	isLoadNext = true;
 	SceneManager::ChangeSceneAsync<SceneStageSelect>();
 }

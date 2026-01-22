@@ -73,7 +73,6 @@ void LoadingScene::Update()
     if (shouldChangeScene && nextScene)
     {
         // unique_ptr ‚©‚ç shared_ptr ‚Ö•ÏŠ·‚µ‚Ä“n‚·
-        shouldChangeScene = false;
         SceneManager::ChangeSceneAlreadyLoaded(std::move(nextScene));
         return;
     }
