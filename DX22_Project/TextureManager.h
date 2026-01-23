@@ -83,7 +83,7 @@ enum class TextureTag : uint8_t
 
     Result_Job_Pikapika = 59,	 // 役職の文字(ピカピカ・すごうで・たつじんの三種)
     Result_Job_Sugoude = 60,	 // 役職の文字(ピカピカ・すごうで・たつじんの三種)
-    Result_Job_tastuzin = 61,	 // 役職の文字(ピカピカ・すごうで・たつじんの三種)
+    Result_Job_Tastuzin = 61,	 // 役職の文字(ピカピカ・すごうで・たつじんの三種)
 
     SpareSlot_13 = 62,
     SpareSlot_14 = 63,
