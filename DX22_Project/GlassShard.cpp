@@ -110,7 +110,7 @@ void GlassShard::SetGlassParamPS()
 
     ShaderList::SetGlassParam(Tint[ToIndex(grade_)], 5.0f, 3.0f, 1.0f, 1.0f);
 
-    Texture* tex = TextureManager::Get(TextureTag::GlassShard);
+    Texture* tex = TextureManager::Get(TextureTag::Game_GlassShard);
 
     auto ps = ShaderList::GetPS(ShaderList::PS_GLASS_SHARD);
     ps->SetTexture(0, tex);

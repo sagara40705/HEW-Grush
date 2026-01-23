@@ -19,7 +19,7 @@ void SceneOption::Unload()
 
 void SceneOption::TexturesLoad()
 {
-	TextureManager::Load(TextureTag::UIFrostNoise);
+	TextureManager::Load(TextureTag::Option_BG);
 }
 
 void SceneOption::CheckCanvas()
@@ -45,7 +45,7 @@ void SceneOption::CreateBG()
 	World& world = GetWorld();
 
 	GameObject& bgObj = world.CreateGameObject();
-	bgObj.AddComponent<UiSpriteRenderer>(TextureTag::UIFrostNoise, Vector2::zero(), Vector2(1280.f, 720.f));
+	bgObj.AddComponent<UiSpriteRenderer>(TextureTag::Option_BG, Vector2::zero(), Vector2(1280.f, 720.f));
 }
 
 void SceneOption::Update()

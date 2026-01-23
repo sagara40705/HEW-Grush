@@ -64,7 +64,7 @@ enum class TextureTag : uint8_t
     Game_UI_Gaug_Lv1 = 44,	 // (完) Lv1のガラスゲージSS
     Game_UI_Gaug_Lv2 = 45,	 // (完) Lv2のガラスゲージSS
     Game_UI_Gaug_Lv3 = 46,	 // (完) Lv3のガラスゲージSS
-    _SpareSlot_12 = 47,
+    Game_GlassShard = 47,
 
     //Result 48～63 (16)
     Result_Bace = 48,		 // ベースの背景

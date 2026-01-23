@@ -43,7 +43,7 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
 
     //// InGame 28～47 (20)
     "Assets/Texture/Game/Sky.jpg",                  //Game_Sky = 28,
-    "Assets/Texture/Game/Ground.jpg",               //Game_Ground = 29,
+    "Assets/Texture/Game/Ground.png",               //Game_Ground = 29,
     "Assets/Texture/Game/3DEffect/GradeUp.png",     //Game_3DEffect_GradeUp = 30,
     "Assets/Texture/Game/3DEffect/GradeDown.png",   //Game_3DEffect_GradeDown = 31,
     "Assets/Texture/Game/3DEffect/Hit.png",         //Game_3DEffect_Hit = 32,
@@ -63,7 +63,7 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     "",//Game_UI_Gaug_Lv1 = 44,	 // (完) Lv1のガラスゲージSS
     "",//Game_UI_Gaug_Lv2 = 45,	 // (完) Lv2のガラスゲージSS
     "",//Game_UI_Gaug_Lv3 = 46,	 // (完) Lv3のガラスゲージSS
-    "",//SpareSlot_12 = 47,
+    "Assets/Texture/Game/GlassShard.png,"           //SpareSlot_12 = 47,
 
     ////Result 48～63 (16)
     "Assets/Texture/Result/Bace.png",           //Result_Bace = 48,	
@@ -88,7 +88,7 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     "", //SpareSlot_14 = 63,
 
     ////Option 64～
-    "", //Option_BG = 64,
+    "Assets/Texture/Option/Option_BG.png", //Option_BG = 64,
 };
 
 // 配列のデフォルトパスを使用して登録
