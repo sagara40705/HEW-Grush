@@ -2,7 +2,6 @@
 #include "Scene.h"
 #include "Component.h"
 #include <cstdint>
-
 class SceneResult : public Scene
 {
 public:
@@ -25,6 +24,7 @@ public:
     // ”ñ“¯Šúƒ[ƒh—p
     void BuildLoadTasks(std::vector<LoadTask>& outTasks) override;
 private:
+	//ResultGaugeUI* arubaitoLevelUI;
     /* UiSpriteRenderer* uiMinute_[ToIndex(TimerDigits::Count)]{};
      UiSpriteRenderer* uiColon_ = nullptr;
      UiSpriteRenderer* uiSecond_[ToIndex(TimerDigits::Count)]{};*/

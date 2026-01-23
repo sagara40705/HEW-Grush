@@ -10,12 +10,13 @@ void ResultArubauto::Start()
 	constexpr Vector2 kMinutePos[ToIndex(Arubaito::Count)] = { {680.f, 470.f}, {680.f, 470.f} };
 	constexpr Vector2 kColonPos = { 700.f,430.f };
 	constexpr Vector2 kSecondPos[ToIndex(Arubaito::Count)] = { {0.f, 0.f}, {0.f, 0.f} };
-
+	//arubaitoLevelUI = GetComponent<ResultGaugeUI>();
 	constexpr Vector2 kNumberSize = {580.f,80.f };
 	constexpr Vector2 kColonSize = { 40.f, 40.f };
 	GameObject& tenMinute = gameObject->CreateChild();
 	GameObject& oneMinute = gameObject->CreateChild();
 	GameObject& sunMinute = gameObject->CreateChild();
+	//arubaitoLevelUI->GetArubaitoLevel();
 //	int pointGauge = ResultGaugeUI::GetArubaitoLevel();
 	switch (2)
 	{

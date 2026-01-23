@@ -1,6 +1,7 @@
 #pragma once
 #include <cstdint>
 #include "Component.h"
+#include "ResultGaugeUI.h"
 enum class Arubaito : std::uint8_t
 {
 	One,
@@ -15,6 +16,7 @@ private:
 	static constexpr int MAX_SECONDS = 99 * 60 + 59;
 
 private:
+	ResultGaugeUI* arubaitoLevelUI;
 	UiSpriteRenderer* uiMinute_[ToIndex(Arubaito::Count)]{};
 	UiSpriteRenderer* uiColon_ = nullptr;
 	UiSpriteRenderer* uiSecond_[ToIndex(Arubaito::Count)]{};

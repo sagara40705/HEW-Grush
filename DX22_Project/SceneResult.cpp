@@ -162,7 +162,7 @@ void SceneResult::CanvasDraw()
 	/*GameObject& backGroung = w.CreateGameObject();
 	backGroung.AddComponent<UiSpriteRenderer>(TextureTag::ResultUI, Vector2(550.f, -50.f), Vector2(600, 300));*/
 	GameObject& timeGroung = w.CreateGameObject();
-	timeGroung.AddComponent<UiSpriteRenderer>(TextureTag::ResultTime, Vector2(00.f, 80.f), Vector2(1000, 600));
+	timeGroung.AddComponent<UiSpriteRenderer>(TextureTag::ResultTime, Vector2(0.f, 0.f), Vector2(1280, 780));
 
 
 	GameObject& NextGroung = w.CreateGameObject();

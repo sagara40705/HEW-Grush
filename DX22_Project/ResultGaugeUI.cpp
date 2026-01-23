@@ -63,22 +63,22 @@ float ResultGaugeUI::GaugePotint()
 		{
 			if (Gaugepoint >= 300)
 			{
-				point = 90.f;
+				point = 250.f;
 			}
 			else
 			{
-				point = 150.f;
+				point = 300.f;
 			}
 		}
 		else
 		{
-			point = 270.f;
+			point = 450.f;
 
 		}
 	}
 	else
 	{
-		point = 300.f;
+		point = 600.f;
 	}
 	//アルバイトレベルの算出
 	Allpoint = point;
@@ -89,12 +89,12 @@ float ResultGaugeUI::GaugePotint()
 float ResultGaugeUI::AllpointGauge()
 {
 	
-	if (Allpoint >= 300)
+	if (Allpoint >= 600)
 	{
-		if (Allpoint >= 600)
+		if (Allpoint >= 1200)
 		{
 
-			if (Allpoint >= 900)
+			if (Allpoint >= 1800)
 			{
 				arubaitpLevel = 3;
 			}
@@ -113,8 +113,8 @@ float ResultGaugeUI::AllpointGauge()
 	{
 		arubaitpLevel = 1;
 	}
- 	//return arubaitpLevel;
-	return 0;
+ 	return arubaitpLevel;
+	//return 0;
 }
 
 int ResultGaugeUI::GetArubaitoLevel()
