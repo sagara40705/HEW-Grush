@@ -61,10 +61,11 @@ void SceneManager::Update()
 
 void SceneManager::Draw()
 {
-    if (Scene* active = GetActiveScene())
-    {
-        active->RootDraw();
-    }
+	// ŒÃ‚¢‡‚É•`‰æ
+	for (const auto& scene : s_scenes)
+	{
+		scene->RootDraw();
+	}
 }
 
 //--------------------------------------------------

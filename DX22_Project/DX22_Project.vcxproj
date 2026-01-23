@@ -211,6 +211,7 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneGame.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="SceneOption.cpp" />
     <ClCompile Include="SceneResult.cpp" />
     <ClCompile Include="SceneSample.cpp" />
     <ClCompile Include="SceneStageSelect.cpp" />
@@ -308,6 +309,7 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneGame.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="SceneOption.h" />
     <ClInclude Include="SceneResult.h" />
     <ClInclude Include="SceneSmaple.h" />
     <ClInclude Include="SceneStageSelect.h" />

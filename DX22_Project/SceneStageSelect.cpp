@@ -2,6 +2,8 @@
 #include "GameObject.h"
 #include "AllComponent.h"
 #include "SceneManager.h"
+#include "InputKeyboard.h"
+#include "SceneOption.h"
 
 void SceneStageSelect::Load()
 {
@@ -96,6 +98,10 @@ void SceneStageSelect::Unload()
 
 void SceneStageSelect::Update()
 {
+	if (InputKeyboard::GetKeyDown('O'))
+	{
+		SceneManager::PushScene<SceneOption>();
+	}
 }
 
 void SceneStageSelect::Draw()
