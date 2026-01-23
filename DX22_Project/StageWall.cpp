@@ -11,7 +11,7 @@ void StageWall::Start()
 {
 	cam_ = Camera::Main();
 	render_ = gameObject->GetComponent<GroundRenderer>();
-	render_->SetTexture(TextureManager::Get(TextureTag::GroundTile));
+	render_->SetTexture(TextureManager::Get(TextureTag::Game_Ground));
 }
 
 void StageWall::Update()

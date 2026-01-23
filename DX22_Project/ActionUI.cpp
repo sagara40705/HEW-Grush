@@ -26,45 +26,45 @@ void ActionUI::Awake()
 
 	// 回転攻撃、モノクロ
 	GameObject& spinMono = gameObject->CreateChild();
-	spinMono.AddComponent<UiSpriteRenderer>(TextureTag::SpinMono, kSpinPos, kSize, kSpinMonoUVPos, kUVSize);
+	spinMono.AddComponent<UiSpriteRenderer>(TextureTag::Game_UI_Action_SpinIcon, kSpinPos, kSize, kSpinMonoUVPos, kUVSize);
 
 	// 回転攻撃、色付き(光らせる用)
 	GameObject& spinF = gameObject->CreateChild();
-	spFlash_ = &spinF.AddComponent<UiSpriteRenderer>(TextureTag::SpinFlash, kSpinPos, kSize, kSpinUVPos, kUVSize);
+	spFlash_ = &spinF.AddComponent<UiSpriteRenderer>(TextureTag::Game_UI_Action_SpinIcon, kSpinPos, kSize, kSpinUVPos, kUVSize);
 	spFlash_->SetColor({ 1.f, 1.f, 1.f, 0.f });
 
 	// 回転攻撃、色付き
 	GameObject& spin = gameObject->CreateChild();
-	spin_ = &spin.AddComponent<UiSpriteRenderer>(TextureTag::Spin, kSpinPos, kSize, kSpinUVPos, kUVSize);
+	spin_ = &spin.AddComponent<UiSpriteRenderer>(TextureTag::Game_UI_Action_SpinIcon, kSpinPos, kSize, kSpinUVPos, kUVSize);
 
 	// 回転攻撃、色付き(光らせる用)
 	GameObject& spinFr = gameObject->CreateChild();
-	spFront_ = &spinFr.AddComponent<UiSpriteRenderer>(TextureTag::SpinFront, kSpinPos, kSize, kSpinUVPos, kUVSize);
+	spFront_ = &spinFr.AddComponent<UiSpriteRenderer>(TextureTag::Game_UI_Action_SpinIcon, kSpinPos, kSize, kSpinUVPos, kUVSize);
 	spFront_->SetColor({ 1.f, 1.f, 1.f, 0.f });
 
 	// 回転攻撃、文字
 	GameObject& spinMojiMono = gameObject->CreateChild();
-	spinMojiMono.AddComponent<UiSpriteRenderer>(TextureTag::SpinMojiMono, kSpinMojiPos, kSpinMojiSize, kSpinUVPos, kUVSize);
+	spinMojiMono.AddComponent<UiSpriteRenderer>(TextureTag::Game_UI_Action_TextIcon, kSpinMojiPos, kSpinMojiSize, kSpinUVPos, kUVSize);
 
 	// 回転攻撃、文字、色付き
 	GameObject& spinMoji = gameObject->CreateChild();
-	spinMoji_= &spinMoji.AddComponent<UiSpriteRenderer>(TextureTag::SpinMoji, kSpinMojiPos, kSpinMojiSize, kSpinUVPos, kUVSize);
+	spinMoji_= &spinMoji.AddComponent<UiSpriteRenderer>(TextureTag::Game_UI_Action_TextIcon, kSpinMojiPos, kSpinMojiSize, kSpinUVPos, kUVSize);
 
 	// ダッシュ攻撃、モノクロ
 	GameObject& dashMono = gameObject->CreateChild();
-	dashMono.AddComponent<UiSpriteRenderer>(TextureTag::DashMono, kDashPos, kSize, kDashMonoUVPos, kUVSize);
+	dashMono.AddComponent<UiSpriteRenderer>(TextureTag::Game_UI_Action_DashIcon, kDashPos, kSize, kDashMonoUVPos, kUVSize);
 
 	// ダッシュ、色付き
 	GameObject& dash = gameObject->CreateChild();
-	dash_ = &dash.AddComponent<UiSpriteRenderer>(TextureTag::Dash, kDashPos, kSize, kDashUVPos, kUVSize);
+	dash_ = &dash.AddComponent<UiSpriteRenderer>(TextureTag::Game_UI_Action_DashIcon, kDashPos, kSize, kDashUVPos, kUVSize);
 
 	// ダッシュ、文字
 	GameObject& dashMojiMono = gameObject->CreateChild();
-	dashMojiMono.AddComponent<UiSpriteRenderer>(TextureTag::DashMojiMono, kDashMojiPos, kDashMojiSize, kDashUVPos, kUVSize);
+	dashMojiMono.AddComponent<UiSpriteRenderer>(TextureTag::Game_UI_Action_TextIcon, kDashMojiPos, kDashMojiSize, kDashUVPos, kUVSize);
 
 	// ダッシュ、文字、色付き
 	GameObject& dashMoji = gameObject->CreateChild();
-	dashMoji_ = &dashMoji.AddComponent<UiSpriteRenderer>(TextureTag::DashMoji, kDashMojiPos, kDashMojiSize, kDashUVPos, kUVSize);
+	dashMoji_ = &dashMoji.AddComponent<UiSpriteRenderer>(TextureTag::Game_UI_Action_TextIcon, kDashMojiPos, kDashMojiSize, kDashUVPos, kUVSize);
 
 }
 

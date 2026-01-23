@@ -416,7 +416,7 @@ void SceneGame::InitSkyDome()
 
 	// 3) テクスチャ取得 → シェーダへ設定
 	//    ・事前に BuildLoadTasks で Load(TextureTag::Background_Game) しておく前提
-	m_pSkyTex = TextureManager::Get(TextureTag::SkyDome);
+	m_pSkyTex = TextureManager::Get(TextureTag::Game_Sky);
 	if (m_pSkyTex)
 	{
 		ID3D11ShaderResourceView* srv = m_pSkyTex->GetResource();
