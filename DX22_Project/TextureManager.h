@@ -42,7 +42,7 @@ enum class TextureTag : uint8_t
     _SpareSlot_10 = 26,
     _SpareSlot_11 = 27,
 
-    // InGame 28～47 (20)
+    // InGame 28～55 (28)
     Game_Sky = 28,		            // スカイドーム用
     Game_Ground = 29,		        // 地面
     Game_3DEffect_GradeUp = 30,	    // ゲージUP時のエフェクトSS
@@ -64,32 +64,40 @@ enum class TextureTag : uint8_t
     Game_UI_Gaug_Lv1 = 44,	 // (完) Lv1のガラスゲージSS
     Game_UI_Gaug_Lv2 = 45,	 // (完) Lv2のガラスゲージSS
     Game_UI_Gaug_Lv3 = 46,	 // (完) Lv3のガラスゲージSS
-    Game_GlassShard = 47,
+	Game_GlassShard = 47,			 // ガラスの破片
+	_SpareSlot_12 = 48,
+    _SpareSlot_13 = 49,
+    _SpareSlot_14 = 50,
+    _SpareSlot_15 = 51,
+    _SpareSlot_16 = 52,
+    _SpareSlot_17 = 53,
+    _SpareSlot_18 = 54,
+    _SpareSlot_19 = 55,
 
-    //Result 48～63 (16)
-    Result_Bace = 48,		 // ベースの背景
-    Result_Time_Text = 49,	 // タイムの文字
-    Result_Time_Number = 50,	 // タイムの数字
-    Result_Time_Colon = 51,	 // タイムのコロン
+    //Result 56～71 (16)
+    Result_Bace = 56,		 // ベースの背景
+    Result_Time_Text = 57,	 // タイムの文字
+    Result_Time_Number = 58,	 // タイムの数字
+    Result_Time_Colon = 59,	 // タイムのコロン
 
-    Result_Gauge_Bar = 52,	 // ゲージのバー
-    Result_Gauge_Frame = 53,	 // ゲージのフレーム
-    Result_Next_Text = 54,	 // 次へテキスト
+    Result_Gauge_Bar = 60,	 // ゲージのバー
+    Result_Gauge_Frame = 61,	 // ゲージのフレーム
+    Result_Next_Text = 62,	 // 次へテキスト
 
-    Result_Rank_S = 55,		 // ランク
-    Result_Rank_A = 56,		 // ランク
-    Result_Rank_B = 57,		 // ランク
-    Result_Rank_C = 58,		 // ランク
+    Result_Rank_S = 63,		 // ランク
+    Result_Rank_A = 64,		 // ランク
+    Result_Rank_B = 65,		 // ランク
+    Result_Rank_C = 66,		 // ランク
 
-    Result_Job_Pikapika = 59,	 // 役職の文字(ピカピカ・すごうで・たつじんの三種)
-    Result_Job_Sugoude = 60,	 // 役職の文字(ピカピカ・すごうで・たつじんの三種)
-    Result_Job_Tastuzin = 61,	 // 役職の文字(ピカピカ・すごうで・たつじんの三種)
+    Result_Job_Pikapika = 67,	 // 役職の文字(ピカピカ・すごうで・たつじんの三種)
+    Result_Job_Sugoude = 68,	 // 役職の文字(ピカピカ・すごうで・たつじんの三種)
+    Result_Job_Tastuzin = 69,	 // 役職の文字(ピカピカ・すごうで・たつじんの三種)
 
-    _SpareSlot_13 = 62,
-    _SpareSlot_14 = 63,
+    _SpareSlot_20 = 70,
+    _SpareSlot_21 = 71,
 
-    //Option 64～
-    Option_BG = 64,
+    //Option 72～
+    Option_BG = 72,
 
     Count,
 };
