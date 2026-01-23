@@ -46,10 +46,13 @@ void Result::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 
 
 	// äeéÌÉIÉuÉWÉFÉNÉgê∂ê¨É^ÉXÉNÇí«â¡
-	outTasks.emplace_back([this] { CanvasDraw(); });
-	outTasks.emplace_back([this] { TimerUIDeaw(); });
-	outTasks.emplace_back([this] { GaugeDraw(); });
-	outTasks.emplace_back([this] { RankDraw(); });	
+	outTasks.emplace_back([this] { CreateCanvas(); });
+	outTasks.emplace_back([this] { CreateBace(); });
+	//outTasks.emplace_back([this] { CreateTimeUI(); });
+	outTasks.emplace_back([this] { CreateGaugeUI(); });
+	outTasks.emplace_back([this] { CreateRankUI(); });
+	//outTasks.emplace_back([this] { CreateJobUI(); });
+	outTasks.emplace_back([this] { CreateNextText(); });
 	outTasks.emplace_back([this] { SceneManager::CreateFadeAnimations(this); });
 
 
@@ -79,17 +82,32 @@ void Result::Unload()
 	TextureManager::Clear();
 }
 
-void Result::TimerUIDeaw()
+void Result::CreateCanvas()
+{
+	World& w = GetWorld();
+	//Canvas
+	GameObject& canvas = w.CreateGameObject();
+	canvas.AddComponent<Canvas>();
+}
+
+void Result::CreateBace()
+{
+	World& w = GetWorld();
+	//îwåiê∂ê¨
+	GameObject& bace = w.CreateGameObject();
+	bace.AddComponent<UiSpriteRenderer>(TextureTag::Result_Bace, Vector2::zero(), Vector2::WindowSize());
+}
+
+void Result::CreateTimeUI()
 {
 	World& w = GetWorld();
 
 	GameObject& timerUI = w.CreateGameObject();
 	timerUI.SetTag(Tag::ResultTimerUI);
 	timerUI.AddComponent<ResultTimerUI>();
-
 }
 
-void Result::GaugeDraw()
+void Result::CreateGaugeUI()
 {
 	World& w = GetWorld();
 
@@ -98,31 +116,27 @@ void Result::GaugeDraw()
 	Gauge.AddComponent<ResultGaugeUI>();
 }
 
-void Result::CanvasDraw()
-{
-	World& w = GetWorld();
-	//Canvas
-	GameObject& canvas = w.CreateGameObject();
-	canvas.AddComponent<Canvas>();
-	//îwåiê∂ê¨
-
-	GameObject& haikeiGroung = w.CreateGameObject();
-	haikeiGroung.AddComponent<UiSpriteRenderer>(TextureTag::Result_Bace, Vector2(0.f, 0.f), Vector2(1280, 780));
-
-	//GameObject& backGroung = w.CreateGameObject();
-	//backGroung.AddComponent<UiSpriteRenderer>(TextureTag::ResultUI, Vector2(550.f, -50.f), Vector2(600, 300));
-
-	GameObject& timeGroung = w.CreateGameObject();
-	timeGroung.AddComponent<UiSpriteRenderer>(TextureTag::Result_Time_Text, Vector2(800.f, 380.f), Vector2(220, 100));
-	GameObject& tatuGroung = w.CreateGameObject();
-	tatuGroung.AddComponent<UiSpriteRenderer>(TextureTag::Result_Job_Tastuzin, Vector2(700.f, 180.f), Vector2(420, 100));
-}
-
-void Result::RankDraw()
+void Result::CreateRankUI()
 {
 	World& w = GetWorld();
 
 	GameObject& Rank = w.CreateGameObject();
 	Rank.SetTag(Tag::ResultRankUI);
 	Rank.AddComponent<ResultRankUI>();
+}
+
+void Result::CreateJobUI()
+{
+	World& w = GetWorld();
+	//îwåiê∂ê¨
+	GameObject& job = w.CreateGameObject();
+	job.AddComponent<UiSpriteRenderer>(TextureTag::Result_Job_Tastuzin, Vector2::zero(), Vector2::WindowSize());
+}
+
+void Result::CreateNextText()
+{
+	World& w = GetWorld();
+	//îwåiê∂ê¨
+	GameObject& job = w.CreateGameObject();
+	job.AddComponent<UiSpriteRenderer>(TextureTag::Result_Next_Text, Vector2::zero(), Vector2::WindowSize());
 }

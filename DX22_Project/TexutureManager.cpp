@@ -63,7 +63,7 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     "",//Game_UI_Gaug_Lv1 = 44,	 // (Š®) Lv1‚ÌƒKƒ‰ƒXƒQ[ƒWSS
     "",//Game_UI_Gaug_Lv2 = 45,	 // (Š®) Lv2‚ÌƒKƒ‰ƒXƒQ[ƒWSS
     "",//Game_UI_Gaug_Lv3 = 46,	 // (Š®) Lv3‚ÌƒKƒ‰ƒXƒQ[ƒWSS
-    "Assets/Texture/Game/GlassShard.png,"           //SpareSlot_12 = 47,
+    "Assets/Texture/Game/GlassShard.png,",          //SpareSlot_12 = 47,
 
     ////Result 48`63 (16)
     "Assets/Texture/Result/Bace.png",           //Result_Bace = 48,	

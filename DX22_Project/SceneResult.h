@@ -15,15 +15,21 @@ public:
     void Draw() override;
     void Unload() override;
 
+    // 非同期ロード用
+    void BuildLoadTasks(std::vector<LoadTask>& outTasks) override;
+
     void TimerUIDeaw();
     void GaugeDraw();
     void CanvasDraw();
     void RankDraw();
-    // 非同期ロード用
-    void BuildLoadTasks(std::vector<LoadTask>& outTasks) override;
+
 private:
-    /* UiSpriteRenderer* uiMinute_[ToIndex(TimerDigits::Count)]{};
-     UiSpriteRenderer* uiColon_ = nullptr;
-     UiSpriteRenderer* uiSecond_[ToIndex(TimerDigits::Count)]{};*/
+    void CreateCanvas();
+    void CreateBace();
+    void CreateTimeUI();
+	void CreateGaugeUI();
+	void CreateRankUI();
+    void CreateJobUI();
+    void CreateNextText();
 };
 

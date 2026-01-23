@@ -17,7 +17,7 @@ void ResultRankUI::Awake()
 
 	GameObject& tenMinute = gameObject->CreateChild();
 	uiMinute_[ToIndex(TimerDigits::Ten)] = &tenMinute.AddComponent<UiSpriteRenderer>
-		(TextureTag::Result_Rank_S, kMinutePos[ToIndex(TimerDigits::Ten)], kNumberSize, Vector2::zero(), kNumberUVScale);
+		(TextureTag::Result_Rank_S, Vector2::zero(), Vector2(1280.f, 720.f));
 }
 void ResultRankUI::Start()
 {
