@@ -14,7 +14,7 @@ enum class TextureTag : uint8_t
     Load_Gauge_Bar = 4,		        // ゲージの本体
     Load_Gauge_Frame = 5,           // ゲージのフレーム
     Load_Text = 6,		            // Now loadingの文字
-    SpareSlot_01 = 7,
+    _SpareSlot_01 = 7,
 
     // Title 8～15(8)
     Title_BG = 8,		            // 背景
@@ -22,25 +22,25 @@ enum class TextureTag : uint8_t
     Title_Logo = 10,		        // タイトルロゴ
     Title_Fadein = 11,		        // 演出用
     Title_FadeinID = 12,		    // 演出用
-    SpareSlot_02 = 13,
-    SpareSlot_03 = 14,
-    SpareSlot_04 = 15,
+    _SpareSlot_02 = 13,
+    _SpareSlot_03 = 14,
+    _SpareSlot_04 = 15,
 
     // StageSelect 16～21 (6)
     StageSelect_BG = 16,		    // 背景
     StageSelect_PlayerIcon = 17,    // プレイヤーアイコン
-    SpareSlot_05 = 18,
-    SpareSlot_06 = 19,
-    SpareSlot_07 = 20,
-    SpareSlot_08 = 21,
+    _SpareSlot_05 = 18,
+    _SpareSlot_06 = 19,
+    _SpareSlot_07 = 20,
+    _SpareSlot_08 = 21,
 
     // Tutorial 22～27 (6)
     Tutorial_UI_Task = 22,	        // チュートリアルタスク
     Tutorial_Road = 23,		        // 道
     Tutorial_Targetlocation = 24,   // 目標地点
-    SpareSlot_09 = 25,
-    SpareSlot_10 = 26,
-    SpareSlot_11 = 27,
+    _SpareSlot_09 = 25,
+    _SpareSlot_10 = 26,
+    _SpareSlot_11 = 27,
 
     // InGame 28～47 (20)
     Game_Sky = 28,		            // スカイドーム用
@@ -64,7 +64,7 @@ enum class TextureTag : uint8_t
     Game_UI_Gaug_Lv1 = 44,	 // (完) Lv1のガラスゲージSS
     Game_UI_Gaug_Lv2 = 45,	 // (完) Lv2のガラスゲージSS
     Game_UI_Gaug_Lv3 = 46,	 // (完) Lv3のガラスゲージSS
-    SpareSlot_12 = 47,
+    _SpareSlot_12 = 47,
 
     //Result 48～63 (16)
     Result_Bace = 48,		 // ベースの背景
@@ -85,8 +85,8 @@ enum class TextureTag : uint8_t
     Result_Job_Sugoude = 60,	 // 役職の文字(ピカピカ・すごうで・たつじんの三種)
     Result_Job_Tastuzin = 61,	 // 役職の文字(ピカピカ・すごうで・たつじんの三種)
 
-    SpareSlot_13 = 62,
-    SpareSlot_14 = 63,
+    _SpareSlot_13 = 62,
+    _SpareSlot_14 = 63,
 
     //Option 64～
     Option_BG = 64,

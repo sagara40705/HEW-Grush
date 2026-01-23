@@ -26,7 +26,8 @@ void SceneStageSelect::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player2); });
 
 	// テクスチャーロード	
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::StageMap); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::StageSelect_BG); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::StageSelect_PlayerIcon); });
 
 	// ゲームオブジェクト生成
 	outTasks.emplace_back([this] { CreateCanvas(); });
@@ -84,7 +85,7 @@ void SceneStageSelect::CreateGround()
 	World& world = GetWorld();
 
 	GameObject& groundObj = world.CreateGameObject(Vector3::zero(), Vector3(90.f, 0.f, 0.f));
-	groundObj.AddComponent<Sprite3DRenderer>(TextureTag::StageMap, Vector2::zero(), Vector2(16.f, 9.f));
+	groundObj.AddComponent<Sprite3DRenderer>(TextureTag::StageSelect_BG, Vector2::zero(), Vector2(16.f, 9.f));
 }
 
 
