@@ -71,32 +71,26 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	//outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Fence); });
 
 	// テクスチャーロード
-	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Star); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GroundTile); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Stage); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::SkyDome); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GaugeEmpty); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GaugeMax); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GaugeEffect); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ScoreAtoKg); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ScoreNumber); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::TimerColon); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::TimerNumber); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Spin); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::SpinMono); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::SpinMoji); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::SpinMojiMono); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::SpinFlash); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::SpinFront); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Dash); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::DashMono); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::DashMoji); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::DashMojiMono); });
-	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::UIFrostNoise); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::EffectLv1); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GlassShard); });
-	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::TasksUI); });
-	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::TutorialLocation); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_Sky); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_Ground); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_3DEffect_GradeUp); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_3DEffect_GradeDown); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_3DEffect_Hit); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Gauge_Empty); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Gauge_Max); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Gauge_Fever); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Gauge_UpEffect); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Timer_Number); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Timer_Colon); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Score_Number); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Score_Text); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Action_DushIcon); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Action_SpinIcon); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Action_TextIcon); });
+
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Tutorial_UI_Task); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Tutorial_Road); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Tutorial_Targetlocation); });
 
 	// プレイハブ設定
 	outTasks.emplace_back([this] { RegisterAllPrefabs(); });
