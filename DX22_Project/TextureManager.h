@@ -6,6 +6,7 @@
 
 enum class TextureTag : uint8_t
 {
+
     /*00*/Title_BG,
     /*01*/LoadGauge,
     /*02*/Star,
