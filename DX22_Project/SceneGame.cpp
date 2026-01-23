@@ -84,7 +84,7 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Timer_Colon); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Score_Number); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Score_Text); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Action_DushIcon); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Action_DashIcon); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Action_SpinIcon); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Action_TextIcon); });
 
