@@ -251,18 +251,18 @@ void SceneManager::UpdateFadeIn()
 
 void SceneManager::CreateFadeAnimations(Scene* scene)
 {
-    TextureManager::Load(TextureTag::FadeOut);
-    TextureManager::Load(TextureTag::FadeIn);
+    TextureManager::Load(TextureTag::Fade_In);
+    TextureManager::Load(TextureTag::Fade_Out);
 
 	World& world = scene->GetWorld();
 
     GameObject* fadeOutObj = &world.CreateGameObject();
-    fadeOutObj->AddComponent<UiSpriteRenderer>(TextureTag::FadeOut, Vector2::zero(), Vector2(1280.f, 720.f));
+    fadeOutObj->AddComponent<UiSpriteRenderer>(TextureTag::Fade_Out, Vector2::zero(), Vector2(1280.f, 720.f));
     s_fadeOutAnime = &fadeOutObj->AddComponent<SpriteAnimation>(6, 8, 3, 48, false);
 	fadeOutObj->SetActive(false); // Å‰‚Í”ñ•\Ž¦‚É‚µ‚Ä‚¨‚­
 
     GameObject* fadeInObj = &world.CreateGameObject();
-    fadeInObj->AddComponent<UiSpriteRenderer>(TextureTag::FadeIn, Vector2::zero(), Vector2(1280.f, 720.f));
+    fadeInObj->AddComponent<UiSpriteRenderer>(TextureTag::Fade_In, Vector2::zero(), Vector2(1280.f, 720.f));
     s_fadeInAnime = &fadeInObj->AddComponent<SpriteAnimation>(6, 8, 3, 48, false);
 }
 
