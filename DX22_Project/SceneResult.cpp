@@ -29,15 +29,21 @@ void Result::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 			GetWorld().ClearAll();        // 既存の World API に合わせる
 		});
 
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::TimerColon); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ResultTime); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Frame); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Gauge); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ResultUI); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::RANKS); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ResultTimer); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::tatu_Arubaita); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ResultHaikei); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Bace); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Time_Text); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Time_Number); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Time_Colon); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Gauge_Bar); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Gauge_Frame); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Next_Text); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Rank_S); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Rank_A); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Rank_B); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Rank_C); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Job_Pikapika); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Job_Sugoude); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Job_Tastuzin); });
+
 
 	// 各種オブジェクト生成タスクを追加
 	outTasks.emplace_back([this] { CanvasDraw(); });
@@ -101,13 +107,15 @@ void Result::CanvasDraw()
 	//背景生成
 
 	GameObject& haikeiGroung = w.CreateGameObject();
-	haikeiGroung.AddComponent<UiSpriteRenderer>(TextureTag::ResultHaikei, Vector2(0.f, 0.f), Vector2(1280, 780));
-	GameObject& backGroung = w.CreateGameObject();
-	backGroung.AddComponent<UiSpriteRenderer>(TextureTag::ResultUI, Vector2(550.f, -50.f), Vector2(600, 300));
+	haikeiGroung.AddComponent<UiSpriteRenderer>(TextureTag::Result_Bace, Vector2(0.f, 0.f), Vector2(1280, 780));
+
+	//GameObject& backGroung = w.CreateGameObject();
+	//backGroung.AddComponent<UiSpriteRenderer>(TextureTag::ResultUI, Vector2(550.f, -50.f), Vector2(600, 300));
+
 	GameObject& timeGroung = w.CreateGameObject();
-	timeGroung.AddComponent<UiSpriteRenderer>(TextureTag::ResultTime, Vector2(800.f, 380.f), Vector2(220, 100));
+	timeGroung.AddComponent<UiSpriteRenderer>(TextureTag::Result_Time_Text, Vector2(800.f, 380.f), Vector2(220, 100));
 	GameObject& tatuGroung = w.CreateGameObject();
-	tatuGroung.AddComponent<UiSpriteRenderer>(TextureTag::tatu_Arubaita, Vector2(700.f, 180.f), Vector2(420, 100));
+	tatuGroung.AddComponent<UiSpriteRenderer>(TextureTag::Result_Job_Tastuzin, Vector2(700.f, 180.f), Vector2(420, 100));
 }
 
 void Result::RankDraw()

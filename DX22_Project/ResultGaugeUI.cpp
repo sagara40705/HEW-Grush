@@ -28,10 +28,10 @@ void ResultGaugeUI::Awake()
 	TextureManager::Load(TextureTag::GaugeEffect);*/
 
 	GameObject& Gauge = gameObject->CreateChild();
-	uiGauge_ = &Gauge.AddComponent<UiSpriteRenderer>(TextureTag::Gauge, kMinutePos[ToIndex(TimerDigits::Ten)], kNumGaugeberSize, Vector2::zero(), kNumberUVScale);
+	uiGauge_ = &Gauge.AddComponent<UiSpriteRenderer>(TextureTag::Result_Gauge_Bar, kMinutePos[ToIndex(TimerDigits::Ten)], kNumGaugeberSize, Vector2::zero(), kNumberUVScale);
 
 	GameObject& Frame = gameObject->CreateChild();
-	uiFrame_ = &Frame.AddComponent<UiSpriteRenderer>(TextureTag::Frame, kMinutePos[ToIndex(TimerDigits::Ten)], kNumFrameberSize, Vector2::zero(), kNumberUVScale);
+	uiFrame_ = &Frame.AddComponent<UiSpriteRenderer>(TextureTag::Result_Gauge_Frame, kMinutePos[ToIndex(TimerDigits::Ten)], kNumFrameberSize, Vector2::zero(), kNumberUVScale);
 }
 //int ArubaitpLevel = 0;
 void ResultGaugeUI::Start()
