@@ -13,7 +13,7 @@
 #include "SceneManager.h"
 #include "SceneStageSelect.h"
 #include "SceneResult.h"
-
+#include "SceneOption.h"
 
 void SceneGame::Load()
 {
@@ -505,9 +505,16 @@ void SceneGame::SkyDomeDorw()
 
 void SceneGame::Update()
 {
+	// 強制敵にステージセレクトへ戻る
 	if (InputKeyboard::GetKey(VK_SPACE) && InputKeyboard::GetKeyDown('Q'))
 	{
 		SceneManager::ChangeSceneAsync<SceneStageSelect>();
+	}
+
+	// オプション画面へ
+	if (InputKeyboard::GetKeyDown('O'))
+	{
+		SceneManager::PushScene<SceneOption>();
 	}
 }
 

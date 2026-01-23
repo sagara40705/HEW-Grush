@@ -20,8 +20,8 @@ void Game::Init()
     SceneManager::Initialize();
 
     //SceneManager::ChangeSceneAsync<SceneGame>();
-    //SceneManager::ChangeSceneAsync<SceneTitle>();
-	SceneManager::ChangeSceneAsync<SceneStageSelect>();
+    SceneManager::ChangeSceneAsync<SceneTitle>();
+	//SceneManager::ChangeSceneAsync<SceneStageSelect>();
     //SceneManager::ChangeScene<SceneOption>();
 
 	CheckTitleSound = false;
