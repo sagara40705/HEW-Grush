@@ -16,23 +16,30 @@ const ModelLoadData ModelManager::kModelData[static_cast<size_t>(ModelTag::Count
 
     {"Assets/Model/Grade_1/MD_actionkomuSwing_251221_test2.fbx",              0.01f, Model::Flip::ZFlip}, //1
     {"Assets/Model/Grade_1/MD_akican_251208.fbx",                             0.01f, Model::Flip::ZFlip}, //2
-    {"Assets/Model/Grade_1/MD_desktop_20251205.fbx",                          0.2f,  Model::Flip::ZFlip}, //3
+    {"Assets/Model/Grade_1/MD_desktop_251231.fbx",                            0.2f,  Model::Flip::ZFlip}, //3
     {"Assets/Model/Grade_1/MD_gomibukuro_251208.fbx",                         0.01f, Model::Flip::ZFlip}, //4
     {"Assets/Model/Grade_1/MD_isu_251208.fbx",                                0.01f, Model::Flip::ZFlip}, //5
     {"Assets/Model/Grade_1/MD_kuukseizixyoukii_20251205.fbx",                 0.15f, Model::Flip::ZFlip}, //6
     {"Assets/Model/Grade_1/MD_ningixyou_20251205.fbx",                        0.15f, Model::Flip::ZFlip}, //7
+	{"Assets/Model/Grade_1/MD_sagaradoll_251208.fbx",                         0.01f, Model::Flip::ZFlip}, //8
+	{"Assets/Model/Grade_1/MD_testp_251208.fbx",                              0.01f, Model::Flip::ZFlip}, //9
 
-    {"Assets/Model/MD_REbenti_prototype.fbx",                                 0.01f, Model::Flip::ZFlip}, //8
-    {"Assets/Model/Grade_2/MD_aircon_251208.fbx",                             0.01f, Model::Flip::ZFlip}, //9
-    {"Assets/Model/Grade_2/MD_jihanki_251208.fbx",                            0.006f,Model::Flip::ZFlip}, //10
-    {"Assets/Model/Grade_2/MD_reizouko_20251205.fbx",                         0.5f,  Model::Flip::ZFlip},  //11
+    {"Assets/Model/Grade_2/MD_benti_20251118.fbx",                            0.01f, Model::Flip::ZFlip}, //10
+    {"Assets/Model/Grade_2/MD_aircon_251208.fbx",                             0.01f, Model::Flip::ZFlip}, //11
+    {"Assets/Model/Grade_2/MD_jihanki_251208.fbx",                            0.006f,Model::Flip::ZFlip}, //12
+    {"Assets/Model/Grade_2/MD_reizouko_20251205.fbx",                         0.5f,  Model::Flip::ZFlip}, //13
+    {"Assets/Model/Grade_2/MD_airpurifier_251208.fbx",                        0.01f, Model::Flip::ZFlip}, //14
+	{"Assets/Model/Grade_2/MD_fridge_251208.fbx",                             0.01f, Model::Flip::ZFlip}, //15
      
-    {"Assets/Model/MD_UFO_prototype.fbx",                                     0.01f, Model::Flip::ZFlip},  //12
-    {"Assets/Model/MD_eisei_251208.fbx",                                      0.015f,Model::Flip::ZFlip}, //13
+    {"Assets/Model/Grade_3/MD_UFO_20251118.fbx",                              0.01f, Model::Flip::ZFlip}, //16
+    {"Assets/Model/Grade_3/MD_eisei_251208.fbx",                              0.015f,Model::Flip::ZFlip}, //17
+    {"Assets/Model/Grade_3/MD_star_20251231.fbx",                             0.03f, Model::Flip::ZFlip}, //18
 
-    {"Assets/Model/MD_player_prototype.fbx",                                  0.01f, Model::Flip::ZFlip}, //14
-    {"Assets/Model/playerchara_20251202/space_suit_12.fbx",                   0.01f, Model::Flip::ZFlip}, //15
-    {"Assets/Model/Hammer/hammer_grade3.fbx",                                 0.08f, Model::Flip::ZFlip}, //16
+    {"Assets/Model/playerchara_20260114/playerchara_20260114.fbx",            0.01f, Model::Flip::ZFlip}, //19
+    {"Assets/Model/playerchara_20251202/space_suit_12.fbx",                   0.01f, Model::Flip::ZFlip}, //20
+    {"Assets/Model/new_hammer_grade1/new_hammer_grade1.fbx",                  0.08f, Model::Flip::ZFlip}, //21
+    {"Assets/Model/hammer_grade2/hammer_grade2.fbx",                          0.08f, Model::Flip::ZFlip}, //22
+	{"Assets/Model/hammer_grade3/hammer_grade3.fbx",                          0.08f, Model::Flip::ZFlip}, //23
 };
 
 bool ModelManager::Load(ModelTag tag)

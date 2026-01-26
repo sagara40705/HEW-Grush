@@ -44,18 +44,24 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Isu); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Kuukseizixyoukii); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Ningixyou); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::SagaraDoll); });
 
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Benti); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Aircon); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Jihanki); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Reizouko); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::AirPurifier); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::fridge); });
 
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Ufo); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Eiseii); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Star); });
 
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::ProtPlay); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_grade1); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_grade2); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_grade3); });
 
 	// テクスチャーロード
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Star); });
@@ -176,7 +182,7 @@ void SceneGame::CreateCameraAndPlayer()
 
 	GameObject& hummer = player.CreateChild(Hammer::BasePos, Hammer::BaseRota, Vector3(0.2f, 0.2f, 0.2f));
 	hummer.SetTag(Tag::Hammer);
-	hummer.AddComponent<MeshFilter>(ModelTag::Hammer);
+	hummer.AddComponent<MeshFilter>(ModelTag::Hammer_grade1);
 	hummer.AddComponent<MeshRenderer>();
 	hummer.AddComponent<BoxCollider>(false, Vector3(-3.f, 2.f, -3.f), Vector3(5.f, 5.f, 2.f));
 	hummer.AddComponent<Hammer>();
@@ -868,14 +874,19 @@ PrefabId SceneGame::GetPrefabIdFromString(const std::string& rawname)
 	if (name == "Isu") return PrefabId::Isu;
 	if (name == "Kuukseizixyoukii") return PrefabId::Kuukseizixyoukii;
 	if (name == "Ningixyou") return PrefabId::Ningixyou;
+	if (name == "SagaraDoll") return PrefabId::SagaraDoll;
+	if (name == "Testp") return PrefabId::Testp;
 
 	if (name == "Benti") return PrefabId::Benti;
 	if (name == "Aircon") return PrefabId::Aircon;
 	if (name == "Jihanki") return PrefabId::Jihanki;
 	if (name == "Reizouko") return PrefabId::Reizouko;
-
+	if (name == "Fridge") return PrefabId::fridge;
+	if (name == "AirPurifier") return PrefabId::AirPurifier;
+	 
 	if (name == "Ufo") return PrefabId::Ufo;
 	if (name == "Eisei") return PrefabId::Eisei;
+	if (name == "Star") return PrefabId::Star;
 
 	// 一致するものがなかった場合、勝手にSwingにせず、エラーを出す！
 	std::string errorMsg = "Unknown Prefab Name: [" + name + "]\n(Fallback to Swing)";
