@@ -47,16 +47,39 @@ void GlassGaugeUI::Update()
 		effect_->Play();
 	}
 
-	float r = manager_->GetGaugeRatio();
+	float r = manager_->GetGaugeRatio(); // 0.0 ~ 1.0
 	float g = manager_->GetGaugeDecayTimer();
 	float garde = static_cast<float>(manager_->GetHammerGrade());
 
 	DebugLog::OutputValue("GlassGauge Ratio", r);
 
-	max_->SetOffset({ 25, 200.f * (1 - r) + 10.f });
-	max_->SetSize({ 220.f , 200.f * r });
-	max_->SetUVPos({ garde / 3.f, 1 - r });
-	max_->SetUVScale({ 1.f / 3.f, r });
+	// --- スプライトシートの設定 (5x5) ---
+	const int COLUMNS = 5;      // 横に5列
+	const int ROWS = 5;         // 縦に5行
+	const int TOTAL_FRAMES = 21; // 実際に使うのは21枚
+
+	// 1. 割合(r)を0〜20のインデックスに変換
+	// $index = \lfloor r \times 20 + 0.5 \rfloor$
+	int frameIndex = static_cast<int>(r * (TOTAL_FRAMES - 1) + 0.5f);
+
+	// 2. インデックスを列(X)と行(Y)に分解する
+	// 例: index 7 なら 7 % 5 = 2列目, 7 / 5 = 1行目
+	int col = frameIndex % COLUMNS;
+	int row = frameIndex / COLUMNS;
+
+	// 3. 1コマあたりのUVサイズを計算
+	float cellW = 1.0f / (float)COLUMNS; // 0.2
+	float cellH = 1.0f / (float)ROWS;    // 0.2
+
+	// --- UVの設定 ---
+	// 伸び縮みさせないのでScaleは固定(0.2, 0.2)
+	max_->SetUVScale({ cellW, cellH });
+	// 計算した列・行からUVの左上座標を指定
+	max_->SetUVPos({ (float)col * cellW, (float)row * cellH });
+
+	max_->SetOffset({ 25,10.f });
+	max_->SetSize({ 220.f , 200.f  });
+	
 
 	em_->SetUVPos({ garde / 3.f, 1 });
 	em_->SetUVScale({ 1.f / 3.f, 1 });
