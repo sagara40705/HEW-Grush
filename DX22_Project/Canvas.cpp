@@ -13,25 +13,18 @@ Canvas::Canvas()
 
 void Canvas::Awake()
 {
-    // とりあえず 1 個だけをメイン Canvas として扱う
-    if (s_main == nullptr)
-    {
-        s_main = this;
-    }
-    else
-    {
-        s_main = this;
-        // 2 個目以降は想定外（必要なら後で仕様拡張）
-        //assert(false && "Multiple Canvas detected. Current design assumes only one Canvas.");
-    }
+	s_main = this;
+
+	assert(s_main != nullptr && "Canvas::Awake: Main canvas already exists.");
 }
 
 void Canvas::OnDestroy()
 {
-    if (s_main == this)
+    if (s_main == this )
     {
         s_main = nullptr;
     }
+
 }
 
 void Canvas::SetScreenSize(int w, int h)

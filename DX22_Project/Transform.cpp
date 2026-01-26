@@ -128,10 +128,10 @@ const XMFLOAT4X4& Transform::GetMatrix()
     return worldMatrix;
 }
 
-XMFLOAT3 Transform::GetWorldPosition()
+Vector3 Transform::GetWorldPosition()
 {
     RebuildIfDirty();
-    return XMFLOAT3(worldMatrix._41, worldMatrix._42, worldMatrix._43);
+    return Vector3(worldMatrix._41, worldMatrix._42, worldMatrix._43);
 }
 
 //-----------------------------

@@ -27,6 +27,8 @@ constexpr HammerGrade PrevGrade(HammerGrade g) noexcept{
 class BoxCollider; class CameraShake;
 class GlassObject; enum class GlassGrade : std::uint8_t;
 class GlassGaugeManager; class ScoreManager;
+class HammerEffects; 
+class PlayerAnimation;
 
 class Hammer : public MonoBehaviour, public TriggerListener
 {
@@ -39,10 +41,13 @@ private:
 private:
 	Transform* tf_ = nullptr;
 	BoxCollider* bc_ = nullptr;
+	MeshFilter* mf_ = nullptr;
 	MeshRenderer* renderer_ = nullptr;
 	CameraShake* shake_ = nullptr;
 	GlassGaugeManager* gauge_ = nullptr;
 	ScoreManager* score_ = nullptr;
+	PlayerAnimation* playerAnim_ = nullptr;
+	HammerEffects* effects_ = nullptr;
 public:
 	void Start() override;
 	void Update() override;
@@ -53,6 +58,7 @@ public:
 	void GradeUp();
 	void GradeDown();
 	void SetScale();
+	void SetModel();
 	void UpdateNormalAttack(float dt);
 	void ResetPos();
 	void UpdateSpinAttack();

@@ -47,10 +47,11 @@ void Sprite3DRenderer::Render()
     param.uvPos_uvScale = { uvPos.x, uvPos.y ,uvScale.x, uvScale.y };
     param.color = color;
     vs->WriteBuffer(1, &param);
-    ps->WriteBuffer(1, &param);
+    ps->WriteBuffer(2, &param);
 
     // 3) テクスチャ・サンプラ・ステート
     ps->SetTexture(0, texture_);
+    //SetDepthTest(false);
 
 	// 4) Sharderをバインド / 描画
     vs->Bind();

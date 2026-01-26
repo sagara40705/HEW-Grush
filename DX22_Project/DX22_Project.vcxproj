@@ -44,6 +44,7 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
+    <EnableASAN>false</EnableASAN>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -51,6 +52,7 @@
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
+    <EnableASAN>false</EnableASAN>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -120,6 +122,7 @@
       <ConformanceMode>true</ConformanceMode>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <LanguageStandard>stdcpp20</LanguageStandard>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -149,8 +152,6 @@
     <ClCompile Include="ActionUI.cpp" />
     <ClCompile Include="Allpoint.cpp" />
     <ClCompile Include="Animator.cpp" />
-    <ClCompile Include="AudioListener.cpp" />
-    <ClCompile Include="AudioSource.cpp" />
     <ClCompile Include="BoxCollider.cpp" />
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraContorol.cpp" />
@@ -162,15 +163,16 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="DirectX.cpp" />
     <ClCompile Include="ElectricFan.cpp" />
-    <ClCompile Include="EventComponent.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GlassObjectSpawnerh.cpp" />
     <ClCompile Include="GlassShard.cpp" />
     <ClCompile Include="GlassShardPool.cpp" />
+    <ClCompile Include="HammerEffects.cpp" />
     <ClCompile Include="GroundRenderer.cpp" />
     <ClCompile Include="Hammer.cpp" />
     <ClCompile Include="JumpSki.cpp" />
+    <ClCompile Include="LoadingCharacterAnimation.cpp" />
     <ClCompile Include="LoadingGauge.cpp" />
     <ClCompile Include="Model_anime.cpp" />
     <ClCompile Include="Model_check.cpp" />
@@ -212,30 +214,34 @@
     <ClCompile Include="Scene.cpp" />
     <ClCompile Include="SceneGame.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="SceneOption.cpp" />
     <ClCompile Include="SceneResult.cpp" />
     <ClCompile Include="SceneSample.cpp" />
+    <ClCompile Include="SceneStageSelect.cpp" />
     <ClCompile Include="ScoreManager.cpp" />
     <ClCompile Include="ScoreUI.cpp" />
+    <ClCompile Include="SelectPlayerControl.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="ShaderList.cpp" />
     <ClCompile Include="SkyDomeMesh.cpp" />
     <ClCompile Include="SkyDomeShader.cpp" />
     <ClCompile Include="Sound.cpp" />
-    <ClCompile Include="SoundBackend.cpp" />
     <ClCompile Include="SoundManager.cpp" />
-    <ClCompile Include="SoundSystem.cpp" />
     <ClCompile Include="SphereCollider.cpp" />
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Sprite3DRenderer.cpp" />
     <ClCompile Include="SpriteAnimation.cpp" />
+    <ClCompile Include="StageMap.cpp" />
     <ClCompile Include="StageWall.cpp" />
     <ClCompile Include="Startup.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TexutureManager.cpp" />
     <ClCompile Include="SceneTitle.cpp" />
     <ClCompile Include="TimerUI.cpp" />
+    <ClCompile Include="Time\Time.cpp" />
     <ClCompile Include="TitleManager.cpp" />
     <ClCompile Include="Transform.cpp" />
+    <ClCompile Include="TutorialManager.cpp" />
     <ClCompile Include="UIFrostRenderer.cpp" />
     <ClCompile Include="UiSpriteRenderer.cpp" />
     <ClCompile Include="WarpPoint .cpp" />
@@ -248,8 +254,6 @@
     <ClInclude Include="AllComponent.h" />
     <ClInclude Include="Allpoint.h" />
     <ClInclude Include="Animator.h" />
-    <ClInclude Include="AudioListener.h" />
-    <ClInclude Include="AudioSource.h" />
     <ClInclude Include="BoxCollider.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="CameraContorol.h" />
@@ -263,8 +267,6 @@
     <ClInclude Include="Defines.h" />
     <ClInclude Include="DirectX.h" />
     <ClInclude Include="ElectricFan.h" />
-    <ClInclude Include="Event.h" />
-    <ClInclude Include="EventComponent.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameState.h" />
@@ -275,6 +277,7 @@
     <ClInclude Include="GlassObjectSpawner.h" />
     <ClInclude Include="GlassShard.h" />
     <ClInclude Include="GlassShardPool.h" />
+    <ClInclude Include="HammerEffects.h" />
     <ClInclude Include="GroundRenderer.h" />
     <ClInclude Include="Hammer.h" />
     <ClInclude Include="Input.h" />
@@ -284,6 +287,7 @@
     <ClInclude Include="JumpSki.h" />
     <ClInclude Include="Layer.h" />
     <ClInclude Include="LineManager.h" />
+    <ClInclude Include="LoadingCharacterAnimation.h" />
     <ClInclude Include="LoadingGauge.h" />
     <ClInclude Include="LoadingScene.h" />
     <ClInclude Include="Main.h" />
@@ -311,30 +315,36 @@
     <ClInclude Include="Scene.h" />
     <ClInclude Include="SceneGame.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="SceneOption.h" />
     <ClInclude Include="SceneResult.h" />
     <ClInclude Include="SceneSmaple.h" />
+    <ClInclude Include="SceneStageSelect.h" />
     <ClInclude Include="ScoreManager.h" />
     <ClInclude Include="ScoreUI.h" />
+    <ClInclude Include="SelectPlayerControl.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="ShaderList.h" />
     <ClInclude Include="SkyDomeMesh.h" />
     <ClInclude Include="SkyDomeShader.h" />
     <ClInclude Include="Sound.h" />
-    <ClInclude Include="SoundBackend.h" />
     <ClInclude Include="SoundManager.h" />
-    <ClInclude Include="SoundSystem.h" />
-    <ClInclude Include="SoundType.h" />
     <ClInclude Include="SphereCollider.h" />
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Sprite3DRenderer.h" />
     <ClInclude Include="SpriteAnimation.h" />
+    <ClInclude Include="StageMap.h" />
+    <ClInclude Include="StagePoint.h" />
     <ClInclude Include="StageWall.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="SceneTitle.h" />
     <ClInclude Include="TimerUI.h" />
+    <ClInclude Include="Time\Stopwatch.h" />
+    <ClInclude Include="Time\Time.h" />
+    <ClInclude Include="Time\Timer.h" />
     <ClInclude Include="TitleManager.h" />
     <ClInclude Include="Transform.h" />
+    <ClInclude Include="TutorialManager.h" />
     <ClInclude Include="UIFrostRenderer.h" />
     <ClInclude Include="UiSpriteRenderer.h" />
     <ClInclude Include="Vector2.h" />

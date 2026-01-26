@@ -2,17 +2,18 @@
 #include <cstdint>
 #include "Component.h"
 #include "ResultGaugeUI.h"
-enum class Type : std::uint8_t
+
+enum class RankType : std::uint8_t
 {
-	S,
-	A,
-	B,
-	C,
-	D,
+	Rank_S,
+	Rank_A,
+	Rank_B,
+	Rank_C,
+	Rank_D,
 	Count
 };
 
-constexpr static size_t ToIndex(Type d) noexcept { return static_cast<size_t>(d); }
+constexpr static size_t ToIndex(RankType d) noexcept { return static_cast<size_t>(d); }
 
 class ResultRankUI : public MonoBehaviour
 {
@@ -21,11 +22,12 @@ public:
 	ResultRankUI() = default;
 	~ResultRankUI() = default;
 
+	void Awake();
 	void Start();
 	void Update(float);
 	void Draw();
 private:
-	UiSpriteRenderer* uiMinute_[ToIndex(Type::Count)]{};
+	UiSpriteRenderer* uiMinute_[ToIndex(RankType::Count)]{};
 	UiSpriteRenderer* uiColon_ = nullptr;
-	UiSpriteRenderer* uiSecond_[ToIndex(Type::Count)]{};
+	UiSpriteRenderer* uiSecond_[ToIndex(RankType::Count)]{};
 };

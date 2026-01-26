@@ -11,8 +11,8 @@
 #include "Defines.h"
 #include "ShaderList.h"
 #include "LineManager.h"
-#include "Game.h"
 #include "SoundManager.h"
+#include "Game.h"
 
 
 HRESULT Init(HWND hWnd, UINT width, UINT height)
@@ -30,7 +30,6 @@ HRESULT Init(HWND hWnd, UINT width, UINT height)
 	ShaderList::Init();
 	LineManager::Init();
 	SoundManager::Load();
-	
 	// ÉVÅ[Éì
 	Game::Init();
 

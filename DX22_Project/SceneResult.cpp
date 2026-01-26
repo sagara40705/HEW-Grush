@@ -9,28 +9,17 @@
 #include "LineManager.h"
 #include "ResultGaugeUI.h"
 #include "ResultRankUI.h"
-#include  "ResultManeger.h"
-#include "ResultArubauto.h"
+#include "SceneStageSelect.h"
 
-//constexpr Vector2 kNumberUVScale = { 0.1f, 1.0f };
+
+constexpr Vector2 kNumberUVScale = { 0.1f, 1.0f };
 void SceneResult::Load()
 {
-
-	//テクスチャーロード
-	//TextureManager::Load(TextureTag::Title_BG);
-	World& w = GetWorld();
-	//Canvas
-	GameObject& canvas = w.CreateGameObject();
-	canvas.AddComponent<Canvas>();
-
-
-
 	// 従来の同期ロードが必要なら、タスクを構築して全部回す
 	std::vector<LoadTask> tasks;
 	BuildLoadTasks(tasks);
 	for (auto& t : tasks) t();
 }
-
 
 void SceneResult::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 {
@@ -40,36 +29,32 @@ void SceneResult::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 			GetWorld().ClearAll();        // 既存の World API に合わせる
 		});
 
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Bace); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Time_Text); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Time_Number); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Time_Colon); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Gauge_Bar); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Gauge_Frame); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Next_Text); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Rank_S); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Rank_A); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Rank_B); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Rank_C); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Job_Pikapika); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Job_Sugoude); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Job_Tastuzin); });
 
 
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::TimerColon02); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ResultTime); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Frame); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Gauge); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ResultUI); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::RANKS); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ResultTimer); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::tatu_Arubaita); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ResultHaikei); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::HaikeiBase); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::pika_Arubaita); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::sugo_Arubaita); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Next); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ResultA); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ResultB); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ResultC); });
 	// 各種オブジェクト生成タスクを追加
-	outTasks.emplace_back([this] { CanvasDraw(); });
-	outTasks.emplace_back([this] { TimerUIDeaw(); });
-	//<<<<<<< HEAD
-	outTasks.emplace_back([this] { GaugeDraw(); });
-	outTasks.emplace_back([this] { RankDraw(); });
-	outTasks.emplace_back([this] { SceneTitleDraw(); });
-	outTasks.emplace_back([this] { ArubaitoLevelDraw(); });
-	//=======
-		//outTasks.emplace_back([this] { GaugeDraw(); });
-		//outTasks.emplace_back([this] { RankDraw(); });
-	//>>>>>>> e348d9a321fd84f4a3ac8ea23cc62e58cc620fd9
+	outTasks.emplace_back([this] { CreateCanvas(); });
+	//outTasks.emplace_back([this] { CreateBace(); });
+	//outTasks.emplace_back([this] { CreateTimeUI(); });
+	outTasks.emplace_back([this] { CreateGaugeUI(); });
+	//outTasks.emplace_back([this] { CreateRankUI(); });
+	//outTasks.emplace_back([this] { CreateJobUI(); });
+	outTasks.emplace_back([this] { CreateNextText(); });
+	outTasks.emplace_back([this] { SceneManager::CreateFadeAnimations(this); });
+
 
 		// 最後に Start を流す
 	outTasks.emplace_back([this]
@@ -79,9 +64,12 @@ void SceneResult::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 
 }
 
-
 void SceneResult::Update()
 {
+	if (InputKeyboard::GetKeyDown(VK_SPACE))
+	{
+		SceneManager::ChangeSceneAsync<SceneStageSelect>();
+	}
 }
 
 void SceneResult::Draw()
@@ -90,19 +78,36 @@ void SceneResult::Draw()
 
 void SceneResult::Unload()
 {
+	SceneManager::ReleaseFadeAnimations();
+	TextureManager::Clear();
 }
 
-void SceneResult::TimerUIDeaw()
+void SceneResult::CreateCanvas()
+{
+	World& w = GetWorld();
+	//Canvas
+	GameObject& canvas = w.CreateGameObject();
+	canvas.AddComponent<Canvas>();
+}
+
+void SceneResult::CreateBace()
+{
+	World& w = GetWorld();
+	//背景生成
+	GameObject& bace = w.CreateGameObject();
+	bace.AddComponent<UiSpriteRenderer>(TextureTag::Result_Bace, Vector2::zero(), Vector2::WindowSize());
+}
+
+void SceneResult::CreateTimeUI()
 {
 	World& w = GetWorld();
 
 	GameObject& timerUI = w.CreateGameObject();
 	timerUI.SetTag(Tag::ResultTimerUI);
 	timerUI.AddComponent<ResultTimerUI>();
-
 }
 
-void SceneResult::GaugeDraw()
+void SceneResult::CreateGaugeUI()
 {
 	World& w = GetWorld();
 
@@ -111,33 +116,7 @@ void SceneResult::GaugeDraw()
 	Gauge.AddComponent<ResultGaugeUI>();
 }
 
-void SceneResult::CanvasDraw()
-{
-	World& w = GetWorld();
-	//Canvas
-	GameObject& canvas = w.CreateGameObject();
-	canvas.AddComponent<Canvas>();
-	//背景生成
-
-	GameObject& haikeiGroung = w.CreateGameObject();
-	haikeiGroung.AddComponent<UiSpriteRenderer>(TextureTag::ResultHaikei, Vector2(0.f, 0.f), Vector2(1280, 780));
-
-	GameObject& BaseGroung = w.CreateGameObject();
-	BaseGroung.AddComponent<UiSpriteRenderer>(TextureTag::HaikeiBase, Vector2(0.f, 0.f), Vector2(1280, 780));
-
-	/*GameObject& backGroung = w.CreateGameObject();
-	backGroung.AddComponent<UiSpriteRenderer>(TextureTag::ResultUI, Vector2(550.f, -50.f), Vector2(600, 300));*/
-	GameObject& timeGroung = w.CreateGameObject();
-	timeGroung.AddComponent<UiSpriteRenderer>(TextureTag::ResultTime, Vector2(0.f, 0.f), Vector2(1280, 780));
-
-
-	GameObject& NextGroung = w.CreateGameObject();
-	NextGroung.AddComponent<UiSpriteRenderer>(TextureTag::Next, Vector2(0.f, 0.f), Vector2(1280, 750));
-	//GameObject& tatuGroung = w.CreateGameObject();
-	//tatuGroung.AddComponent<UiSpriteRenderer>(TextureTag::tatu_Arubaita, Vector2(700.f, 180.f), Vector2(420, 100));
-}
-
-void SceneResult::RankDraw()
+void SceneResult::CreateRankUI()
 {
 	World& w = GetWorld();
 
@@ -146,24 +125,18 @@ void SceneResult::RankDraw()
 	Rank.AddComponent<ResultRankUI>();
 }
 
-void SceneResult::SceneTitleDraw()
+void SceneResult::CreateJobUI()
 {
 	World& w = GetWorld();
-	//Canvas
-	GameObject& canvas = w.CreateGameObject();
-	canvas.AddComponent<Canvas>();
 	//背景生成
-	//タイトルマネージャー生成
-	GameObject& manager = w.CreateGameObject();
-	manager.AddComponent<ResultManeger>();
+	GameObject& job = w.CreateGameObject();
+	job.AddComponent<UiSpriteRenderer>(TextureTag::Result_Job_Tastuzin, Vector2::zero(), Vector2::WindowSize());
 }
 
-void SceneResult::ArubaitoLevelDraw()
+void SceneResult::CreateNextText()
 {
 	World& w = GetWorld();
-
-	GameObject& Arubaito = w.CreateGameObject();
-	Arubaito.SetTag(Tag::ResultArubaito);
-	Arubaito.AddComponent<ResultArubauto>();
+	//背景生成
+	GameObject& job = w.CreateGameObject();
+	job.AddComponent<UiSpriteRenderer>(TextureTag::Result_Next_Text, Vector2::zero(), Vector2::WindowSize());
 }
-

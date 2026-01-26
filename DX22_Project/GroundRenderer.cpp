@@ -125,7 +125,7 @@ void GroundRenderer::Start()
     // “¯‚¶ GameObject ã‚Ì MeshFilter ‚ğæ“¾
     meshFilter_ = GetComponent<MeshFilter>();
     // texture_ ‚ÍŠO‚©‚ç SetTexture() ‚Åİ’è‚µ‚Ä‚à‚ç‚¤‘O’ñ
-    if(!texture_)  texture_ = TextureManager::Get(TextureTag::Stage);
+    if(!texture_)  texture_ = TextureManager::Get(TextureTag::Game_Ground);
  
     assert(meshFilter_ && "GroundRenderer::Start()‚ÅmeshFilter_‚ªnullptr‚Å‚·");
     assert(texture_ && "GroundRenderer::Start()‚Åtexture_‚ªnullptr‚Å‚·");

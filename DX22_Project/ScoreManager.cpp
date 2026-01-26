@@ -4,9 +4,9 @@
 #include "DebugLog.h"
 #include "Game.h"
 #include "GameState.h"
-#include "SceneTitle.h"
-#include "TimerUI.h"
 #include "SceneResult.h"
+#include "SceneManager.h"
+#include "TimerUI.h"
 #include <cassert>
 
 void ScoreManager::Start()
@@ -31,11 +31,15 @@ void ScoreManager::UpScore(GlassGrade grade)
 {
 	constexpr int kUpValue[ToIndex(GlassGrade::Count)] = { 3, 6, 10 };
 
+	if (isLock_) return;
+
 	score_ -= kUpValue[ToIndex(grade)];
 	DebugLog::OutputValue("Up Score", score_);
 
 	if (score_ <= 0.f)
 	{
+		score_ = 0;
+		isLock_ = true;	
 		GoToResultScene();
 	}
 }
@@ -54,5 +58,5 @@ void ScoreManager::GoToResultScene()
 
 	// ===== ƒV[ƒ“Ø‚è‘Ö‚¦ =====
 	DebugLog::Output("Clear Stage");
-	SceneManager::ChangeScene<SceneResult>();
+	SceneManager::ChangeSceneAsync<SceneResult>();
 }

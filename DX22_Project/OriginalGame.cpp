@@ -28,6 +28,10 @@ StageId GetCurrentStage()
 {
 	return Game::GetState()->stage_;
 }
+void SetSelectedStage(StageId id)
+{
+	Game::GetState()->stage_ = id;
+}
 
 
 // 直近クリアしたステージのタイムを取得・設定
@@ -38,4 +42,14 @@ float GetRecentClearTimes()
 void SetRecentClearTimes(float time)
 {
 	Game::GetState()->recentClearTimes_ = time;
+}
+
+void EndTutorial()
+{
+	Game::GetState()->endTutorial_ = true;
+}
+
+bool IsEndTutorial()
+{
+	return Game::GetState()->endTutorial_;
 }

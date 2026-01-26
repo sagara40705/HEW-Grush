@@ -18,7 +18,7 @@ public:
 	void OnDestroy() override;
 public:
 	static GlassShardPool* GetInstanse() { return s_instance; }
-	GameObject* Instantiate(const Vector3& pos, GlassGrade grade);
+	GameObject* Instantiate(const Vector3& pos, GlassGrade grade, float scale);
 private:
 	Vector3 CalcBillboard(const Vector3& pos);
 	Vector3 MakePlayerBiasedDir(const Vector3& shardPos);
