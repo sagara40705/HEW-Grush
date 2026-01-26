@@ -8,6 +8,7 @@
 #include "SceneManager.h"
 #include "TimerUI.h"
 #include <cassert>
+#include "Time/Time.h"
 
 void ScoreManager::Start()
 {
@@ -27,6 +28,23 @@ void ScoreManager::Start()
 	if (!timer_) return;
 }
 
+void ScoreManager::Update()
+{
+	if (goToResultSceneTimer_.IsRunning())
+	{
+		if (goToResultSceneTimer_.ElapsedRawSeconds() >= kGoToResultSceneTime)
+		{
+			goToResultSceneTimer_.Stop();
+			GoToResultScene();
+		}
+	}
+}
+
+void ScoreManager::OnDestroy()
+{
+	timer_ = nullptr;
+}
+
 void ScoreManager::UpScore(GlassGrade grade)
 {
 	constexpr int kUpValue[ToIndex(GlassGrade::Count)] = { 3, 6, 10 };
@@ -40,7 +58,8 @@ void ScoreManager::UpScore(GlassGrade grade)
 	{
 		score_ = 0;
 		isLock_ = true;	
-		GoToResultScene();
+		goToResultSceneTimer_.Start();
+		Time::SetTimeScale(0.2f); //スローモーション
 	}
 }
 

@@ -12,7 +12,7 @@ enum class PrefabId : std::uint8_t
     Desktop,
     Gomibukuro,
     Isu,
-    Kuukseizixyoukii,
+    Kuukiseizyouki,
     Ningixyou,
     SagaraDoll,
 

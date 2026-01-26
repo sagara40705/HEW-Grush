@@ -636,7 +636,7 @@ PrefabId SceneGame::GetPrefabIdFromString(const std::string& rawname)
 	if (name == "Desktop") return PrefabId::Desktop;
 	if (name == "Gomibukuro") return PrefabId::Gomibukuro;
 	if (name == "Isu") return PrefabId::Isu;
-	if (name == "Kuukseizixyoukii") return PrefabId::Kuukseizixyoukii;
+	if (name == "Kuukiseizyouki") return PrefabId::Kuukiseizyouki;
 	if (name == "Ningixyou") return PrefabId::Ningixyou;
 	if(name == "SagaraDoll") return PrefabId::SagaraDoll;
 

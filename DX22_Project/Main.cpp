@@ -13,6 +13,7 @@
 #include "LineManager.h"
 #include "SoundManager.h"
 #include "Game.h"
+#include "Time/Time.h"
 
 
 HRESULT Init(HWND hWnd, UINT width, UINT height)
@@ -21,6 +22,8 @@ HRESULT Init(HWND hWnd, UINT width, UINT height)
 	// DirectXèâä˙âª
 	hr = InitDirectX(hWnd, width, height, false);
 	if (FAILED(hr)) { return hr; }
+
+	Time::Initialize();
 
 	// ëºã@î\èâä˙âª
 	PrimitiveMeshManager::Init();
@@ -49,11 +52,14 @@ void Uninit()
 	TextureManager::Clear();
 	Sprite::Uninit();
 	PrimitiveMeshManager::Uninit();
+
+	Time::Shutdown();
 	UninitDirectX();
 }
 
 void Update()
 {
+	Time::BeginFrame();
 	InputKeyboard::Update();
 	InputGamepad::Update();
 	Game::Update();
