@@ -1,7 +1,95 @@
 [Debug Log Started]
-[12:50:50] Model::Load, material.pTexture: 00000264CD3AE0C0
-[12:50:50] Model::Load, material.pTexture: 00000264CD3AE180
-[12:50:50] Model::Load, material.pTexture: 00000264CD3AE060
-[12:50:50] Model::Load, material.pTexture: 00000264CD3AD5E0
-[12:50:54] Animation End OneLoop
+[13:36:42] Model::Load, material.pTexture: 000002F0E6E330C0
+[13:36:42] Model::Load, material.pTexture: 000002F0E6E31F80
+[13:36:42] Model::Load, material.pTexture: 000002F0E6E31E00
+[13:36:42] Model::Load, material.pTexture: 000002F0E6E32280
+[13:36:46] Animation End OneLoop
+[13:36:49] Model::Load, material.pTexture: 000002F0E6E42B40
+[13:36:49] Model::Load, material.pTexture: 000002F0E6E433E0
+[13:36:49] Model::Load, material.pTexture: 000002F0E6E42780
+[13:36:53] Input Direction dir = %d: 3
+[13:36:53] Player move stage point id = %d: 1
+[13:36:53] Animation End OneLoop
+[13:36:53] Input Direction dir = %d: 3
+[13:36:53] Player move stage point id = %d: 3
+[13:36:54] Input Direction dir = %d: 0
+[13:36:54] Player move stage point id = %d: 2
+[13:36:54] Input Direction dir = %d: 1
+[13:36:54] Player move stage point id = %d: 3
+[13:36:54] Input Direction dir = %d: 1
+[13:36:54] Player move stage point id = %d: 4
+[13:36:55] Input Direction dir = %d: 0
+[13:36:55] Player move stage point id = %d: 3
+[13:36:55] Input Direction dir = %d: 0
+[13:36:56] Player move stage point id = %d: 2
+[13:36:56] Input Direction dir = %d: 1
+[13:36:56] Player move stage point id = %d: 3
+[13:36:56] Input Direction dir = %d: 1
+[13:36:57] Player move stage point id = %d: 4
+[13:36:57] Input Direction dir = %d: 0
+[13:36:57] Player move stage point id = %d: 3
+[13:36:57] Input Direction dir = %d: 0
+[13:36:57] Player move stage point id = %d: 2
+[13:36:58] Input Direction dir = %d: 1
+[13:36:58] Player move stage point id = %d: 3
+[13:36:58] Input Direction dir = %d: 1
+[13:36:58] Player move stage point id = %d: 4
+[13:36:59] Input Direction dir = %d: 0
+[13:36:59] Player move stage point id = %d: 3
+[13:36:59] Input Direction dir = %d: 2
+[13:36:59] Player move stage point id = %d: 1
+[13:36:59] Input Direction dir = %d: 2
+[13:37:00] Player move stage point id = %d: 0
+[13:37:00] Input Direction dir = %d: 3
+[13:37:00] Player move stage point id = %d: 1
+[13:37:00] Input Direction dir = %d: 2
+[13:37:01] Player move stage point id = %d: 0
+[13:37:04] Model::Load, material.pTexture: 000002F0E6E43560
+[13:37:04] Model::Load, material.pTexture: 000002F0E6E43B00
+[13:37:04] Model::Load, material.pTexture: 000002F0E6E47BE0
+[13:37:04] Model::Load, material.pTexture: 000002F0E6E29280
+[13:37:05] Start Player Animation
+[13:37:07] Start Player Animation
+[13:37:07] GlassGauge Ratio: 0
+[13:37:10] Animation End OneLoop
+[13:37:15] moveStartedThisFrame
+[13:37:16] NormalAttack 入力受付
+[13:37:16] アクション実行
+[13:37:16] Hammer Attack Glass Object, ID: 67
+[13:37:16] GlassGaugeManager::BrakeGlass, Gauhe: 10
+[13:37:16] Up Score: 497
+[13:37:16] GlassShardPool::Instantiate: 0
+[13:37:16] GlassShardPool::Instantiate: 1
+[13:37:16] GlassShardPool::Instantiate: 2
+[13:37:16] GlassShardPool::Instantiate: 3
+[13:37:16] GlassShardPool::Instantiate: 4
+[13:37:16] GlassShardPool::Instantiate: 5
+[13:37:16] GlassObject Destory, ID: 67
+[13:37:16] Hammer Effect Play: 2
+[13:37:16] Hammer Effect Angle: 189.964
+[13:37:16] CameraShake::Play, type: 0
+[13:37:16] GlassGauge Effect Play
+[13:37:16] GlassGauge Ratio: 0.1
+[13:37:16] moveStoppedThisFrame
+[13:37:16] CameraShake::Stop
+[13:37:16] Hammer Attack Glass Object, ID: 63
+[13:37:16] GlassGaugeManager::BrakeGlass, Gauhe: 20
+[13:37:16] Up Score: 494
+[13:37:16] GlassShardPool::Instantiate: 6
+[13:37:16] GlassShardPool::Instantiate: 7
+[13:37:16] GlassShardPool::Instantiate: 8
+[13:37:16] GlassShardPool::Instantiate: 9
+[13:37:16] GlassShardPool::Instantiate: 10
+[13:37:16] GlassShardPool::Instantiate: 11
+[13:37:16] GlassObject Destory, ID: 63
+[13:37:16] Hammer Effect Play: 2
+[13:37:16] Hammer Effect Angle: 174.596
+[13:37:16] CameraShake::Play, type: 0
+[13:37:16] GlassGauge Effect Play
+[13:37:16] GlassGauge Ratio: 0.2
+[13:37:16] アクション終了
+[13:37:16] CameraShake::Stop
+[13:37:16] アクションCT終了
+[13:37:16] Animation End OneLoop
+[13:37:16] Animation End OneLoop
 [Debug Log End]
