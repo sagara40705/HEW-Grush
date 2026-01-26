@@ -47,8 +47,8 @@ void GlassGaugeUI::Update()
 
 	empty_->SetOffset({ 25.f, 10.f });
 	empty_->SetSize({ 220.f , 200.f  });
-	empty_->SetUVPos({ garde / 3.f, 1 });
-	empty_->SetUVScale({ 1.f / 3.f, 1 });
+	empty_->SetUVPos({ garde / 3.f, 1.f  });
+	empty_->SetUVScale({ 1.f / 3.f, 1.f / 2.f});
 
 }
 

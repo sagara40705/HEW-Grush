@@ -58,5 +58,5 @@ void ScoreManager::GoToResultScene()
 
 	// ===== ƒV[ƒ“Ø‚è‘Ö‚¦ =====
 	DebugLog::Output("Clear Stage");
-	SceneManager::ChangeSceneAsync<Result>();
+	SceneManager::ChangeSceneAsync<SceneResult>();
 }
