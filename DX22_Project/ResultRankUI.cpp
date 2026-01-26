@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "UiSpriteRenderer.h"
 #include "TextureManager.h"
+#include "GameState.h"
 
 constexpr Vector2 kNumberUVScale = { 1.f, 1.0f };
 
@@ -13,6 +14,7 @@ void ResultRankUI::Awake()
 
 	constexpr Vector2 kNumberSize = { 1280.f,780.f };
 	constexpr Vector2 kColonSize = { 40.f, 40.f };
+
 
 
 	GameObject& tenMinute = gameObject->CreateChild();
@@ -30,5 +32,12 @@ void ResultRankUI::Update(float)
 
 void ResultRankUI::Draw()
 {
+
+}
+
+RankType ResultRankUI::CalcRank()
+{
+	float time = GetRecentClearTimes();
+
 
 }

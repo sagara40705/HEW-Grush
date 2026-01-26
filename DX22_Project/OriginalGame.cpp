@@ -53,3 +53,29 @@ bool IsEndTutorial()
 {
 	return Game::GetState()->endTutorial_;
 }
+
+JobType GetSelectedJob()
+{
+	return Game::GetState()->job_;
+}
+
+void UpJobGauge(float amount)
+{
+	Game::GetState()->jobGauge_ += amount;	// ゲージアップ
+
+	// ジョブUP判定
+	if (Game::GetState()->jobGauge_ > 100.f)
+	{
+		// 最大ジョブ到達済みならゲージを100で固定
+		if (Game::GetState()->job_ == JobType::Tastuzin)
+		{
+			Game::GetState()->jobGauge_ = 100.f;
+			return;
+		}
+
+		// ジョブアップ
+		Game::GetState()->job_ = static_cast<JobType>(static_cast<int>(Game::GetState()->job_) + 1);
+		Game::GetState()->jobGauge_ = 0.f;
+		return;
+	}
+}
