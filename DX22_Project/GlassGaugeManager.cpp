@@ -85,7 +85,7 @@ void GlassGaugeManager::Update()
 	{
 		// 減衰までの時間を計る
 		constexpr float DT = 0.1f / 60.f;
-		constexpr float kGaugeDecayDelayTime = 0.1f; //ゲージ減衰までの時間
+		constexpr float kGaugeDecayDelayTime = 2.0f; //ゲージ減衰までの時間
 		gaugeDecayDelayTimer += DT;
 		if (gaugeDecayDelayTimer >=  kGaugeDecayDelayTime)
 		{
