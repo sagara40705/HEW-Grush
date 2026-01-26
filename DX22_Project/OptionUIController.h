@@ -28,9 +28,9 @@ private:
     bool m_isPressedVisual = false;
 
     std::vector<GameObject*> m_textNormal;
-std::vector<GameObject*> m_textSelected;
-std::vector<GameObject*> m_frameSelected;
-std::vector<GameObject*> m_framePressed; // nullptr‰Â
+    std::vector<GameObject*> m_textSelected;
+    std::vector<GameObject*> m_frameNormal;
+    std::vector<GameObject*> m_frameBreak;
 
 private:
     void Open();

@@ -16,8 +16,8 @@ void OptionUIController::AddItem(GameObject* textNormal, GameObject* textSelecte
 
     m_textNormal.push_back(textNormal);
     m_textSelected.push_back(textSelected);
-    m_frameSelected.push_back(frameSelected);
-    m_framePressed.push_back(framePressed); // nullptr‰Â
+    m_frameNormal.push_back(frameSelected);
+    m_frameBreak.push_back(framePressed); // nullptr‰Â
 }
 
 void OptionUIController::Start()
@@ -126,33 +126,34 @@ void OptionUIController::ApplyVisual()
 {
     int n = (int)m_textNormal.size();
     if ((int)m_textSelected.size() < n) n = (int)m_textSelected.size();
-    if ((int)m_frameSelected.size() < n) n = (int)m_frameSelected.size();
-    if ((int)m_framePressed.size() < n) n = (int)m_framePressed.size();
+    if ((int)m_frameNormal.size() < n)  n = (int)m_frameNormal.size();
+    if ((int)m_frameBreak.size() < n)   n = (int)m_frameBreak.size();
     if (n <= 0) return;
 
     for (int i = 0; i < n; ++i)
     {
         GameObject* tn = m_textNormal[i];
         GameObject* ts = m_textSelected[i];
-        GameObject* fs = m_frameSelected[i];
-        GameObject* fp = m_framePressed[i]; // nullptr‰Â
+        GameObject* fn = m_frameNormal[i]; // ’Êí˜g
+        GameObject* fb = m_frameBreak[i];  // Š„‚ê˜ginullptr‰Âj
 
-        if (!tn || !ts || !fs) continue;
+        if (!tn || !ts || !fn) continue;
 
-        const bool isSel = (i == m_selected);
+        const bool isSelected = (i == m_selected);
 
-        // •¶ŽšF‘I‘ð’†‚¾‚¯·‚µ‘Ö‚¦
-        tn->SetActive(!isSel);
-        ts->SetActive(isSel);
+        // •¶ŽšF‘I‘ð’†‚¾‚¯Ø‚è‘Ö‚¦
+        tn->SetActive(!isSelected);
+        ts->SetActive(isSelected);
 
-        // ˜gF‘I‘ð’†‚¾‚¯•\Ž¦iEnter’†‚ÍŠ„‚ê˜g‚ª‚ ‚ê‚Î‚»‚ê‚ð—Dæj
-        fs->SetActive(false);
-        if (fp) fp->SetActive(false);
+        // ˜gF’Êí‚Íí‚É’Êí˜g
+        fn->SetActive(true);
+        if (fb) fb->SetActive(false);
 
-        if (isSel)
+        // Enter’†‚¾‚¯Š„‚ê˜g‚É·‚µ‘Ö‚¦
+        if (isSelected && m_isPressedVisual && fb)
         {
-            if (m_isPressedVisual && fp) fp->SetActive(true);   // 1`3‚Ì‚ÝŠ„‚ê˜g
-            else                         fs->SetActive(true);   // Enter‚µ‚Ä‚È‚¢Žž‚Ì˜gi‚±‚ê‚ªÁ‚¦‚Ä‚½–â‘èj
+            fn->SetActive(false);
+            fb->SetActive(true);
         }
     }
 }
