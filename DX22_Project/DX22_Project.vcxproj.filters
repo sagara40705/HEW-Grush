@@ -368,6 +368,9 @@
     <ClCompile Include="ResultArubauto.cpp">
       <Filter>Game\Components\Result</Filter>
     </ClCompile>
+    <ClCompile Include="Allpoint.cpp">
+      <Filter>Game\Components\Result</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -646,6 +649,9 @@
     </ClInclude>
     <ClInclude Include="ResultManeger.h" />
     <ClInclude Include="ResultArubauto.h">
+      <Filter>Game\Components\Result</Filter>
+    </ClInclude>
+    <ClInclude Include="Allpoint.h">
       <Filter>Game\Components\Result</Filter>
     </ClInclude>
   </ItemGroup>

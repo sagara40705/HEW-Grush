@@ -55,6 +55,9 @@ void SceneResult::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::pika_Arubaita); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::sugo_Arubaita); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Next); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ResultA); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ResultB); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ResultC); });
 	// 各種オブジェクト生成タスクを追加
 	outTasks.emplace_back([this] { CanvasDraw(); });
 	outTasks.emplace_back([this] { TimerUIDeaw(); });

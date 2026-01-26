@@ -2,7 +2,8 @@
 #include "GameObject.h"
 #include "UiSpriteRenderer.h"
 #include "TextureManager.h"
-#include "ResultGaugeUI.h"
+//#include "ResultGaugeUI.h"
+#include "Allpoint.h"
 constexpr Vector2 kNumberUVScale = { 1.f, 1.0f };
 
 void ResultArubauto::Start()
@@ -17,8 +18,8 @@ void ResultArubauto::Start()
 	GameObject& oneMinute = gameObject->CreateChild();
 	GameObject& sunMinute = gameObject->CreateChild();
 	//arubaitoLevelUI->GetArubaitoLevel();
-//	int pointGauge = ResultGaugeUI::GetArubaitoLevel();
-	switch (2)
+	int pointGauge = GetarubaitoLevel();
+	switch (pointGauge)
 	{
 	case 1:
 

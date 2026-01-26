@@ -16,7 +16,7 @@ void ResultGaugeUI::Start()
 	//Update(GaugePoint);
 	constexpr Vector2 kMinutePos[ToIndex(TimerDigits::Count)] = { {520.f, 1000.f}, {0.f, 0.f} };
 	//=======
-	pointGauge =GaugePotint();
+	pointGauge =point;
 
 	constexpr Vector2 kColonPos = { 1165.f,160.f };
 	constexpr Vector2 kSecondPos[ToIndex(TimerDigits::Count)] = { {700.f, 240.f}, {680.f, 540.f} };
@@ -33,13 +33,13 @@ void ResultGaugeUI::Start()
 
 	GameObject& Frame = gameObject->CreateChild();
 	uiFrame_ = &Frame.AddComponent<UiSpriteRenderer>(TextureTag::Frame, kMinutePos[ToIndex(TimerDigits::Ten)], kNumFrameberSize, Vector2::zero(), kNumberUVScale);
-
+	Draw();
 }
 
 void ResultGaugeUI::Draw()
 {
 
-
+	point = 0;
 
 
 }
@@ -49,11 +49,11 @@ float ResultGaugeUI::GaugePotint()
 	//GameSteteからTimerのクリアタイムを取得
 	float Gaugepoint = GetRecentClearTimes();
 	//クリアタイムの点数換算
-	if (Gaugepoint >= 100)
+	if (Gaugepoint >= 60)
 	{
-		if (Gaugepoint >= 200)
+		if (Gaugepoint >= 120)
 		{
-			if (Gaugepoint >= 300)
+			if (Gaugepoint >= 180)
 			{
 				point = 250.f;
 			}
@@ -73,7 +73,7 @@ float ResultGaugeUI::GaugePotint()
 		point = 600.f;
 	}
 	//アルバイトレベルの算出
-	Allpoint = point;
+	//Allpoint = point;
 	return point;
 
 }

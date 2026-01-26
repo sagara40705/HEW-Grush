@@ -6,6 +6,7 @@
 #include "GameState.h"
 #include "SceneTitle.h"
 #include "TimerUI.h"
+#include "SceneResult.h"
 #include <cassert>
 
 void ScoreManager::Start()
@@ -53,5 +54,5 @@ void ScoreManager::GoToResultScene()
 
 	// ===== ƒV[ƒ“Ø‚è‘Ö‚¦ =====
 	DebugLog::Output("Clear Stage");
-	SceneManager::ChangeScene<SceneTitle>();
+	SceneManager::ChangeScene<SceneResult>();
 }

@@ -147,6 +147,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ActionUI.cpp" />
+    <ClCompile Include="Allpoint.cpp" />
     <ClCompile Include="Animator.cpp" />
     <ClCompile Include="AudioListener.cpp" />
     <ClCompile Include="AudioSource.cpp" />
@@ -245,6 +246,7 @@
   <ItemGroup>
     <ClInclude Include="ActionUI.h" />
     <ClInclude Include="AllComponent.h" />
+    <ClInclude Include="Allpoint.h" />
     <ClInclude Include="Animator.h" />
     <ClInclude Include="AudioListener.h" />
     <ClInclude Include="AudioSource.h" />
