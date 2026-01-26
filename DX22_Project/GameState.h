@@ -31,7 +31,7 @@ struct GameState
     StageId stage_ = StageId::Stage1;
 
 	JobType job_ = JobType::Pikapika;
-	float jobGauge_ = 0.0f;
+	int jobGauge_ = 0;
 
 	// 直近クリアしたステージのタイム（秒）
 	float recentClearTimes_ = 0.0f;
@@ -58,4 +58,6 @@ float GetRecentClearTimes();
 void SetRecentClearTimes(float time);
 
 JobType GetSelectedJob();
-void UpJobGauge(float amount);
+
+int GetJobGauge();
+void SetJobGauge(int gauge);

@@ -24,7 +24,6 @@ void ResultTimerUI::Awake()
 	GameObject& textObj = gameObject->CreateChild();
 	textObj.AddComponent<UiSpriteRenderer>(TextureTag::Result_Time_Text, Vector2::zero(), Vector2::WindowSize());
 
-
 	GameObject& tenMinute = gameObject->CreateChild();
 	uiMinute_[ToIndex(TimerDigits::Ten)] = &tenMinute.AddComponent<UiSpriteRenderer>(
 		TextureTag::Result_Time_Number, kMinutePos[ToIndex(TimerDigits::Ten)], kNumberSize, Vector2::zero(), kNumberUVScale);
@@ -44,7 +43,7 @@ void ResultTimerUI::Awake()
 	uiSecond_[ToIndex(TimerDigits::One)] = &oneSecond.AddComponent<UiSpriteRenderer>(
 		TextureTag::Result_Time_Number, kSecondPos[ToIndex(TimerDigits::One)], kNumberSize, Vector2::zero(), kNumberUVScale);
 
-	SetRecentClearTimes(59.f);
+	SetRecentClearTimes(125.f);
 }
 
 void ResultTimerUI::Start()

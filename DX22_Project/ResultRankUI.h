@@ -1,7 +1,7 @@
 #pragma once
 #include <cstdint>
 #include "Component.h"
-#include "ResultGaugeUI.h"
+#include "TextureManager.h"
 
 enum class RankType : std::uint8_t
 {
@@ -14,7 +14,7 @@ enum class RankType : std::uint8_t
 };
 constexpr static size_t ToIndex(RankType d) noexcept { return static_cast<size_t>(d); }
 
-class ResultRankUI : public MonoBehaviour
+class ResultRankUI : public Component
 {
 public:
 
@@ -23,15 +23,15 @@ public:
 
 	void Awake();
 	void Start();
-	void Update(float);
-	void Draw();
+	void OnDestroy() override;
 private:
 	RankType rank_ = RankType::None;
-	RankType CalcRank();
+	UiSpriteRenderer* ui_ = nullptr;
 private:
-	UiSpriteRenderer* uiMinute_[ToIndex(RankType::Count)]{};
-	UiSpriteRenderer* uiColon_ = nullptr;
-	UiSpriteRenderer* uiSecond_[ToIndex(RankType::Count)]{};
+	RankType CalcRank();
+	TextureTag LoadRankTexture(RankType rank);
+public:
+	RankType GetRank() const { return rank_; }
 };
 
 
