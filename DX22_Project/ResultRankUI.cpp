@@ -1,34 +1,86 @@
-#include "ResultRankUI.h"
+﻿#include "ResultRankUI.h"
 #include "GameObject.h"
 #include "UiSpriteRenderer.h"
 #include "TextureManager.h"
+#include "GameState.h"
 
 constexpr Vector2 kNumberUVScale = { 1.f, 1.0f };
 
 void ResultRankUI::Awake()
 {
-	constexpr Vector2 kMinutePos[ToIndex(TimerDigits::Count)] = { {000.f, 00.f}, {00.f, 00.f} };
-	constexpr Vector2 kColonPos = { 700.f,430.f };
-	constexpr Vector2 kSecondPos[ToIndex(TimerDigits::Count)] = { {0.f, 0.f}, {0.f, 0.f} };
+	// クリアタイムからランクを計算
+	rank_ = CalcRank();
 
-	constexpr Vector2 kNumberSize = { 1280.f,780.f };
-	constexpr Vector2 kColonSize = { 40.f, 40.f };
+	// ランク画像の生成
+	TextureTag rankTex = LoadRankTexture(rank_);
 
+	GameObject& rankUI = gameObject->CreateChild();
+	ui_ = &rankUI.AddComponent<UiSpriteRenderer>(rankTex, Vector2::zero(), Vector2::WindowSize());
 
-	GameObject& tenMinute = gameObject->CreateChild();
-	uiMinute_[ToIndex(TimerDigits::Ten)] = &tenMinute.AddComponent<UiSpriteRenderer>
-		(TextureTag::Result_Rank_S, Vector2::zero(), Vector2(1280.f, 720.f));
 }
 void ResultRankUI::Start()
 {
 
 }
 
-void ResultRankUI::Update(float)
+void ResultRankUI::OnDestroy()
 {
+	ui_ = nullptr;
 }
 
-void ResultRankUI::Draw()
-{
 
+RankType ResultRankUI::CalcRank()
+{
+	float time = GetRecentClearTimes();
+
+	// S: 0~60秒 A: 61~120秒 B: 121~180秒 C: 181秒〜
+	if (time <= 60.f)
+	{
+		return RankType::Rank_S;
+	}
+	else if (time <= 120.f)
+	{
+		return RankType::Rank_A;
+	}
+	else if (time <= 180.f)
+	{
+		return RankType::Rank_B;
+	}
+	else
+	{
+		return RankType::Rank_C;
+	}
+}
+
+TextureTag ResultRankUI::LoadRankTexture(RankType rank)
+{
+	switch (rank)
+	{
+	case RankType::Rank_S:
+		TextureManager::Load(TextureTag::Result_Rank_S);
+		return TextureTag::Result_Rank_S;
+		break;
+
+	case RankType::Rank_A:
+		TextureManager::Load(TextureTag::Result_Rank_A);
+		return TextureTag::Result_Rank_A;
+		break;
+
+	case RankType::Rank_B:
+		TextureManager::Load(TextureTag::Result_Rank_B);
+		return TextureTag::Result_Rank_B;
+		break;
+
+	case RankType::Rank_C:
+		TextureManager::Load(TextureTag::Result_Rank_C);
+		return TextureTag::Result_Rank_C;
+		break;
+	default:
+		assert(false && "Invalid RankType");
+		break;
+	}
+
+	// ここには来ないはず
+	assert(false && "Should not reach here");
+	return TextureTag();
 }

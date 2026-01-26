@@ -30,8 +30,6 @@ enum class Tag : std::uint8_t
     Glass,
     ActionUI,
     StageMap,
-    ResultTimerUI,
-    ResultGaugeUI,
     ResultRankUI,
     // •K—v‚É‰ž‚¶‚Ä’Ç‰Á
 };
