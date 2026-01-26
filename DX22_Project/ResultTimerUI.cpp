@@ -43,7 +43,7 @@ void ResultTimerUI::Awake()
 	uiSecond_[ToIndex(TimerDigits::One)] = &oneSecond.AddComponent<UiSpriteRenderer>(
 		TextureTag::Result_Time_Number, kSecondPos[ToIndex(TimerDigits::One)], kNumberSize, Vector2::zero(), kNumberUVScale);
 
-	SetRecentClearTimes(125.f);
+	//SetRecentClearTimes(65.f);
 }
 
 void ResultTimerUI::Start()

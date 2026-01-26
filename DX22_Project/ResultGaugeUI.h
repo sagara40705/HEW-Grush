@@ -16,6 +16,7 @@ public:
 private:
 	UiSpriteRenderer* uiGauge_ = nullptr;
 	UiSpriteRenderer* uiFrame_ = nullptr;
+	UiSpriteRenderer* uiJob_ = nullptr;
 private:
 	int currentGauge_ = 0;	// 現在のゲージ値
 	int finalGauge_ = 0;	// 最終のゲージ値
@@ -23,12 +24,16 @@ private:
 	int CalcUpGaugeValue();
 private:
 	// ゲージ上昇開始までの待機時間
-	static constexpr float WAIT_TIME = 1.0f;
+	static constexpr float WAIT_TIME = 2.0f;
 	Timer waitTimer_;
 private:
-	// ゲージ上昇中かどうか
-	bool isGaugeUping_ = false;
-
+	bool isGaugeUping_ = false; 	// ゲージ上昇中かどうか
+	static constexpr int MAX_GAUGE = 100;
+	static constexpr int GAUGE_UP_SPEED = 1; // ゲージ上昇速度
+	void UpdateGauge();
+	void ChangeJobUI();
+	void SetGaugeBarPercent(float percent);
+	
 };
 
 

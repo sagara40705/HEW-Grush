@@ -57,7 +57,8 @@ void SetSelectedStage(StageId id);
 float GetRecentClearTimes();
 void SetRecentClearTimes(float time);
 
-JobType GetSelectedJob();
+JobType GetJobType();
+void SetJobType(JobType job);
 
 int GetJobGauge();
 void SetJobGauge(int gauge);

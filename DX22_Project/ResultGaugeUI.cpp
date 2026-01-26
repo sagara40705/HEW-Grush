@@ -8,7 +8,7 @@
 #include "TextureManager.h"
 #include "GameState.h"
 #include "ResultRankUI.h"
-
+#include "DebugLog.h"
 
 void ResultGaugeUI::Awake()
 {
@@ -19,18 +19,45 @@ void ResultGaugeUI::Awake()
 	GameObject& Frame = gameObject->CreateChild();
 	uiFrame_ = &Frame.AddComponent<UiSpriteRenderer>
 		(TextureTag::Result_Gauge_Frame, Vector2::zero(), Vector2(1280.f, 720.f));
+
+	GameObject& job = gameObject->CreateChild();
+	uiJob_ = &job.AddComponent<UiSpriteRenderer>(TextureTag::Result_Job_Pikapika, Vector2(650.f, 450.f), Vector2(600.f, 70.f));
 }
 
 void ResultGaugeUI::Start()
 {
+	//SetJobGauge(50.f); // デバッグ用 
+
 	// 現在のジョブゲージ値を取得
 	currentGauge_ = GetJobGauge();
 	// 最終のゲージ値を計算
 	CalcFinalGauge();
+
+	// ゲージバーを初期化
+	SetGaugeBarPercent(static_cast<float>(currentGauge_) / static_cast<float>(MAX_GAUGE));
+
+	// ジョブUIを変更
+	ChangeJobUI();
+
+	// 待機タイマー開始
+	waitTimer_.Start();
 }
 
 void ResultGaugeUI::Update()
 {
+	if (isGaugeUping_)
+	{
+		UpdateGauge();
+	}
+	else
+	{
+		if (waitTimer_.ElapsedRawSeconds() >= WAIT_TIME)
+		{
+			waitTimer_.Stop();
+			isGaugeUping_ = true;
+			DebugLog::Output("ResultGaugeUI-StartGaugeUp");
+		}
+	}
 }
 
 void ResultGaugeUI::OnDestroy()
@@ -73,6 +100,88 @@ int ResultGaugeUI::CalcUpGaugeValue()
 	}
 
 	return value;
+}
+
+void ResultGaugeUI::UpdateGauge()
+{
+	currentGauge_ += GAUGE_UP_SPEED; // 1フレーム分の上昇値を加算
+
+	// ゲージの最大値を超えたらjobを上げる
+	if (currentGauge_ >= MAX_GAUGE)
+	{
+		// 既に達人なら ゲージは最大値で固定
+		if (GetJobType() == JobType::Tastuzin)
+		{	
+			currentGauge_ = MAX_GAUGE;	// ゲージを最大値で固定
+			finalGauge_ = MAX_GAUGE;	// ゲージを最大値で固定
+		}
+		else
+		{
+			// ジョブアップ
+			JobType job = GetJobType();
+			job = static_cast<JobType>(static_cast<std::uint8_t>(job) + 1);
+			SetJobType(job);
+			ChangeJobUI();
+
+			currentGauge_ = currentGauge_ - MAX_GAUGE;	// 残りのゲージを次のジョブに引き継ぐ
+			finalGauge_ = finalGauge_ - MAX_GAUGE;		// 残りのゲージを次のジョブに引き継ぐ
+		}
+	}
+
+	// ゲージバーの割合を設定
+	SetGaugeBarPercent(static_cast<float>(currentGauge_) / static_cast<float>(MAX_GAUGE));
+
+	// ゲージの最終値に到達したら更新終了
+	if (currentGauge_ >= finalGauge_)
+	{
+		currentGauge_ = finalGauge_;
+		isGaugeUping_ = false;
+
+		// 最終的なゲージ値を保存
+		SetJobGauge(currentGauge_);
+	}
+}
+
+void ResultGaugeUI::ChangeJobUI()
+{
+	TextureTag jobText;
+
+	// ジョブに応じたテクスチャを設定
+	switch (GetJobType())
+	{
+	case JobType::Pikapika:
+		jobText = TextureTag::Result_Job_Pikapika;
+		break;
+	case JobType::Sugoude:
+		jobText = TextureTag::Result_Job_Sugoude;
+		break;
+	case JobType::Tastuzin:
+		jobText = TextureTag::Result_Job_Tastuzin;
+		break;
+	default:
+		assert(false && "Invalid JobType");
+		break;
+	}
+
+	// テクスチャを設定
+	uiJob_->SetTexture(jobText);
+}
+
+void ResultGaugeUI::SetGaugeBarPercent(float percent)
+{
+	constexpr float OFFSET = 40.f;
+
+	constexpr float FULL_WIDTH = 1280.f;
+	constexpr float HALF_WIDTH = FULL_WIDTH / 2.f;
+	constexpr float FULL_HEIGHT = 720.f;
+
+	constexpr float BASE_POS_X = HALF_WIDTH + OFFSET;
+
+	// ゲージバーの位置を設定
+	uiGauge_->SetOffset(Vector2(BASE_POS_X - (HALF_WIDTH + OFFSET) * percent, 0.f));
+
+	// ゲージバーのサイズを設定
+	uiGauge_->SetSize(Vector2(FULL_WIDTH * percent, FULL_HEIGHT));
 }
 
 

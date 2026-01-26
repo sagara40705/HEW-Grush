@@ -127,8 +127,7 @@ void SceneResult::CreateJobUI()
 {
 	World& w = GetWorld();
 	//îwåiê∂ê¨
-	GameObject& job = w.CreateGameObject();
-	job.AddComponent<UiSpriteRenderer>(TextureTag::Result_Job_Tastuzin, Vector2::zero(), Vector2::WindowSize());
+
 }
 
 void SceneResult::CreateNextText()
