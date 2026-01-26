@@ -50,7 +50,7 @@ void GlassGaugeManager::Update()
 		if (!IsMaxGauge())
 		{
 			limitBreakTimer_ = 0.f;
-			return;
+			
 		}
 
 		limitBreakTimer_ += 0.1f / 60.f;
