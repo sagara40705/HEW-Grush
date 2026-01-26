@@ -47,7 +47,7 @@ private:
     GameObject* m_mainCamera = nullptr;
     GameObject* m_player = nullptr;
 
-    UiSpriteRenderer* break_ = nullptr;
+    SpriteAnimation* break_ = nullptr;
 
 
     bool m_isStarting = false;    // ‰‰o’†ƒtƒ‰ƒO
