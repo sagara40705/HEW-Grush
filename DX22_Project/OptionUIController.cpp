@@ -7,17 +7,17 @@ void OptionUIController::SetOptionRoot(GameObject* root)
     m_optionRoot = root;
 }
 
-void OptionUIController::AddMenuTriple
-(GameObject* normalGo, GameObject* selectedGo,
-    GameObject* pressedGo)
+void OptionUIController::AddItem(GameObject* textNormal, GameObject* textSelected,
+    GameObject* frameSelected, GameObject* framePressed)
 {
-    if (!normalGo) return;
-    if (!selectedGo) return;
-    if (!pressedGo) return;
+    if (!textNormal) return;
+    if (!textSelected) return;
+    if (!frameSelected) return;
 
-    m_normals.push_back(normalGo);
-    m_selecteds.push_back(selectedGo);
-    m_presseds.push_back(pressedGo);
+    m_textNormal.push_back(textNormal);
+    m_textSelected.push_back(textSelected);
+    m_frameSelected.push_back(frameSelected);
+    m_framePressed.push_back(framePressed); // nullptr可
 }
 
 void OptionUIController::Start()
@@ -92,7 +92,7 @@ void OptionUIController::Close()
 
 void OptionUIController::MoveUp()
 {
-    const int n = (int)m_normals.size();
+    const int n = (int)m_textNormal.size();
     if (n <= 0) return;
 
     --m_selected;
@@ -104,7 +104,7 @@ void OptionUIController::MoveUp()
 
 void OptionUIController::MoveDown()
 {
-    const int n = (int)m_normals.size();
+    const int n = (int)m_textNormal.size();
     if (n <= 0) return;
 
     ++m_selected;
@@ -124,35 +124,35 @@ void OptionUIController::OnEnter()
 
 void OptionUIController::ApplyVisual()
 {
-    // 念のため、個数がズレていても落ちないようにする
-    int n = (int)m_normals.size();
-    int s = (int)m_selecteds.size();
-    int p = (int)m_presseds.size();
+    int n = (int)m_textNormal.size();
+    if ((int)m_textSelected.size() < n) n = (int)m_textSelected.size();
+    if ((int)m_frameSelected.size() < n) n = (int)m_frameSelected.size();
+    if ((int)m_framePressed.size() < n) n = (int)m_framePressed.size();
+    if (n <= 0) return;
 
-    int cnt = n;
-    if (s < cnt) cnt = s;
-    if (p < cnt) cnt = p;
-    if (cnt <= 0) return;
-
-    for (int i = 0; i < cnt; ++i)
+    for (int i = 0; i < n; ++i)
     {
-        if (!m_normals[i] || !m_selecteds[i] || !m_presseds[i]) continue;
+        GameObject* tn = m_textNormal[i];
+        GameObject* ts = m_textSelected[i];
+        GameObject* fs = m_frameSelected[i];
+        GameObject* fp = m_framePressed[i]; // nullptr可
 
-        // まず全部OFF
-        m_normals[i]->SetActive(false);
-        m_selecteds[i]->SetActive(false);
-        m_presseds[i]->SetActive(false);
+        if (!tn || !ts || !fs) continue;
 
-        if (i == m_selected)
+        const bool isSel = (i == m_selected);
+
+        // 文字：選択中だけ差し替え
+        tn->SetActive(!isSel);
+        ts->SetActive(isSel);
+
+        // 枠：選択中だけ表示（Enter中は割れ枠があればそれを優先）
+        fs->SetActive(false);
+        if (fp) fp->SetActive(false);
+
+        if (isSel)
         {
-            // 選択中は Enter状態ならPressed、そうでなければSelected
-            if (m_isPressedVisual) m_presseds[i]->SetActive(true);
-            else                   m_selecteds[i]->SetActive(true);
-        }
-        else
-        {
-            // 非選択はNormal
-            m_normals[i]->SetActive(true);
+            if (m_isPressedVisual && fp) fp->SetActive(true);   // 1～3のみ割れ枠
+            else                         fs->SetActive(true);   // Enterしてない時の枠（これが消えてた問題）
         }
     }
 }

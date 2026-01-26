@@ -9,8 +9,9 @@ class OptionUIController : public MonoBehaviour
 public:
     void SetOptionRoot(GameObject* root);
 
-    // 1項目につき3つ登録：通常 / 選択中 / Enter時(押した時)
-    void AddMenuTriple(GameObject* normalGo, GameObject* selectedGo, GameObject* pressedGo);
+    // 1項目を4点セットで登録（pressedFrameはnullptr可）
+    void AddItem(GameObject* textNormal, GameObject* textSelected,
+        GameObject* frameSelected, GameObject* framePressed);
 
     void Start() override;
     void Update() override;
@@ -26,9 +27,10 @@ private:
     // Enterが押された直後の見た目状態を保持
     bool m_isPressedVisual = false;
 
-    std::vector<GameObject*> m_normals;
-    std::vector<GameObject*> m_selecteds;
-    std::vector<GameObject*> m_presseds;
+    std::vector<GameObject*> m_textNormal;
+std::vector<GameObject*> m_textSelected;
+std::vector<GameObject*> m_frameSelected;
+std::vector<GameObject*> m_framePressed; // nullptr可
 
 private:
     void Open();
