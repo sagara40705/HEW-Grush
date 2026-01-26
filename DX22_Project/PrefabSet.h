@@ -6,26 +6,30 @@
 // このゲームで使う Prefab の種類
 enum class PrefabId : std::uint8_t
 {
+    // Grade_1
     Swing,
     Akican,
     Desktop,
     Gomibukuro,
     Isu,
-    Kuukseizixyoukii,
+    Kuukiseizyouki,
     Ningixyou,
     SagaraDoll,
 
+	// Grade_2
     Benti,
-    Aircon,
+    Aircon, // 室外機
     Jihanki,
     Reizouko,
 
+	// Grade_3
     Ufo,
     Eisei,
+    Star,
 
+	// その他
     ProtPlay,
     GlassShard,
-
     StageWall,
 
     Count
