@@ -68,7 +68,7 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_1); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_2); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_3); });
-	//outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Fence); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Fence); });
 
 	// テクスチャーロード
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_Sky); });
@@ -250,9 +250,9 @@ void SceneGame::CreateStage1()
 	CreateStageFromCSV("CSV/StageData_Grade2.csv");
 	CreateStageFromCSV("CSV/StageData_Grade3.csv");
 
-	//Prefab::Instantiate(w, PrefabId::StageWall, Vector3(5.f, -0.8f, -20.f), Vector3(0.f, 0.f, 0.f), Vector3(0.2f, 0.2f, 1.0f));
-	//Prefab::Instantiate(w, PrefabId::StageWall, Vector3(0.f, -0.8f, -20.f), Vector3(0.f, 0.f, 0.f), Vector3(0.3f, 0.3f, 1.0f));
-	//Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-5.f, -0.8f, -20.f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(5.f, -0.8f, -20.f), Vector3(0.f, 0.f, 0.f), Vector3(0.2f, 0.2f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(0.f, -0.8f, -20.f), Vector3(0.f, 0.f, 0.f), Vector3(0.3f, 0.3f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-5.f, -0.8f, -20.f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
 
 	return;
 }
