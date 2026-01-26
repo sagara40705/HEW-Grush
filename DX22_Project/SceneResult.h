@@ -3,11 +3,11 @@
 #include "Component.h"
 #include <cstdint>
 
-class Result : public Scene
+class SceneResult : public Scene
 {
 public:
-    Result() = default;
-    ~Result() override = default;
+    SceneResult() = default;
+    ~SceneResult() override = default;
     //TimerUI* timerUI_;
    // GameObject* gameObject = nullptr;  // 所有者
     void Load() override;
@@ -17,11 +17,6 @@ public:
 
     // 非同期ロード用
     void BuildLoadTasks(std::vector<LoadTask>& outTasks) override;
-
-    void TimerUIDeaw();
-    void GaugeDraw();
-    void CanvasDraw();
-    void RankDraw();
 
 private:
     void CreateCanvas();

@@ -13,7 +13,7 @@
 
 
 constexpr Vector2 kNumberUVScale = { 0.1f, 1.0f };
-void Result::Load()
+void SceneResult::Load()
 {
 	// 従来の同期ロードが必要なら、タスクを構築して全部回す
 	std::vector<LoadTask> tasks;
@@ -21,7 +21,7 @@ void Result::Load()
 	for (auto& t : tasks) t();
 }
 
-void Result::BuildLoadTasks(std::vector<LoadTask>& outTasks)
+void SceneResult::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 {
 	// World の中身を消す
 	outTasks.emplace_back([this]
@@ -47,10 +47,10 @@ void Result::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 
 	// 各種オブジェクト生成タスクを追加
 	outTasks.emplace_back([this] { CreateCanvas(); });
-	outTasks.emplace_back([this] { CreateBace(); });
+	//outTasks.emplace_back([this] { CreateBace(); });
 	//outTasks.emplace_back([this] { CreateTimeUI(); });
 	outTasks.emplace_back([this] { CreateGaugeUI(); });
-	outTasks.emplace_back([this] { CreateRankUI(); });
+	//outTasks.emplace_back([this] { CreateRankUI(); });
 	//outTasks.emplace_back([this] { CreateJobUI(); });
 	outTasks.emplace_back([this] { CreateNextText(); });
 	outTasks.emplace_back([this] { SceneManager::CreateFadeAnimations(this); });
@@ -64,7 +64,7 @@ void Result::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 
 }
 
-void Result::Update()
+void SceneResult::Update()
 {
 	if (InputKeyboard::GetKeyDown(VK_SPACE))
 	{
@@ -72,17 +72,17 @@ void Result::Update()
 	}
 }
 
-void Result::Draw()
+void SceneResult::Draw()
 {
 }
 
-void Result::Unload()
+void SceneResult::Unload()
 {
 	SceneManager::ReleaseFadeAnimations();
 	TextureManager::Clear();
 }
 
-void Result::CreateCanvas()
+void SceneResult::CreateCanvas()
 {
 	World& w = GetWorld();
 	//Canvas
@@ -90,7 +90,7 @@ void Result::CreateCanvas()
 	canvas.AddComponent<Canvas>();
 }
 
-void Result::CreateBace()
+void SceneResult::CreateBace()
 {
 	World& w = GetWorld();
 	//背景生成
@@ -98,7 +98,7 @@ void Result::CreateBace()
 	bace.AddComponent<UiSpriteRenderer>(TextureTag::Result_Bace, Vector2::zero(), Vector2::WindowSize());
 }
 
-void Result::CreateTimeUI()
+void SceneResult::CreateTimeUI()
 {
 	World& w = GetWorld();
 
@@ -107,7 +107,7 @@ void Result::CreateTimeUI()
 	timerUI.AddComponent<ResultTimerUI>();
 }
 
-void Result::CreateGaugeUI()
+void SceneResult::CreateGaugeUI()
 {
 	World& w = GetWorld();
 
@@ -116,7 +116,7 @@ void Result::CreateGaugeUI()
 	Gauge.AddComponent<ResultGaugeUI>();
 }
 
-void Result::CreateRankUI()
+void SceneResult::CreateRankUI()
 {
 	World& w = GetWorld();
 
@@ -125,7 +125,7 @@ void Result::CreateRankUI()
 	Rank.AddComponent<ResultRankUI>();
 }
 
-void Result::CreateJobUI()
+void SceneResult::CreateJobUI()
 {
 	World& w = GetWorld();
 	//背景生成
@@ -133,7 +133,7 @@ void Result::CreateJobUI()
 	job.AddComponent<UiSpriteRenderer>(TextureTag::Result_Job_Tastuzin, Vector2::zero(), Vector2::WindowSize());
 }
 
-void Result::CreateNextText()
+void SceneResult::CreateNextText()
 {
 	World& w = GetWorld();
 	//背景生成
