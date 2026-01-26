@@ -47,10 +47,10 @@ void SceneResult::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 
 	// 各種オブジェクト生成タスクを追加
 	outTasks.emplace_back([this] { CreateCanvas(); });
-	//outTasks.emplace_back([this] { CreateBace(); });
-	//outTasks.emplace_back([this] { CreateTimeUI(); });
+	outTasks.emplace_back([this] { CreateBace(); });
+	outTasks.emplace_back([this] { CreateTimeUI(); });
 	outTasks.emplace_back([this] { CreateGaugeUI(); });
-	//outTasks.emplace_back([this] { CreateRankUI(); });
+	outTasks.emplace_back([this] { CreateRankUI(); });
 	//outTasks.emplace_back([this] { CreateJobUI(); });
 	outTasks.emplace_back([this] { CreateNextText(); });
 	outTasks.emplace_back([this] { SceneManager::CreateFadeAnimations(this); });

@@ -76,7 +76,7 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     ////Result 56～71 (16)
     "Assets/Texture/Result/Bace.png",           //Result_Bace = 56,	
     "Assets/Texture/Result/Time/Text.png",      //Result_Time_Text = 57,
-    "Assets/Texture/Result/Time/Nuber.png",     //Result_Time_Number = 58,
+    "Assets/Texture/Result/Time/Number.png",     //Result_Time_Number = 58,
     "Assets/Texture/Result/Time/Colon.png",     //Result_Time_Colon = 59,
 
     "Assets/Texture/Result/Gauge_Bar.png",      //Result_Gauge_Bar = 60,	 // ゲージのバー
