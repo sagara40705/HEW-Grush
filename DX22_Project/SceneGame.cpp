@@ -103,7 +103,7 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font2_Break); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font3_Break); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font4_screen); });
-
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_translucent); });
 
 	// プレイハブ設定
 	outTasks.emplace_back([this] { RegisterAllPrefabs(); });
@@ -590,6 +590,11 @@ void SceneGame::CreateOptionUI()
 	{
 		GameObject& bg = optionRoot.CreateChild();
 		bg.AddComponent<UiSpriteRenderer>
+			(TextureTag::option_translucent, Vector2(0.f, 0.f),
+				Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
+
+		GameObject& bg1 = optionRoot.CreateChild();
+		bg1.AddComponent<UiSpriteRenderer>
 			(TextureTag::option_Back,Vector2(0.f, 0.f),
 				Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
 	}

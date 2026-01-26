@@ -50,6 +50,7 @@ enum class TextureTag : uint8_t
     option_Font2_Break,//42
     option_Font3_Break,//43
     option_Font4_screen,//44
+    option_translucent,//45
     Count
 };
 
