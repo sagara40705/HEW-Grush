@@ -12,7 +12,6 @@ void OptionUIController::AddItem(GameObject* textNormal, GameObject* textSelecte
 {
     if (!textNormal) return;
     if (!textSelected) return;
-    if (!frameSelected) return;
 
     m_textNormal.push_back(textNormal);
     m_textSelected.push_back(textSelected);
