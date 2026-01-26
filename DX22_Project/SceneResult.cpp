@@ -9,7 +9,7 @@
 #include "LineManager.h"
 #include "ResultGaugeUI.h"
 #include "ResultRankUI.h"
-#include  "ResultManeger.h"
+#include "ResultManeger.h"
 #include "ResultArubauto.h"
 
 //constexpr Vector2 kNumberUVScale = { 0.1f, 1.0f };
@@ -41,20 +41,19 @@ void SceneResult::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 		});
 
 
-
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ResultHaikei); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::HaikeiBase); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::TimerColon02); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ResultTime); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ResultTimer); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Frame); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Gauge); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ResultUI); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::RANKS); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ResultTimer); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::tatu_Arubaita); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ResultHaikei); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::HaikeiBase); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::pika_Arubaita); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::sugo_Arubaita); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Next); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::RANKS); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ResultA); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ResultB); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ResultC); });

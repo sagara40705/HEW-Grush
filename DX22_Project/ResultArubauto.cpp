@@ -18,7 +18,7 @@ void ResultArubauto::Start()
 	GameObject& oneMinute = gameObject->CreateChild();
 	GameObject& sunMinute = gameObject->CreateChild();
 	//arubaitoLevelUI->GetArubaitoLevel();
-	int pointGauge = GetarubaitoLevel();
+	int pointGauge = arubaitoLevel();
 	switch (pointGauge)
 	{
 	case 1:

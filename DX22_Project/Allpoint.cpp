@@ -33,6 +33,7 @@ float allpoint()
 
 int arubaitoLevel()
 {
+	float point = allpoint();
 	if (point >= 600)
 	{
 		if (point >= 1200)
