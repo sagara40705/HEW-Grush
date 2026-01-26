@@ -11,6 +11,9 @@
 template<class TScene, class... Args>
 TScene* SceneManager::ChangeScene(Args&&... args)
 {
+    if (s_state != Idle) return nullptr;
+    if (s_nextScene) return nullptr;
+
     static_assert(std::is_base_of<Scene, TScene>::value,
         "TScene must derive from Scene.");
 
@@ -29,6 +32,8 @@ TScene* SceneManager::ChangeScene(Args&&... args)
 template<class TScene, class... Args>
 TScene* SceneManager::PushScene(Args&&... args)
 {
+    if (s_state != Idle) return nullptr;
+    if (s_nextScene) return nullptr;
     static_assert(std::is_base_of<Scene, TScene>::value,
         "TScene must derive from Scene.");
 
@@ -54,6 +59,9 @@ TScene* SceneManager::PushScene(Args&&... args)
 template<class TNextScene, class... Args>
 void SceneManager::ChangeSceneAsync(Args&&... args)
 {
+    if (s_state != Idle) return;
+	if (s_nextScene) return;
+    
     static_assert(std::is_base_of<Scene, TNextScene>::value,
         "TNextScene must derive from Scene.");
 

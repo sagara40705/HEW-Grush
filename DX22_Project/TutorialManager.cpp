@@ -58,7 +58,7 @@ void TutorialManager::CreateTasksUI()
 	for (int i = 0; i < TASK_COUNT; ++i)
 	{
 		GameObject* obj = &gameObject->CreateChild();
-		tasksUI[i] = &(obj->AddComponent<UiSpriteRenderer>(TextureTag::TasksUI, POS[i], SIZE, UV_POS_OFF[i], UV_SIZE));
+		tasksUI[i] = &(obj->AddComponent<UiSpriteRenderer>(TextureTag::Tutorial_UI_Task, POS[i], SIZE, UV_POS_OFF[i], UV_SIZE));
 	}
 }
 
@@ -76,7 +76,7 @@ void TutorialManager::CreateLocations()
 	for (int i = 0; i < LOCATION_COUNT; ++i)
 	{
 		GameObject* go = &gameObject->CreateChild(POS[i], ROT);
-		go->AddComponent<Sprite3DRenderer>(TextureTag::TutorialLocation, Vector2::zero(), Vector2{ 4.f, 4.f });
+		go->AddComponent<Sprite3DRenderer>(TextureTag::Tutorial_Targetlocation, Vector2::zero(), Vector2{ 4.f, 4.f });
 		go->SetActive(false);
 		targetLocation[i] = go;
 	}

@@ -198,9 +198,6 @@
     <ClCompile Include="SpriteAnimation.cpp">
       <Filter>Engine\Rendering\UI</Filter>
     </ClCompile>
-    <ClCompile Include="EventComponent.cpp">
-      <Filter>Engine\Core</Filter>
-    </ClCompile>
     <ClCompile Include="Prefab.cpp">
       <Filter>Engine\Core</Filter>
     </ClCompile>
@@ -345,9 +342,6 @@
     <ClCompile Include="SceneResult.cpp">
       <Filter>Game\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\..\Users\sgr12\OneDrive\デスクトップ\sss\SceneStageSelect.cpp">
-      <Filter>Game\Scenes</Filter>
-    </ClCompile>
     <ClCompile Include="ResultGaugeUI.cpp">
       <Filter>Game\Components\Result</Filter>
     </ClCompile>
@@ -356,12 +350,6 @@
     </ClCompile>
     <ClCompile Include="ResultTimerUI.cpp">
       <Filter>Game\Components\Result</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\Users\sgr12\OneDrive\デスクトップ\sss\StageMap.cpp">
-      <Filter>Game\Components\StageSelect</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\..\..\Users\sgr12\OneDrive\デスクトップ\sss\SelectPlayerControl.cpp">
-      <Filter>Game\Components\StageSelect</Filter>
     </ClCompile>
     <ClCompile Include="TutorialManager.cpp">
       <Filter>Game\Components\GameManager</Filter>
@@ -377,6 +365,18 @@
     </ClCompile>
     <ClCompile Include="SoundManager.cpp">
       <Filter>Engine\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="StageMap.cpp">
+      <Filter>Game\Components\StageSelect</Filter>
+    </ClCompile>
+    <ClCompile Include="SelectPlayerControl.cpp">
+      <Filter>Game\Components\StageSelect</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneStageSelect.cpp">
+      <Filter>Game\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneOption.cpp">
+      <Filter>Game\Scenes</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -490,12 +490,6 @@
     </ClInclude>
     <ClInclude Include="SpriteAnimation.h">
       <Filter>Engine\Rendering\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Event.h">
-      <Filter>Engine\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="EventComponent.h">
-      <Filter>Engine\Core</Filter>
     </ClInclude>
     <ClInclude Include="Prefab.h">
       <Filter>Engine\Core</Filter>
@@ -629,9 +623,6 @@
     <ClInclude Include="SceneResult.h">
       <Filter>Game\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Users\sgr12\OneDrive\デスクトップ\sss\SceneStageSelect.h">
-      <Filter>Game\Scenes</Filter>
-    </ClInclude>
     <ClInclude Include="ResultGaugeUI.h">
       <Filter>Game\Components\Result</Filter>
     </ClInclude>
@@ -640,15 +631,6 @@
     </ClInclude>
     <ClInclude Include="ResultTimerUI.h">
       <Filter>Game\Components\Result</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Users\sgr12\OneDrive\デスクトップ\sss\StagePoint.h">
-      <Filter>Game\Components\StageSelect</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Users\sgr12\OneDrive\デスクトップ\sss\StageMap.h">
-      <Filter>Game\Components\StageSelect</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\..\..\Users\sgr12\OneDrive\デスクトップ\sss\SelectPlayerControl.h">
-      <Filter>Game\Components\StageSelect</Filter>
     </ClInclude>
     <ClInclude Include="TutorialManager.h">
       <Filter>Game\Components\GameManager</Filter>
@@ -670,6 +652,21 @@
     </ClInclude>
     <ClInclude Include="SoundManager.h">
       <Filter>Engine\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="StageMap.h">
+      <Filter>Game\Components\StageSelect</Filter>
+    </ClInclude>
+    <ClInclude Include="StagePoint.h">
+      <Filter>Game\Components\StageSelect</Filter>
+    </ClInclude>
+    <ClInclude Include="SelectPlayerControl.h">
+      <Filter>Game\Components\StageSelect</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneStageSelect.h">
+      <Filter>Game\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneOption.h">
+      <Filter>Game\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -6,6 +6,7 @@
 #include "SceneSample.h"// ç≈èâÇÃÉVÅ[Éì
 #include "SceneStageSelect.h"
 #include "SceneResult.h"
+#include "SceneOption.h"
 #include "LoadingScene.h"
 #include "SoundManager.h"
 #include <memory>
@@ -18,8 +19,11 @@ void Game::Init()
 
     SceneManager::Initialize();
 
-   // SceneManager::ChangeScene<SceneTitle>();
+    //SceneManager::ChangeSceneAsync<SceneGame>();
+    //SceneManager::ChangeSceneAsync<SceneTitle>();
 	SceneManager::ChangeSceneAsync<SceneStageSelect>();
+	//SceneManager::ChangeSceneAsync<SceneResult>();
+    //SceneManager::ChangeScene<SceneOption>();
 
 	CheckTitleSound = false;
 }

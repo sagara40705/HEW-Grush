@@ -1,3 +1,4 @@
+#pragma once
 #include "Component.h"
 
 class TitleManager : public MonoBehaviour
@@ -11,6 +12,7 @@ private:
 	bool inputNext = false;
 	float timer = 0.0f;
 	bool canLoadNext = false;
+	bool isLoadNext = false;
 private:
 	bool InputNext();
 	void AnimationTimer();

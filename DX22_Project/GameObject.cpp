@@ -2,8 +2,6 @@
 #include "Component.h"
 #include "World.h"
 
-// Transform ‚ğ•Êƒtƒ@ƒCƒ‹‚É‚µ‚Ä‚¢‚éê‡
-// #include "Transform.h"
 
 GameObject::~GameObject()
 {
@@ -213,5 +211,6 @@ GameObject* GameObject::FindChildWithTag(Tag tag)
     {
         if (child->CompareTag(tag)) return child;
     }
+
     return nullptr;
 }

@@ -13,7 +13,7 @@
 #include "SceneManager.h"
 #include "SceneStageSelect.h"
 #include "SceneResult.h"
-
+#include "SceneOption.h"
 
 void SceneGame::Load()
 {
@@ -41,7 +41,7 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	// ==== タスク設定 ====
 
 	// モデルロード
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Karubi); });
+	//outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Karubi); });
 
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Swing); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Akican); });
@@ -61,42 +61,37 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Eiseii); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Star); });
 
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::ProtPlay); });
+	//outTasks.emplace_back([this] { ModelManager::Load(ModelTag::ProtPlay); });
 	//outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player2); });
 	//outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_1); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_2); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_3); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Fence); });
+	//outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Fence); });
 
 	// テクスチャーロード
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Star); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GroundTile); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Stage); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::SkyDome); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GaugeEmpty); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GaugeMax); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GaugeEffect); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ScoreAtoKg); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::ScoreNumber); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::TimerColon); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::TimerNumber); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Spin); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::SpinMono); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::SpinMoji); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::SpinMojiMono); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::SpinFlash); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::SpinFront); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Dash); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::DashMono); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::DashMoji); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::DashMojiMono); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::UIFrostNoise); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::EffectLv1); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GlassShard); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::TasksUI); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::TutorialLocation); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_Sky); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_Ground); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_3DEffect_GradeUp); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_3DEffect_GradeDown); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_3DEffect_Hit); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Gauge_Empty); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Gauge_Max); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Gauge_Fever); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Gauge_UpEffect); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Timer_Number); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Timer_Colon); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Score_Number); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Score_Text); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Action_DashIcon); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Action_SpinIcon); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Action_TextIcon); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_GlassShard); });
+
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Tutorial_UI_Task); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Tutorial_Road); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Tutorial_Targetlocation); });
 
 	// プレイハブ設定
 	outTasks.emplace_back([this] { RegisterAllPrefabs(); });
@@ -281,6 +276,13 @@ void SceneGame::CreateStage2()
 	collider2.layer = Layer::Ground;
 
 	CreateWarp();
+
+	CreateStageFromCSV("CSV/Stage2LeftData_Grade1.csv");
+	CreateStageFromCSV("CSV/Stage2LeftData_Grade2.csv");
+	CreateStageFromCSV("CSV/Stage2LeftData_Grade3.csv");
+	CreateStageFromCSV("CSV/Stage2RightData_Grade1.csv");
+	CreateStageFromCSV("CSV/Stage2RightData_Grade2.csv");
+	CreateStageFromCSV("CSV/Stage2RightData_Grade3.csv");
 }
 
 void SceneGame::CreateStage3()
@@ -371,11 +373,11 @@ void SceneGame::CreateGlassObjectSpawner()
 {
 	World& w = GetWorld();
 
-	GameObject& glassObjectSpawner = w.CreateGameObject();
+	//GameObject& glassObjectSpawner = w.CreateGameObject();
 	//glassObjectSpawner.AddComponent<GlassObjectSpawner>();
 
-	GameObject& Frost = w.CreateGameObject(Vector3(0.f, -0.9f, 0.f), Vector3(90.f, 0.f, 0.f));
-	Frost.AddComponent<Sprite3DRenderer>(TextureTag::UIFrostNoise, Vector2::zero(), Vector2(12.8f, 7.2f));
+	//GameObject& Frost = w.CreateGameObject(Vector3(0.f, -0.9f, 0.f), Vector3(90.f, 0.f, 0.f));
+	//Frost.AddComponent<Sprite3DRenderer>(TextureTag::UIFrostNoise, Vector2::zero(), Vector2(12.8f, 7.2f));
 
 	if (IsEndTutorial()) return;
 	GameObject& tutorial = w.CreateGameObject();
@@ -415,7 +417,7 @@ void SceneGame::InitSkyDome()
 
 	// 3) テクスチャ取得 → シェーダへ設定
 	//    ・事前に BuildLoadTasks で Load(TextureTag::Background_Game) しておく前提
-	m_pSkyTex = TextureManager::Get(TextureTag::SkyDome);
+	m_pSkyTex = TextureManager::Get(TextureTag::Game_Sky);
 	if (m_pSkyTex)
 	{
 		ID3D11ShaderResourceView* srv = m_pSkyTex->GetResource();
@@ -498,9 +500,16 @@ void SceneGame::SkyDomeDorw()
 
 void SceneGame::Update()
 {
-	if (InputKeyboard::GetKeyDown(VK_SPACE) && InputKeyboard::GetKeyDown('Q'))
+	// 強制敵にステージセレクトへ戻る
+	if (InputKeyboard::GetKey(VK_SPACE) && InputKeyboard::GetKeyDown('Q'))
 	{
 		SceneManager::ChangeSceneAsync<SceneStageSelect>();
+	}
+
+	// オプション画面へ
+	if (InputKeyboard::GetKeyDown('O'))
+	{
+		SceneManager::PushScene<SceneOption>();
 	}
 }
 

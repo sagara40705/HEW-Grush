@@ -80,14 +80,14 @@ void HammerEffects::SetEffectTransform(GameObject* effect, const Vector3& pos)
 
 void HammerEffects::CreateGradeUpEffect()
 {
-	TextureManager::Load(TextureTag::GradeUpEffect);
+	TextureManager::Load(TextureTag::Game_3DEffect_GradeUp);
 
 	World* world = gameObject->world;
 
 	for (int i = 0; i < MAX_EFFECTS[Type::GradeUp]; ++i)
 	{
 		GameObject& effect = world->CreateGameObject();
-		effect.AddComponent<Sprite3DRenderer>(TextureTag::GradeUpEffect, Vector2::zero(), Vector2(2.f, 2.f));
+		effect.AddComponent<Sprite3DRenderer>(TextureTag::Game_3DEffect_GradeUp, Vector2::zero(), Vector2(2.f, 2.f));
 		effect.AddComponent<SpriteAnimation>(5, 5, 2, 25, false);
 		effect.SetActive(false);
 		gradeUp_[i] = &effect;
@@ -107,14 +107,14 @@ GameObject* HammerEffects::GetFreeGradeUpEffect()
 
 void HammerEffects::CreateGradeDownEffect()
 {
-	TextureManager::Load(TextureTag::GradeDownEffect);
+	TextureManager::Load(TextureTag::Game_3DEffect_GradeDown);
 
 	World* world = gameObject->world;
 
 	for (int i = 0; i < MAX_EFFECTS[Type::GradeDown]; ++i)
 	{
 		GameObject& effect = world->CreateGameObject();
-		effect.AddComponent<Sprite3DRenderer>(TextureTag::GradeDownEffect, Vector2::zero(), Vector2(2.f, 2.f));
+		effect.AddComponent<Sprite3DRenderer>(TextureTag::Game_3DEffect_GradeDown, Vector2::zero(), Vector2(2.f, 2.f));
 		effect.AddComponent<SpriteAnimation>(5, 5, 2, 25, false);
 		effect.SetActive(false);
 		gradeDown_[i] = &effect;
@@ -134,14 +134,14 @@ GameObject* HammerEffects::GetFreeGradeDownEffect()
 
 void HammerEffects::CreateHitEffect()
 {
-	TextureManager::Load(TextureTag::HitEffect);
+	TextureManager::Load(TextureTag::Game_3DEffect_Hit);
 
 	World* world = gameObject->world;
 
 	for (int i = 0; i < MAX_EFFECTS[Type::Hit]; ++i)
 	{
 		GameObject& effect = world->CreateGameObject();
-		effect.AddComponent<Sprite3DRenderer>(TextureTag::HitEffect, Vector2::zero(), Vector2(2.f, 2.f));
+		effect.AddComponent<Sprite3DRenderer>(TextureTag::Game_3DEffect_Hit, Vector2::zero(), Vector2(2.f, 2.f));
 		effect.AddComponent<SpriteAnimation>(5, 5, 1, 25, false);
 		effect.SetActive(false);
 		hit_[i] = &effect;

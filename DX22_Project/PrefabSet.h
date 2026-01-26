@@ -12,24 +12,24 @@ enum class PrefabId : std::uint8_t
     Desktop,
     Gomibukuro,
     Isu,
-    Kuukiseizyouki,
+    Kuukseizixyoukii,
     Ningixyou,
     SagaraDoll,
 
-	// Grade_2
+    // Grade_2
     Benti,
-    Aircon, // ŽºŠO‹@
+    Aircon,
     Jihanki,
     Reizouko,
 
 	// Grade_3
     Ufo,
     Eisei,
-    Star,
 
 	// ‚»‚Ì‘¼
     ProtPlay,
     GlassShard,
+
     StageWall,
 
     Count

@@ -35,7 +35,7 @@ void GlassObject::Start()
 	GameObject* score = gameObject->FindWithTag(Tag::ScoreManager);
 	score_ = score->GetComponent<ScoreManager>();
 
-	constexpr float HP[ToIndex(GlassGrade::Count)] = { 1.f, 3.f, 5.f };
+	constexpr float HP[ToIndex(GlassGrade::Count)] = { 1.f, 5.f, 25.f };
 	hp_ = HP[ToIndex(grade_)];
 
 	tf_ = gameObject->GetComponent<Transform>();
@@ -76,7 +76,7 @@ void GlassObject::SpawnShards()
 	GlassShardPool* pool = GlassShardPool::GetInstanse();
 	Vector3 pos = tf_->GetPosition();
 
-	const size_t kSpawnNum = 8 + ToIndex(grade_) * 8;
+	const size_t kSpawnNum = 6 + ToIndex(grade_) * 6;
 
 	constexpr float kSize[ToIndex(GlassGrade::Count)] = { 0.7f,1.f, 1.3f };
 
@@ -92,7 +92,7 @@ void GlassObject::SpawnShardMini()
 	GlassShardPool* pool = GlassShardPool::GetInstanse();
 	Vector3 pos = tf_->GetPosition();
 
-	const size_t kSpawnNum = ToIndex(grade_) * 4;
+	const size_t kSpawnNum = ToIndex(grade_) * 6;
 
 	constexpr float kSize[ToIndex(GlassGrade::Count)] = { 0.3f, 0.5f, 0.7f };
 

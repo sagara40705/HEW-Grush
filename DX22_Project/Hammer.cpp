@@ -8,6 +8,7 @@
 #include "CameraShake.h"
 #include "GlassGaugeManager.h"
 #include "ScoreManager.h"
+#include "PlayerAnimation.h"
 #include "HammerEffects.h"
 #include "GlassObject.h"
 #include "DebugLog.h"
@@ -18,6 +19,7 @@ void Hammer::Start()
 	bc_ = gameObject->GetComponent<BoxCollider>();
 	mf_ = gameObject->GetComponent<MeshFilter>();
 	renderer_ = gameObject->GetComponent<MeshRenderer>();
+	playerAnim_ = gameObject->GetComponent<PlayerAnimation>();
 	effects_ = gameObject->GetComponent<HammerEffects>();
 
 	GameObject* camera = gameObject->FindWithTag(Tag::MainCamera);
@@ -129,7 +131,7 @@ void Hammer::UpdateSpinAttack()
 
 void Hammer::Attack(GameObject* go)
 {
-	const float kDamage[ToIndex(HammerGrade::Count)] = { 1.f, 3.f, 5.f };
+	const float kDamage[ToIndex(HammerGrade::Count)] = { 1.f, 5.f, 25.f };
 
 	GlassObject* glass = go->GetComponent<GlassObject>();
 	if (!glass) return;
@@ -140,6 +142,12 @@ void Hammer::Attack(GameObject* go)
 
 	if (!shake_) return;
 	shake_->Play(ShakeType::LEVEL_1);
+
+	if (ToIndex(glass->GetGrade()) > ToIndex(grade_))
+	{
+		if (playerAnim_)
+			playerAnim_->CheckNockBackAnime(0.5f);
+	}
 
 	//if (CanBrake(glass->GetGrade()))
 	//{

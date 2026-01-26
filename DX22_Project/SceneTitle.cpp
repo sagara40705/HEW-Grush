@@ -18,20 +18,18 @@ void SceneTitle::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer); });
 
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Title_BG); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::GaugeEffect); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Title_Main); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Title_Font); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Title_Break); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Title_BreakID); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Title_Loge); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Title_Loge2); });
-
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Title_Text); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Title_Logo); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Title_Fadein); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Title_FadeinID); });
+	
 	// 各種オブジェクト生成タスクを追加
 	outTasks.emplace_back([this] { CreateCameraAndPlayer(); });
 	outTasks.emplace_back([this] { CreateCanvas(); });
 	outTasks.emplace_back([this] { CreateBackGround(); });
 	outTasks.emplace_back([this] { CreateTitleFont(); });
 	outTasks.emplace_back([this] { CreateTitleLogo(); });
+	outTasks.emplace_back([this] { CreateBreakTexture(); });
 	outTasks.emplace_back([this] { CreateTitleManager(); });
 	outTasks.emplace_back([this] { SceneManager::CreateFadeAnimations(this); });
 
@@ -59,7 +57,6 @@ void SceneTitle::Unload()
 
 void SceneTitle::CreateCameraAndPlayer()
 {
-
 	World& w = GetWorld();
 
 	// カメラ
@@ -106,7 +103,7 @@ void SceneTitle::CreateBackGround()
 	//背景生成
 	//3Dオブジェクトとして描画
 	GameObject& backGround = w.CreateGameObject(Vector3(0.f, 0.f, 50.f));
-	backGround.AddComponent<Sprite3DRenderer>(TextureTag::Title_Main, Vector2(0.f, -10.f), Vector2(115.0f, 60.0f));
+	backGround.AddComponent<Sprite3DRenderer>(TextureTag::Title_BG, Vector2(0.f, -10.f), Vector2(115.0f, 60.0f));
 }
 
 void SceneTitle::CreateTitleFont()
@@ -114,7 +111,7 @@ void SceneTitle::CreateTitleFont()
 	World& w = GetWorld();
 	////文字を出力する
 	GameObject& titleFont = w.CreateGameObject(Vector3(0.f, 0.f, 5.0f));
-	titleFont.AddComponent<Sprite3DRenderer>(TextureTag::Title_Font,Vector2(7.5f, -2.5f),Vector2(11.0f, 11.0f)/*100差*/);
+	titleFont.AddComponent<Sprite3DRenderer>(TextureTag::Title_Text,Vector2(7.5f, -2.5f),Vector2(11.0f, 11.0f)/*100差*/);
 }
 
 void SceneTitle::CreateTitleLogo()
@@ -123,7 +120,16 @@ void SceneTitle::CreateTitleLogo()
 
 	GameObject& TitleLogo = w.CreateGameObject(Vector3(0.f, 0.f, 10.f));
 
-	TitleLogo.AddComponent<Sprite3DRenderer>(TextureTag::Title_Loge, Vector2(-4.7f, 5.0f), Vector2(20.0f, 20.0f)/*100差*/);
+	TitleLogo.AddComponent<Sprite3DRenderer>(TextureTag::Title_Logo, Vector2(-4.7f, 5.0f), Vector2(20.0f, 20.0f)/*100差*/);
+}
+
+void SceneTitle::CreateBreakTexture()
+{
+	World& w = GetWorld();
+	GameObject& breakTexture = w.CreateGameObject(Vector3(0.f, -3.f, 5.0f));
+	break_ = &breakTexture.AddComponent<UiSpriteRenderer>(TextureTag::Title_Fadein, Vector2(0.0f, 0.0f), Vector2(1920.0f, 1080.0f));
+	break_->SetColor({ 1.0f, 1.0f, 1.0f, 0.0f });
+
 }
 
 void SceneTitle::CreateTitleManager()
@@ -136,7 +142,6 @@ void SceneTitle::CreateTitleManager()
 
 void SceneTitle::Update()
 {
-
 	//if (!m_breakButton) return;
 
 	if (!m_isStarting && InputKeyboard::GetKeyDown(VK_SPACE))
@@ -174,7 +179,11 @@ void SceneTitle::Update()
 			}
 		}
 
-		if (t >= 1.0f) m_isStarting = false;
+		if (t >= 1.0f)
+		{
+			m_isStarting = false;
+			break_->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
+		}
 	}
 
 }
