@@ -7,13 +7,17 @@ void OptionUIController::SetOptionRoot(GameObject* root)
     m_optionRoot = root;
 }
 
-void OptionUIController::AddMenuPair(GameObject* normalGo, GameObject* selectedGo)
+void OptionUIController::AddMenuTriple
+(GameObject* normalGo, GameObject* selectedGo,
+    GameObject* pressedGo)
 {
     if (!normalGo) return;
     if (!selectedGo) return;
+    if (!pressedGo) return;
 
     m_normals.push_back(normalGo);
     m_selecteds.push_back(selectedGo);
+    m_presseds.push_back(pressedGo);
 }
 
 void OptionUIController::Start()
@@ -26,15 +30,16 @@ void OptionUIController::Start()
 
     m_isOpen = m_optionRoot->IsActiveInHierarchy();
     m_selected = 0;
+    m_isPressedVisual = false;
 
-    if (m_isOpen) ApplySelection();
+    if (m_isOpen) ApplyVisual();
 }
 
 void OptionUIController::Update()
 {
     if (!m_optionRoot) return;
 
-    // Escで開閉
+    // ESCで開閉（不要なら消してOK）
     if (InputKeyboard::GetKeyDown(VK_ESCAPE))
     {
         if (!m_isOpen) Open();
@@ -44,7 +49,7 @@ void OptionUIController::Update()
 
     if (!m_isOpen) return;
 
-    // ↑↓で選択
+    // 上下で選択移動したら「Enter見た目」は解除して通常の選択見た目へ戻す
     if (InputKeyboard::GetKeyDown(VK_UP))
     {
         MoveUp();
@@ -53,6 +58,13 @@ void OptionUIController::Update()
     if (InputKeyboard::GetKeyDown(VK_DOWN))
     {
         MoveDown();
+        return;
+    }
+
+    // Enterで見た目を「押した状態」にする
+    if (InputKeyboard::GetKeyDown(VK_RETURN))
+    {
+        OnEnter();
         return;
     }
 }
@@ -64,7 +76,8 @@ void OptionUIController::Open()
     m_isOpen = true;
     m_optionRoot->SetActive(true);
 
-    ApplySelection();
+    m_isPressedVisual = false;
+    ApplyVisual();
 }
 
 void OptionUIController::Close()
@@ -73,6 +86,8 @@ void OptionUIController::Close()
 
     m_isOpen = false;
     m_optionRoot->SetActive(false);
+
+    m_isPressedVisual = false;
 }
 
 void OptionUIController::MoveUp()
@@ -83,7 +98,8 @@ void OptionUIController::MoveUp()
     --m_selected;
     if (m_selected < 0) m_selected = n - 1;
 
-    ApplySelection();
+    m_isPressedVisual = false;
+    ApplyVisual();
 }
 
 void OptionUIController::MoveDown()
@@ -94,21 +110,49 @@ void OptionUIController::MoveDown()
     ++m_selected;
     if (m_selected >= n) m_selected = 0;
 
-    ApplySelection();
+    m_isPressedVisual = false;
+    ApplyVisual();
 }
 
-void OptionUIController::ApplySelection()
+void OptionUIController::OnEnter()
 {
-    const int n = (int)m_normals.size();
-    if (n <= 0) return;
+    // ここでは「押した見た目に切り替える」だけ
+    // 決定処理(シーン遷移等)は SceneGame 側で GetSelectedIndex() を見てやる想定でもOK
+    m_isPressedVisual = true;
+    ApplyVisual();
+}
 
-    // 必ず同数であること（安全策）
-    const int m = (int)m_selecteds.size();
-    const int cnt = (n < m) ? n : m;
+void OptionUIController::ApplyVisual()
+{
+    // 念のため、個数がズレていても落ちないようにする
+    int n = (int)m_normals.size();
+    int s = (int)m_selecteds.size();
+    int p = (int)m_presseds.size();
+
+    int cnt = n;
+    if (s < cnt) cnt = s;
+    if (p < cnt) cnt = p;
+    if (cnt <= 0) return;
 
     for (int i = 0; i < cnt; ++i)
     {
-        if (m_normals[i])   m_normals[i]->SetActive(i != m_selected);
-        if (m_selecteds[i]) m_selecteds[i]->SetActive(i == m_selected);
+        if (!m_normals[i] || !m_selecteds[i] || !m_presseds[i]) continue;
+
+        // まず全部OFF
+        m_normals[i]->SetActive(false);
+        m_selecteds[i]->SetActive(false);
+        m_presseds[i]->SetActive(false);
+
+        if (i == m_selected)
+        {
+            // 選択中は Enter状態ならPressed、そうでなければSelected
+            if (m_isPressedVisual) m_presseds[i]->SetActive(true);
+            else                   m_selecteds[i]->SetActive(true);
+        }
+        else
+        {
+            // 非選択はNormal
+            m_normals[i]->SetActive(true);
+        }
     }
 }

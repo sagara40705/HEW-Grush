@@ -46,6 +46,9 @@ enum class TextureTag : uint8_t
     option_Font1_Back,//38
     option_Font2_Back,//39
     option_Font3_Back,//40
+    option_Font1_Break,//41
+    option_Font2_Break,//42
+    option_Font3_Break,//43
     Count
 };
 

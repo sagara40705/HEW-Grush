@@ -45,6 +45,9 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     "Assets/Texture/option/GS/GS_back_to_work_Frame.png", //38
     "Assets/Texture/option/GS/GS_retry_Frame.png",        //39
     "Assets/Texture/option/GS/GS_back_to_stage_Frame.png",//40
+    "Assets/Texture/option/GS/GS_back_to_work_Frame_br.png",//41
+    "Assets/Texture/option/GS/GS_retry_Frame_br.png",//42
+    "Assets/Texture/option/GS/GS_back_to_stage_Frame_br.png",//43
 };
 
 // 配列のデフォルトパスを使用して登録

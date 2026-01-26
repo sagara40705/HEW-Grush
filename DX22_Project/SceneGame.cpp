@@ -99,6 +99,11 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font4_OK); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font5); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font5_OK); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font1_Break); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font2_Break); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font3_Break); });
+
+
 
 	// プレイハブ設定
 	outTasks.emplace_back([this] { RegisterAllPrefabs(); });
@@ -614,9 +619,17 @@ void SceneGame::CreateOptionUI()
 	s1.AddComponent<UiSpriteRenderer>
 		(TextureTag::option_Font1_OK, Vector2(0.f, 0.f),
 			Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
-	s1.SetActive(false);
 
-	ctrl.AddMenuPair(&n1, &s1);
+	GameObject& p1 = optionRoot.CreateChild();
+	p1.AddComponent<UiSpriteRenderer>
+		(TextureTag::option_Font1_Break, Vector2(0.f, 0.f),
+			Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
+
+	p1.SetActive(false);
+
+	//ctrl.AddMenuPair(&n1, &s1);
+
+	ctrl.AddMenuTriple(&n1, &s1, &p1);
 
 	// 2
 	GameObject& n2 = optionRoot.CreateChild();
@@ -624,9 +637,12 @@ void SceneGame::CreateOptionUI()
 
 	GameObject& s2 = optionRoot.CreateChild();
 	s2.AddComponent<UiSpriteRenderer>(TextureTag::option_Font2_OK, Vector2(0.f, 0.f), Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
+
+	GameObject& p2 = optionRoot.CreateChild();
+	p2.AddComponent<UiSpriteRenderer>(TextureTag::option_Font2_Break, Vector2(0.f, 0.f), Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
 	s2.SetActive(false);
 
-	ctrl.AddMenuPair(&n2, &s2);
+	ctrl.AddMenuTriple(&n2, &s2, &p2);
 
 	// 3
 	GameObject& n3 = optionRoot.CreateChild();
@@ -634,9 +650,13 @@ void SceneGame::CreateOptionUI()
 
 	GameObject& s3 = optionRoot.CreateChild();
 	s3.AddComponent<UiSpriteRenderer>(TextureTag::option_Font3_OK, Vector2(0.f, 0.f), Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
+	
+	GameObject& p3 = optionRoot.CreateChild();
+	p3.AddComponent<UiSpriteRenderer>(TextureTag::option_Font3_Break, Vector2(0.f, 0.f), Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
+
 	s3.SetActive(false);
 
-	ctrl.AddMenuPair(&n3, &s3);
+	ctrl.AddMenuTriple(&n3, &s3, &p3);
 
 	// 4
 	GameObject& n4 = optionRoot.CreateChild();
@@ -646,7 +666,10 @@ void SceneGame::CreateOptionUI()
 	s4.AddComponent<UiSpriteRenderer>(TextureTag::option_Font4_OK, Vector2(0.f, 0.f), Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
 	s4.SetActive(false);
 
-	ctrl.AddMenuPair(&n4, &s4);
+	GameObject& p4 = optionRoot.CreateChild();
+	p4.AddComponent<UiSpriteRenderer>(TextureTag::option_Font4, Vector2(0.f, 0.f), Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
+
+	ctrl.AddMenuTriple(&n4, &s4, &p4);
 
 	// 5
 	GameObject& n5 = optionRoot.CreateChild();
@@ -654,9 +677,15 @@ void SceneGame::CreateOptionUI()
 
 	GameObject& s5 = optionRoot.CreateChild();
 	s5.AddComponent<UiSpriteRenderer>(TextureTag::option_Font5_OK, Vector2(0.f, 0.f), Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
+	
+	GameObject& p5 = optionRoot.CreateChild();
+	p5.AddComponent<UiSpriteRenderer>
+		(TextureTag::option_Font5, Vector2(0.f, 0.f),
+			Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
+
 	s5.SetActive(false);
 
-	ctrl.AddMenuPair(&n5, &s5);
+	ctrl.AddMenuTriple(&n5, &s5, &p5);
 }
 
 void SceneGame::CreateGlassObjectSpawner()
