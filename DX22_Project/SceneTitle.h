@@ -25,7 +25,7 @@ private:
 
     GameObject* m_mainCamera = nullptr;
     GameObject* m_player = nullptr;
-    UiSpriteRenderer* break_ = nullptr;
+    SpriteAnimation* break_ = nullptr;
 
     bool m_isStarting = false;    // 演出中フラグ
     float m_zoomTimer = 0.0f;     // 経過時間

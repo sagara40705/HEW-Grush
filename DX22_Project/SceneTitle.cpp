@@ -1,49 +1,3 @@
-//// SceneTitle.cpp
-//#include "SceneTitle.h"
-//#include "SceneManager.h"
-//#include "GameObject.h"
-//#include "AllComponent.h"
-//#include "TextureManager.h"
-//#include "Defines.h"
-//
-//void SceneTitle::Load()
-//{
-//	//テクスチャーロード
-//	TextureManager::Load(TextureTag::Title_BG);
-//	TextureManager::Load(TextureTag::GaugeEffect);
-//
-//	World& w = GetWorld();
-//
-//	//Canvas
-//	GameObject& canvas = w.CreateGameObject();
-//	canvas.AddComponent<Canvas>();
-//
-//	//背景生成
-//	GameObject& backGroung = w.CreateGameObject();
-//	backGroung.AddComponent<UiSpriteRenderer>(TextureTag::Title_BG, Vector2(0.f, 0.f), Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
-//
-//	//プレイヤー画像生成
-//	GameObject& player = w.CreateGameObject();
-//	player.AddComponent<UiSpriteRenderer>(TextureTag::GaugeEffect, Vector2(590.f, 310.f), Vector2(320.f, 270.f));
-//	player.AddComponent<SpriteAnimation>(8, 4, 6, 5, true);
-//
-//	//タイトルマネージャー生成
-//	GameObject& manager = w.CreateGameObject();
-//	manager.AddComponent<TitleManager>(&player);
-//}
-//
-//void SceneTitle::Unload()
-//{
-//	TextureManager::Clear();
-//}
-//
-//void SceneTitle::Update()
-//{
-//}
-//
-//void SceneTitle::Draw()
-//{
-//}
 
 //SceneTitle.cpp
 #include "SceneTitle.h"
@@ -124,14 +78,10 @@ void SceneTitle::Load()
 	画面を割る処理を行う
 	====================*/
 	GameObject& TitleBreak = w.CreateGameObject();
-	break_ = &TitleBreak.AddComponent<UiSpriteRenderer>(
-		TextureTag::Title_Break,
-		Vector2(0.f, 0.f),
-		Vector2(1920.0f, 1080.0f)
-	);
-	break_->SetColor({ 1.f, 1.f, 1.f, 0.f });
+	TitleBreak.AddComponent<UiSpriteRenderer>(TextureTag::Title_Break, Vector2({ 0.f,0.f }), Vector2(1500, 900));
+	break_ = &TitleBreak.AddComponent<SpriteAnimation>(5, 2, 1, 9, false);
 
-
+	
 	//タイトルマネージャー生成
 	GameObject& manager = w.CreateGameObject();
 	manager.AddComponent<TitleManager>();
@@ -281,7 +231,7 @@ void SceneTitle::Update()
 		if (t >= 1.0f)
 		{
 			m_isStarting = false;
-			break_->SetColor({ 1.f, 1.f, 1.f, 1.f });
+			break_->Play();
 		}
 	}
 }

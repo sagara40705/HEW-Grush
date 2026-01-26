@@ -44,7 +44,7 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     /*36*/"Assets/Texture/bg_4096_2048.png",
     /*37*/"Assets/Texture/Titele/title_bg.png",
     /*38*/"Assets/Texture/Titele/title_hakaisuru2.png",
-    /*39*/"Assets/Texture/Titele/Fade.png",
+    /*39*/"Assets/Texture/Titele/FadeAnim.png",
     /*40*/"Assets/Texture/Titele/fadeinID.png",
     /*41*/"Assets/Texture/Titele/title_Logo.png",
     /*42*/"Assets/Texture/Titele/title_hakaisuru2.png",
