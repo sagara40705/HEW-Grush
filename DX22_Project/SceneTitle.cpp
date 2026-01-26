@@ -127,8 +127,8 @@ void SceneTitle::CreateBreakTexture()
 {
 	World& w = GetWorld();
 	GameObject& breakTexture = w.CreateGameObject(Vector3(0.f, -3.f, 5.0f));
-	break_ = &breakTexture.AddComponent<UiSpriteRenderer>(TextureTag::Title_Fadein, Vector2(0.0f, 0.0f), Vector2(1920.0f, 1080.0f));
-	break_->SetColor({ 1.0f, 1.0f, 1.0f, 0.0f });
+	breakTexture.AddComponent<UiSpriteRenderer>(TextureTag::Title_Fadein, Vector2(0.0f, 0.0f), Vector2(1500.0f, 900.0f));
+	break_ = &breakTexture.AddComponent<SpriteAnimation>(5, 2, 1, 9, false);
 
 }
 
@@ -182,7 +182,7 @@ void SceneTitle::Update()
 		if (t >= 1.0f)
 		{
 			m_isStarting = false;
-			break_->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
+			break_->Play();
 		}
 	}
 
