@@ -630,7 +630,7 @@ void SceneGame::CreateOptionUI()
 		Vector2(0.f, 0.f), Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
 	ts1.SetActive(false);
 
-	ctrl.AddItem(&tn1, &ts1, &fs1, &fp1);
+	ctrl.AddItem(&tn1, &ts1, &fs1, &fp1, false);
 
 
 	// ------------------------
@@ -660,7 +660,7 @@ void SceneGame::CreateOptionUI()
 		Vector2(0.f, 0.f), Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
 	ts2.SetActive(false);
 
-	ctrl.AddItem(&tn2, &ts2, &fs2, &fp2);
+	ctrl.AddItem(&tn2, &ts2, &fs2, &fp2, false);
 
 
 	// ------------------------
@@ -690,7 +690,7 @@ void SceneGame::CreateOptionUI()
 		Vector2(0.f, 0.f), Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
 	ts3.SetActive(false);
 
-	ctrl.AddItem(&tn3, &ts3, &fs3, &fp3);
+	ctrl.AddItem(&tn3, &ts3, &fs3, &fp3, false);
 
 
 	// ------------------------
@@ -721,7 +721,7 @@ void SceneGame::CreateOptionUI()
 	ts4.SetActive(false);
 
 	// 4‚Í pressed ‚È‚µ
-	ctrl.AddItem(&tn4, &ts4, &fs4, &fp4);
+	ctrl.AddItem(&tn4, &ts4, &fs4, &fp4, true);
 
 
 	// ------------------------
@@ -748,7 +748,7 @@ void SceneGame::CreateOptionUI()
 	ts5.SetActive(false);
 
 	// 5‚Í pressed ‚È‚µ
-	ctrl.AddItem(&tn5, &ts5, nullptr, nullptr);
+	ctrl.AddItem(&tn5, &ts5, &fs5, nullptr, false);
 }
 
 void SceneGame::CreateGlassObjectSpawner()

@@ -9,9 +9,12 @@ class OptionUIController : public MonoBehaviour
 public:
     void SetOptionRoot(GameObject* root);
 
-    // 1項目を4点セットで登録（pressedFrameはnullptr可）
-    void AddItem(GameObject* textNormal, GameObject* textSelected,
-        GameObject* frameSelected, GameObject* framePressed);
+    // 4 points + modal flag
+    void AddItem(GameObject* textNormal,
+        GameObject* textSelected,
+        GameObject* frameSelected,
+        GameObject* framePressed,
+        bool isModal);
 
     void Start() override;
     void Update() override;
@@ -23,8 +26,6 @@ private:
     bool m_isOpen = false;
 
     int m_selected = 0;
-
-    // Enterが押された直後の見た目状態を保持
     bool m_isPressedVisual = false;
 
     std::vector<GameObject*> m_textNormal;
@@ -32,14 +33,18 @@ private:
     std::vector<GameObject*> m_frameNormal;
     std::vector<GameObject*> m_frameBreak;
 
+    // modal flags (same size as items)
+    std::vector<bool> m_isModal;
+
 private:
     void Open();
     void Close();
 
     void MoveUp();
     void MoveDown();
-
     void OnEnter();
 
     void ApplyVisual();
+
+    bool IsModalShowing() const;
 };
