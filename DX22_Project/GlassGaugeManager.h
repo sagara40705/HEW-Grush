@@ -9,7 +9,7 @@ enum class HammerGrade : std::uint8_t;
 class GlassGaugeManager : public MonoBehaviour
 {
 private:
-	float gauge_ = 3.0f;
+	float gauge_ = 0.0f;
 	//float gauge_ = 0.0f;
 	bool isGaugeEmpty = true;
 	bool isGaugeDecaying = false;   //ƒQ[ƒWŒ¸Š’†‚©H
@@ -29,6 +29,8 @@ public:
 	bool dirty_ = true;
 	bool up_ = false;
 	float GetGaugeRatio();
+	float GetGaugeDecayTimer() { return gaugeDecayDelayTimer; }
+	bool  IsGaugeDecaying() { return isGaugeDecaying; }
 	HammerGrade GetHammerGrade();
 private:
 	//ŒÀŠE“Ë”j
