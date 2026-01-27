@@ -12,7 +12,7 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     "Assets/Texture/Loading/Load_Character.png",    //Load_Character = 3		
     "Assets/Texture/Loading/Load_Gauge_Bar.png",    //Load_Gauge_Bar = 4,		    
     "Assets/Texture/Loading/Load_Gauge_Frame.png",  //Load_Gauge_Frame = 5,       
-    "Assets/Texture/Loading/Load_Gauge_Text.png",   //Load_Text = 6,		        
+    "Assets/Texture/Loading/Load_Text.png",         //Load_Text = 6,		        
     "",//SpareSlot_01 = 7,
 
     /// Title 8Å`15(8)
