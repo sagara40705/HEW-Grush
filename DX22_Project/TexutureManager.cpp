@@ -60,9 +60,9 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     "", //Game_UI_Action_SpinIcon = 42,
     "Assets/Texture/Game/UI/Action/TextIcon.png",   //Game_UI_Action_TextIcon = 43,
 
-    "",//Game_UI_Gaug_Lv1 = 44,	 // (Š®) Lv1‚ÌƒKƒ‰ƒXƒQ[ƒWSS
-    "",//Game_UI_Gaug_Lv2 = 45,	 // (Š®) Lv2‚ÌƒKƒ‰ƒXƒQ[ƒWSS
-    "",//Game_UI_Gaug_Lv3 = 46,	 // (Š®) Lv3‚ÌƒKƒ‰ƒXƒQ[ƒWSS
+    "Assets/Texture/Game/UI/Gauge/Glass_lv1.png",//Game_UI_Gaug_Lv1 = 44,	 
+    "Assets/Texture/Game/UI/Gauge/Glass_lv2.png",//Game_UI_Gaug_Lv2 = 45,	
+    "Assets/Texture/Game/UI/Gauge/Glass_lv3.png",//Game_UI_Gaug_Lv3 = 46,	 
     "Assets/Texture/Game/GlassShard.png,",          //SpareSlot_12 = 47,
     "",// _SpareSlot_12 = 48,
     "",//_SpareSlot_13 = 49,

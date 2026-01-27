@@ -129,7 +129,7 @@ void SceneTitle::CreateBreakTexture()
 	World& w = GetWorld();
 	GameObject& breakTexture = w.CreateGameObject(Vector3(0.f, -3.f, 5.0f));
 	breakTexture.AddComponent<UiSpriteRenderer>(TextureTag::Title_Fadein, Vector2(0.0f, 0.0f), Vector2(1500.0f, 900.0f));
-	break_ = &breakTexture.AddComponent<SpriteAnimation>(5, 2, 1, 9, false);
+	break_ = &breakTexture.AddComponent<SpriteAnimation>(7, 7, 2, 47, false);
 
 }
 
@@ -149,8 +149,7 @@ void SceneTitle::Update()
 	{
 		m_isStarting = true;
 		m_zoomTimer = 0.0f;
-		//m_breakButton->StartBreak();
-
+		
 		// š •Û‘¶‚µ‚Ä‚¨‚¢‚½ m_player ‚ðŽg‚¤
 		if (m_player) {
 			auto* pState = m_player->GetComponent<PlayerState>();
