@@ -19,7 +19,7 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     "Assets/Texture/Title/Title_BG.png",        //Title_BG = 8,
     "Assets/Texture/Title/Title_Text.png",      //Title_Text = 9,		     
     "Assets/Texture/Title/Title_Logo.png",      //Title_Logo = 10,
-    "Assets/Texture/Title/Title_Fadein.png",    //Title_Fadein = 11,		      
+    "Assets/Texture/Title/Title_FadeAnim.png",  //Title_Fadein = 11,		      
     "Assets/Texture/Title/Title_FadeinID.png",  //Title_FadeinID = 12,		
     "",//SpareSlot_02 = 13,
     "",//SpareSlot_03 = 14,

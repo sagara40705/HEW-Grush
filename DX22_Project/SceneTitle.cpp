@@ -14,7 +14,7 @@ void SceneTitle::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 			GetWorld().ClearAll();        // ä˘ë∂ÇÃ World API Ç…çáÇÌÇπÇÈ
 		});
 
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player2); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer); });
 
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Title_BG); });
@@ -73,7 +73,7 @@ void SceneTitle::CreateCameraAndPlayer()
 
 	// ÉvÉåÉCÉÑÅ[
 	GameObject& player = w.CreateGameObject(Vector3(0.f, 0.f, 0.f), Vector3(0.f, 0.f, 0.f), Vector3(2.f, 2.f, 2.f));
-	player.AddComponent<MeshFilter>(ModelTag::Player);
+	player.AddComponent<MeshFilter>(ModelTag::Player2);
 	player.AddComponent<MeshRenderer>();
 	player.AddComponent<PlayerState>();
 	player.AddComponent<Animator>();
@@ -86,6 +86,7 @@ void SceneTitle::CreateCameraAndPlayer()
 	GameObject& hummer = player.CreateChild(Hammer::BasePos, Hammer::BaseRota, Vector3(0.2f, 0.2f, 0.2f));
 	hummer.AddComponent<MeshFilter>(ModelTag::Hammer);
 	hummer.AddComponent<MeshRenderer>();
+	//hummer.AddComponent<Animator>();
 
 }
 
@@ -127,8 +128,8 @@ void SceneTitle::CreateBreakTexture()
 {
 	World& w = GetWorld();
 	GameObject& breakTexture = w.CreateGameObject(Vector3(0.f, -3.f, 5.0f));
-	break_ = &breakTexture.AddComponent<UiSpriteRenderer>(TextureTag::Title_Fadein, Vector2(0.0f, 0.0f), Vector2(1920.0f, 1080.0f));
-	break_->SetColor({ 1.0f, 1.0f, 1.0f, 0.0f });
+	breakTexture.AddComponent<UiSpriteRenderer>(TextureTag::Title_Fadein, Vector2(0.0f, 0.0f), Vector2(1500.0f, 900.0f));
+	break_ = &breakTexture.AddComponent<SpriteAnimation>(5, 2, 1, 9, false);
 
 }
 
@@ -182,7 +183,7 @@ void SceneTitle::Update()
 		if (t >= 1.0f)
 		{
 			m_isStarting = false;
-			break_->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
+			break_->Play();
 		}
 	}
 

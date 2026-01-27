@@ -17,14 +17,10 @@ void Animator::Start()
     meshRenderer = gameObject->GetComponent<MeshRenderer>();
     assert(meshFilter && meshRenderer && "Animator::Start()“à‚ÌŽQÆ‚ªnullptr‚Å‚·");
    
-    if (meshFilter)
+    if (meshFilter && model_ == nullptr)
     {
         model_ = meshFilter->GetModel();
         assert(model_ && "Animator, meshFilte‚Ìmodel‚ªnullptr‚Å‚·");
-
-   /*     model_ = ModelManager::Get(ModelTag::Player);
-        currentAnime = model_->AddAnimation("Assets/Model/animation_hashiru.fbx");
-        Play(currentAnime, false, 1.0f);*/
         DebugLog::Output("Start Player Animation");
     }
 
@@ -40,7 +36,13 @@ void Animator::Start()
 //---------------------------------------------------------
 void Animator::Play(Model::AnimeNo animeNo, bool loop, float spd)
 {
-    if (!model_) return;
+    if (!model_)
+    {
+        meshFilter = gameObject->GetComponent<MeshFilter>();
+        model_ = meshFilter->GetModel();
+		assert(model_ && "Animator::Play, meshFilte‚Ìmodel‚ªnullptr‚Å‚·");
+    }
+
     if (animeNo == Model::ANIME_NONE) return;
     isPlaying_ = true;
 
