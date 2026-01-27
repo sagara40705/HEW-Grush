@@ -44,6 +44,7 @@ void EndDrawDirectX();
 void SetRenderTargets(UINT num, RenderTarget** ppViews, DepthStencil* pView);
 void SetCullingMode(D3D11_CULL_MODE cull);
 void SetDepthTest(bool enable);
+void SetDepthTest(bool enable, bool writeEnable);
 void SetBlendMode(BlendMode blend);
 void SetSamplerState(SamplerState state);
 

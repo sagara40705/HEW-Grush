@@ -20,6 +20,7 @@ struct Vector2
     static constexpr Vector2 down()  noexcept { return { 0,-1 }; }
     static constexpr Vector2 right() noexcept { return { 1,0 }; }
     static constexpr Vector2 left()  noexcept { return { -1,0 }; }
+	static constexpr Vector2 WindowSize() noexcept { return { 1280.f, 720.f }; }
 
     static constexpr DirectX::XMFLOAT2 XMzero = { 0,0 };
     static constexpr DirectX::XMFLOAT2 XMone = { 1,1 };

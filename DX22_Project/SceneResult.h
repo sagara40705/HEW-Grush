@@ -2,6 +2,7 @@
 #include "Scene.h"
 #include "Component.h"
 #include <cstdint>
+
 class SceneResult : public Scene
 {
 public:
@@ -14,18 +15,16 @@ public:
     void Draw() override;
     void Unload() override;
 
-    void TimerUIDeaw();
-    void GaugeDraw();
-    void CanvasDraw();
-    void RankDraw();
-	void SceneTitleDraw();
-	void ArubaitoLevelDraw();
     // îÒìØä˙ÉçÅ[Éhóp
     void BuildLoadTasks(std::vector<LoadTask>& outTasks) override;
+
 private:
-	//ResultGaugeUI* arubaitoLevelUI;
-    /* UiSpriteRenderer* uiMinute_[ToIndex(TimerDigits::Count)]{};
-     UiSpriteRenderer* uiColon_ = nullptr;
-     UiSpriteRenderer* uiSecond_[ToIndex(TimerDigits::Count)]{};*/
+    void CreateCanvas();
+    void CreateBace();
+    void CreateTimeUI();
+	void CreateGaugeUI();
+	void CreateRankUI();
+    void CreateJobUI();
+    void CreateNextText();
 };
 

@@ -28,6 +28,10 @@ StageId GetCurrentStage()
 {
 	return Game::GetState()->stage_;
 }
+void SetSelectedStage(StageId id)
+{
+	Game::GetState()->stage_ = id;
+}
 
 
 // 直近クリアしたステージのタイムを取得・設定
@@ -38,4 +42,34 @@ float GetRecentClearTimes()
 void SetRecentClearTimes(float time)
 {
 	Game::GetState()->recentClearTimes_ = time;
+}
+
+// チュートリアル終了フラグの取得・設定
+void EndTutorial()
+{
+	Game::GetState()->endTutorial_ = true;
+}
+bool IsEndTutorial()
+{
+	return Game::GetState()->endTutorial_;
+}
+
+// ジョブタイプの取得・設定
+JobType GetJobType()
+{
+	return Game::GetState()->job_;
+}
+void SetJobType(JobType job)
+{
+	Game::GetState()->job_ = job;
+}
+
+// ジョブゲージの取得・設定
+int GetJobGauge()
+{
+	return Game::GetState()->jobGauge_;
+}
+void SetJobGauge(int gauge)
+{
+	Game::GetState()->jobGauge_ = gauge;
 }

@@ -91,7 +91,6 @@ GameObject* World::FindWithTag(Tag tag)
 
 void World::Start()
 {
-
     // すべての GameObject に対して Start を流す
     // 今フレームで処理する分を退避
     std::vector<GameObject*> starts = std::move(pendingStartObjects);
@@ -213,6 +212,8 @@ void World::ClearAll()
     lateUpdateList.clear();
     rendererList.clear();
     colliderList.clear();
+	pendingStartObjects.clear();
+
 
     isClearing = false;
 }

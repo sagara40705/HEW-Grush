@@ -6,14 +6,6 @@
 #include "Component.h"
 #include "Raycast.h"  
 
-enum class CameraTag : uint8_t
-{
-    Main,
-    UI,
-    MiniMap,
-    Debug,
-    Custom,
-};
 
 class Camera : public Component
 {
@@ -30,7 +22,6 @@ public:
     float aspect = 16.0f / 9.0f;
     float nearZ = DEFAULT_NEAR_Z;
     float farZ = DEFAULT_FAR_Z;
-    CameraTag tag = CameraTag::Main;
 
 private:
     DirectX::XMFLOAT4X4 view_{};       
@@ -38,23 +29,16 @@ private:
     bool projDirty_ = true;
 
     static Camera* s_main;
-    static std::vector<Camera*> s_cameras;
 
 public:
     Camera() = default;
     ~Camera() override = default;
 
     void Awake() override;
-    void Start() override
-    {
-        // �ŏ��ɋN������ Camera �����C����
-        if (s_main == nullptr) s_main = this;
-        RebuildProjectionIfDirty();
-    }
+    void Start() override;
     void OnDestroy();
 
     static Camera* Main();
-    static const std::vector<Camera*>& All() { return s_cameras; }
     void ForceMain() { s_main = this; }
 
     // ----------------- �����Y�ݒ� -----------------

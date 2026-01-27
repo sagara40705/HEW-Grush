@@ -6,6 +6,7 @@
 // ‚±‚ÌƒQ[ƒ€‚Åg‚¤ Prefab ‚Ìí—Ş
 enum class PrefabId : std::uint8_t
 {
+    // Grade_1
     Swing,
     Akican,
     Desktop,
@@ -13,17 +14,24 @@ enum class PrefabId : std::uint8_t
     Isu,
     Kuukseizixyoukii,
     Ningixyou,
+    SagaraDoll,
 
+    // Grade_2
     Benti,
     Aircon,
     Jihanki,
     Reizouko,
 
+	// Grade_3
     Ufo,
     Eisei,
 
+	// ‚»‚Ì‘¼
     ProtPlay,
     GlassShard,
+
+    StageWall,
+
     Count
 };
 

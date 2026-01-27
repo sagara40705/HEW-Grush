@@ -11,7 +11,7 @@ class SpriteAnimation final : public MonoBehaviour
 private:
     // 対象レンダラー
     UiSpriteRenderer* uiRenderer = nullptr;
-    // SpriteRenderer* spriteRenderer3D = nullptr; // 将来 3D 対応する時用
+    Sprite3DRenderer* sprite3DRenderer = nullptr;
 
     // スプライトシート設定
     int columns = 1;   // 横分割数
