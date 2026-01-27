@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "PlayerState.h"
 #include "Animator.h"
+#include "ModelManager.h"
 #include <cassert>
 
 /*
@@ -15,8 +16,9 @@ void PlayerAnimation::Start()
 	anime_->Play(animation_[Type::Idle], true, 1.f);
 	anime_->SetTimeSeconds(4.8f);
 
-	AddHammerAllAnimations();
-	hummerAnime_->Play(hummerAnimation_[Type::Move], true, 1.f);
+	//AddHammerAllAnimations();
+	//hummerAnime_->Play(hummerAnimation_[Type::Move], true, 1.f);
+	//anime_->SetTimeSeconds(4.8f);
 
 	assert(state_ && anime_ && "PlayerAnimation	で プレイヤーの <PlayerState> か <Animator> が nullptr です");
 }
@@ -262,22 +264,21 @@ void PlayerAnimation::AddHammerAllAnimations()
 	if (!hummer) return;
 	
 	hummerAnime_ = hummer->GetComponent<Animator>();
-	Model* model = hummerAnime_->GetModel();
-	if (!model) return;
+
+	Model* model = ModelManager::Get(ModelTag::Hammer_1);
 
 	//待機
 	hummerAnimation_[Type::Idle] = model->AddAnimation("Assets/Animation/taiki/hammer_taiki.fbx");
 	//移動
 	hummerAnimation_[Type::Move] = model->AddAnimation("Assets/Animation/hashiru/hammer_hashiru.fbx");
 	// 通常攻撃
-	hummerAnimation_[Type::NormalAttack] = model->AddAnimation("Assets/Animation/rotateattack/animation_rotateattack_hammer.fbx");
+	hummerAnimation_[Type::NormalAttack] = model->AddAnimation("Assets/Animation/rotateattack/hammer_rotateattack.fbx");
 	// 回転攻撃
 	hummerAnimation_[Type::SpinAttack] = model->AddAnimation("Assets/Animation/rotateattack/hammer_rotateattack.fbx");
 	//突進攻撃
 	hummerAnimation_[Type::DashAttack] = model->AddAnimation("Assets/Animation/dashattack/hammer_dashattack.fbx");
 	//ノックバック
 	hummerAnimation_[Type::NockBack] = model->AddAnimation("Assets/Animation/knockback/hammer_knockback.fbx");
-
 }
 
 

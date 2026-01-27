@@ -14,7 +14,7 @@ void SceneTitle::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 			GetWorld().ClearAll();        // ä˘ë∂ÇÃ World API Ç…çáÇÌÇπÇÈ
 		});
 
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player2); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer); });
 
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Title_BG); });
@@ -73,7 +73,7 @@ void SceneTitle::CreateCameraAndPlayer()
 
 	// ÉvÉåÉCÉÑÅ[
 	GameObject& player = w.CreateGameObject(Vector3(0.f, 0.f, 0.f), Vector3(0.f, 0.f, 0.f), Vector3(2.f, 2.f, 2.f));
-	player.AddComponent<MeshFilter>(ModelTag::Player);
+	player.AddComponent<MeshFilter>(ModelTag::Player2);
 	player.AddComponent<MeshRenderer>();
 	player.AddComponent<PlayerState>();
 	player.AddComponent<Animator>();
@@ -86,7 +86,7 @@ void SceneTitle::CreateCameraAndPlayer()
 	GameObject& hummer = player.CreateChild(Hammer::BasePos, Hammer::BaseRota, Vector3(0.2f, 0.2f, 0.2f));
 	hummer.AddComponent<MeshFilter>(ModelTag::Hammer);
 	hummer.AddComponent<MeshRenderer>();
-	hummer.AddComponent<Animator>();
+	//hummer.AddComponent<Animator>();
 
 }
 
