@@ -32,7 +32,7 @@ public:
 	ResultRankUI() = default;
 	~ResultRankUI() = default;
 
-	void Start();
+	void  Awake() override;
 	void Update(float deltaTime);
 	void Draw();
 private:

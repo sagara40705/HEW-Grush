@@ -12,7 +12,7 @@ constexpr Vector2 kNumberUVScale = { 1.f, 1.0f };
 
 
 
-void ResultGaugeUI::Start()
+void ResultGaugeUI::Awake()
 {
 	
 	constexpr Vector2 kMinutePos[ToIndex(TimerDigits::Count)] = { {520.f, 1000.f}, {0.f, 0.f} };

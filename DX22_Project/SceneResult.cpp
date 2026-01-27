@@ -37,7 +37,7 @@ void SceneResult::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Gauge_Bar); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Gauge_Frame); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Next_Text); });
-	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Rank_S); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Rank_S); });
 	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Rank_A); });
 	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Rank_B); });
 	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Rank_C); });

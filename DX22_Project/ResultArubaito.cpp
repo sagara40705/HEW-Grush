@@ -7,7 +7,7 @@
 //‰æ‘œ‚ÌUVİ’è
 constexpr Vector2 kNumberUVScale = { 1.f, 1.0f };
 
-void ResultArubaito::Start()
+void ResultArubaito::Awake()
 {
 	
 	constexpr Vector2 kMinutePos[ToIndex(Arubaito::Count)] = { {680.f, 470.f}, {680.f, 470.f} };  //‰æ‘œ‚ÌˆÊ’u

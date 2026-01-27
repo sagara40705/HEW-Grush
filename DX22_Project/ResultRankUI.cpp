@@ -8,7 +8,7 @@ using namespace DirectX;
 
 XMFLOAT4 color(1.2f, 1.2f, 1.2f, 1.0f);
 constexpr Vector2 kNumberUVScale = { 1.f, 1.0f };
-void ResultRankUI::Start()
+void ResultRankUI::Awake()
 {
 	constexpr Vector2 kMinutePos[ToIndex(TimerDigits::Count)] = { {000.f, 00.f}, {00.f, 00.f} };
 //	constexpr Vector2 kColonPos = { 700.f,430.f };

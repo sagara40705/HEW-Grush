@@ -13,7 +13,7 @@ constexpr size_t ToIndex(Arubaito d) noexcept { return static_cast<size_t>(d); }
 class ResultArubaito : public MonoBehaviour
 {
 public:
-     void Start();
+     void  Awake();
 
 private:
 private:

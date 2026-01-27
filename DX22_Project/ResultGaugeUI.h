@@ -8,7 +8,7 @@ class ResultGaugeUI : public MonoBehaviour
 public:
 	ResultGaugeUI() = default;
 	~ResultGaugeUI() override = default;
-	void Start() override;
+	void  Awake() override;
 	void Draw()override;
 	void Update() override;
 	float GaugePotint();
