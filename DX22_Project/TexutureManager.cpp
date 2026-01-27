@@ -56,9 +56,9 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     "Assets/Texture/Game/UI/Timer/Colon.png",       //Game_UI_Timer_Colon = 38,
     "Assets/Texture/Game/UI/Score/Number.png",      //Game_UI_Score_Number = 39,
     "Assets/Texture/Game/UI/Score/Text.png",        //Game_UI_Score_Text = 40,
-    "Assets/Texture/Game/UI/Action/DushIcon.png",   //Game_UI_Action_DushIcon = 41,
-    "Assets/Texture/Game/UI/Action/SpinIcon.png",   //Game_UI_Action_SpinIcon = 42,
-    "Assets/Texture/Game/UI/Action/textIcon.png",   //Game_UI_Action_TextIcon = 43,
+    "Assets/Texture/Game/UI/Action/ActionIcon.png", //Game_UI_Action_DushIcon = 41,
+    "", //Game_UI_Action_SpinIcon = 42,
+    "Assets/Texture/Game/UI/Action/TextIcon.png",   //Game_UI_Action_TextIcon = 43,
 
     "",//Game_UI_Gaug_Lv1 = 44,	 // (äÆ) Lv1ÇÃÉKÉâÉXÉQÅ[ÉWSS
     "",//Game_UI_Gaug_Lv2 = 45,	 // (äÆ) Lv2ÇÃÉKÉâÉXÉQÅ[ÉWSS
