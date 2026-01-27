@@ -48,6 +48,10 @@ void SceneOption::CreateBG()
 	bgObj.AddComponent<UiSpriteRenderer>(TextureTag::Option_BG, Vector2::zero(), Vector2(1280.f, 720.f));
 }
 
+void SceneOption::CreateOption()
+{
+}
+
 void SceneOption::Update()
 {
 	if (InputKeyboard::GetKeyDown('O'))
