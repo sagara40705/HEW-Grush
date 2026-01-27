@@ -31,7 +31,7 @@ void SceneTitle::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { CreateTitleLogo(); });
 	outTasks.emplace_back([this] { CreateBreakTexture(); });
 	outTasks.emplace_back([this] { CreateTitleManager(); });
-	outTasks.emplace_back([this] { SceneManager::CreateFadeAnimations(this); });
+	//outTasks.emplace_back([this] { SceneManager::CreateFadeAnimations(this); });
 
 	// ç≈å„Ç… Start Çó¨Ç∑
 	outTasks.emplace_back([this]
