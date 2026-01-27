@@ -14,7 +14,7 @@ void ActionUI::Awake()
 	constexpr Vector2 kDashMojiSize = { 135.f, 32.f };
 	//UVサイズ（文字共通）
 	constexpr Vector2 kUVFontSize = { 0.25f, 1.f };
-
+	constexpr Vector2 kUVFontPos = { 1.f, 1.f };
 
 	//位置・大きさ
 	constexpr Vector2 kPos[ToIndex(ActionDigits::Count)] =
@@ -22,39 +22,44 @@ void ActionUI::Awake()
 	  {1090.f,530.f},{1090.f,530.f},{1090.f,530.f},{1090.f,530.f}}; //ダッシュアイコン座標
 	constexpr Vector2 kSize = { 150.f, 150.f };
 
-	//UV
-	constexpr Vector2 kUVPos = {  1.f, 1.f };
-	constexpr Vector2 kUVSize[ToIndex(ActionDigits::Count)] =
-	{ {0.25f,0.5f},{0.5f,0.5f},{0.75f,0.5f},{1.f,0.5f},{0.25f,1.f},{0.5f,1.f},{0.75f,1.f},{1.f,1.f} };
+	// 1マスあたりのUVサイズ
+	constexpr float uW = 1.f / 8.f; // 0.125
+	constexpr float uH = 1.f / 2.f; // 0.5
+
+	// 左上を (0,0) とした場合のアイコン位置
+	constexpr Vector2 kUVPos[ToIndex(ActionDigits::Count)] = {
+		{0 * uW, 0.0f}, {2 * uW, 0.0f}, {4 * uW, 0.0f}, {6 * uW, 0.0f}, // Spin系の4枚
+		{0 * uW, 0.5f}, {2 * uW, 0.5f}, {4 * uW, 0.5f}, {6 * uW, 0.5f}  // Dash系の4枚
+	};
+	constexpr Vector2 kUVSize = { uW, uH };
 
 	//アクションアイコンの生成
 	for (size_t digits = 0; digits < ToIndex(ActionDigits::Count); ++digits)
 	{
 		GameObject& go = gameObject->CreateChild();
-		ActionUi_[digits] = &(go.AddComponent<UiSpriteRenderer>(TextureTag::Spin, kPos[digits], kSize, kUVPos, kUVSize[digits]));
+		ActionUi_[digits] = &(go.AddComponent<UiSpriteRenderer>(TextureTag::Spin, kPos[digits], kSize, kUVPos[digits], kUVSize));
 	}
-
 	//光らせる系の初期状態は透明にしておく
-	ActionUi_[6/*DashFlash*/]->SetColor({1.f, 1.f, 1.f, 0.f});
-	ActionUi_[7/*DashFront*/]->SetColor({1.f, 1.f, 1.f, 0.f});
-	ActionUi_[2/*SpinFlash*/]->SetColor({1.f, 1.f, 1.f, 0.f});
-	ActionUi_[3/*SpinFront*/]->SetColor({1.f, 1.f, 1.f, 0.f});
+	/*ActionUi_[ToIndex(ActionDigits::DashFlash)]->SetColor({1.f, 1.f, 1.f, 0.f});
+	ActionUi_[ToIndex(ActionDigits::DashFront)]->SetColor({1.f, 1.f, 1.f, 0.f});
+	ActionUi_[ToIndex(ActionDigits::SpinFlash)]->SetColor({1.f, 1.f, 1.f, 0.f});
+	ActionUi_[ToIndex(ActionDigits::SpinFront)]->SetColor({1.f, 1.f, 1.f, 0.f});*/
 
-	//// 回転攻撃、文字
-	//GameObject& spinMojiMono = gameObject->CreateChild();
-	//spinMojiMono.AddComponent<UiSpriteRenderer>(TextureTag::SpinMoji, kSpinMojiPos, kSpinMojiSize, kUVPos, kUVFontSize);
+	// 回転攻撃、文字
+	GameObject& spinMojiMono = gameObject->CreateChild();
+	spinMojiMono.AddComponent<UiSpriteRenderer>(TextureTag::SpinMoji, kSpinMojiPos, kSpinMojiSize, kUVFontPos, kUVFontSize);
 
-	//// 回転攻撃、文字、色付き
-	//GameObject& spinMoji = gameObject->CreateChild();
-	//spinMoji_= &spinMoji.AddComponent<UiSpriteRenderer>(TextureTag::SpinMoji, kSpinMojiPos, kSpinMojiSize, kUVPos, kUVFontSize);
+	// 回転攻撃、文字、色付き
+	GameObject& spinMoji = gameObject->CreateChild();
+	spinMoji_= &spinMoji.AddComponent<UiSpriteRenderer>(TextureTag::SpinMoji, kSpinMojiPos, kSpinMojiSize, kUVFontPos, kUVFontSize);
 
-	//// ダッシュ、文字
-	//GameObject& dashMojiMono = gameObject->CreateChild();
-	//dashMojiMono.AddComponent<UiSpriteRenderer>(TextureTag::SpinMoji, kDashMojiPos, kDashMojiSize, kUVPos, kUVFontSize);
+	// ダッシュ、文字
+	GameObject& dashMojiMono = gameObject->CreateChild();
+	dashMojiMono.AddComponent<UiSpriteRenderer>(TextureTag::SpinMoji, kDashMojiPos, kDashMojiSize, kUVFontPos, kUVFontSize);
 
-	//// ダッシュ、文字、色付き
-	//GameObject& dashMoji = gameObject->CreateChild();
-	//dashMoji_ = &dashMoji.AddComponent<UiSpriteRenderer>(TextureTag::SpinMoji, kDashMojiPos, kDashMojiSize, kUVPos, kUVFontSize);
+	// ダッシュ、文字、色付き
+	GameObject& dashMoji = gameObject->CreateChild();
+	dashMoji_ = &dashMoji.AddComponent<UiSpriteRenderer>(TextureTag::SpinMoji, kDashMojiPos, kDashMojiSize, kUVFontPos, kUVFontSize);
 
 }
 
