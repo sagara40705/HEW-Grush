@@ -36,10 +36,10 @@ void SceneResult::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Gauge_Bar); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Gauge_Frame); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Next_Text); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Rank_S); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Rank_A); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Rank_B); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Rank_C); });
+	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Rank_S); });
+	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Rank_A); });
+	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Rank_B); });
+	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Rank_C); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Job_Pikapika); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Job_Sugoude); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Job_Tastuzin); });
@@ -47,10 +47,10 @@ void SceneResult::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 
 	// 各種オブジェクト生成タスクを追加
 	outTasks.emplace_back([this] { CreateCanvas(); });
-	//outTasks.emplace_back([this] { CreateBace(); });
-	//outTasks.emplace_back([this] { CreateTimeUI(); });
+	outTasks.emplace_back([this] { CreateBace(); });
+	outTasks.emplace_back([this] { CreateTimeUI(); });
 	outTasks.emplace_back([this] { CreateGaugeUI(); });
-	//outTasks.emplace_back([this] { CreateRankUI(); });
+	outTasks.emplace_back([this] { CreateRankUI(); });
 	//outTasks.emplace_back([this] { CreateJobUI(); });
 	outTasks.emplace_back([this] { CreateNextText(); });
 	outTasks.emplace_back([this] { SceneManager::CreateFadeAnimations(this); });
@@ -103,7 +103,6 @@ void SceneResult::CreateTimeUI()
 	World& w = GetWorld();
 
 	GameObject& timerUI = w.CreateGameObject();
-	timerUI.SetTag(Tag::ResultTimerUI);
 	timerUI.AddComponent<ResultTimerUI>();
 }
 
@@ -112,7 +111,6 @@ void SceneResult::CreateGaugeUI()
 	World& w = GetWorld();
 
 	GameObject& Gauge = w.CreateGameObject();
-	Gauge.SetTag(Tag::ResultGaugeUI);
 	Gauge.AddComponent<ResultGaugeUI>();
 }
 
@@ -120,7 +118,7 @@ void SceneResult::CreateRankUI()
 {
 	World& w = GetWorld();
 
-	GameObject& Rank = w.CreateGameObject();
+	GameObject& Rank = w.CreateGameObject();;
 	Rank.SetTag(Tag::ResultRankUI);
 	Rank.AddComponent<ResultRankUI>();
 }
@@ -129,8 +127,7 @@ void SceneResult::CreateJobUI()
 {
 	World& w = GetWorld();
 	//背景生成
-	GameObject& job = w.CreateGameObject();
-	job.AddComponent<UiSpriteRenderer>(TextureTag::Result_Job_Tastuzin, Vector2::zero(), Vector2::WindowSize());
+
 }
 
 void SceneResult::CreateNextText()

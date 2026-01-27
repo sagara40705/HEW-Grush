@@ -179,11 +179,17 @@ void SceneGame::CreateCameraAndPlayer()
 	hummer.AddComponent<MeshRenderer>();
 	hummer.AddComponent<BoxCollider>(false, Vector3(-3.f, 2.f, -3.f), Vector3(5.f, 5.f, 2.f));
 	hummer.AddComponent<Hammer>();
-	hummer.AddComponent<Animator>();
+	//hummer.AddComponent<Animator>();
 	hummer.AddComponent<HammerEffects>();
+
 
 	GameObject& glassShardPool = w.CreateGameObject();
 	glassShardPool.AddComponent<GlassShardPool>();
+
+	//GameObject& hummerC = w.CreateGameObject(Vector3(0.f, 2.f, 4.f), Vector3(0.f, 0.f, 0.f));
+	//hummerC.AddComponent<MeshFilter>(ModelTag::Hammer_1);
+	//hummerC.AddComponent<MeshRenderer>();
+	//hummerC.AddComponent<Animator>();
 }
 
 void SceneGame::CreateStage()
@@ -257,9 +263,7 @@ void SceneGame::CreateStage1()
 	CreateStageFromCSV("CSV/StageData_Grade2.csv");
 	CreateStageFromCSV("CSV/StageData_Grade3.csv");
 
-	//Prefab::Instantiate(w, PrefabId::StageWall, Vector3(5.f, -0.8f, -20.f), Vector3(0.f, 0.f, 0.f), Vector3(0.2f, 0.2f, 1.0f));
-	//Prefab::Instantiate(w, PrefabId::StageWall, Vector3(0.f, -0.8f, -20.f), Vector3(0.f, 0.f, 0.f), Vector3(0.3f, 0.3f, 1.0f));
-	//Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-5.f, -0.8f, -20.f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-5.f, -0.8f, -20.f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
 
 	return;
 }

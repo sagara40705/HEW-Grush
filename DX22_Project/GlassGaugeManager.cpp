@@ -20,6 +20,8 @@ void GlassGaugeManager::Start()
 
 	assert(player_ && hammer_ && "参照のどれかがnullptrです");
 	if (!player_ || !hammer_) return;
+
+	isGaugeDecaying = false;
 }
 
 void GlassGaugeManager::Update()
@@ -51,7 +53,7 @@ void GlassGaugeManager::Update()
 		if (!IsMaxGauge())
 		{
 			limitBreakTimer_ = 0.f;
-			//return;
+			//return; ←これ
 		}
 
 		limitBreakTimer_ += 0.1f / 60.f;
@@ -83,8 +85,7 @@ void GlassGaugeManager::Update()
 	{
 		// 減衰までの時間を計る
 		constexpr float DT = 0.1f / 60.f;
-		//constexpr float kGaugeDecayDelayTime = 10.f; //ゲージ減衰までの時間
-		constexpr float kGaugeDecayDelayTime = 0.3f; //ゲージ減衰までの時間
+		constexpr float kGaugeDecayDelayTime = 2.0f; //ゲージ減衰までの時間
 		gaugeDecayDelayTimer += DT;
 		if (gaugeDecayDelayTimer >=  kGaugeDecayDelayTime)
 		{
@@ -105,7 +106,7 @@ void GlassGaugeManager::OnDestroy()
 void GlassGaugeManager::BrakeGlass(GlassGrade grade)
 {
 	constexpr float kGaugeUpVale[ToIndex(GlassGrade::Count)] 
-					= {3.f, 5.f, 10.f};
+					= {10.f, 10.f, 10.f};
 	
 	//減衰を止めタイマーをリセット
 	isGaugeDecaying = false;
@@ -149,7 +150,7 @@ void GlassGaugeManager::GradeUp()
 	hammer_->GradeUp();
 	SoundManager::SoundPlay(SoundTag::GradeUpSE, 1.0f);
 
-	constexpr float kWhenGradeUpMinGauge = 75;
+	constexpr float kWhenGradeUpMinGauge = 5;
 	gauge_ = kWhenGradeUpMinGauge;
 }
 
