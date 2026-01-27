@@ -99,6 +99,11 @@ enum class TextureTag : uint8_t
     //Option 72Å`
     Option_BG = 72,
 
+    Sotry_Intro1,
+    Sotry_Intro2,
+    Sotry_Intro3,
+    Sotry_Intro4,
+
     Count,
 };
 

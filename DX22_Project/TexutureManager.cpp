@@ -97,6 +97,10 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
 
     ////Option 72～
     "Assets/Texture/Option/Option_BG.png", //Option_BG = 72,
+    "Assets/Texture/Story/01.jpg",//ストーリーの1枚目
+	"Assets/Texture/Story/02.jpg",//ストーリーの2枚目
+	"Assets/Texture/Story/03.jpg",//ストーリーの3枚目
+	"Assets/Texture/Story/04.jpg",//ストーリーの4枚目
 };
 
 // 配列のデフォルトパスを使用して登録
