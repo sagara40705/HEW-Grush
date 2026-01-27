@@ -86,6 +86,7 @@ void SceneTitle::CreateCameraAndPlayer()
 	GameObject& hummer = player.CreateChild(Hammer::BasePos, Hammer::BaseRota, Vector3(0.2f, 0.2f, 0.2f));
 	hummer.AddComponent<MeshFilter>(ModelTag::Hammer);
 	hummer.AddComponent<MeshRenderer>();
+	hummer.AddComponent<Animator>();
 
 }
 
