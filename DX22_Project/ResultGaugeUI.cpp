@@ -10,17 +10,18 @@
 constexpr Vector2 kNumberUVScale = { 1.f, 1.0f };
 
 
-//int ArubaitpLevel = 0;
+
 void ResultGaugeUI::Start()
 {
-	//Update(GaugePoint);
+	
 	constexpr Vector2 kMinutePos[ToIndex(TimerDigits::Count)] = { {520.f, 1000.f}, {0.f, 0.f} };
-	//=======
-	pointGauge =GaugePotint();
-
+	//クリアタイムからゲージポイントを算出
+	targetGauge_ =GaugePotint();
+	currentGauge_ = 0.f;         //ゲージの初期化
+	gaugeSpeed_ = 5.0f;          //ゲージが増えるスピード
 	constexpr Vector2 kColonPos = { 1165.f,160.f };
 	constexpr Vector2 kSecondPos[ToIndex(TimerDigits::Count)] = { {700.f, 240.f}, {680.f, 540.f} };
-
+	
 	Vector2 kNumGaugeberSize = { pointGauge, 195.f };
 	constexpr Vector2 kNumFrameberSize = { 1280, 780.f };
 //	constexpr Vector2 kColonSize = { 10.f, 200.f };
@@ -39,9 +40,28 @@ void ResultGaugeUI::Start()
 void ResultGaugeUI::Draw()
 {
 
-	point = 0;
+	
 
 
+}
+
+void ResultGaugeUI::Update()
+{
+	// ゲージが目標値に達していないなら
+	if (currentGauge_ < targetGauge_)
+	{
+		currentGauge_ += gaugeSpeed_;
+
+		if (currentGauge_ > targetGauge_)
+		{
+			currentGauge_ = targetGauge_;
+		}
+
+		// サイズ更新（横に伸ばす）
+		Vector2 size = uiGauge_->GetSize();
+		size.x = currentGauge_;
+		uiGauge_->SetSize(size);
+	}
 }
 
 float ResultGaugeUI::GaugePotint()
@@ -78,41 +98,41 @@ float ResultGaugeUI::GaugePotint()
 
 }
 
-float ResultGaugeUI::AllpointGauge()
-{
-	
-	if (Allpoint >= 600)
-	{
-		if (Allpoint >= 1200)
-		{
+//float ResultGaugeUI::AllpointGauge()
+//{
+//	
+//	if (Allpoint >= 600)
+//	{
+//		if (Allpoint >= 1200)
+//		{
+//
+//			if (Allpoint >= 1800)
+//			{
+//				arubaitpLevel = 3;
+//			}
+//			else
+//			{
+//				arubaitpLevel = 2;
+//			}
+//		}
+//		else
+//		{
+//			arubaitpLevel = 1;
+//
+//		}
+//	}
+//	else
+//	{
+//		arubaitpLevel = 1;
+//	}
+// 	return arubaitpLevel;
+//	//return 0;
+//}
 
-			if (Allpoint >= 1800)
-			{
-				arubaitpLevel = 3;
-			}
-			else
-			{
-				arubaitpLevel = 2;
-			}
-		}
-		else
-		{
-			arubaitpLevel = 1;
-
-		}
-	}
-	else
-	{
-		arubaitpLevel = 1;
-	}
- 	return arubaitpLevel;
-	//return 0;
-}
-
-int ResultGaugeUI::GetArubaitoLevel()
-{
-	return arubaitpLevel;
-}
+//int ResultGaugeUI::GetArubaitoLevel()
+//{
+//	return arubaitpLevel;
+//}
 
 
 	

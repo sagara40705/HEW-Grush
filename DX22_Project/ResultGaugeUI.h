@@ -8,23 +8,19 @@ class ResultGaugeUI : public MonoBehaviour
 public:
 	ResultGaugeUI() = default;
 	~ResultGaugeUI() override = default;
-//	float GaugePoint = 0.f;
 	void Start() override;
-	//float UpdateGaugePoint(float);
 	void Draw()override;
-	//float GetGaugePoint() { return GaugePoint; }
-//	float timer_ = 0.f;
+	void Update() override;
 	float GaugePotint();
 	float pointGauge;
 	float AllpointGauge();
-	float point = 0.f;
-	int arubaitpLevel = 1;
-	int GetArubaitoLevel();
-    float GetAllGauge() { return Allpoint; }
+	float point;
 float Allpoint;
 
 private:
-	
+	float targetGauge_;    //最終ゲージ量
+	float currentGauge_;   //今の表示ゲージ
+	float gaugeSpeed_;     //増えるスピード
 	//float timer_ = 0.f;
 	UiSpriteRenderer* uiGauge_ = nullptr;
 	UiSpriteRenderer* uiFrame_ = nullptr;
