@@ -30,22 +30,22 @@ void ResultRankUI::Start()
 			if (clearTime <= 60)
 			{
 				
-				uiMinute_[ToIndex(TimerDigits::Ten)] = &RankSMinute.AddComponent<UiSpriteRenderer>(TextureTag::RANKS, kMinutePos[ToIndex(TimerDigits::Ten)], kNumberSize, Vector2::zero(), kNumberUVScale);
+				uiMinute_[ToIndex(TimerDigits::Ten)] = &RankSMinute.AddComponent<UiSpriteRenderer>(TextureTag::Result_Rank_S, kMinutePos[ToIndex(TimerDigits::Ten)], kNumberSize, Vector2::zero(), kNumberUVScale);
 			}
 			else
 			{
-				uiMinute_[ToIndex(TimerDigits::Ten)] = &RankAMinute.AddComponent<UiSpriteRenderer>(TextureTag::ResultA, kMinutePos[ToIndex(TimerDigits::Ten)], kNumberSize, Vector2::zero(), kNumberUVScale);
+				uiMinute_[ToIndex(TimerDigits::Ten)] = &RankAMinute.AddComponent<UiSpriteRenderer>(TextureTag::Result_Rank_A, kMinutePos[ToIndex(TimerDigits::Ten)], kNumberSize, Vector2::zero(), kNumberUVScale);
 
 			}
 		}
 		else
 		{
-			uiMinute_[ToIndex(TimerDigits::Ten)] = &RankBMinute.AddComponent<UiSpriteRenderer>(TextureTag::ResultB, kMinutePos[ToIndex(TimerDigits::Ten)], kNumberSize, Vector2::zero(), kNumberUVScale);
+			uiMinute_[ToIndex(TimerDigits::Ten)] = &RankBMinute.AddComponent<UiSpriteRenderer>(TextureTag::Result_Rank_B, kMinutePos[ToIndex(TimerDigits::Ten)], kNumberSize, Vector2::zero(), kNumberUVScale);
 		}
 	}
 	else
 	{
-		uiMinute_[ToIndex(TimerDigits::Ten)] = &RankCMinute.AddComponent<UiSpriteRenderer>(TextureTag::ResultC, kMinutePos[ToIndex(TimerDigits::Ten)], kNumberSize, Vector2::zero(), kNumberUVScale);
+		uiMinute_[ToIndex(TimerDigits::Ten)] = &RankCMinute.AddComponent<UiSpriteRenderer>(TextureTag::Result_Rank_C, kMinutePos[ToIndex(TimerDigits::Ten)], kNumberSize, Vector2::zero(), kNumberUVScale);
 	}
 }
 

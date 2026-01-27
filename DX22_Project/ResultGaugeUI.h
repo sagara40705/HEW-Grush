@@ -13,9 +13,8 @@ public:
 	void Update() override;
 	float GaugePotint();
 	float pointGauge;
-	float AllpointGauge();
 	float point;
-float Allpoint;
+
 
 private:
 	float targetGauge_;    //ç≈èIÉQÅ[ÉWó 

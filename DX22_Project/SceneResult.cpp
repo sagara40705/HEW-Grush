@@ -9,6 +9,7 @@
 #include "LineManager.h"
 #include "ResultGaugeUI.h"
 #include "ResultRankUI.h"
+#include "ResultArubaito.h"
 #include "SceneStageSelect.h"
 
 
@@ -51,7 +52,7 @@ void SceneResult::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { CreateTimeUI(); });
 	outTasks.emplace_back([this] { CreateGaugeUI(); });
 	outTasks.emplace_back([this] { CreateRankUI(); });
-	//outTasks.emplace_back([this] { CreateJobUI(); });
+	outTasks.emplace_back([this] { CreateJobUI(); });
 	outTasks.emplace_back([this] { CreateNextText(); });
 	outTasks.emplace_back([this] { SceneManager::CreateFadeAnimations(this); });
 
@@ -127,7 +128,9 @@ void SceneResult::CreateJobUI()
 {
 	World& w = GetWorld();
 	//îwåiê∂ê¨
-
+	GameObject& job = w.CreateGameObject();;
+	job.SetTag(Tag::ResultArubaito);
+	job.AddComponent<ResultArubaito>();
 }
 
 void SceneResult::CreateNextText()

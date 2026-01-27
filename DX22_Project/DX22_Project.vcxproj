@@ -204,6 +204,8 @@
     <ClCompile Include="PrefabSet.cpp" />
     <ClCompile Include="PrimitiveMeshManager.cpp" />
     <ClCompile Include="Raycast.cpp" />
+    <ClCompile Include="ResultAllpoint.cpp" />
+    <ClCompile Include="ResultArubauto.cpp" />
     <ClCompile Include="ResultGaugeUI.cpp" />
     <ClCompile Include="ResultRankUI.cpp" />
     <ClCompile Include="ResultTimerUI.cpp" />
@@ -302,6 +304,8 @@
     <ClInclude Include="PrimitiveMeshManager.h" />
     <ClInclude Include="Raycast.h" />
     <ClInclude Include="RenderSystem.h" />
+    <ClInclude Include="ResultAllpoint.h" />
+    <ClInclude Include="ResultArubaito.h" />
     <ClInclude Include="ResultGaugeUI.h" />
     <ClInclude Include="ResultRankUI.h" />
     <ClInclude Include="ResultTimerUI.h" />

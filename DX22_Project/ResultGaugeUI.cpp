@@ -7,6 +7,7 @@
 #include "UiSpriteRenderer.h"
 #include "TextureManager.h"
 #include "GameState.h"
+
 constexpr Vector2 kNumberUVScale = { 1.f, 1.0f };
 
 
@@ -20,29 +21,21 @@ void ResultGaugeUI::Start()
 	currentGauge_ = 0.f;         //ゲージの初期化
 	gaugeSpeed_ = 5.0f;          //ゲージが増えるスピード
 	constexpr Vector2 kColonPos = { 1165.f,160.f };
-	constexpr Vector2 kSecondPos[ToIndex(TimerDigits::Count)] = { {700.f, 240.f}, {680.f, 540.f} };
+	constexpr Vector2 kSecondPos[ToIndex(TimerDigits::Count)] = { {0.f, 0.f}, {685.f, 555.f} };
 	
-	Vector2 kNumGaugeberSize = { pointGauge, 195.f };
-	constexpr Vector2 kNumFrameberSize = { 1280, 780.f };
-//	constexpr Vector2 kColonSize = { 10.f, 200.f };
-	//テクスチャーロード
-	/*TextureManager::Load(TextureTag::Title_BG);
-	TextureManager::Load(TextureTag::GaugeEffect);*/
+	Vector2 kNumGaugeberSize = { 1280.f,125.f };
+	constexpr Vector2 kNumFrameberSize = { 1280.f, 760.f };
 
 	GameObject& Gauge = gameObject->CreateChild();
-	uiGauge_ = &Gauge.AddComponent<UiSpriteRenderer>(TextureTag::Gauge, kSecondPos[ToIndex(TimerDigits::Ten)], kNumGaugeberSize, Vector2::zero(), kNumberUVScale);
+	uiGauge_ = &Gauge.AddComponent<UiSpriteRenderer>(TextureTag::Result_Gauge_Bar, kSecondPos[ToIndex(TimerDigits::Ten)], kNumGaugeberSize, Vector2::zero(), kNumberUVScale);
 
 	GameObject& Frame = gameObject->CreateChild();
-	uiFrame_ = &Frame.AddComponent<UiSpriteRenderer>(TextureTag::Frame, kMinutePos[ToIndex(TimerDigits::Ten)], kNumFrameberSize, Vector2::zero(), kNumberUVScale);
+	uiFrame_ = &Frame.AddComponent<UiSpriteRenderer>(TextureTag::Result_Gauge_Frame, kMinutePos[ToIndex(TimerDigits::Ten)], kNumFrameberSize, Vector2::zero(), kNumberUVScale);
 	//Draw();
 }
 
 void ResultGaugeUI::Draw()
 {
-
-	
-
-
 }
 
 void ResultGaugeUI::Update()
@@ -92,47 +85,12 @@ float ResultGaugeUI::GaugePotint()
 	{
 		point = 600.f;
 	}
-	//アルバイトレベルの算出
-	//Allpoint = point;
+	
 	return point;
 
 }
 
-//float ResultGaugeUI::AllpointGauge()
-//{
-//	
-//	if (Allpoint >= 600)
-//	{
-//		if (Allpoint >= 1200)
-//		{
-//
-//			if (Allpoint >= 1800)
-//			{
-//				arubaitpLevel = 3;
-//			}
-//			else
-//			{
-//				arubaitpLevel = 2;
-//			}
-//		}
-//		else
-//		{
-//			arubaitpLevel = 1;
-//
-//		}
-//	}
-//	else
-//	{
-//		arubaitpLevel = 1;
-//	}
-// 	return arubaitpLevel;
-//	//return 0;
-//}
 
-//int ResultGaugeUI::GetArubaitoLevel()
-//{
-//	return arubaitpLevel;
-//}
 
 
 	

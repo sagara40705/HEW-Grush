@@ -1,13 +1,13 @@
-#include "ResultArubauto.h"
+#include "ResultArubaito.h"
 #include "GameObject.h"
 #include "UiSpriteRenderer.h"
 #include "TextureManager.h"
 //#include "ResultGaugeUI.h"
-#include "Allpoint.h"
+#include "ResultAllpoint.h"
 //画像のUV設定
 constexpr Vector2 kNumberUVScale = { 1.f, 1.0f };
 
-void ResultArubauto::Start()
+void ResultArubaito::Start()
 {
 	
 	constexpr Vector2 kMinutePos[ToIndex(Arubaito::Count)] = { {680.f, 470.f}, {680.f, 470.f} };  //画像の位置
@@ -19,33 +19,23 @@ void ResultArubauto::Start()
 	GameObject& sunMinute = gameObject->CreateChild();
 
 	//-------アルバイトレベルによって画像を変える処理------
-	int pointGauge = arubaitoLevel();
+	int pointGauge =arubaitoLevel();
 	switch (pointGauge)
 	{
 	case 1:
 
-		uiMinute_[ToIndex(Arubaito::Ten)] = &tenMinute.AddComponent<UiSpriteRenderer>(TextureTag::pika_Arubaita, kMinutePos[ToIndex(Arubaito::Ten)], kNumberSize, Vector2::zero(), kNumberUVScale);
+		uiMinute_[ToIndex(Arubaito::Ten)] = &tenMinute.AddComponent<UiSpriteRenderer>(TextureTag::Result_Job_Pikapika, kMinutePos[ToIndex(Arubaito::Ten)], kNumberSize, Vector2::zero(), kNumberUVScale);
 		break;
 	case 2:
 
-		uiMinute_[ToIndex(Arubaito::Ten)] = &oneMinute.AddComponent<UiSpriteRenderer>(TextureTag::sugo_Arubaita, kMinutePos[ToIndex(Arubaito::Ten)], kNumberSize, Vector2::zero(), kNumberUVScale);
+		uiMinute_[ToIndex(Arubaito::Ten)] = &oneMinute.AddComponent<UiSpriteRenderer>(TextureTag::Result_Job_Sugoude, kMinutePos[ToIndex(Arubaito::Ten)], kNumberSize, Vector2::zero(), kNumberUVScale);
 		break;
 	case 3:
 
-		uiMinute_[ToIndex(Arubaito::Ten)] = &sunMinute.AddComponent<UiSpriteRenderer>(TextureTag::tatu_Arubaita, kMinutePos[ToIndex(Arubaito::Ten)], kNumberSize, Vector2::zero(), kNumberUVScale);
+		uiMinute_[ToIndex(Arubaito::Ten)] = &sunMinute.AddComponent<UiSpriteRenderer>(TextureTag::Result_Job_Tastuzin, kMinutePos[ToIndex(Arubaito::Ten)], kNumberSize, Vector2::zero(), kNumberUVScale);
 		break;
 	};
 	
 }
 
-void ResultArubauto::Update()
-{
 
-
-
-
-}
-
-void ResultArubauto::OnDestroy()
-{
-}

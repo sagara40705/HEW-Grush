@@ -378,6 +378,12 @@
     <ClCompile Include="SceneOption.cpp">
       <Filter>Game\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="ResultArubauto.cpp">
+      <Filter>Game\Components\Result</Filter>
+    </ClCompile>
+    <ClCompile Include="ResultAllpoint.cpp">
+      <Filter>Game\Components\Result</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -667,6 +673,12 @@
     </ClInclude>
     <ClInclude Include="SceneOption.h">
       <Filter>Game\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="ResultArubaito.h">
+      <Filter>Game\Components\Result</Filter>
+    </ClInclude>
+    <ClInclude Include="ResultAllpoint.h">
+      <Filter>Game\Components\Result</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
