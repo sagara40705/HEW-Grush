@@ -20,6 +20,9 @@ void SceneStory::BuildLoadTasks(std::vector<LoadTask>& outTasks)
     outTasks.emplace_back([this] { CreateCanvas(); });
     outTasks.emplace_back([this] { CreatePages(); });
 
+    // 追加：フェード用アニメーションをこのSceneのWorldに作る
+    outTasks.emplace_back([this] { SceneManager::CreateFadeAnimations(this); });
+
     outTasks.emplace_back([this] { GetWorld().Start(); });
 }
 
@@ -32,6 +35,7 @@ void SceneStory::Load()
 
 void SceneStory::Unload()
 {
+    SceneManager::ReleaseFadeAnimations();
     TextureManager::Clear();
 }
 
