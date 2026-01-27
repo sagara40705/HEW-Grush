@@ -22,7 +22,7 @@ private:
     void CreateCanvas();
     void CreatePages();
 
-    void StartSlide(int dir);
+    void StartSlide(int dir);   // dir: -1=左, +1=右
     void UpdateSlide();
 
 private:
@@ -41,14 +41,17 @@ private:
     GameObject* m_nextObj = nullptr;
     UiSpriteRenderer* m_nextRenderer = nullptr;
 
+    // 入力取りこぼし防止（スライド中に押された入力を予約）
+    int m_pendingDir = 0;
+
+    // スライド状態
     bool  m_isSliding = false;
     int   m_slideDir = 0;
     float m_slideT = 0.0f;
-    float m_slideDuration = 0.25f;
+    float m_slideDuration = 0.35f;   // スライド時間
 
-    // あなたの環境でUiSpriteRendererが表示できた中心位置
-    Vector3 m_centerPos = Vector3(0.f, -3.f, 5.f);
-
-    // 画面外に退避させる距離
-    float m_slideOffsetX = 6.0f;
+    // UI設定
+    Vector2 m_center2D = Vector2(0.0f, 0.0f);          // 中心（あなたのUI基準）
+    float   m_slideOffsetPx = 1600.0f;                 // 画面外へ出す距離（px）
+    Vector2 m_uiSize = Vector2(1500.0f, 900.0f);       // 画像サイズ
 };

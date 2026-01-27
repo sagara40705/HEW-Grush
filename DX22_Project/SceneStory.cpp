@@ -1,5 +1,4 @@
 // SceneStory.cpp
-#include "SceneStory.h"
 #include "SceneManager.h"
 #include "GameObject.h"
 #include "AllComponent.h"
@@ -7,6 +6,7 @@
 #include "InputKeyboard.h"
 #include "UiSpriteRenderer.h"
 #include "SceneStageSelect.h"
+#include"SceneStory.h"
 
 void SceneStory::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 {
@@ -37,6 +37,7 @@ void SceneStory::Unload()
 
 void SceneStory::Draw()
 {
+    // 他Sceneと同じで空
 }
 
 void SceneStory::CreateCanvas()
@@ -50,32 +51,32 @@ void SceneStory::CreatePages()
 {
     World& w = GetWorld();
 
+    // 注意：
+    // UiSpriteRendererは「offset(2D)」で位置を決めるので、
+    // GameObjectのTransformは固定でOK（描画される座標に置く）
+    Vector3 uiObjPos(0.f, -3.f, 5.0f);
+
     // 現在ページ（中心）
     {
-        GameObject& obj = w.CreateGameObject(m_centerPos);
-
+        GameObject& obj = w.CreateGameObject(uiObjPos);
+        
         UiSpriteRenderer& r = obj.AddComponent<UiSpriteRenderer>(
             m_pageTags[0],
-            Vector2(0.0f, 0.0f),
-            Vector2(1500.0f, 900.0f)
+            m_center2D,      // offset = 中心
+            m_uiSize
         );
-
         m_currObj = &obj;
         m_currRenderer = &r;
     }
 
-    // 次ページ（右の画面外）
+    // 次ページ（最初は右の画面外）
     {
-        Vector3 offPos(m_centerPos.x + m_slideOffsetX, m_centerPos.y, m_centerPos.z);
-        GameObject& obj = w.CreateGameObject(offPos);
-
-        UiSpriteRenderer& r = 
-            obj.AddComponent<UiSpriteRenderer>(
+        GameObject& obj = w.CreateGameObject(uiObjPos);
+        UiSpriteRenderer& r = obj.AddComponent<UiSpriteRenderer>(
             m_pageTags[0],
-            Vector2(0.0f, 0.0f),
-            Vector2(1500.0f, 900.0f)
+            Vector2(m_center2D.x + m_slideOffsetPx, m_center2D.y),
+            m_uiSize
         );
-
         m_nextObj = &obj;
         m_nextRenderer = &r;
     }
@@ -84,12 +85,17 @@ void SceneStory::CreatePages()
     m_isSliding = false;
     m_slideDir = 0;
     m_slideT = 0.0f;
+    m_pendingDir = 0;
 }
 
 void SceneStory::Update()
 {
+    // スライド中は入力を予約しつつスライド更新
     if (m_isSliding)
     {
+        if (InputKeyboard::GetKeyDown(VK_RIGHT)) m_pendingDir = +1;
+        if (InputKeyboard::GetKeyDown(VK_LEFT))  m_pendingDir = -1;
+
         UpdateSlide();
         return;
     }
@@ -111,10 +117,7 @@ void SceneStory::Update()
     // 左
     if (InputKeyboard::GetKeyDown(VK_LEFT))
     {
-        if (m_pageIndex <= 0)
-        {
-            return;
-        }
+        if (m_pageIndex <= 0) return;
 
         StartSlide(-1);
         return;
@@ -123,8 +126,7 @@ void SceneStory::Update()
 
 void SceneStory::StartSlide(int dir)
 {
-    if (!m_currObj || !m_nextObj || !m_currRenderer
-        || !m_nextRenderer) return;
+    if (!m_currRenderer || !m_nextRenderer) return;
 
     int nextIndex = m_pageIndex + dir;
     if (nextIndex < 0 || nextIndex >= (int)m_pageTags.size()) return;
@@ -133,15 +135,15 @@ void SceneStory::StartSlide(int dir)
     m_slideDir = dir;
     m_slideT = 0.0f;
 
+    // 次ページのテクスチャを設定
     m_nextRenderer->SetTexture(m_pageTags[nextIndex]);
 
-    float startX = m_centerPos.x + (dir > 0 ? +m_slideOffsetX : -m_slideOffsetX);
+    // 現在は中心
+    m_currRenderer->SetOffset(m_center2D);
 
-    Transform* currTr = m_currObj->GetComponent<Transform>();
-    Transform* nextTr = m_nextObj->GetComponent<Transform>();
-
-    if (currTr) currTr->SetPosition(m_centerPos);
-    if (nextTr) nextTr->SetPosition(Vector3(startX, m_centerPos.y, m_centerPos.z));
+    // 次は左右の画面外から入る
+    float startX = m_center2D.x + (dir > 0 ? +m_slideOffsetPx : -m_slideOffsetPx);
+    m_nextRenderer->SetOffset(Vector2(startX, m_center2D.y));
 }
 
 void SceneStory::UpdateSlide()
@@ -153,31 +155,58 @@ void SceneStory::UpdateSlide()
     float t = (m_slideDuration > 0.0f) ? (m_slideT / m_slideDuration) : 1.0f;
     if (t > 1.0f) t = 1.0f;
 
+    // ease in-out
     float ease = t * t * (3.0f - 2.0f * t);
 
-    Transform* currTr = m_currObj ? m_currObj->GetComponent<Transform>() : nullptr;
-    Transform* nextTr = m_nextObj ? m_nextObj->GetComponent<Transform>() : nullptr;
+    // 現在：中心 -> 反対側へ出る
+    float currX = m_center2D.x + (-m_slideDir) * m_slideOffsetPx * ease;
 
-    float currX = m_centerPos.x + (-m_slideDir) * m_slideOffsetX * ease;
+    // 次：画面外 -> 中心へ入る
+    float nextStartX = m_center2D.x + (m_slideDir > 0 ? +m_slideOffsetPx : -m_slideOffsetPx);
+    float nextX = nextStartX + (m_center2D.x - nextStartX) * ease;
 
-    float nextStartX = m_centerPos.x + (m_slideDir > 0 ? +m_slideOffsetX : -m_slideOffsetX);
-    float nextX = nextStartX + (m_centerPos.x - nextStartX) * ease;
-
-    if (currTr) currTr->SetPosition(Vector3(currX, m_centerPos.y, m_centerPos.z));
-    if (nextTr) nextTr->SetPosition(Vector3(nextX, m_centerPos.y, m_centerPos.z));
+    m_currRenderer->SetOffset(Vector2(currX, m_center2D.y));
+    m_nextRenderer->SetOffset(Vector2(nextX, m_center2D.y));
 
     if (t >= 1.0f)
     {
+        // ページ確定
         m_pageIndex += m_slideDir;
 
+        // 次が現在になるので入れ替え
         std::swap(m_currObj, m_nextObj);
         std::swap(m_currRenderer, m_nextRenderer);
 
-        Transform* tr = m_currObj ? m_currObj->GetComponent<Transform>() : nullptr;
-        if (tr) tr->SetPosition(m_centerPos);
+        // 新しい現在は中心に戻す
+        m_currRenderer->SetOffset(m_center2D);
 
+        // スライド終了
         m_isSliding = false;
         m_slideDir = 0;
         m_slideT = 0.0f;
+
+        // 予約入力があれば続けて実行
+        if (m_pendingDir != 0)
+        {
+            int dir = m_pendingDir;
+            m_pendingDir = 0;
+
+            if (dir > 0)
+            {
+                if (m_pageIndex >= 3)
+                {
+                    SceneManager::ChangeSceneAsync<SceneStageSelect>();
+                    return;
+                }
+                StartSlide(+1);
+                return;
+            }
+            else
+            {
+                if (m_pageIndex <= 0) return;
+                StartSlide(-1);
+                return;
+            }
+        }
     }
 }
