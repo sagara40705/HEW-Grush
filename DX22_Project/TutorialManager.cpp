@@ -42,24 +42,24 @@ void TutorialManager::Update()
 
 void TutorialManager::CreateTasksUI()
 {
-	//constexpr Vector2 POS[TASK_COUNT] = 
-	//{
-	//	{ 0.f, 50.f }, { 0.f, 100.f }, { 0.f, 150.f }, { 0.f, 200.f },{ 0.f, 250.f }
-	//};
-	//constexpr Vector2 SIZE = { 300.f, 40.f };
+	/*constexpr Vector2 POS[TASK_COUNT] = 
+	{
+		{ 0.f, 50.f }, { 0.f, 100.f }, { 0.f, 150.f }, { 0.f, 200.f },{ 0.f, 250.f }
+	};
+	constexpr Vector2 SIZE = { 300.f, 40.f };
 
-	//constexpr Vector2 UV_POS_OFF[TASK_COUNT] =
-	//{
-	//	{ 0.0f, 0.0f }, { 0.0f, 0.2f }, { 0.0f, 0.4f }, { 0.0f, 0.6f },{ 0.0f, 0.8f }
-	//};
+	constexpr Vector2 UV_POS_OFF[TASK_COUNT] =
+	{
+		{ 0.0f, 0.0f }, { 0.0f, 0.2f }, { 0.0f, 0.4f }, { 0.0f, 0.6f },{ 0.0f, 0.8f }
+	};
 
-	//constexpr Vector2 UV_SIZE = { 0.5f, 0.2f };
+	constexpr Vector2 UV_SIZE = { 0.5f, 0.2f };
 
-	//for (int i = 0; i < TASK_COUNT; ++i)
-	//{
-	//	GameObject* obj = &gameObject->CreateChild();
-	//	tasksUI[i] = &(obj->AddComponent<UiSpriteRenderer>(TextureTag::TasksUI, POS[i], SIZE, UV_POS_OFF[i], UV_SIZE));
-	//}
+	for (int i = 0; i < TASK_COUNT; ++i)
+	{
+		GameObject* obj = &gameObject->CreateChild();
+		tasksUI[i] = &(obj->AddComponent<UiSpriteRenderer>(TextureTag::TasksUI, POS[i], SIZE, UV_POS_OFF[i], UV_SIZE));
+	}*/
 }
 
 void TutorialManager::CreateLocations()

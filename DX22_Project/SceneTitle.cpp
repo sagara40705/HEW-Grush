@@ -78,8 +78,8 @@ void SceneTitle::Load()
 	画面を割る処理を行う
 	====================*/
 	GameObject& TitleBreak = w.CreateGameObject();
-	TitleBreak.AddComponent<UiSpriteRenderer>(TextureTag::Title_Break, Vector2({ 0.f,0.f }), Vector2(1500, 900));
-	break_ = &TitleBreak.AddComponent<SpriteAnimation>(5, 2, 1, 9, false);
+	TitleBreak.AddComponent<UiSpriteRenderer>(TextureTag::Title_Break, Vector2({ 0.f,0.f }), Vector2(1280, 720));
+	break_ = &TitleBreak.AddComponent<SpriteAnimation>(7, 7, 2, 48, false);
 
 	
 	//タイトルマネージャー生成

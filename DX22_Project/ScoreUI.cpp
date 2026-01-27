@@ -4,7 +4,6 @@
 #include "UiSpriteRenderer.h"
 #include "TextureManager.h"
 
-
 constexpr Vector2 kNumberUVScale = { 0.1f,1.0f };
 
 void ScoreUI::Start()

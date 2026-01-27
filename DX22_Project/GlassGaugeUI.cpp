@@ -8,8 +8,8 @@
 
 void GlassGaugeUI::Awake()
 {
-	GameObject& gaugeEmpty = gameObject->CreateChild();
-	empty_ = &gaugeEmpty.AddComponent<UiSpriteRenderer>(TextureTag::GaugeEmpty, Vector2({ 25.f,10.f }) , Vector2(220, 200));
+	/*GameObject& gaugeEmpty = gameObject->CreateChild();
+	empty_ = &gaugeEmpty.AddComponent<UiSpriteRenderer>(TextureTag::GaugeEmpty, Vector2({ 25.f,10.f }) , Vector2(220, 200));*/
 
 	GameObject& gaugeEm = gameObject->CreateChild();
 	em_ = &gaugeEm.AddComponent<UiSpriteRenderer>(TextureTag::GaugeFlash, Vector2({ 25.f,10.f }), Vector2(220, 200));
@@ -83,8 +83,8 @@ void GlassGaugeUI::Update()
 
 	em_->SetUVPos({ garde / 3.f, 1 });
 	em_->SetUVScale({ 1.f / 3.f, 1 });
-	empty_->SetUVPos({ garde / 3.f, 1 });
-	empty_->SetUVScale({ 1.f / 3.f, 1 });
+	/*empty_->SetUVPos({ garde / 3.f, 1 });
+	empty_->SetUVScale({ 1.f / 3.f, 1 });*/
 
 	// ゲージ減衰中または
 	// ゲージ減少までのタイマーの値が一定以上のとき点滅させる
@@ -101,7 +101,7 @@ void GlassGaugeUI::Update()
 		float g = brightness;
 		float b = 0.0f;
 
-		empty_->SetColor({ 1.f,1.f,1.f,1.f });
+		//empty_->SetColor({ 1.f,1.f,1.f,1.f });
 		em_->SetColor({ r, g, b, 1.0f }); // アルファは固定
 	}
 	else
@@ -115,7 +115,7 @@ void GlassGaugeUI::OnDestroy()
 {
 	manager_ = nullptr;
 	em_ = nullptr;
-	empty_ = nullptr;
+	//empty_ = nullptr;
 	max_ = nullptr;
 	effect_ = nullptr;
 }
