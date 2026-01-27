@@ -143,47 +143,52 @@ void SceneTitle::CreateTitleManager()
 
 void SceneTitle::Update()
 {
-	//if (!m_breakButton) return;
-
-	if (!m_isStarting && InputKeyboard::GetKeyDown(VK_SPACE))
+	if (!m_isEnterPressed)
 	{
-		m_isStarting = true;
-		m_zoomTimer = 0.0f;
-		//m_breakButton->StartBreak();
-
-		// ★ 保存しておいた m_player を使う
-		if (m_player) {
-			auto* pState = m_player->GetComponent<PlayerState>();
-			if (pState) pState->actionedThisFrame[ToIndex(ActionId::SpinAttack)] = true;
-		}
-	}
-
-	if (m_isStarting)
-	{
-		m_zoomTimer += (1.0f / 60.0f);
-		float t = m_zoomTimer / ZOOM_DURATION;
-		if (t > 1.0f) t = 1.0f;
-
-		float easeT = t * t * t;
-
-		if (m_mainCamera)
+		if (!m_isStarting && InputKeyboard::GetKeyDown(VK_SPACE))
 		{
-			// 1. Transformコンポーネントを取得
-			auto* transform = m_mainCamera->GetComponent<Transform>();
+			m_isStarting = true;
+			m_isEnterPressed = true;
+			m_zoomTimer = 0.0f;
+			//m_breakButton->StartBreak();
 
-			if (transform)
-			{
-				Vector3 currentPos = Vector3::Lerp(m_camStartPos, m_camEndPos, easeT);
-
-				// 2. 座標を設定 (SetPosition または pos への代入)
-				transform->SetPosition(currentPos);
+			// ★ 保存しておいた m_player を使う
+			if (m_player) {
+				auto* pState = m_player->GetComponent<PlayerState>();
+				if (pState) pState->actionedThisFrame[ToIndex(ActionId::SpinAttack)] = true;
 			}
 		}
-
-		if (t >= 1.0f)
+	}
+	else
+	{
+		if (m_isStarting)
 		{
-			m_isStarting = false;
-			break_->Play();
+			m_zoomTimer += (1.0f / 60.0f);
+			float t = m_zoomTimer / ZOOM_DURATION;
+			if (t > 1.0f) t = 1.0f;
+
+			float easeT = t * t * t;
+
+			if (m_mainCamera)
+			{
+				// 1. Transformコンポーネントを取得
+				auto* transform = m_mainCamera->GetComponent<Transform>();
+
+				if (transform)
+				{
+					Vector3 currentPos = Vector3::Lerp
+					(m_camStartPos, m_camEndPos, easeT);
+
+					// 2. 座標を設定 (SetPosition または pos への代入)
+					transform->SetPosition(currentPos);
+				}
+			}
+
+			if (t >= 1.0f)
+			{
+				m_isStarting = false;
+				break_->Play();
+			}
 		}
 	}
 

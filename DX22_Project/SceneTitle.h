@@ -49,7 +49,7 @@ private:
 
     SpriteAnimation* break_ = nullptr;
 
-
+	bool m_isEnterPressed = false; // エンターキー押下フラグ
     bool m_isStarting = false;    // 演出中フラグ
     float m_zoomTimer = 0.0f;     // 経過時間
     const float ZOOM_DURATION = 0.5f; // ズームにかける時間（秒）
