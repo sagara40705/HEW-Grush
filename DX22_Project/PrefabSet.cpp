@@ -221,6 +221,19 @@ void RegisterAllPrefabs()
             auto& gs = go.AddComponent<GlassObject>(GlassGrade::Grade_3); (void)gs;
         });
 
+    Prefab::Register(P::Star,
+        [](GameObject& go) {
+            go.SetTag(Tag::Glass);
+            auto& mf = go.AddComponent<MeshFilter>(ModelTag::Star); mf.SetBoundsOffset({ 0.f, 3.0f, 0.f });     (void)mf;
+            auto& mr = go.AddComponent<MeshRenderer>(); (void)mr;
+            auto& bc = go.AddComponent<BoxCollider>(
+                true,
+                DirectX::XMFLOAT3{ 0, 1.8f, 0 },
+                DirectX::XMFLOAT3{ 12.f, 3.2f, 2.4f });
+            (void)bc;
+            auto& gs = go.AddComponent<GlassObject>(GlassGrade::Grade_3); (void)gs;
+        });
+
     Prefab::Register(P::ProtPlay,
         [](GameObject& go) {
             go.SetTag(Tag::Glass);

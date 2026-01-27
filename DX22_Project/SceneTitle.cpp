@@ -76,8 +76,8 @@ void SceneTitle::CreateCameraAndPlayer()
 	player.AddComponent<MeshFilter>(ModelTag::Player);
 	player.AddComponent<MeshRenderer>();
 	player.AddComponent<PlayerState>();
-	player.AddComponent<Animator>();
-	player.AddComponent<PlayerAnimation>();
+	//player.AddComponent<Animator>();
+	//player.AddComponent<PlayerAnimation>();
 
 	// Åö ï€ë∂
 	m_player = &player;

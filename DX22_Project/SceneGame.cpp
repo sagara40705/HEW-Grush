@@ -141,8 +141,11 @@ void SceneGame::CreateCameraAndPlayer()
 {
 	World& w = GetWorld();
 
-	//70×70 ①
-	GameObject& cameraPivot = w.CreateGameObject(Vector3::zero(), Vector3(0.f, 180.f, 0.f), Vector3::one());
+	//ステージ１
+	//GameObject& cameraPivot = w.CreateGameObject(Vector3::zero(), Vector3(0.f, 180.f, 0.f), Vector3::one());
+
+	//ステージ2
+	GameObject& cameraPivot = w.CreateGameObject(Vector3::zero(), Vector3(0.f, -90.f, 0.f), Vector3::one());
 
 	cameraPivot.SetTag(Tag::CamreraPivot);
 	cameraPivot.AddComponent<CameraControl>();
@@ -153,8 +156,12 @@ void SceneGame::CreateCameraAndPlayer()
 	mainCamera.AddComponent<CameraShake>();
 
 	//70×70 ①
-	GameObject& player = w.CreateGameObject(Vector3(0.f, 2.f, 0.f), Vector3(0.f, 0.f, 0.f));
-	 
+	//ステージ１
+	//GameObject& player = w.CreateGameObject(Vector3(0.f, 2.f, 0.f), Vector3(0.f, 0.f, 0.f));
+
+	//ステージ2
+	GameObject& player = w.CreateGameObject(Vector3(110.f, 2.f, 0.f), Vector3(0.f, 90.f, 0.f));
+ 
 	player.SetTag(Tag::Player);
 	player.AddComponent<MeshFilter>(ModelTag::Player2);
 	player.AddComponent<MeshRenderer>();
@@ -262,14 +269,14 @@ void SceneGame::CreateStage2()
 	World& w = GetWorld();
 
 	//80 * 50 フィールド1
-	GameObject& floor1 = w.CreateGameObject(Vector3(0.f, -1.f, 0.f), Vector3::zero(), Vector3(80.f, 0.1f, 50.f));
+	GameObject& floor1 = w.CreateGameObject(Vector3(0.f, -1.f, 0.f), Vector3::zero(), Vector3(85.f, 0.1f, 55.f));
 	MeshFilter& mf1 = floor1.AddComponent<MeshFilter>(PrimitiveMeshTag::Plane); mf1.boundsRadius = 0.f;
 	floor1.AddComponent<GroundRenderer>();
 	BoxCollider& collider1 = floor1.AddComponent<BoxCollider>();
 	collider1.layer = Layer::Ground;
 
 	//80 * 50 フィールド1
-	GameObject& floor2 = w.CreateGameObject(Vector3(90.f, -1.f, 0.f), Vector3::zero(), Vector3(80.f, 0.1f, 50.f));
+	GameObject& floor2 = w.CreateGameObject(Vector3(90.f, -1.f, 0.f), Vector3::zero(), Vector3(85.f, 0.1f, 55.f));
 	MeshFilter& mf2 = floor2.AddComponent<MeshFilter>(PrimitiveMeshTag::Plane); mf2.boundsRadius = 0.f;
 	floor2.AddComponent<GroundRenderer>();
 	BoxCollider& collider2 = floor2.AddComponent<BoxCollider>();
@@ -279,7 +286,6 @@ void SceneGame::CreateStage2()
 
 	CreateStageFromCSV("CSV/Stage2LeftData_Grade1.csv");
 	CreateStageFromCSV("CSV/Stage2LeftData_Grade2.csv");
-	CreateStageFromCSV("CSV/Stage2LeftData_Grade3.csv");
 	CreateStageFromCSV("CSV/Stage2RightData_Grade1.csv");
 	CreateStageFromCSV("CSV/Stage2RightData_Grade2.csv");
 	CreateStageFromCSV("CSV/Stage2RightData_Grade3.csv");
@@ -636,7 +642,7 @@ PrefabId SceneGame::GetPrefabIdFromString(const std::string& rawname)
 	if (name == "Desktop") return PrefabId::Desktop;
 	if (name == "Gomibukuro") return PrefabId::Gomibukuro;
 	if (name == "Isu") return PrefabId::Isu;
-	if (name == "Kuukseizixyoukii") return PrefabId::Kuukseizixyoukii;
+	if (name == "Kuukiseizyouki") return PrefabId::Kuukseizixyoukii;
 	if (name == "Ningixyou") return PrefabId::Ningixyou;
 	if(name == "SagaraDoll") return PrefabId::SagaraDoll;
 
@@ -647,6 +653,7 @@ PrefabId SceneGame::GetPrefabIdFromString(const std::string& rawname)
 
 	if (name == "Ufo") return PrefabId::Ufo;
 	if (name == "Eisei") return PrefabId::Eisei;
+	if (name == "Star") return PrefabId::Star;
 
 	// 一致するものがなかった場合、勝手にSwingにせず、エラーを出す！
 	std::string errorMsg = "Unknown Prefab Name: [" + name + "]\n(Fallback to Swing)";

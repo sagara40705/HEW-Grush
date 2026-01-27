@@ -22,6 +22,7 @@ enum class PrefabId : std::uint8_t
 
     Ufo,
     Eisei,
+    Star,
 
     ProtPlay,
     GlassShard,
