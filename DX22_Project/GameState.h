@@ -1,7 +1,7 @@
 #pragma once
 #include <array>
 #include <cstdint>
-
+//#include "TimerUI.h"
 enum class StageId : std::uint8_t
 {
     Stage1 = 0,
@@ -16,10 +16,22 @@ constexpr size_t ToIndex(StageId stage) noexcept {
     return static_cast<size_t>(stage);
 }
 
+enum class JobType : std::uint8_t
+{
+	Pikapika = 0,
+	Sugoude = 1,
+	Tastuzin = 2,
+	Count = 3
+};
+
 struct GameState
 {
+	bool endTutorial_ = true;
     bool hasPlayedIntroMovie = false;
     StageId stage_ = StageId::Stage1;
+
+	JobType job_ = JobType::Pikapika;
+	int jobGauge_ = 0;
 
 	// 直近クリアしたステージのタイム（秒）
 	float recentClearTimes_ = 0.0f;
@@ -28,16 +40,25 @@ struct GameState
     {
         hasPlayedIntroMovie = false;
     }
+    
 };
+
+void EndTutorial();
+bool IsEndTutorial();
 
 bool HasPlayedIntroMovie();
 void PlayedIntroMovie();
 
 // 現在のステージを取得
 StageId GetCurrentStage();
-void SetSelectedStage(StageId stage);
-
+void SetSelectedStage(StageId id);
 
 // 直近クリアしたステージのタイムを取得・設定
 float GetRecentClearTimes();
 void SetRecentClearTimes(float time);
+
+JobType GetJobType();
+void SetJobType(JobType job);
+
+int GetJobGauge();
+void SetJobGauge(int gauge);

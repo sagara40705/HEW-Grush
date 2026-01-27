@@ -17,54 +17,51 @@ void ActionUI::Awake()
 	constexpr Vector2 kDashMojiSize = { 135.f, 32.f };
 
 	//UV
-	constexpr Vector2 kUVSize = { 1.f, 1.f };
-	constexpr Vector2 kSpinMonoUVPos = { 1.f, 1.f };
-	constexpr Vector2 kSpinUVPos = { 1.f, 1.f };
-	constexpr Vector2 kDashMonoUVPos = { 1.f, 1.f };
-	constexpr Vector2 kDashUVPos = { 1.f ,1.f };
+	constexpr Vector2 kUVSize = { 0.25f, 1.f };
+	constexpr Vector2 kUVPos = { 0.25f, 1.f };
 
 
 	// 回転攻撃、モノクロ
 	GameObject& spinMono = gameObject->CreateChild();
-	spinMono.AddComponent<UiSpriteRenderer>(TextureTag::SpinMono, kSpinPos, kSize, kSpinMonoUVPos, kUVSize);
+	spinMono.AddComponent<UiSpriteRenderer>(TextureTag::Game_UI_Action_SpinIcon, kSpinPos, kSize, kUVPos, kUVSize);
 
 	// 回転攻撃、色付き(光らせる用)
 	GameObject& spinF = gameObject->CreateChild();
-	spFlash_ = &spinF.AddComponent<UiSpriteRenderer>(TextureTag::SpinFlash, kSpinPos, kSize, kSpinUVPos, kUVSize);
+	spFlash_ = &spinF.AddComponent<UiSpriteRenderer>(TextureTag::Game_UI_Action_SpinIcon, kSpinPos, kSize, kUVPos, kUVSize);
 	spFlash_->SetColor({ 1.f, 1.f, 1.f, 0.f });
 
 	// 回転攻撃、色付き
 	GameObject& spin = gameObject->CreateChild();
-	spin_ = &spin.AddComponent<UiSpriteRenderer>(TextureTag::Spin, kSpinPos, kSize, kSpinUVPos, kUVSize);
+	spin_ = &spin.AddComponent<UiSpriteRenderer>(TextureTag::Game_UI_Action_SpinIcon, kSpinPos, kSize, kUVPos, kUVSize );
 
 	// 回転攻撃、色付き(光らせる用)
 	GameObject& spinFr = gameObject->CreateChild();
-	spFront_ = &spinFr.AddComponent<UiSpriteRenderer>(TextureTag::SpinFront, kSpinPos, kSize, kSpinUVPos, kUVSize);
+	spFront_ = &spinFr.AddComponent<UiSpriteRenderer>(TextureTag::Game_UI_Action_SpinIcon, kSpinPos, kSize, kUVPos, kUVSize);
 	spFront_->SetColor({ 1.f, 1.f, 1.f, 0.f });
 
 	// 回転攻撃、文字
 	GameObject& spinMojiMono = gameObject->CreateChild();
-	spinMojiMono.AddComponent<UiSpriteRenderer>(TextureTag::SpinMojiMono, kSpinMojiPos, kSpinMojiSize, kSpinUVPos, kUVSize);
+	spinMojiMono.AddComponent<UiSpriteRenderer>(TextureTag::Game_UI_Action_TextIcon, kSpinMojiPos, kSpinMojiSize, kUVPos, kUVSize);
 
 	// 回転攻撃、文字、色付き
 	GameObject& spinMoji = gameObject->CreateChild();
-	spinMoji_= &spinMoji.AddComponent<UiSpriteRenderer>(TextureTag::SpinMoji, kSpinMojiPos, kSpinMojiSize, kSpinUVPos, kUVSize);
+	spinMoji_= &spinMoji.AddComponent<UiSpriteRenderer>(TextureTag::Game_UI_Action_TextIcon, kSpinMojiPos, kSpinMojiSize, kUVPos, kUVSize);
 
 	// ダッシュ攻撃、モノクロ
 	GameObject& dashMono = gameObject->CreateChild();
-	dashMono.AddComponent<UiSpriteRenderer>(TextureTag::DashMono, kDashPos, kSize, kDashMonoUVPos, kUVSize);
+	dashMono.AddComponent<UiSpriteRenderer>(TextureTag::Game_UI_Action_DashIcon, kDashPos, kSize, kUVPos, kUVSize);
 
 	// ダッシュ、色付き
 	GameObject& dash = gameObject->CreateChild();
-	dash_ = &dash.AddComponent<UiSpriteRenderer>(TextureTag::Dash, kDashPos, kSize, kDashUVPos, kUVSize);
+	dash_ = &dash.AddComponent<UiSpriteRenderer>(TextureTag::Game_UI_Action_DashIcon, kDashPos, kSize, kUVPos, kUVSize);
 
 	// ダッシュ、文字
 	GameObject& dashMojiMono = gameObject->CreateChild();
-	dashMojiMono.AddComponent<UiSpriteRenderer>(TextureTag::DashMojiMono, kDashMojiPos, kDashMojiSize, kDashUVPos, kUVSize);
+	dashMojiMono.AddComponent<UiSpriteRenderer>(TextureTag::Game_UI_Action_TextIcon, kDashMojiPos, kDashMojiSize, kUVPos, kUVSize);
 
 	// ダッシュ、文字、色付き
 	GameObject& dashMoji = gameObject->CreateChild();
-	dashMoji_ = &dashMoji.AddComponent<UiSpriteRenderer>(TextureTag::DashMoji, kDashMojiPos, kDashMojiSize, kDashUVPos, kUVSize);
+	dashMoji_ = &dashMoji.AddComponent<UiSpriteRenderer>(TextureTag::Game_UI_Action_TextIcon, kDashMojiPos, kDashMojiSize, kUVPos, kUVSize);
 
 }
 
@@ -88,8 +85,8 @@ void ActionUI::Update()
 		a = static_cast<int>(ct);
 		spin_->SetOffset({ 920.f,  680 - (150 * ct) });
 		spin_->SetSize({ 150.f , 150.f * ct });
-		spin_->SetUVPos({ 1, 1 - ct });
-		spin_->SetUVScale({ 1, ct });
+		spin_->SetUVPos({ 1.f/4.f, 1 - ct });
+		spin_->SetUVScale({ 1.f/4.f, ct });
 
 		if (a <= 0)
 		spinMoji_->SetSize({ 0.f , 0.f });
@@ -131,8 +128,8 @@ void ActionUI::Update()
 		a = static_cast<int>(ct);
 		dash_->SetOffset({ 1090.f,  680 - (150 * ct) });
 		dash_->SetSize({ 150.f , 150.f * ct });
-		dash_->SetUVPos({ 1, 1 - ct });
-		dash_->SetUVScale({ 1, ct });
+		dash_->SetUVPos({ 1.f/4.f, 1 - ct });
+		dash_->SetUVScale({ 1.f/4.f, ct });
 
 		if (a <= 0)
 		dashMoji_->SetSize({ 0.f , 0.f });

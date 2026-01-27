@@ -1,0 +1,78 @@
+#include "ResultTimerUI.h"
+#include "GameObject.h"
+#include "UiSpriteRenderer.h"
+#include "TextureManager.h"
+#include "GameState.h"
+
+constexpr Vector2 kNumberUVScale = { 0.2f, 0.5f };
+constexpr Vector2 kNumberUVPos[10] =
+{
+	{0.0f,0.0f},{0.2f,0.0f},{0.4f,0.0f},{0.6f,0.0f},{0.8f,0.0f},
+	{0.0f,0.5f},{0.2f,0.5f},{0.4f,0.5f},{0.6f,0.5f},{0.8f,0.5f},
+};
+
+void ResultTimerUI::Awake()
+{
+
+	constexpr Vector2 kMinutePos[ToIndex(TimerDigits::Count)] = { {790.f, 270.f}, {700.f, 270.f} };
+	constexpr Vector2 kColonPos = { 900.f,310.f };
+	constexpr Vector2 kSecondPos[ToIndex(TimerDigits::Count)] = { {1040.f, 270.f}, {950.f, 270.f} };
+
+	constexpr Vector2 kNumberSize = { 100.f,100.f };
+	constexpr Vector2 kColonSize = { 40.f, 40.f };
+
+	GameObject& textObj = gameObject->CreateChild();
+	textObj.AddComponent<UiSpriteRenderer>(TextureTag::Result_Time_Text, Vector2::zero(), Vector2::WindowSize());
+
+	GameObject& tenMinute = gameObject->CreateChild();
+	uiMinute_[ToIndex(TimerDigits::Ten)] = &tenMinute.AddComponent<UiSpriteRenderer>(
+		TextureTag::Result_Time_Number, kMinutePos[ToIndex(TimerDigits::Ten)], kNumberSize, Vector2::zero(), kNumberUVScale);
+
+	GameObject& oneMinute = gameObject->CreateChild();
+	uiMinute_[ToIndex(TimerDigits::One)] = &oneMinute.AddComponent<UiSpriteRenderer>
+		(TextureTag::Result_Time_Number, kMinutePos[ToIndex(TimerDigits::One)], kNumberSize, Vector2::zero(), kNumberUVScale);
+
+	GameObject& colon = gameObject->CreateChild();
+	uiColon_ = &colon.AddComponent<UiSpriteRenderer>(TextureTag::Result_Time_Colon, kColonPos, kColonSize);
+
+	GameObject& tenSecond = gameObject->CreateChild();
+	uiSecond_[ToIndex(TimerDigits::Ten)] = &tenSecond.AddComponent<UiSpriteRenderer>(
+		TextureTag::Result_Time_Number, kSecondPos[ToIndex(TimerDigits::Ten)], kNumberSize, Vector2::zero(), kNumberUVScale);
+
+	GameObject& oneSecond = gameObject->CreateChild();
+	uiSecond_[ToIndex(TimerDigits::One)] = &oneSecond.AddComponent<UiSpriteRenderer>(
+		TextureTag::Result_Time_Number, kSecondPos[ToIndex(TimerDigits::One)], kNumberSize, Vector2::zero(), kNumberUVScale);
+
+	//SetRecentClearTimes(65.f);
+}
+
+void ResultTimerUI::Start()
+{
+
+
+}
+
+void ResultTimerUI::Update()
+{
+	float timer = GetRecentClearTimes();
+	int totalSec = static_cast<int>(timer);
+	if (totalSec > MAX_SECONDS) totalSec = MAX_SECONDS;
+
+	// ---- 2) mm:ss ‚É•ª‰ð ----
+	int minutes = totalSec / 60;
+	int seconds = totalSec % 60;
+
+	uiMinute_[ToIndex(TimerDigits::Ten)]->SetUVPos(kNumberUVPos[minutes / 10]);
+	uiMinute_[ToIndex(TimerDigits::One)]->SetUVPos(kNumberUVPos[minutes % 10]);
+	uiSecond_[ToIndex(TimerDigits::Ten)]->SetUVPos(kNumberUVPos[seconds / 10]);
+	uiSecond_[ToIndex(TimerDigits::One)]->SetUVPos(kNumberUVPos[seconds % 10]);
+}
+
+void ResultTimerUI::OnDestroy()
+{
+	uiMinute_[ToIndex(TimerDigits::Ten)] = nullptr;
+	uiMinute_[ToIndex(TimerDigits::One)] = nullptr;
+	uiColon_ = nullptr;
+	uiSecond_[ToIndex(TimerDigits::Ten)] = nullptr;
+	uiSecond_[ToIndex(TimerDigits::One)] = nullptr;
+}

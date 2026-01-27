@@ -8,7 +8,6 @@ enum class ModelTag : uint8_t
 {
 	Karubi,
 
-	// grade1 0bj
 	Swing,
 	Akican,
 	Desktop,
@@ -17,28 +16,27 @@ enum class ModelTag : uint8_t
 	Kuukseizixyoukii,
 	Ningixyou,
 	SagaraDoll,
-	Testp,
 
-
-	// grade2 obj
 	Benti,
 	Aircon,
 	Jihanki,
 	Reizouko,
-	AirPurifier,
-	fridge,
 
-	// grade3 obj
 	Ufo,
 	Eiseii,
 	Star,
 
-	// player関連
 	ProtPlay,
 	Player,
-	Hammer_grade1,
-	Hammer_grade2,
-	Hammer_grade3,
+	Player2,
+
+	Hammer,
+	Hammer_1,
+	Hammer_2,
+	Hammer_3,
+
+	Fence,
+
 	Count
 };
 constexpr size_t ToIndex(ModelTag tag) noexcept

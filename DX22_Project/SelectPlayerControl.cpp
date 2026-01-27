@@ -3,6 +3,7 @@
 #include "GameObject.h"
 #include "SceneManager.h"
 #include "SceneGame.h"
+#include "SceneTitle.h"
 #include "InputKeyboard.h"
 #include "DebugLog.h"
 #include "GameState.h"
@@ -98,6 +99,13 @@ void SelectPlayerControl::UpdateIdle()
         SceneManager::ChangeSceneAsync<SceneGame>();
         return;
     }
+
+	if (InputKeyboard::GetKeyDown('T'))
+	{
+		// ƒ^ƒCƒgƒ‹‚Ö–ß‚é
+		SceneManager::ChangeSceneAsync<SceneTitle>();
+		return;
+	}
 }
 
 Direction SelectPlayerControl::InputMove()

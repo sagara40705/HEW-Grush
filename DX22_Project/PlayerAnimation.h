@@ -18,8 +18,9 @@ private:
 		Move = 1,			// 移動アニメーション
 		NormalAttack = 2,	// 通常攻撃アニメーション
 		SpinAttack = 3,		// 回転攻撃アニメーション
-		DashAttack = 4,	// 突進攻撃アニメーション
-		Count = 5,			// アニメーションの総数
+		DashAttack = 4,		// 突進攻撃アニメーション
+		NockBack = 5,		// ノックバックアニメーション
+		Count = 6,			// アニメーションの総数
 		None = 99			// 未指定状態
 	};
 
@@ -30,10 +31,15 @@ public:
 	void Start() override;			// 開始処理
 	void OnDestroy() override;		// 終了処理
 	void Update()  override;		// 更新処理
+	void CheckNockBackAnime(float duration );	//ノックバックアニメーションのチェック
 private:
 	Model::AnimeNo animation_[Type::Count]; //アニメーションナンバーの格納先
 	Type currentType_ = Type::None; // 現在のアニメーション
 	Type nextType_	  = Type::None; // 現在のアニメーション
+
+	bool isKnockback_ = false;		//ノックバック中かどうか
+	float knockbackTimer_ = 0.0f;	//ノックバック時間
+	float knockbackDuration_ = 0.6f;//ノックバック継続時間
 private:
 	void CheckMoveAnime();
 	void CheckNormalAttackAnime();
@@ -65,4 +71,11 @@ private:
 	* @brief 現在アニメーションの更新処理
 	*/
 	void UpdateCurrentState();
+
+private:
+	// ハンマー用
+	Model::AnimeNo hummerAnimation_[Type::Count]; //アニメーションナンバーの格納先
+	Animator* hummerAnime_ = nullptr;		//アニメーター
+private:
+	void AddHammerAllAnimations();
 };

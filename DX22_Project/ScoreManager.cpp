@@ -4,13 +4,15 @@
 #include "DebugLog.h"
 #include "Game.h"
 #include "GameState.h"
-#include "SceneTitle.h"
+#include "SceneResult.h"
+#include "SceneManager.h"
 #include "TimerUI.h"
 #include <cassert>
+#include "Time/Time.h"
 
 void ScoreManager::Start()
 {
-	constexpr int kMaxScore[ToIndex(StageId::Count)] = { 500, 600, 700, 700, 700 };
+	constexpr int kMaxScore[ToIndex(StageId::Count)] = { 50, 600, 700 };
 	StageId stage = GetCurrentStage();
 	assert(stage != StageId::None && "Invalid StageId in ScoreManager::Start");
 
@@ -26,16 +28,38 @@ void ScoreManager::Start()
 	if (!timer_) return;
 }
 
+void ScoreManager::Update()
+{
+	if (goToResultSceneTimer_.IsRunning())
+	{
+		if (goToResultSceneTimer_.ElapsedRawSeconds() >= kGoToResultSceneTime)
+		{
+			goToResultSceneTimer_.Stop();
+			GoToResultScene();
+		}
+	}
+}
+
+void ScoreManager::OnDestroy()
+{
+	timer_ = nullptr;
+}
+
 void ScoreManager::UpScore(GlassGrade grade)
 {
 	constexpr int kUpValue[ToIndex(GlassGrade::Count)] = { 3, 6, 10 };
+
+	if (isLock_) return;
 
 	score_ -= kUpValue[ToIndex(grade)];
 	DebugLog::OutputValue("Up Score", score_);
 
 	if (score_ <= 0.f)
 	{
-		GoToResultScene();
+		score_ = 0;
+		isLock_ = true;	
+		goToResultSceneTimer_.Start();
+		Time::SetTimeScale(0.2f); //スローモーション
 	}
 }
 
@@ -53,5 +77,5 @@ void ScoreManager::GoToResultScene()
 
 	// ===== シーン切り替え =====
 	DebugLog::Output("Clear Stage");
-	SceneManager::ChangeScene<SceneTitle>();
+	SceneManager::ChangeSceneAsync<SceneResult>();
 }

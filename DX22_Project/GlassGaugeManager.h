@@ -9,7 +9,8 @@ enum class HammerGrade : std::uint8_t;
 class GlassGaugeManager : public MonoBehaviour
 {
 private:
-	float gauge_ = 0.0f;
+	float gauge_ = 3.0f;
+	//float gauge_ = 0.0f;
 	bool isGaugeEmpty = true;
 	bool isGaugeDecaying = false;   //ゲージ減衰中か？
 	float gaugeDecayDelayTimer = 0.f; //ゲージ減衰までのタイマー
@@ -31,7 +32,7 @@ public:
 	HammerGrade GetHammerGrade();
 private:
 	//限界突破
-	const float kLimitBreakTime = 10.f; // 限界突破するまでの時間
+	const float kLimitBreakTime = 5.f; // 限界突破するまでの時間
 	float limitBreakTimer_ = 0.f;		// 限界突破するまでのタイマー
 
 	const float kLimitBreakDuration = 5.f; // 限界突破の持続時間
@@ -39,6 +40,13 @@ private:
 
 	bool IsMaxGauge(); //ゲージが最大値か？
 	bool isLimitBreak_ = false; //限界突破中か？
+public:
+	// チュートリアル用フラグ
+	bool isTutorial_ = false; // チュートリアル中か？
+	bool warkingTask_ = false; // チュートリアルのタスクを進行中か？
+	bool endTask_02_ = false; // チュートリアルのタスク2をクリアしたか？
+	bool endTask_04_ = false; // チュートリアルのタスク3をクリアしたか？
+
 private:
 #ifdef _DEBUG
 	void DebugCommand();

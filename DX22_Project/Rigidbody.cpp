@@ -2,6 +2,7 @@
 #include "Rigidbody.h"
 #include "Transform.h"
 #include "GameObject.h"
+#include "Time/Time.h"
 
 void Rigidbody::Start()
 {
@@ -28,9 +29,8 @@ void Rigidbody::FixedUpdate()
     }
 
     // 3) 積分（位置更新）
-    Vector3 dp = velocity * dt;
+    Vector3 dp = velocity * Time::DeltaTime();
     tf->AddPosition(dp);
-
 }
 
 void Rigidbody::AddForce(const Vector3& impulse)

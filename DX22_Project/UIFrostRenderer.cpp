@@ -23,7 +23,7 @@ void UIFrostRenderer::Start()
 {
 	if (!vs_) CreateVS();
 	if (!ps_) CreatePS();
-    tex_ = TextureManager::Get(TextureTag::UIFrostNoise);
+    tex_ = TextureManager::Get(TextureTag::Option_BG);
     canvas = Canvas::GetMain();
 }
 

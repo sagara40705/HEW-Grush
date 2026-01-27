@@ -4,20 +4,16 @@
 #include "UiSpriteRenderer.h"
 #include "TextureManager.h"
 
-
 constexpr Vector2 kNumberUVScale = { 0.1f,1.0f };
 
-void ScoreUI::Start()
+void ScoreUI::Awake()
 {
-	GameObject* scoreMgr = gameObject->world->FindWithTag(Tag::ScoreManager);
-	score_ = scoreMgr->GetComponent<ScoreManager>();
-
-	constexpr Vector2 kNumberPos[ToIndex(ScoreDigits::Count)] = { {1004.f,50.f},{1062.f,50.f},{1120.f,50.f} };
+	constexpr Vector2 kNumberPos[ToIndex(ScoreDigits::Count)] = { {525.f,40.f},{585.f,40.f},{645.f,40.f},{705.f,40.f} };
 	constexpr Vector2 kNumberSize = { 77.f,77.f };
 	for (size_t digits = 0; digits < ToIndex(ScoreDigits::Count); ++digits)
 	{
 		GameObject& go = gameObject->CreateChild();
-		ui_[digits] = &(go.AddComponent<UiSpriteRenderer>(TextureTag::ScoreNumber, kNumberPos[digits], kNumberSize));
+		ui_[digits] = &(go.AddComponent<UiSpriteRenderer>(TextureTag::Game_UI_Score_Number, kNumberPos[digits], kNumberSize));
 		ui_[digits]->SetUVScale(kNumberUVScale);
 	}
 
@@ -25,7 +21,13 @@ void ScoreUI::Start()
 	constexpr Vector2 kAtoKgSize = { 300.f,40.f };
 
 	GameObject& atoKg = gameObject->CreateChild();
-	uiAtoKg_ = &(atoKg.AddComponent<UiSpriteRenderer>(TextureTag::ScoreAtoKg, kAtoKgPos, kAtoKgSize));
+	uiAtoKg_ = &(atoKg.AddComponent<UiSpriteRenderer>(TextureTag::Game_UI_Score_Text, kAtoKgPos, kAtoKgSize));
+}
+
+void ScoreUI::Start()
+{
+	GameObject* scoreMgr = gameObject->world->FindWithTag(Tag::ScoreManager);
+	score_ = scoreMgr->GetComponent<ScoreManager>();
 }
 
 void ScoreUI::Update()
