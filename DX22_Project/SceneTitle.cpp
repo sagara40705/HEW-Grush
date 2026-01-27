@@ -5,6 +5,7 @@
 #include "TextureManager.h"
 #include "Defines.h"
 #include "InputKeyboard.h"
+#include "SoundManager.h"
 
 void SceneTitle::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 {
@@ -39,6 +40,7 @@ void SceneTitle::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 			GetWorld().Start();
 		});
 		
+	CheckTitleSound = false;
 }
 
 void SceneTitle::Load()
@@ -53,6 +55,7 @@ void SceneTitle::Unload()
 {
 	SceneManager::ReleaseFadeAnimations();  // フェードアニメーション解放
 	TextureManager::Clear();
+	SoundManager::StopSound(TitleBGM);
 }
 
 void SceneTitle::CreateCameraAndPlayer()
@@ -143,7 +146,12 @@ void SceneTitle::CreateTitleManager()
 void SceneTitle::Update()
 {
 	//if (!m_breakButton) return;
-
+	if (!CheckTitleSound)
+	{
+		SoundManager::SoundPlay(TitleBGM, 0.3f);
+		CheckTitleSound = true;
+	}
+	
 	if (!m_isStarting && InputKeyboard::GetKeyDown(VK_SPACE))
 	{
 		m_isStarting = true;
@@ -183,6 +191,7 @@ void SceneTitle::Update()
 		{
 			m_isStarting = false;
 			break_->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
+			SoundManager::SoundPlay(TitleStartSE, 1.0f);
 		}
 	}
 

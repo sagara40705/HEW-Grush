@@ -7,6 +7,7 @@
 #include "InputKeyboard.h"
 #include "DebugLog.h"
 #include "GameState.h"
+#include "SoundManager.h"
 
 #include <assert.h>
 #include <algorithm>
@@ -97,6 +98,7 @@ void SelectPlayerControl::UpdateIdle()
     {
         SetSelectedStage(currentStagePoint->stageId);
         SceneManager::ChangeSceneAsync<SceneGame>();
+        SoundManager::SoundPlay(SelectSE, 0.7f);
         return;
     }
 

@@ -14,6 +14,9 @@
 #include "SceneStageSelect.h"
 #include "SceneResult.h"
 #include "SceneOption.h"
+#include "SoundManager.h"
+
+bool SceneGame::CheckGameSound;
 
 void SceneGame::Load()
 {
@@ -28,6 +31,8 @@ void SceneGame::Unload()
 	SceneManager::ReleaseFadeAnimations();
 	TextureManager::Clear();
 	ModelManager::Clear();
+	SoundManager::StopSound(SceneGameBGM);
+	SceneGame::CheckGameSound = false;
 }
 
 void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
@@ -500,6 +505,14 @@ void SceneGame::SkyDomeDorw()
 
 void SceneGame::Update()
 {
+	// BGM再生
+	if (!CheckGameSound)
+	{
+		//        PlaySound(SoundManager::GetSound(SceneGameBGM));
+		SoundManager::SoundPlay(SceneGameBGM, 0.0f);
+		CheckGameSound = true;
+	}
+
 	// 強制敵にステージセレクトへ戻る
 	if (InputKeyboard::GetKey(VK_SPACE) && InputKeyboard::GetKeyDown('Q'))
 	{

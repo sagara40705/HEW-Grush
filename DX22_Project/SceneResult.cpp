@@ -10,6 +10,7 @@
 #include "ResultGaugeUI.h"
 #include "ResultRankUI.h"
 #include "SceneStageSelect.h"
+#include "SoundManager.h"
 
 
 constexpr Vector2 kNumberUVScale = { 0.1f, 1.0f };
@@ -62,6 +63,7 @@ void Result::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 			GetWorld().Start();
 		});
 
+	SoundManager::SoundPlay(ResultSE, 1.0f);
 }
 
 void Result::Update()

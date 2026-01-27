@@ -12,6 +12,7 @@
 #include "GlassShardPool.h"
 #include "Sprite3DRenderer.h"
 #include "SpriteAnimation.h"
+#include "SoundManager.h"
 
 void  GlassObject::Awake()
 {
@@ -60,6 +61,18 @@ void GlassObject::TakeDamage(float damage)
 		score_->UpScore(grade_);
 		SpawnShards();
 		DebugLog::OutputValue("GlassObject Destory, ID", gameObject->id);
+		switch (grade_)
+		{
+		case GlassGrade::Grade_1:
+			SoundManager::SoundPlay(Level1GlassBreakSE,1.0f);
+			break;
+		case GlassGrade::Grade_2:
+			SoundManager::SoundPlay(Level2GlassBreakSE, 1.0f);
+			break;
+		case GlassGrade::Grade_3:
+			SoundManager::SoundPlay(Level3GlassBreakSE, 1.0f);
+			break;
+		}
 		return;
 	}
 	else

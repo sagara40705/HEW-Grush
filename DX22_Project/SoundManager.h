@@ -13,6 +13,11 @@ enum SoundTag {
 	GradeDownSE,
 	GaugeDownSE,
 	WalkSE,
+	TitleBGM,
+	TitleStartSE,
+	StageSelectBGM,
+	SelectSE,
+	ResultSE,
 	Count		//êî
 };
 
