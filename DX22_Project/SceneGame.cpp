@@ -748,7 +748,7 @@ void SceneGame::CreateOptionUI()
 	ts5.SetActive(false);
 
 	// 5‚Í pressed ‚È‚µ
-	ctrl.AddItem(&tn5, &ts5, &fs5, nullptr);
+	ctrl.AddItem(&tn5, &ts5, nullptr, nullptr);
 }
 
 void SceneGame::CreateGlassObjectSpawner()

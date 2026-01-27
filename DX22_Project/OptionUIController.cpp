@@ -7,7 +7,8 @@ void OptionUIController::SetOptionRoot(GameObject* root)
     m_optionRoot = root;
 }
 
-void OptionUIController::AddItem(GameObject* textNormal, GameObject* textSelected,
+void OptionUIController::AddItem(GameObject* textNormal,
+    GameObject* textSelected,
     GameObject* frameSelected, GameObject* framePressed)
 {
     if (!textNormal) return;
