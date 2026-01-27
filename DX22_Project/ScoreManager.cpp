@@ -58,8 +58,12 @@ void ScoreManager::UpScore(GlassGrade grade)
 	{
 		score_ = 0;
 		isLock_ = true;	
+<<<<<<< HEAD
 		goToResultSceneTimer_.Start();
 		Time::SetTimeScale(0.2f); //スローモーション
+=======
+		GoToResultScene();
+>>>>>>> 1947794e8b084583e53f112545b3c561162005ea
 	}
 }
 
