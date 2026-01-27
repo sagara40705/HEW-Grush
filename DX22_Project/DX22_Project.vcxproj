@@ -177,6 +177,7 @@
     <ClCompile Include="Model_check.cpp" />
     <ClCompile Include="Model_get.cpp" />
     <ClCompile Include="Model_morph.cpp" />
+    <ClCompile Include="OptionUIController.cpp" />
     <ClCompile Include="OriginalGame.cpp" />
     <ClCompile Include="Geometory.cpp" />
     <ClCompile Include="GlassGaugeUI.cpp" />
@@ -292,6 +293,7 @@
     <ClInclude Include="MeshRenderer.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="ModelManager.h" />
+    <ClInclude Include="OptionUIController.h" />
     <ClInclude Include="PhysicsSystem.h" />
     <ClInclude Include="PlayerAction.h" />
     <ClInclude Include="PlayerAnimation.h" />

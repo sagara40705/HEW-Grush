@@ -16,6 +16,8 @@ constexpr size_t ToIndex(StageId stage) noexcept {
     return static_cast<size_t>(stage);
 }
 
+constexpr size_t MAX_STAGE = ToIndex(StageId::Count);
+
 enum class JobType : std::uint8_t
 {
 	Pikapika = 0,

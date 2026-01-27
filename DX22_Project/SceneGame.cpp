@@ -157,10 +157,18 @@ void SceneGame::CreateCameraAndPlayer()
 
 	//70×70 ①
 	//ステージ１
-	//GameObject& player = w.CreateGameObject(Vector3(0.f, 2.f, 0.f), Vector3(0.f, 0.f, 0.f));
+	//GameObject& player = w.CreateGameObject(Vector3(0.f, 2.f, 0.f), Vector3(0.f, 0.f, 0.f));]
+
+	constexpr Vector3 KPlayerInitPos[MAX_STAGE] = {
+		Vector3(0.f, 2.f, 0.f),        // Stage1
+		Vector3(110.f, 2.f, 0.f),     // Stage2
+		Vector3(0.f, 2.f, 0.f),     // Stage3a
+		Vector3(0.f, 2.f, 0.f),     // Stage3b
+		Vector3(0.f, 2.f, 0.f)      // Stage3c
+	};
 
 	//ステージ2
-	GameObject& player = w.CreateGameObject(Vector3(110.f, 2.f, 0.f), Vector3(0.f, 90.f, 0.f));
+	GameObject& player = w.CreateGameObject(KPlayerInitPos[ToIndex(GetCurrentStage())], Vector3(0.f, 90.f, 0.f));
  
 	player.SetTag(Tag::Player);
 	player.AddComponent<MeshFilter>(ModelTag::Player2);
@@ -197,7 +205,7 @@ void SceneGame::CreateStage()
 	StageId stage = GetCurrentStage();
 
 	// デバック用
-	//stage = StageId::Stage1;
+	stage = StageId::Stage1;
 
 	switch (stage)
 	{
