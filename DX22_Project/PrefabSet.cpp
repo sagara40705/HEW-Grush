@@ -101,11 +101,7 @@ void RegisterAllPrefabs()
             (void)gs;
         });
 
-<<<<<<< HEAD
     Prefab::Register(P::Kuukiseizyouki,
-=======
-    Prefab::Register(P::Kuukseizixyoukii,
->>>>>>> 1947794e8b084583e53f112545b3c561162005ea
         [](GameObject& go) {
             go.SetTag(Tag::Glass);
 
