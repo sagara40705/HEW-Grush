@@ -89,6 +89,7 @@ void Scene::BuildLoadTasks(std::vector<LoadTask>& outTasks)
         });
 }
 
+
 void Scene::EnsureLoadTasksInitialized()
 {
     if (loadTasksInitialized) return;

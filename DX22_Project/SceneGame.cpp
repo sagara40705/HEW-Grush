@@ -125,6 +125,12 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 		});
 }
 
+void SceneGame::OnReturnFromOption()
+{
+	// オプション画面から戻ってきたときの処理
+	SceneManager::CreateFadeAnimations(this); // フェードアニメーションを再作成
+}
+
 void SceneGame::CreateManagers()
 {
 	World& w = GetWorld();
@@ -391,15 +397,13 @@ void SceneGame::CreateGlassObjectSpawner()
 {
 	World& w = GetWorld();
 
-	//GameObject& glassObjectSpawner = w.CreateGameObject();
-	//glassObjectSpawner.AddComponent<GlassObjectSpawner>();
+	GameObject& glassObjectSpawner = w.CreateGameObject();
+	glassObjectSpawner.AddComponent<GlassObjectSpawner>();
 
-	//GameObject& Frost = w.CreateGameObject(Vector3(0.f, -0.9f, 0.f), Vector3(90.f, 0.f, 0.f));
-	//Frost.AddComponent<Sprite3DRenderer>(TextureTag::UIFrostNoise, Vector2::zero(), Vector2(12.8f, 7.2f));
 
-	if (IsEndTutorial()) return;
-	GameObject& tutorial = w.CreateGameObject();
-	tutorial.AddComponent<TutorialManager>();
+	//if (IsEndTutorial()) return;
+	//GameObject& tutorial = w.CreateGameObject();
+	//tutorial.AddComponent<TutorialManager>();
 }
 
 void SceneGame::CreateWarp()
