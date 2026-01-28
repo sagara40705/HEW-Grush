@@ -98,6 +98,25 @@ enum class TextureTag : uint8_t
 
     //Option 72Å`
     Option_BG = 72,
+    option_Back = 73,
+    option_Font1 = 74,
+    option_Font1_OK = 75,
+    option_Font2 = 76,
+    option_Font2_OK = 77,
+    option_Font3 = 78,
+    option_Font3_OK = 79,
+    option_Font4 = 80,
+    option_Font4_OK = 81,
+    option_Font5 = 82,
+    option_Font5_OK = 83,
+    option_Font1_Back = 84,
+    option_Font2_Back = 85,
+    option_Font3_Back = 86,
+    option_Font1_Break = 87,
+    option_Font2_Break = 88,
+    option_Font3_Break = 89,
+    option_Font4_screen = 90,
+    option_translucent = 91,
 
     Count,
 };

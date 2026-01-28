@@ -1,4 +1,4 @@
-#include "ResultGaugeUI.h"
+ï»¿#include "ResultGaugeUI.h"
 #include "SceneManager.h"
 #include "GameObject.h"
 #include "AllComponent.h"
@@ -22,24 +22,31 @@ void ResultGaugeUI::Awake()
 
 	GameObject& job = gameObject->CreateChild();
 	uiJob_ = &job.AddComponent<UiSpriteRenderer>(TextureTag::Result_Job_Pikapika, Vector2(650.f, 450.f), Vector2(600.f, 70.f));
+
+	GameObject& jobFlash = gameObject->CreateChild();
+	uiJobFlash_ = &jobFlash.AddComponent<UiSpriteRenderer>(TextureTag::Result_Job_Pikapika, Vector2(650.f, 450.f), Vector2(600.f, 70.f));
+
+	// æœ€åˆã¯é€æ˜ã«ã—ã¦ãŠã
+	uiJobFlash_->SetColor({ 2.0f, 2.0f, 2.0f, 0.0f });
+	uiJobFlash_->SetVisible(false);
 }
 
 void ResultGaugeUI::Start()
 {
-	//SetJobGauge(50.f); // ƒfƒoƒbƒO—p 
+	//SetJobGauge(50.f); // ãƒ‡ãƒãƒƒã‚°ç”¨ 
 
-	// Œ»İ‚ÌƒWƒ‡ƒuƒQ[ƒW’l‚ğæ“¾
+	// ç¾åœ¨ã®ã‚¸ãƒ§ãƒ–ã‚²ãƒ¼ã‚¸å€¤ã‚’å–å¾—
 	currentGauge_ = GetJobGauge();
-	// ÅI‚ÌƒQ[ƒW’l‚ğŒvZ
+	// æœ€çµ‚ã®ã‚²ãƒ¼ã‚¸å€¤ã‚’è¨ˆç®—
 	CalcFinalGauge();
 
-	// ƒQ[ƒWƒo[‚ğ‰Šú‰»
+	// ã‚²ãƒ¼ã‚¸ãƒãƒ¼ã‚’åˆæœŸåŒ–
 	SetGaugeBarPercent(static_cast<float>(currentGauge_) / static_cast<float>(MAX_GAUGE));
 
-	// ƒWƒ‡ƒuUI‚ğ•ÏX
+	// ã‚¸ãƒ§ãƒ–UIã‚’å¤‰æ›´
 	ChangeJobUI();
 
-	// ‘Ò‹@ƒ^ƒCƒ}[ŠJn
+	// å¾…æ©Ÿã‚¿ã‚¤ãƒãƒ¼é–‹å§‹
 	waitTimer_.Start();
 }
 
@@ -58,12 +65,35 @@ void ResultGaugeUI::Update()
 			DebugLog::Output("ResultGaugeUI-StartGaugeUp");
 		}
 	}
+
+	if (jobGlowTimer_ > 0.0f)
+	{
+		jobGlowTimer_ -= 1.0f / 60.0f;
+		float t = 1.0f - (jobGlowTimer_ / JOB_GLOW_DURATION); // 0.0 -> 1.0
+
+		// sinæ³¢ã§ 0 -> 1 -> 0 ã®å‹•ãã‚’ä½œã‚‹
+		float alpha = std::sin(t * 3.1415f);
+
+		if (uiJobFlash_)
+		{
+			uiJobFlash_->SetVisible(true);
+			// æ˜ã‚‹ã„ç™½ï¼ˆè¼åº¦2.0ã€œ3.0ï¼‰ã§ã€é€æ˜åº¦ã ã‘ã‚’ãµã‚ã£ã¨å¤‰ãˆã‚‹
+			uiJobFlash_->SetColor({ 4.f, 4.f, 4.f, alpha });
+		}
+	}
+	else
+	{
+		if (uiJobFlash_) uiJobFlash_->SetVisible(false);
+	}
+
 }
 
 void ResultGaugeUI::OnDestroy()
 {
 	uiFrame_ = nullptr;
 	uiGauge_ = nullptr;
+	uiJob_ = nullptr;
+	uiJobFlash_ = nullptr;
 }
 
 void ResultGaugeUI::CalcFinalGauge()
@@ -104,40 +134,42 @@ int ResultGaugeUI::CalcUpGaugeValue()
 
 void ResultGaugeUI::UpdateGauge()
 {
-	currentGauge_ += GAUGE_UP_SPEED; // 1ƒtƒŒ[ƒ€•ª‚Ìã¸’l‚ğ‰ÁZ
+	currentGauge_ += GAUGE_UP_SPEED; // 1ãƒ•ãƒ¬ãƒ¼ãƒ åˆ†ã®ä¸Šæ˜‡å€¤ã‚’åŠ ç®—
 
-	// ƒQ[ƒW‚ÌÅ‘å’l‚ğ’´‚¦‚½‚çjob‚ğã‚°‚é
+	// ã‚²ãƒ¼ã‚¸ã®æœ€å¤§å€¤ã‚’è¶…ãˆãŸã‚‰jobã‚’ä¸Šã’ã‚‹
 	if (currentGauge_ >= MAX_GAUGE)
 	{
-		// Šù‚É’Bl‚È‚ç ƒQ[ƒW‚ÍÅ‘å’l‚ÅŒÅ’è
+		// æ—¢ã«é”äººãªã‚‰ ã‚²ãƒ¼ã‚¸ã¯æœ€å¤§å€¤ã§å›ºå®š
 		if (GetJobType() == JobType::Tastuzin)
 		{	
-			currentGauge_ = MAX_GAUGE;	// ƒQ[ƒW‚ğÅ‘å’l‚ÅŒÅ’è
-			finalGauge_ = MAX_GAUGE;	// ƒQ[ƒW‚ğÅ‘å’l‚ÅŒÅ’è
+			currentGauge_ = MAX_GAUGE;	// ã‚²ãƒ¼ã‚¸ã‚’æœ€å¤§å€¤ã§å›ºå®š
+			finalGauge_ = MAX_GAUGE;	// ã‚²ãƒ¼ã‚¸ã‚’æœ€å¤§å€¤ã§å›ºå®š
 		}
 		else
 		{
-			// ƒWƒ‡ƒuƒAƒbƒv
+			// ã‚¸ãƒ§ãƒ–ã‚¢ãƒƒãƒ—
 			JobType job = GetJobType();
 			job = static_cast<JobType>(static_cast<std::uint8_t>(job) + 1);
 			SetJobType(job);
 			ChangeJobUI();
 
-			currentGauge_ = currentGauge_ - MAX_GAUGE;	// c‚è‚ÌƒQ[ƒW‚ğŸ‚ÌƒWƒ‡ƒu‚Éˆø‚«Œp‚®
-			finalGauge_ = finalGauge_ - MAX_GAUGE;		// c‚è‚ÌƒQ[ƒW‚ğŸ‚ÌƒWƒ‡ƒu‚Éˆø‚«Œp‚®
+			jobGlowTimer_ = JOB_GLOW_DURATION;
+
+			currentGauge_ = currentGauge_ - MAX_GAUGE;	// æ®‹ã‚Šã®ã‚²ãƒ¼ã‚¸ã‚’æ¬¡ã®ã‚¸ãƒ§ãƒ–ã«å¼•ãç¶™ã
+			finalGauge_ = finalGauge_ - MAX_GAUGE;		// æ®‹ã‚Šã®ã‚²ãƒ¼ã‚¸ã‚’æ¬¡ã®ã‚¸ãƒ§ãƒ–ã«å¼•ãç¶™ã
 		}
 	}
 
-	// ƒQ[ƒWƒo[‚ÌŠ„‡‚ğİ’è
+	// ã‚²ãƒ¼ã‚¸ãƒãƒ¼ã®å‰²åˆã‚’è¨­å®š
 	SetGaugeBarPercent(static_cast<float>(currentGauge_) / static_cast<float>(MAX_GAUGE));
 
-	// ƒQ[ƒW‚ÌÅI’l‚É“’B‚µ‚½‚çXVI—¹
+	// ã‚²ãƒ¼ã‚¸ã®æœ€çµ‚å€¤ã«åˆ°é”ã—ãŸã‚‰æ›´æ–°çµ‚äº†
 	if (currentGauge_ >= finalGauge_)
 	{
 		currentGauge_ = finalGauge_;
 		isGaugeUping_ = false;
 
-		// ÅI“I‚ÈƒQ[ƒW’l‚ğ•Û‘¶
+		// æœ€çµ‚çš„ãªã‚²ãƒ¼ã‚¸å€¤ã‚’ä¿å­˜
 		SetJobGauge(currentGauge_);
 	}
 }
@@ -146,7 +178,7 @@ void ResultGaugeUI::ChangeJobUI()
 {
 	TextureTag jobText;
 
-	// ƒWƒ‡ƒu‚É‰‚¶‚½ƒeƒNƒXƒ`ƒƒ‚ğİ’è
+	// ã‚¸ãƒ§ãƒ–ã«å¿œã˜ãŸãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’è¨­å®š
 	switch (GetJobType())
 	{
 	case JobType::Pikapika:
@@ -163,8 +195,9 @@ void ResultGaugeUI::ChangeJobUI()
 		break;
 	}
 
-	// ƒeƒNƒXƒ`ƒƒ‚ğİ’è
+	// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’è¨­å®š
 	uiJob_->SetTexture(jobText);
+	uiJobFlash_->SetTexture(jobText);
 }
 
 void ResultGaugeUI::SetGaugeBarPercent(float percent)
@@ -177,10 +210,10 @@ void ResultGaugeUI::SetGaugeBarPercent(float percent)
 
 	constexpr float BASE_POS_X = HALF_WIDTH + OFFSET;
 
-	// ƒQ[ƒWƒo[‚ÌˆÊ’u‚ğİ’è
+	// ã‚²ãƒ¼ã‚¸ãƒãƒ¼ã®ä½ç½®ã‚’è¨­å®š
 	uiGauge_->SetOffset(Vector2(BASE_POS_X - (HALF_WIDTH + OFFSET) * percent, 0.f));
 
-	// ƒQ[ƒWƒo[‚ÌƒTƒCƒY‚ğİ’è
+	// ã‚²ãƒ¼ã‚¸ãƒãƒ¼ã®ã‚µã‚¤ã‚ºã‚’è¨­å®š
 	uiGauge_->SetSize(Vector2(FULL_WIDTH * percent, FULL_HEIGHT));
 }
 

@@ -54,6 +54,7 @@ void PlayerAnimation::Update()
 	CheckNormalAttackAnime();
 	CheckSpinAttackAnime();
 	CheckDashAttackAnime();
+	
 }
 
 void PlayerAnimation::CheckNockBackAnime(float duration)

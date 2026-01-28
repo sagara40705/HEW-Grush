@@ -17,15 +17,58 @@ void ResultRankUI::Awake()
 	GameObject& rankUI = gameObject->CreateChild();
 	ui_ = &rankUI.AddComponent<UiSpriteRenderer>(rankTex, Vector2::zero(), Vector2::WindowSize());
 
+	// ランクフラッシュ画像の生成
+	GameObject& flashObj = gameObject->CreateChild();
+	uiFlash_ = &flashObj.AddComponent<UiSpriteRenderer>(rankTex, Vector2::zero(), Vector2::WindowSize());
+	// 最初は透明
+	uiFlash_->SetColor({ 2.0f, 2.0f, 2.0f, 0.0f }); // 輝度を高めに設定
+
 }
 void ResultRankUI::Start()
 {
+	waitTimer_.Start();
+	isRankFlashOn_ = false;
+	glowTimer = 0.0f;
+}
 
+void ResultRankUI::Update()
+{
+	// 既に演出が終わっていたら何もしない
+	if (isRankFlashOn_) return;
+
+	//指定時間待つ
+	if (waitTimer_.ElapsedRawSeconds() < WAIT_TIME)
+	{
+		if (uiFlash_) uiFlash_->SetVisible(false);
+		return;
+	}
+
+	//待機時間が終わったら光らせる
+	glowTimer += 1.0f / 60.0f;
+	float t = glowTimer / kGlowDuration; // 0.0 -> 1.0
+
+	if (t <= 1.0f)
+	{
+		float alpha = std::sin(t * 3.1415f); // 0 -> 1 -> 0
+		if (uiFlash_)
+		{
+			uiFlash_->SetVisible(true);
+			uiFlash_->SetColor({ 2.0f, 2.0f, 2.0f, alpha });
+		}
+	}
+	else
+	{
+		// 演出終了
+		isRankFlashOn_ = true;
+		if (uiFlash_) uiFlash_->SetVisible(false);
+		waitTimer_.Stop();
+	}
 }
 
 void ResultRankUI::OnDestroy()
 {
 	ui_ = nullptr;
+	uiFlash_ = nullptr;
 }
 
 

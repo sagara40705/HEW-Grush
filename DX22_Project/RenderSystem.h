@@ -49,6 +49,8 @@ inline void Render(const World& w)
 
     // --- 2) デバッグ線など ---
     //w.DebugDrawColliders();
+    //if(Camera::Main()) Camera::Main()->DebugDrawFrustum();
+    //w.DebugDrawBounds();
     //LineManager::Draw(LineManager::LineGroup::General);
 
     // --- 3) Transparent パス（ZWrite OFF、奥→手前ソート推奨） ---
