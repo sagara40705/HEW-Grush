@@ -1,21 +1,37 @@
 #pragma once
 #include "Component.h"
+#include <cstdint>
 
 class PlayerState;
+
+enum class ActionDigits : std::uint8_t
+{
+	SpinMono,
+	SpinFlash,
+	Spin,
+	SpinFront,
+	DashMono,
+	DashFlash,
+	Dash,
+	DashFront,
+	Count
+};
+
+constexpr size_t ToIndex(ActionDigits d) noexcept { return static_cast<size_t>(d); }
 
 class ActionUI : public MonoBehaviour
 {
 private: //éQè∆
 	PlayerState* state_ = nullptr;
-	UiSpriteRenderer* spin_ = nullptr;
-	UiSpriteRenderer* dash_ = nullptr;
-	UiSpriteRenderer* spFlash_ = nullptr;
-	UiSpriteRenderer* spFront_  = nullptr;
 	UiSpriteRenderer* spinMoji_ = nullptr;
 	UiSpriteRenderer* dashMoji_ = nullptr;
-	
+	UiSpriteRenderer* ActionUi_[ToIndex(ActionDigits::Count)]{};
+
+	float glowDashTimer = 0.f;
+	float glowSpinTimer = 0.f;
 	bool wasSpinReady = false;
-	float glowTimer = 0.f;
+	bool wasDashReady = false;
+
 public:
 	void Awake() override;
 	void Start() override;
@@ -25,3 +41,4 @@ public:
 
 
 };
+

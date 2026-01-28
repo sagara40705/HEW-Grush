@@ -57,7 +57,7 @@ enum class TextureTag : uint8_t
     Game_UI_Timer_Colon = 38,	    // タイマーのコロン
     Game_UI_Score_Number = 39,      // スコアの数字
     Game_UI_Score_Text = 40,        // スコアのテキスト(あと...kg)
-    Game_UI_Action_DashIcon = 41,   // ダッシュのアイコン(四種)
+    Game_UI_Action_Icon = 41,       // ダッシュのアイコン(四種)&回転攻撃のアイコン(四種)
     Game_UI_Action_SpinIcon = 42,   // 回転攻撃のアイコン(四種)
     Game_UI_Action_TextIcon = 43,   // アクションテキストアイコン(四種)
 

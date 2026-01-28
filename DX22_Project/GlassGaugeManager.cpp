@@ -32,7 +32,7 @@ void GlassGaugeManager::Update()
 #ifdef _DEBUG
 	DebugCommand();
 #endif // DEBUG	
-
+	
 	// ŒÀŠE“Ë”j’†
 	if (isLimitBreak_)
 	{

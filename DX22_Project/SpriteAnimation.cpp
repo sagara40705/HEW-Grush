@@ -71,6 +71,7 @@ void SpriteAnimation::Update()
 void SpriteAnimation::Play()
 {
     Reset();
+    gameObject->SetActive(true);
     play = true;
 }
 
