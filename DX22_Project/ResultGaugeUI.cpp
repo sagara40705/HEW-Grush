@@ -54,6 +54,13 @@ void ResultGaugeUI::Update()
 		Vector2 size = uiGauge_->GetSize();
 		size.x = currentGauge_;
 		uiGauge_->SetSize(size);
+		
+	}
+	else if(currentGauge_ >= targetGauge_)
+	{
+		Vector2 size = uiGauge_->GetSize();
+		size.x = minGauge_;
+		uiGauge_->SetSize(size);
 	}
 }
 
