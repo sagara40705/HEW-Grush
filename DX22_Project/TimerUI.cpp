@@ -8,9 +8,9 @@ constexpr Vector2 kNumberUVScale = { 0.1f, 1.0f };
 
 void TimerUI::Awake()
 {
-	constexpr Vector2 kMinutePos[ToIndex(TimerDigits::Count)] = { {1085.f, 17.f}, {1110.f, 17.f} };
-	constexpr Vector2 kColonPos = { 1140.f,19.f };
-	constexpr Vector2 kSecondPos[ToIndex(TimerDigits::Count)] = { {1155.f, 17.f}, {1180.f, 17.f} };
+	constexpr Vector2 kMinutePos[ToIndex(TimerDigits::Count)] = { {1085.f, 47.f}, {1110.f, 47.f} };
+	constexpr Vector2 kColonPos = { 1140.f,49.f };
+	constexpr Vector2 kSecondPos[ToIndex(TimerDigits::Count)] = { {1155.f, 47.f}, {1180.f, 47.f} };
 
 	constexpr Vector2 kNumberSize = { 25.f, 25.f };
 	constexpr Vector2 kColonSize = { 10.f, 20.f };
