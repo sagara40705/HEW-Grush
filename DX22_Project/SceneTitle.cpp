@@ -61,14 +61,13 @@ void SceneTitle::CreateCameraAndPlayer()
 
 	// カメラ
 	GameObject& cameraPivot = w.CreateGameObject(Vector3(0.f, 2.0f, -5.0f), Vector3(0.f, 0.f, 0.f));
-	/*GameObject& cameraPivot = w.CreateGameObject(Vector3(0.f, 0.5f, 1.f), Vector3(0.f, 0.f, 0.f));*/
 	GameObject& mainCamera = cameraPivot.CreateChild(Camera::kInitPos, Camera::kInitRotate);
 	mainCamera.AddComponent<Camera>();
 
 	// カメラ生成時に指定した座標と同じ値を手動で入れる
 	m_camStartPos = Vector3(0.f, 2.0f, -5.0f); // カメラの初期座標
 
-	// ★ 保存
+	//保存
 	m_mainCamera = &mainCamera;
 
 	// プレイヤー
@@ -79,7 +78,7 @@ void SceneTitle::CreateCameraAndPlayer()
 	//player.AddComponent<Animator>();
 	//player.AddComponent<PlayerAnimation>();
 
-	// ★ 保存
+	// 保存
 	m_player = &player;
 
 	// ハンマー
@@ -93,7 +92,7 @@ void SceneTitle::CreateCameraAndPlayer()
 void SceneTitle::CreateCanvas()
 {
 	World& w = GetWorld();
-	////Canvas
+	//Canvas
 	GameObject& canvas = w.CreateGameObject();
 	canvas.AddComponent<Canvas>();
 }
@@ -111,17 +110,15 @@ void SceneTitle::CreateTitleFont()
 {
 	World& w = GetWorld();
 	////文字を出力する
-	GameObject& titleFont = w.CreateGameObject(Vector3(0.f, 0.f, 5.0f));
-	titleFont.AddComponent<Sprite3DRenderer>(TextureTag::Title_Text,Vector2(7.5f, -2.5f),Vector2(11.0f, 11.0f)/*100差*/);
+	m_titleFontObj = &w.CreateGameObject(Vector3(0.f, 0.f, 5.0f));
+	m_titleFontObj->AddComponent<Sprite3DRenderer>(TextureTag::Title_Text,Vector2(7.5f, -2.5f),Vector2(11.0f, 11.0f)/*100差*/);
 }
 
 void SceneTitle::CreateTitleLogo()
 {
 	World& w = GetWorld();
-
-	GameObject& TitleLogo = w.CreateGameObject(Vector3(0.f, 0.f, 10.f));
-
-	TitleLogo.AddComponent<Sprite3DRenderer>(TextureTag::Title_Logo, Vector2(-4.7f, 5.0f), Vector2(20.0f, 20.0f)/*100差*/);
+	m_titleLogoObj = &w.CreateGameObject(Vector3(0.f, 0.f, 10.f));
+	m_titleLogoObj->AddComponent<Sprite3DRenderer>(TextureTag::Title_Logo, Vector2(-4.7f, 5.0f), Vector2(20.0f, 20.0f));
 }
 
 void SceneTitle::CreateBreakTexture()
@@ -129,7 +126,7 @@ void SceneTitle::CreateBreakTexture()
 	World& w = GetWorld();
 	GameObject& breakTexture = w.CreateGameObject(Vector3(0.f, -3.f, 5.0f));
 	breakTexture.AddComponent<UiSpriteRenderer>(TextureTag::Title_Fadein, Vector2(0.0f, 0.0f), Vector2(1500.0f, 900.0f));
-	break_ = &breakTexture.AddComponent<SpriteAnimation>(7, 7, 2, 47, false);
+	break_ = &breakTexture.AddComponent<SpriteAnimation>(7, 7, 2, 48, false);
 
 }
 
@@ -185,6 +182,10 @@ void SceneTitle::Update()
 			break_->Play();
 		}
 	}
+	if(!m_isStarting)
+	{
+		UpdateTitleAnimations();
+	}
 
 }
 
@@ -192,3 +193,22 @@ void SceneTitle::Draw()
 {
 }
 
+
+void SceneTitle::UpdateTitleAnimations()
+{
+	m_animTimer += (1.0f / 60.0f);
+
+	//(上下揺れ)
+	if (m_titleLogoObj) {
+		auto* trans = m_titleLogoObj->GetComponent<Transform>();
+		float yOffset = std::sin(m_animTimer * 1.5f) * 0.3f; // 1.5fが速さ、0.3fが振幅
+		trans->SetPosition(Vector3(0.f, yOffset, 10.f));
+	}
+
+	//(拡大縮小)
+	if (m_titleFontObj) {
+		auto* trans = m_titleFontObj->GetComponent<Transform>();
+		float scale = 1.0f + std::sin(m_animTimer * 2.5f) * 0.01f; // 5%くらい伸び縮み
+		trans->SetScale(Vector3(scale, scale, 1.0f));
+	}
+}
