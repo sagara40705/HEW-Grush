@@ -19,7 +19,7 @@ void ResultGaugeUI::Awake()
 	//クリアタイムからゲージポイントを算出
 	targetGauge_ =GaugePotint();
 	currentGauge_ = 0.f;         //ゲージの初期化
-	gaugeSpeed_ = 5.0f;          //ゲージが増えるスピード
+	gaugeSpeed_ = 3.0f;          //ゲージが増えるスピード
 	constexpr Vector2 kColonPos = { 1165.f,160.f };
 	constexpr Vector2 kSecondPos[ToIndex(TimerDigits::Count)] = { {0.f, 0.f}, {685.f, 555.f} };
 	
@@ -61,6 +61,9 @@ float ResultGaugeUI::GaugePotint()
 {
 	//GameSteteからTimerのクリアタイムを取得
 	float Gaugepoint = GetRecentClearTimes();
+	float oldpoint;
+	//今までのポイントの保存
+	oldpoint = point;
 	//クリアタイムの点数換算
 	if (Gaugepoint >= 60)
 	{
@@ -85,7 +88,8 @@ float ResultGaugeUI::GaugePotint()
 	{
 		point = 600.f;
 	}
-	
+	//合計ポイントの算出
+	point += oldpoint;
 	return point;
 
 }

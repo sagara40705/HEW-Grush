@@ -52,22 +52,16 @@ void ResultRankUI::Awake()
 void ResultRankUI::Update(float deltaTime)
 {
 
-	for (int a = 0; a <= 10; a++)
-	{
-		glowTime_ += deltaTime;
+	//float glowTotalTime += 1.0f / 60.0f;
+	//// --- í‚ÉŒõ‚ç‚¹‚éˆ—
+	//{
+	//	// ‘¬“x’²®—p‚ÌŒW”
+	//	float speed = 5.0f;         // sin‚Í -1.0 ` 1.0 ‚ðŒJ‚è•Ô‚·‚Ì‚ÅAŒvŽZ‚µ‚Ä 0.0 ` 1.0 ‚É•ÏŠ·‚·‚é
+	//	float alpha = (std::sin(glowTotalTime * speed) + 1.0f) * 0.5f;
+	//	->SetColor({ 2.f, 1.2f, 2.f, alpha });
+	//	spFront_->SetColor({ 2.f, 1.2f, 2.f, alpha }); spFlash_->SetVisible(true);
+	//}
 
-		// 0.7 ` 1.3 ‚­‚ç‚¢‚Å–¬‘Å‚ÂŒõ
-		float glow = 1.0f + sinf(glowTime_ * 4.0f) * 0.3f;
-
-
-
-		// ¡•\Ž¦‚³‚ê‚Ä‚¢‚éƒ‰ƒ“ƒN‚ÉF‚ð“K—p
-		if (uiMinute_[ToIndex(TimerDigits::Ten)])
-		{
-			uiMinute_[ToIndex(TimerDigits::Ten)]->SetColor(color);
-		}
-	}
-	
 
 }
 

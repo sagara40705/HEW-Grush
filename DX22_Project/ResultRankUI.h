@@ -36,6 +36,7 @@ public:
 	void Update(float deltaTime);
 	void Draw();
 private:
+	//float glowTotalTime += 1.0f / 60.0f;
 	float glowTime_ = 0.f;
 	UiSpriteRenderer* uiMinute_[ToIndex(Type::Count)]{};
 	UiSpriteRenderer* uiColon_ = nullptr;
