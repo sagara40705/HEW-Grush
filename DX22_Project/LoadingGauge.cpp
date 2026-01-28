@@ -34,6 +34,7 @@ void LoadingGauge::Update()
 	// 横幅を更新
 	Vector2 size = fullSize_;
 	size.x = 1280.f * p;
+
 	ui_->SetSize(size);
 
 	// 左端固定にするために中心座標を補正

@@ -87,7 +87,11 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Action_Icon); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Action_SpinIcon); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Action_TextIcon); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Gaug_Lv1); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Gaug_Lv2); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Gaug_Lv3); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_GlassShard); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Finish); });
 
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Tutorial_UI_Task); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Tutorial_Road); });

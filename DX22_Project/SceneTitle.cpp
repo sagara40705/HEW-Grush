@@ -111,13 +111,13 @@ void SceneTitle::CreateTitleFont()
 	World& w = GetWorld();
 	////•¶Žš‚ðo—Í‚·‚é
 	m_titleFontObj = &w.CreateGameObject(Vector3(0.f, 0.f, 5.0f));
-	m_titleFontObj->AddComponent<Sprite3DRenderer>(TextureTag::Title_Text,Vector2(7.5f, -2.5f),Vector2(11.0f, 11.0f)/*100·*/);
+	m_titleFontObj->AddComponent<Sprite3DRenderer>(TextureTag::Title_Text, Vector2(8.5f, -3.5f), Vector2(17.0f, 17.0f));
 }
 
 void SceneTitle::CreateTitleLogo()
 {
 	World& w = GetWorld();
-	m_titleLogoObj = &w.CreateGameObject(Vector3(0.f, 0.f, 10.f));
+	m_titleLogoObj = &w.CreateGameObject(Vector3(0.f, 0.f, 40.f));
 	m_titleLogoObj->AddComponent<Sprite3DRenderer>(TextureTag::Title_Logo, Vector2(-4.7f, 5.0f), Vector2(20.0f, 20.0f));
 }
 
@@ -184,6 +184,7 @@ void SceneTitle::Update()
 	}
 	if(!m_isStarting)
 	{
+		
 		UpdateTitleAnimations();
 	}
 
@@ -205,10 +206,10 @@ void SceneTitle::UpdateTitleAnimations()
 		trans->SetPosition(Vector3(0.f, yOffset, 10.f));
 	}
 
-	//(Šg‘åk¬)
 	if (m_titleFontObj) {
+
 		auto* trans = m_titleFontObj->GetComponent<Transform>();
-		float scale = 1.0f + std::sin(m_animTimer * 2.5f) * 0.01f; // 5%‚­‚ç‚¢L‚Ñk‚Ý
-		trans->SetScale(Vector3(scale, scale, 1.0f));
+		float yOffset = std::sin(m_animTimer * 1.5f) * 0.3f; // 1.5f‚ª‘¬‚³A0.3f‚ªU•
+		trans->SetPosition(Vector3(2.f, yOffset, 15.f));
 	}
 }
