@@ -41,7 +41,24 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	// ==== タスク設定 ====
 
 	// モデルロード
-	//outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Karubi); });
+	StageId stage = GetCurrentStage();
+	switch (stage)
+	{
+	case StageId::Stage1:
+		break;
+	case StageId::Stage2:
+		break;
+	case StageId::Stage3a:
+		break;
+	case StageId::Stage3b:
+		break;
+	case StageId::Stage3c:
+		break;
+	default:
+		assert(false && "不正なステージID");
+		break;
+
+	}
 
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Swing); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Akican); });
