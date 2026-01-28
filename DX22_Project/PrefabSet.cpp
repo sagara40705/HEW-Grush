@@ -101,11 +101,11 @@ void RegisterAllPrefabs()
             (void)gs;
         });
 
-    Prefab::Register(P::Kuukseizixyoukii,
+    Prefab::Register(P::Kuukiseizyouki,
         [](GameObject& go) {
             go.SetTag(Tag::Glass);
 
-            auto& mf = go.AddComponent<MeshFilter>(ModelTag::Kuukseizixyoukii); mf.SetBoundsOffset({ 0.f, 1.0f, 0.f });    (void)mf;
+            auto& mf = go.AddComponent<MeshFilter>(ModelTag::Kuukiseizyouki); mf.SetBoundsOffset({ 0.f, 1.0f, 0.f });    (void)mf;
             auto& mr = go.AddComponent<MeshRenderer>(); (void)mr;
             auto& bc = go.AddComponent<BoxCollider>(
                 true,

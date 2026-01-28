@@ -93,7 +93,6 @@ void SceneStageSelect::Unload()
 {
 	SceneManager::ReleaseFadeAnimations();
 	TextureManager::Clear();
-	//ModelManager::Clear();
 }
 
 

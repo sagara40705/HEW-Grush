@@ -12,7 +12,7 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     "Assets/Texture/Loading/Load_Character.png",    //Load_Character = 3		
     "Assets/Texture/Loading/Load_Gauge_Bar.png",    //Load_Gauge_Bar = 4,		    
     "Assets/Texture/Loading/Load_Gauge_Frame.png",  //Load_Gauge_Frame = 5,       
-    "Assets/Texture/Loading/Load_Gauge_Text.png",   //Load_Text = 6,		        
+    "Assets/Texture/Loading/Load_Text.png",         //Load_Text = 6,		        
     "",//SpareSlot_01 = 7,
 
     /// Title 8～15(8)
@@ -97,6 +97,25 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
 
     ////Option 72～
     "Assets/Texture/Option/Option_BG.png", //Option_BG = 72,
+    "Assets/Texture/option/menu_bace.png",                      //73
+    "Assets/Texture/option/GS/GS_back_to_work.png",             //74
+    "Assets/Texture/option/GS/GS_back_to_work_color.png",       //75
+    "Assets/Texture/option/GS/GS_retry.png",                    //76
+    "Assets/Texture/option/GS/GS_retry_color.png",              //77
+    "Assets/Texture/option/GS/GS_back_to_stage.png",            //78
+    "Assets/Texture/option/GS/GS_back_to_stage_color.png",      //79
+    "Assets/Texture/option/GS/GS_how_to.png",                   //80
+    "Assets/Texture/option/GS/GS_go_title_color.png",           //81
+    "Assets/Texture/option/GS/GS_go_title.png",                 //82
+    "Assets/Texture/option/GS/GS_how_to_color.png",             //83
+    "Assets/Texture/option/GS/GS_back_to_work_Frame.png",       //84
+    "Assets/Texture/option/GS/GS_retry_Frame.png",              //85
+    "Assets/Texture/option/GS/GS_back_to_stage_Frame.png",      //86
+    "Assets/Texture/option/GS/GS_back_to_work_Frame_br.png",    //87
+    "Assets/Texture/option/GS/GS_retry_Frame_br.png",           //88
+    "Assets/Texture/option/GS/GS_back_to_stage_Frame_br.png",   //89
+    "Assets/Texture/option/GS/instructions.png",                //90
+    "Assets/Texture/option/GS/GS_retry_Frame_Back.png"          //91
 };
 
 // 配列のデフォルトパスを使用して登録

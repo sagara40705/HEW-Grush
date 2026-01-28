@@ -48,7 +48,7 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Desktop); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Gomibukuro); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Isu); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Kuukseizixyoukii); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Kuukiseizyouki); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Ningixyou); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::SagaraDoll); });
 
@@ -88,10 +88,6 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Action_SpinIcon); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Action_TextIcon); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_GlassShard); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Gaug_Lv1); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Gaug_Lv2); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Gaug_Lv3); });
-
 
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Tutorial_UI_Task); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Tutorial_Road); });
@@ -146,19 +142,10 @@ void SceneGame::CreateCameraAndPlayer()
 	World& w = GetWorld();
 
 	//ステージ１
-	GameObject& cameraPivot = w.CreateGameObject(Vector3::zero(), Vector3(0.f, 180.f, 0.f), Vector3::one());
+	//GameObject& cameraPivot = w.CreateGameObject(Vector3::zero(), Vector3(0.f, 180.f, 0.f), Vector3::one());
 
 	//ステージ2
-	//GameObject& cameraPivot = w.CreateGameObject(Vector3::zero(), Vector3(0.f, -90.f, 0.f), Vector3::one());
-
-	//ステージ3-1
-	//GameObject& cameraPivot = w.CreateGameObject(Vector3::zero(), Vector3(0.f, 0.f, 0.f), Vector3::one());
-
-	//ステージ3-2
-	//GameObject& cameraPivot = w.CreateGameObject(Vector3::zero(), Vector3(0.f, 0.f, 0.f), Vector3::one());
-
-	//ステージ3-3
-	//GameObject& cameraPivot = w.CreateGameObject(Vector3::zero(), Vector3(0.f, 0.f, 0.f), Vector3::one());
+	GameObject& cameraPivot = w.CreateGameObject(Vector3::zero(), Vector3(0.f, -90.f, 0.f), Vector3::one());
 
 	cameraPivot.SetTag(Tag::CamreraPivot);
 	cameraPivot.AddComponent<CameraControl>();
@@ -170,19 +157,18 @@ void SceneGame::CreateCameraAndPlayer()
 
 	//70×70 ①
 	//ステージ１
-	GameObject& player = w.CreateGameObject(Vector3(0.f, 2.f, 0.f), Vector3(0.f, 0.f, 0.f));
+	//GameObject& player = w.CreateGameObject(Vector3(0.f, 2.f, 0.f), Vector3(0.f, 0.f, 0.f));]
+
+	constexpr Vector3 KPlayerInitPos[MAX_STAGE] = {
+		Vector3(0.f, 2.f, 0.f),        // Stage1
+		Vector3(110.f, 2.f, 0.f),     // Stage2
+		Vector3(0.f, 2.f, 0.f),     // Stage3a
+		Vector3(0.f, 2.f, 0.f),     // Stage3b
+		Vector3(0.f, 2.f, 0.f)      // Stage3c
+	};
 
 	//ステージ2
-	//GameObject& player = w.CreateGameObject(Vector3(110.f, 2.f, 0.f), Vector3(0.f, 90.f, 0.f));
-
-	//ステージ3-1
-	//GameObject& player = w.CreateGameObject(Vector3(0.f, 2.f, 0.f), Vector3(0.f, 180.f, 0.f));
-
-	//ステージ3-2
-	//GameObject& player = w.CreateGameObject(Vector3(0.f, 2.f, 0.f), Vector3(0.f, 180.f, 0.f));
-
-	//ステージ3-3
-	//GameObject& player = w.CreateGameObject(Vector3(100.f, 2.f, 0.f), Vector3(0.f, 180.f, 0.f));
+	GameObject& player = w.CreateGameObject(KPlayerInitPos[ToIndex(GetCurrentStage())], Vector3(0.f, 90.f, 0.f));
  
 	player.SetTag(Tag::Player);
 	player.AddComponent<MeshFilter>(ModelTag::Player2);
@@ -219,7 +205,7 @@ void SceneGame::CreateStage()
 	StageId stage = GetCurrentStage();
 
 	// デバック用
-	//stage = StageId::Stage1;
+	stage = StageId::Stage1;
 
 	switch (stage)
 	{
@@ -322,68 +308,25 @@ void SceneGame::CreateStage3()
 	World& w = GetWorld();
 
 	//80 * 50 フィールド
-	GameObject& floor1 = w.CreateGameObject(Vector3(0.f, -1.f, 0.f), Vector3::zero(), Vector3(80.f, 0.1f, 80.f));
+	GameObject& floor1 = w.CreateGameObject(Vector3(0.f, -1.f, 0.f), Vector3::zero(), Vector3(80.f, 0.1f, 50.f));
 	MeshFilter& mf1 = floor1.AddComponent<MeshFilter>(PrimitiveMeshTag::Plane); mf1.boundsRadius = 0.f;
 	floor1.AddComponent<GroundRenderer>();
 	BoxCollider& collider1 = floor1.AddComponent<BoxCollider>();
 	collider1.layer = Layer::Ground;
 
 	//50 * 50 フィールド1
-	GameObject& floor2 = w.CreateGameObject(Vector3(0.f, -1.f, 70.f), Vector3::zero(), Vector3(80.f, 0.1f, 60.f));
+	GameObject& floor2 = w.CreateGameObject(Vector3(0.f, -1.f, -60.f), Vector3::zero(), Vector3(50.f, 0.1f, 50.f));
 	MeshFilter& mf2 = floor2.AddComponent<MeshFilter>(PrimitiveMeshTag::Plane); mf2.boundsRadius = 0.f;
 	floor2.AddComponent<GroundRenderer>();
 	BoxCollider& collider2 = floor2.AddComponent<BoxCollider>();
 	collider2.layer = Layer::Ground;
 
 	//50 * 50 フィールド2
-	GameObject& floor3 = w.CreateGameObject(Vector3(100.f, -1.f, 0.f), Vector3::zero(), Vector3(60.f, 0.1f, 60.f));
+	GameObject& floor3 = w.CreateGameObject(Vector3(0.f, -1.f, 60.f), Vector3::zero(), Vector3(50.f, 0.1f, 50.f));
 	MeshFilter& mf3 = floor3.AddComponent<MeshFilter>(PrimitiveMeshTag::Plane); mf3.boundsRadius = 0.f;
 	floor3.AddComponent<GroundRenderer>();
 	BoxCollider& collider3 = floor3.AddComponent<BoxCollider>();
 	collider3.layer = Layer::Ground;
-
-	StageId stage = GetCurrentStage();
-
-	switch (stage)
-	{
-	case StageId::Stage3a:	
-		CreateStageFromCSV("CSV/Stage3-1LeftData_Grade1.csv");
-		CreateStageFromCSV("CSV/Stage3-1LeftData_Grade2.csv");
-		CreateStageFromCSV("CSV/Stage3-1LeftData_Grade3.csv");
-		CreateStageFromCSV("CSV/Stage3-1UEData_Grade1.csv");
-		CreateStageFromCSV("CSV/Stage3-1UEData_Grade2.csv");
-		CreateStageFromCSV("CSV/Stage3-1UEData_Grade3.csv");
-		CreateStageFromCSV("CSV/Stage3-1RightData_Grade1.csv");
-		CreateStageFromCSV("CSV/Stage3-1RightData_Grade2.csv");
-		CreateStageFromCSV("CSV/Stage3-1RightData_Grade3.csv");
-		break;
-	case StageId::Stage3b:
-		CreateStageFromCSV("CSV/Stage3-2LeftData_Grade1.csv");
-		CreateStageFromCSV("CSV/Stage3-2LeftData_Grade2.csv");
-		CreateStageFromCSV("CSV/Stage3-2LeftData_Grade3.csv");
-		CreateStageFromCSV("CSV/Stage3-2UEData_Grade1.csv");
-		CreateStageFromCSV("CSV/Stage3-2UEData_Grade2.csv");
-		CreateStageFromCSV("CSV/Stage3-2UEData_Grade3.csv");
-		CreateStageFromCSV("CSV/Stage3-2RightData_Grade1.csv");
-		CreateStageFromCSV("CSV/Stage3-2RightData_Grade2.csv");
-		CreateStageFromCSV("CSV/Stage3-2RightData_Grade3.csv");
-		break;
-	case StageId::Stage3c:
-		CreateStageFromCSV("CSV/Stage3-3LeftData_Grade1.csv");
-		CreateStageFromCSV("CSV/Stage3-3LeftData_Grade2.csv");
-		CreateStageFromCSV("CSV/Stage3-3LeftData_Grade3.csv");
-		CreateStageFromCSV("CSV/Stage3-3UEData_Grade1.csv");
-		CreateStageFromCSV("CSV/Stage3-3UEData_Grade2.csv");
-		CreateStageFromCSV("CSV/Stage3-3UEData_Grade3.csv");
-		CreateStageFromCSV("CSV/Stage3-3RightData_Grade1.csv");
-		CreateStageFromCSV("CSV/Stage3-3RightData_Grade2.csv");
-		CreateStageFromCSV("CSV/Stage3-3RightData_Grade3.csv");
-		break;
-	default:
-		assert(false && "不正なステージID");
-		break;
-	}
-	
 }
 
 void SceneGame::CreateUi()
@@ -711,7 +654,7 @@ PrefabId SceneGame::GetPrefabIdFromString(const std::string& rawname)
 	if (name == "Desktop") return PrefabId::Desktop;
 	if (name == "Gomibukuro") return PrefabId::Gomibukuro;
 	if (name == "Isu") return PrefabId::Isu;
-	if (name == "Kuukiseizyouki") return PrefabId::Kuukseizixyoukii;
+	if (name == "Kuukiseizyouki") return PrefabId::Kuukiseizyouki;
 	if (name == "Ningixyou") return PrefabId::Ningixyou;
 	if(name == "SagaraDoll") return PrefabId::SagaraDoll;
 
