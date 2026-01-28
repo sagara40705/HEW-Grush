@@ -228,7 +228,7 @@ void SceneGame::CreateStage()
 	StageId stage = GetCurrentStage();
 
 	// デバック用
-	stage = StageId::Stage1;
+	//stage = StageId::Stage1;
 
 	switch (stage)
 	{
@@ -331,25 +331,70 @@ void SceneGame::CreateStage3()
 	World& w = GetWorld();
 
 	//80 * 50 フィールド
-	GameObject& floor1 = w.CreateGameObject(Vector3(0.f, -1.f, 0.f), Vector3::zero(), Vector3(80.f, 0.1f, 50.f));
+	GameObject& floor1 = w.CreateGameObject(Vector3(0.f, -1.f, 0.f), Vector3::zero(), Vector3(80.f, 0.1f, 80.f));
 	MeshFilter& mf1 = floor1.AddComponent<MeshFilter>(PrimitiveMeshTag::Plane); mf1.boundsRadius = 0.f;
 	floor1.AddComponent<GroundRenderer>();
 	BoxCollider& collider1 = floor1.AddComponent<BoxCollider>();
 	collider1.layer = Layer::Ground;
 
+
+
 	//50 * 50 フィールド1
-	GameObject& floor2 = w.CreateGameObject(Vector3(0.f, -1.f, -60.f), Vector3::zero(), Vector3(50.f, 0.1f, 50.f));
+	GameObject& floor2 = w.CreateGameObject(Vector3(0.f, -1.f, 70.f), Vector3::zero(), Vector3(80.f, 0.1f, 60.f));
 	MeshFilter& mf2 = floor2.AddComponent<MeshFilter>(PrimitiveMeshTag::Plane); mf2.boundsRadius = 0.f;
 	floor2.AddComponent<GroundRenderer>();
 	BoxCollider& collider2 = floor2.AddComponent<BoxCollider>();
 	collider2.layer = Layer::Ground;
 
 	//50 * 50 フィールド2
-	GameObject& floor3 = w.CreateGameObject(Vector3(0.f, -1.f, 60.f), Vector3::zero(), Vector3(50.f, 0.1f, 50.f));
+	GameObject& floor3 = w.CreateGameObject(Vector3(100.f, -1.f, 0.f), Vector3::zero(), Vector3(60.f, 0.1f, 60.f));
 	MeshFilter& mf3 = floor3.AddComponent<MeshFilter>(PrimitiveMeshTag::Plane); mf3.boundsRadius = 0.f;
 	floor3.AddComponent<GroundRenderer>();
 	BoxCollider& collider3 = floor3.AddComponent<BoxCollider>();
 	collider3.layer = Layer::Ground;
+
+	StageId stage = GetCurrentStage();
+
+	switch (stage)
+	{
+	case StageId::Stage3a:
+		CreateStageFromCSV("CSV/Stage3-1LeftData_Grade1.csv");
+		CreateStageFromCSV("CSV/Stage3-1LeftData_Grade2.csv");
+		CreateStageFromCSV("CSV/Stage3-1LeftData_Grade3.csv");
+		CreateStageFromCSV("CSV/Stage3-1RightData_Grade1.csv");
+		CreateStageFromCSV("CSV/Stage3-1RightData_Grade2.csv");
+		CreateStageFromCSV("CSV/Stage3-1RightData_Grade3.csv");
+		CreateStageFromCSV("CSV/Stage3-1UEData_Grade1.csv");
+		CreateStageFromCSV("CSV/Stage3-1UEData_Grade2.csv");
+		CreateStageFromCSV("CSV/Stage3-1UEData_Grade3.csv");
+		break;
+	case StageId::Stage3b:	
+		CreateStageFromCSV("CSV/Stage3-2LeftData_Grade1.csv");
+		CreateStageFromCSV("CSV/Stage3-2LeftData_Grade2.csv");
+		CreateStageFromCSV("CSV/Stage3-2LeftData_Grade3.csv");
+		CreateStageFromCSV("CSV/Stage3-2RightData_Grade1.csv");
+		CreateStageFromCSV("CSV/Stage3-2RightData_Grade2.csv");
+		CreateStageFromCSV("CSV/Stage3-2RightData_Grade3.csv");
+		CreateStageFromCSV("CSV/Stage3-2UEData_Grade1.csv");
+		CreateStageFromCSV("CSV/Stage3-2UEData_Grade2.csv");
+		CreateStageFromCSV("CSV/Stage3-2UEData_Grade3.csv");
+		break;
+	case StageId::Stage3c:
+		CreateStageFromCSV("CSV/Stage3-3LeftData_Grade1.csv");
+		CreateStageFromCSV("CSV/Stage3-3LeftData_Grade2.csv");
+		CreateStageFromCSV("CSV/Stage3-3LeftData_Grade3.csv");
+		CreateStageFromCSV("CSV/Stage3-3RightData_Grade1.csv");
+		CreateStageFromCSV("CSV/Stage3-3RightData_Grade2.csv");
+		CreateStageFromCSV("CSV/Stage3-3RightData_Grade3.csv");
+		CreateStageFromCSV("CSV/Stage3-3UEData_Grade1.csv");
+		CreateStageFromCSV("CSV/Stage3-3UEData_Grade2.csv");
+		CreateStageFromCSV("CSV/Stage3-3UEData_Grade3.csv");
+		break;
+	default:
+		assert(false && "不正なステージID");
+		break;
+	}
+
 }
 
 void SceneGame::CreateUi()
