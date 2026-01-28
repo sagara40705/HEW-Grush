@@ -56,13 +56,13 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     "Assets/Texture/Game/UI/Timer/Colon.png",       //Game_UI_Timer_Colon = 38,
     "Assets/Texture/Game/UI/Score/Number.png",      //Game_UI_Score_Number = 39,
     "Assets/Texture/Game/UI/Score/Text.png",        //Game_UI_Score_Text = 40,
-    "Assets/Texture/Game/UI/Action/DushIcon.png",   //Game_UI_Action_DushIcon = 41,
-    "Assets/Texture/Game/UI/Action/SpinIcon.png",   //Game_UI_Action_SpinIcon = 42,
-    "Assets/Texture/Game/UI/Action/textIcon.png",   //Game_UI_Action_TextIcon = 43,
+    "Assets/Texture/Game/UI/Action/ActionIcon.png", //Game_UI_Action_DushIcon = 41,
+    "", //Game_UI_Action_SpinIcon = 42,
+    "Assets/Texture/Game/UI/Action/TextIcon.png",   //Game_UI_Action_TextIcon = 43,
 
-    "",//Game_UI_Gaug_Lv1 = 44,	 // (äÆ) Lv1ÇÃÉKÉâÉXÉQÅ[ÉWSS
-    "",//Game_UI_Gaug_Lv2 = 45,	 // (äÆ) Lv2ÇÃÉKÉâÉXÉQÅ[ÉWSS
-    "",//Game_UI_Gaug_Lv3 = 46,	 // (äÆ) Lv3ÇÃÉKÉâÉXÉQÅ[ÉWSS
+    "Assets/Texture/Game/UI/Gauge/Glass_lv1.png",//Game_UI_Gaug_Lv1 = 44,	 
+    "Assets/Texture/Game/UI/Gauge/Glass_lv2.png",//Game_UI_Gaug_Lv2 = 45,	
+    "Assets/Texture/Game/UI/Gauge/Glass_lv3.png",//Game_UI_Gaug_Lv3 = 46,	 
     "Assets/Texture/Game/GlassShard.png,",          //SpareSlot_12 = 47,
     "",// _SpareSlot_12 = 48,
     "",//_SpareSlot_13 = 49,
