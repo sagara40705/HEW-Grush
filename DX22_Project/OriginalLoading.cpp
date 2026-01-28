@@ -41,7 +41,7 @@ void LoadingScene::OriginalLoad()
 	// ロード中キャラアニメーション
 	GameObject& loadCharaObj = w.CreateGameObject();
 	loadCharaObj.AddComponent<UiSpriteRenderer>(TextureTag::Load_Character, Vector2(860.0f,400.0f), Vector2(400.0f, 300.0f));
-	loadChara = &loadCharaObj.AddComponent<SpriteAnimation>(1, 10, 1, 10, true);
+	loadChara = &loadCharaObj.AddComponent<SpriteAnimation>(1, 10, 2, 10, true);
 
 	loadChara->Play();// アニメーション再生
 

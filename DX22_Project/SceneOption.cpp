@@ -11,11 +11,12 @@ void SceneOption::Load()
 	CheckCanvas();
 	CreateBG();
 	CreateOption();
+	SceneManager::CreateFadeAnimations(this);
 }
 
 void SceneOption::Unload()
 {
-	
+	SceneManager::ReleaseFadeAnimations();
 }
 
 void SceneOption::TexturesLoad()
