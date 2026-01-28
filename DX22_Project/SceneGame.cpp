@@ -48,7 +48,7 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Desktop); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Gomibukuro); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Isu); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Kuukseizixyoukii); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Kuukiseizyouki); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Ningixyou); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::SagaraDoll); });
 
@@ -654,7 +654,7 @@ PrefabId SceneGame::GetPrefabIdFromString(const std::string& rawname)
 	if (name == "Desktop") return PrefabId::Desktop;
 	if (name == "Gomibukuro") return PrefabId::Gomibukuro;
 	if (name == "Isu") return PrefabId::Isu;
-	if (name == "Kuukiseizyouki") return PrefabId::Kuukseizixyoukii;
+	if (name == "Kuukiseizyouki") return PrefabId::Kuukiseizyouki;
 	if (name == "Ningixyou") return PrefabId::Ningixyou;
 	if(name == "SagaraDoll") return PrefabId::SagaraDoll;
 
