@@ -253,7 +253,7 @@ void SceneGame::CreateStage()
 	StageId stage = GetCurrentStage();
 
 	// デバック用
-	stage = StageId::Stage1;
+	//stage = StageId::Stage1;
 
 	switch (stage)
 	{
@@ -486,19 +486,33 @@ void SceneGame::CreateGlassObjectSpawner()
 
 	GameObject& glassObjectSpawner = w.CreateGameObject();
 	glassObjectSpawner.AddComponent<GlassObjectSpawner>();
-
-
-	//if (IsEndTutorial()) return;
-	//GameObject& tutorial = w.CreateGameObject();
-	//tutorial.AddComponent<TutorialManager>();
 }
 
 void SceneGame::CreateWarp()
 {
+	StageId stage = GetCurrentStage();
+
+	switch (stage)
+	{
+	case StageId::Stage2:
+		CreateWarpStage2();
+		break;
+	case StageId::Stage3a:
+	case StageId::Stage3b:
+	case StageId::Stage3c:
+
+		break;
+	default:
+		break;
+	}
+}
+
+void SceneGame::CreateWarpStage2()
+{
 	World& w = GetWorld();
 
 	GameObject& warpA = w.CreateGameObject(Vector3(37.f, 0.f, 0.f), Vector3::zero(), Vector3::one());
-	warpA.AddComponent< MeshFilter > (PrimitiveMeshTag::Sphere);
+	warpA.AddComponent< MeshFilter >(PrimitiveMeshTag::Sphere);
 	warpA.AddComponent<MeshRenderer>();
 	BoxCollider& bcA = warpA.AddComponent<BoxCollider>(true); bcA.isTrigger = true;
 	warpA.AddComponent<WarpPoint>(Point::AtoB);
@@ -508,7 +522,6 @@ void SceneGame::CreateWarp()
 	warpB.AddComponent<MeshRenderer>();
 	BoxCollider& bcB = warpB.AddComponent<BoxCollider>(true); bcB.isTrigger = true;
 	warpB.AddComponent<WarpPoint>(Point::BtoA);
-
 }
 
 void SceneGame::InitSkyDome()
@@ -552,8 +565,6 @@ void SceneGame::InitSkyDome()
 	{
 		m_pDepthNoWrite = nullptr;
 	}
-
-
 }
 
 void SceneGame::SkyDomeDorw()
