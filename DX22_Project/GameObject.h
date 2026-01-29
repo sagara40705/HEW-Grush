@@ -32,6 +32,7 @@ enum class Tag : std::uint8_t
     ActionUI,
     StageMap,
     ResultRankUI,
+    StageLevelUI,
     // •K—v‚É‰ž‚¶‚Ä’Ç‰Á
 };
 

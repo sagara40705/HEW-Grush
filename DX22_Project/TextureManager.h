@@ -118,6 +118,12 @@ enum class TextureTag : uint8_t
     option_Font4_screen = 90,
     option_translucent = 91,
 
+	stageLv1 = 92,
+	stageLv2 = 93,
+	stageLv3 = 94,
+	stagelevel_Easy = 95,
+	stagelevel_Normal = 96,
+
     Count,
 };
 

@@ -229,6 +229,7 @@
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Sprite3DRenderer.cpp" />
     <ClCompile Include="SpriteAnimation.cpp" />
+    <ClCompile Include="stageLevel.cpp" />
     <ClCompile Include="StageMap.cpp" />
     <ClCompile Include="StageWall.cpp" />
     <ClCompile Include="Startup.cpp" />
@@ -328,6 +329,7 @@
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Sprite3DRenderer.h" />
     <ClInclude Include="SpriteAnimation.h" />
+    <ClInclude Include="stageLevel.h" />
     <ClInclude Include="StageMap.h" />
     <ClInclude Include="StagePoint.h" />
     <ClInclude Include="StageWall.h" />
