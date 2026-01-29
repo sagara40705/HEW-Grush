@@ -716,12 +716,14 @@ float4 main(PS_IN pin) : SV_TARGET
 void ShaderList::MakeGlassPS()
 {
 	const char* code = R"EOT(
-struct PS_IN {
-    float4 pos : SV_POSITION;
+
+struct PS_IN
+{
+    float4 pos    : SV_POSITION;
     float3 normal : NORMAL0;
-    float2 uv : TEXCOORD0;
-    float4 color : COLOR0;
-    float4 wPos  : POSITION0;
+    float2 uv     : TEXCOORD0;
+    float4 color  : COLOR0;
+    float4 wPos   : POSITION0;
 };
 
 cbuffer Material : register(b0)
@@ -744,8 +746,8 @@ cbuffer Camera : register(b2)
 
 cbuffer GlassParam : register(b3)
 {
-    float4 glassTint;   // rgb=tint, a=base alpha
-    float4 glassParams; // x=fresnelPower, y=reflectionStrength, z=transStrength, w=tintStrength
+    float4 glassTint;   // rgb = ガラス色, a = base alpha
+    float4 glassParams; // x=fresnelPower, y=refl, z=trans, w=tint
 };
 
 cbuffer GlassScreen : register(b4)
@@ -755,100 +757,75 @@ cbuffer GlassScreen : register(b4)
     float  chromaStrength;
 };
 
-Texture2D tex      : register(t0);
-Texture2D sceneTex : register(t1);
+Texture2D tex      : register(t0); // object texture
+Texture2D sceneTex: register(t1); // scene color
 SamplerState samp  : register(s0);
 
+// ------------------------------------------------------------
+// 色収差付き Scene サンプル
+// ------------------------------------------------------------
 float3 SampleScene(float2 uv, float2 offset, float ca)
 {
-    // ca is small value (e.g. 0..0.003)
-    float2 o  = offset;
-    float2 oR = o * (1.0f + ca);
-    float2 oB = o * (1.0f - ca);
-
-    float r = sceneTex.Sample(samp, uv + oR).r;
-    float g = sceneTex.Sample(samp, uv + o ).g;
-    float b = sceneTex.Sample(samp, uv + oB).b;
-    return float3(r,g,b);
+    float3 col;
+    col.r = sceneTex.Sample(samp, uv + offset * (1.0 + ca)).r;
+    col.g = sceneTex.Sample(samp, uv + offset).g;
+    col.b = sceneTex.Sample(samp, uv + offset * (1.0 - ca)).b;
+    return col;
 }
 
 float4 main(PS_IN pin) : SV_TARGET
 {
+    // ---- base texture ----
+    float4 texCol = tex.Sample(samp, pin.uv);
+
     float3 N = normalize(pin.normal);
-    float3 L = normalize(-lightDir.xyz);
     float3 V = normalize(cameraPos.xyz - pin.wPos.xyz);
 
-    // texture flag (objAmbient.a)
-    bool hasTexture = (objAmbient.a >= 1.0f);
-    float4 texColor = float4(1,1,1,1);
-    if (hasTexture)
-    {
-        texColor = tex.Sample(samp, pin.uv);
-    }
-
-    // basic lighting (kept close to your current look)
-    float rawNL = dot(N, L);
-    float dotNL = saturate(rawNL * 0.5f + 0.5f);
-    const float kShadowMin = 0.7f;
-    dotNL = lerp(kShadowMin, 1.0f, dotNL);
-
-    float3 diffuseColor = objDiffuse.rgb * lightDiffuse.rgb;
-    float3 ambientColor = objAmbient.rgb * lightDiffuse.rgb;
-    float3 baseColor = (hasTexture || glassParams.w != 1) ? texColor.rgb : glassTint.rgb;
-    float3 baseLit = baseColor * (ambientColor + diffuseColor * dotNL);
-
-    // glass params
-    float fresnelPower         = max(glassParams.x, 1.0f);
-    float reflectionStrength   = saturate(glassParams.y);
-    float transmissionStrength = saturate(glassParams.z);
-    float tintStrength         = saturate(glassParams.w);
-
-    float dotNV   = saturate(dot(N, V));
+    // ---- Fresnel ----
+    float fresnelPower = max(glassParams.x, 1.0f);
+    float dotNV = saturate(dot(N, V));
     float fresnel = pow(1.0f - dotNV, fresnelPower);
 
-    // screen uv
-    float2 safeScreen = max(screenSize, float2(1.0f, 1.0f));
-    float2 scrUV = pin.pos.xy / safeScreen;
-    scrUV = saturate(scrUV);
+    // ---- screen uv ----
+    float2 scrUV = pin.pos.xy / screenSize;
 
-    // refraction offset (stronger at center, weaker at edge)
-    float2 offset = (N.xy * refractStrength) / safeScreen;
-    offset *= (0.30f + 0.70f * (1.0f - fresnel));
+    // ---- 屈折オフセット（強め）----
+    float2 offset = N.xy;
+    offset *= refractStrength / screenSize;
 
-    // chroma amount (small)
-    float ca = saturate(chromaStrength) * 0.0025f;
+    // ★ エッジほど歪む
+    offset *= (0.20f + 1.80f * fresnel);
+    offset *= 1.5f; // さらに強調（分かりやすさ優先）
+
+    // ---- 色収差 ----
+    float ca = saturate(chromaStrength) * 0.010f;
 
     float3 sceneCol = SampleScene(scrUV, offset, ca);
 
-    // transmission base (scene color tinted a bit)
-    float tintMix = 0.35f + 0.45f * tintStrength;
-    float3 transmit = lerp(sceneCol, sceneCol * glassTint.rgb, tintMix);
+    // ---- ガラス色 ----
+    float3 tintedScene = lerp(sceneCol, sceneCol * glassTint.rgb, glassParams.w);
 
-    // keep some original model shading so it does not look like pure screen
-    transmit = lerp(transmit, baseLit, 0.20f);
+    // ---- 反射（簡易）----
+    float reflStrength = glassParams.y;
+    float3 reflection = lightDiffuse.rgb * fresnel * reflStrength * 0.25f;
 
-    // reflection (simple)
-    float3 reflectionColor = float3(0.9f, 0.95f, 1.0f);
-    float reflFactor = saturate(fresnel * reflectionStrength);
+    // ---- 最終色 ----
+    float3 finalRGB = tintedScene + reflection;
 
-    float3 finalRGB = lerp(transmit, reflectionColor, reflFactor);
+    // ---- Alpha（縁を強く）----
+    float alpha = glassTint.a;
+    alpha = max(alpha, 0.45f);
+    alpha = saturate(alpha + fresnel * 0.25f);
 
-    // highlight
-    float3 H = normalize(L + V);
-    float spec = pow(saturate(dot(N, H)), 180.0f);
-    finalRGB += lightDiffuse.rgb * spec * 0.6f;
-
-    // alpha (edge slightly stronger)
-    float baseAlpha = saturate(glassTint.a);
-    float finalA = saturate(max(baseAlpha, 0.35f) + fresnel * 0.25f);
-
-    return float4(saturate(finalRGB), finalA);
+    return float4(finalRGB, alpha);
 }
+
 )EOT";
 
 	m_pPS[PS_GLASS] = new PixelShader();
 	m_pPS[PS_GLASS]->Compile(code);
 }
+
 void ShaderList::MakeGlassShardPS()
 {
 	const char* code = R"EOT(

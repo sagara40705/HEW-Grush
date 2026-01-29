@@ -159,23 +159,6 @@ inline void Render(const World& w)
         spr->Render();
     }
 
-    // --- 4) UI（Depth OFF） ---
-    SetDepthTest(false);
-	SetCullingMode(D3D11_CULL_NONE);
-    for (auto* r : w.GetRenderers())
-    {
-        auto* ui = dynamic_cast<UiSpriteRenderer*>(r);
-        if (!ui) continue;
-        if (!ui->IsVisible()) continue;
-
-        auto* c = static_cast<Component*>(ui);
-        if (!c->IsEnabled()) continue;
-        GameObject* go = c->gameObject;
-        if (!go || !go->active) continue;
-        if (isPending(go->id))  continue;
-
-        ui->Render();
-    }
 
     // add: copy backbuffer -> sceneRT for refraction sampling
     RenderTarget* sceneRT = GetSceneColorRTRef();
@@ -207,6 +190,26 @@ inline void Render(const World& w)
 
         mr->Render();
     }
+
+
+    // --- 4) UI（Depth OFF） ---
+    SetDepthTest(false);
+	SetCullingMode(D3D11_CULL_NONE);
+    for (auto* r : w.GetRenderers())
+    {
+        auto* ui = dynamic_cast<UiSpriteRenderer*>(r);
+        if (!ui) continue;
+        if (!ui->IsVisible()) continue;
+
+        auto* c = static_cast<Component*>(ui);
+        if (!c->IsEnabled()) continue;
+        GameObject* go = c->gameObject;
+        if (!go || !go->active) continue;
+        if (isPending(go->id))  continue;
+
+        ui->Render();
+    }
+
 
 }
 
