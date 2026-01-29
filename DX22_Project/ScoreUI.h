@@ -21,6 +21,7 @@ private:
 	ScoreManager* score_ = nullptr;
 	UiSpriteRenderer* ui_[ToIndex(ScoreDigits::Count)]{};
 	UiSpriteRenderer* uiAtoKg_ = nullptr;
+
 public:
 	void Awake() override;
 	void Start() override;

@@ -11,6 +11,8 @@ private:
 	bool dirty_ = true;
 	TimerUI* timer_ = nullptr;
 	bool isLock_ = false;
+
+
 public:
 	void Start() override;
 public:
@@ -21,4 +23,5 @@ public:
 	void Reset();
 private:
 	void GoToResultScene();
+
 };

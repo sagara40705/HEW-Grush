@@ -41,7 +41,24 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	// ==== タスク設定 ====
 
 	// モデルロード
-	//outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Karubi); });
+	StageId stage = GetCurrentStage();
+	switch (stage)
+	{
+	case StageId::Stage1:
+		break;
+	case StageId::Stage2:
+		break;
+	case StageId::Stage3a:
+		break;
+	case StageId::Stage3b:
+		break;
+	case StageId::Stage3c:
+		break;
+	default:
+		assert(false && "不正なステージID");
+		break;
+
+	}
 
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Swing); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Akican); });
@@ -87,7 +104,11 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Action_Icon); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Action_SpinIcon); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Action_TextIcon); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Gaug_Lv1); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Gaug_Lv2); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Gaug_Lv3); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_GlassShard); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Finish); });
 
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Tutorial_UI_Task); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Tutorial_Road); });

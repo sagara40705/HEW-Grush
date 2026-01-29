@@ -25,6 +25,9 @@ void ScoreManager::Start()
 	timer_ = timerObj->GetComponent<TimerUI>();
 	assert(timer_ && "TimerUI component not found in ScoreManager::GoToResultScene");
 	if (!timer_) return;
+
+	
+
 }
 
 void ScoreManager::UpScore(GlassGrade grade)
@@ -40,6 +43,7 @@ void ScoreManager::UpScore(GlassGrade grade)
 	{
 		score_ = 0;
 		isLock_ = true;	
+
 		GoToResultScene();
 	}
 }
@@ -55,6 +59,7 @@ void ScoreManager::GoToResultScene()
 	// ===== クリア時間をGameStateに保存 =====
 	float clearTime = timer_->GetTime();
 	SetRecentClearTimes(clearTime);
+
 
 	// ===== シーン切り替え =====
 	DebugLog::Output("Clear Stage");
