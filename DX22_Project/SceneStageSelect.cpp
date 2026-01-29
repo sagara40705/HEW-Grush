@@ -41,26 +41,27 @@ void SceneStageSelect::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	// テクスチャーロード	 
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::StageSelect_BG); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::StageSelect_PlayerIcon); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::stageLv1); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::stageLv2); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::stageLv3); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::stagelevel_Easy); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::stagelevel_Normal); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Stagelevel_Hard_a); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Stagelevel_Hard_b); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Stagelevel_Hard_c); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::StageImage); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Number); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Number2); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Number3); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::bou); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::bou2); });
+	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::stageLv1); });
+	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::stageLv2); });
+	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::stageLv3); });
+	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::stagelevel_Easy); });
+	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::stagelevel_Normal); });
+	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Stagelevel_Hard_a); });
+	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Stagelevel_Hard_b); });
+	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Stagelevel_Hard_c); });
+	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::StageImage); });
+	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Number); });
+	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Number2); });
+	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Number3); });
+	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::bou); });
+	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::bou2); });
 	// ゲームオブジェクト生成
 	outTasks.emplace_back([this] { CreateCanvas(); });
 	outTasks.emplace_back([this] { CreateStageMap(); });
 	outTasks.emplace_back([this] { CreateCamera(); });
 	outTasks.emplace_back([this] { CreatePlayer(); });
 	outTasks.emplace_back([this] { CreateGround(); });
+
 	outTasks.emplace_back([this] { CreateStageLevelUI(); });
 	outTasks.emplace_back([this] { CreateStageImageUI(); });
 	outTasks.emplace_back([this] { SceneManager::CreateFadeAnimations(this); });

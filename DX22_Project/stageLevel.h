@@ -20,7 +20,8 @@ public:
 	UiSpriteRenderer* level3_a = nullptr;
 	UiSpriteRenderer* level3_b = nullptr;
 	UiSpriteRenderer* level3_c = nullptr;
-
+	UiSpriteRenderer* bou = nullptr;
+	UiSpriteRenderer* bou2 = nullptr;
 	UiSpriteRenderer* Image = nullptr;
 
 
