@@ -78,14 +78,11 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Eiseii); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Star); });
 
-	//outTasks.emplace_back([this] { ModelManager::Load(ModelTag::ProtPlay); });
-	//outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player2); });
-	//outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_1); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_2); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_3); });
-	//outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Fence); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Fence); });
 
 	// テクスチャーロード
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_Sky); });
@@ -198,7 +195,7 @@ void SceneGame::CreateCameraAndPlayer()
 	GameObject& player = w.CreateGameObject(KPlayerInitPos[ToIndex(GetCurrentStage())], Vector3(0.f, 90.f, 0.f));
  
 	player.SetTag(Tag::Player);
-	player.AddComponent<MeshFilter>(ModelTag::Player2);
+	player.AddComponent<MeshFilter>(ModelTag::Player);
 	player.AddComponent<MeshRenderer>();
 	player.AddComponent<Rigidbody>();
 	player.AddComponent<BoxCollider>(false, Vector3(0.f, 0.5f, 0.f));
@@ -213,7 +210,7 @@ void SceneGame::CreateCameraAndPlayer()
 
 	GameObject& hummer = hammerPivot.CreateChild(Hammer::BasePos, Hammer::BaseRota, Vector3(0.2f, 0.2f, 0.2f));
 	hummer.SetTag(Tag::Hammer);
-	hummer.AddComponent<MeshFilter>(ModelTag::Hammer_2);
+	hummer.AddComponent<MeshFilter>(ModelTag::Hammer_1);
 	hummer.AddComponent<MeshRenderer>();
 	hummer.AddComponent<BoxCollider>(false, Vector3(-3.f, 2.f, -3.f), Vector3(5.f, 5.f, 2.f));
 	hummer.AddComponent<Hammer>();

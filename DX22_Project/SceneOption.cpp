@@ -249,10 +249,6 @@ void SceneOption::CreateOption()
 
 void SceneOption::Update()
 {
-	if (InputKeyboard::GetKeyDown('O'))
-	{
-		SceneManager::PopScene();
-	}
 }
 
 void SceneOption::Draw()

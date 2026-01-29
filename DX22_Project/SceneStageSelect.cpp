@@ -23,7 +23,7 @@ void SceneStageSelect::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 		});
 
 	// モデルロード
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player2); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player); });
 
 	// テクスチャーロード	
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::StageSelect_BG); });
@@ -75,7 +75,7 @@ void SceneStageSelect::CreatePlayer()
 
 	GameObject& playerObj = world.CreateGameObject(Vector3(-5.f, 0.f, 0.f));
 	playerObj.SetTag(Tag::Player);
-	playerObj.AddComponent<MeshFilter>(ModelTag::Player2);
+	playerObj.AddComponent<MeshFilter>(ModelTag::Player);
 	playerObj.AddComponent<MeshRenderer>();
 	playerObj.AddComponent<SelectPlayerControl>();
 }
@@ -98,10 +98,6 @@ void SceneStageSelect::Unload()
 
 void SceneStageSelect::Update()
 {
-	if (InputKeyboard::GetKeyDown('O'))
-	{
-		SceneManager::PushScene<SceneOption>();
-	}
 }
 
 void SceneStageSelect::Draw()

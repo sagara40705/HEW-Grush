@@ -14,8 +14,8 @@ void SceneTitle::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 			GetWorld().ClearAll();        // 既存の World API に合わせる
 		});
 
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player2); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_3); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::SagaraDoll); });
 
 
@@ -24,9 +24,6 @@ void SceneTitle::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Title_Logo); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Title_Fadein); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Title_FadeinID); });
-
-	// プレイハブ設定
-	//outTasks.emplace_back([this] { RegisterAllPrefabs(); });
 	
 	// 各種オブジェクト生成タスクを追加
 	outTasks.emplace_back([this] { CreateCameraAndPlayer(); });
@@ -79,7 +76,7 @@ void SceneTitle::CreateCameraAndPlayer()
 
 	// プレイヤー
 	GameObject& player = w.CreateGameObject(Vector3(0.f, 0.f, 0.f), Vector3(0.f, 0.f, 0.f), Vector3(2.f, 2.f, 2.f));
-	player.AddComponent<MeshFilter>(ModelTag::Player2);
+	player.AddComponent<MeshFilter>(ModelTag::Player);
 	player.AddComponent<MeshRenderer>();
 	player.AddComponent<PlayerState>();
 	//player.AddComponent<Animator>();
@@ -90,7 +87,7 @@ void SceneTitle::CreateCameraAndPlayer()
 
 	// ハンマー
 	GameObject& hummer = player.CreateChild(Hammer::BasePos, Hammer::BaseRota, Vector3(0.2f, 0.2f, 0.2f));
-	hummer.AddComponent<MeshFilter>(ModelTag::Hammer);
+	hummer.AddComponent<MeshFilter>(ModelTag::Hammer_3);
 	hummer.AddComponent<MeshRenderer>();
 	//hummer.AddComponent<Animator>();
 
