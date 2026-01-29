@@ -44,7 +44,7 @@ private:
 	bool isLimitBreak_ = false; //限界突破中か？
 public:
 	bool changeLimitBreak = false; //限界突破の状態が変化したか？
-	bool GetIsLimitBreak() { return isLimitBreak_; }
+	bool GetIsLimitBreak();
 public:
 	// チュートリアル用フラグ
 	bool isTutorial_ = false; // チュートリアル中か？

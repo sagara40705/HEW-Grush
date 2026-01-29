@@ -44,6 +44,7 @@ void GlassGaugeManager::Update()
 			isLimitBreak_ = false;
 			limitBreakDurationTimer_ = 0.f;
 			hammer_->LimitBreakEnd();
+			changeLimitBreak = true;
 			DebugLog::Output("ŒÀŠE“Ë”jI—¹");
 		}
 		return;
@@ -62,6 +63,7 @@ void GlassGaugeManager::Update()
 			isLimitBreak_ = true;
 			limitBreakTimer_ = 0.f;
 			hammer_->LimitBreakStart();
+			changeLimitBreak = true;
 			DebugLog::Output("ŒÀŠE“Ë”jŠJŽn");
 		}
 	}
@@ -196,6 +198,12 @@ bool GlassGaugeManager::IsMaxGauge()
 	return false;
 }
 
+bool GlassGaugeManager::GetIsLimitBreak()
+{
+	changeLimitBreak = false;
+	return isLimitBreak_;
+}
+
 #ifdef _DEBUG
 void GlassGaugeManager::DebugCommand()
 {
@@ -210,12 +218,14 @@ void GlassGaugeManager::DebugCommand()
 		isLimitBreak_ = true;
 		player_->LimitBreakOn();
 		hammer_->LimitBreakStart();
+		changeLimitBreak = true;
 	}
 	if (InputKeyboard::GetKeyDown('M'))
 	{
-		isLimitBreak_ = true;
+		isLimitBreak_ = false;
 		player_->LimitBreakOff();
 		hammer_->LimitBreakEnd();
+		changeLimitBreak = true;
 	}
 }
 #endif // DEBUG	

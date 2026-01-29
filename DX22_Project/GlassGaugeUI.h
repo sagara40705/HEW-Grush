@@ -12,6 +12,7 @@ private: //QÆ
 	//UiSpriteRenderer* empty_ = nullptr;
 	UiSpriteRenderer* max_ = nullptr;
 	SpriteAnimation* effect_ = nullptr;
+	UiSpriteRenderer* fever_ = nullptr;
 
 	float gDecayDuration = 0.3f; // 0.3•b‚¾‚¯Œõ‚é
 	float decayTimer = 0.f;
