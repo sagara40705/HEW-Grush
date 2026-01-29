@@ -37,6 +37,9 @@ void Hammer::Start()
 	bc_->isTrigger = true;
 	bc_->isStatic = false;
 
+	GameObject* pivot = gameObject->FindWithTag(Tag::HammerPivot);
+	pivotTf_ = pivot->GetComponent<Transform>();
+
 	SetModel();
 }
 
@@ -49,6 +52,7 @@ void Hammer::Update()
 
 void Hammer::OnDestroy()
 {
+	pivotTf_ = nullptr;
 	tf_ = nullptr;
 	bc_ = nullptr;
 	mf_ = nullptr;
@@ -105,12 +109,17 @@ void Hammer::UpdateNormalAttack(float r)
 	if (r < 0.0f) r = 0.0f;
 	if (r > 1.0f) r = 1.0f;
 
-	constexpr Vector3 START = { -2.f, 0.5f, -2.f };
-	constexpr Vector3 END =   { 2.f, 0.6f, -2.f };
-	constexpr Vector3 ROTATE = { 0.f, -90.f, -45.f };
+	constexpr Vector3 POS_START = { -1.2f, 0.0f, -1.0f };
+	constexpr Vector3 POS_END =   { 0.6f, 0.0f, -1.8f };
 
-	const Vector3 OFFSET = Vector3::Lerp(START, END, r);
-	tf_->SetPosition(BasePos + OFFSET);
+	constexpr Vector3 ROTATE_START = { 0.f, -45.f, -45.f };
+	constexpr Vector3 ROTATE_END = { 0.f, -135.f, -45.f };
+
+	const Vector3 POS = Vector3::Lerp(POS_START, POS_END, r);
+	const Vector3 ROTATE = Vector3::Lerp(ROTATE_START, ROTATE_END, r);
+
+
+	tf_->SetPosition(POS);
 	tf_->SetRotation(ROTATE);
 
 }
@@ -119,14 +128,25 @@ void Hammer::ResetPos()
 {
 	tf_->SetPosition(BasePos);
 	tf_->SetRotation(BaseRota);
+
+	pivotTf_->SetPosition(Vector3::zero());
+	pivotTf_->SetRotation(Vector3::zero());
 }
 
 void Hammer::UpdateSpinAttack()
 {
-	constexpr Vector3 OFFSET = { 0.f, 0.5f, -2.f };
+	constexpr Vector3 POS = { -0.5f, 0.0f, -1.5f };
 	constexpr Vector3 ROTATE = { 0.f, -90.f, -45.f };
-	tf_->SetPosition(BasePos + OFFSET);
+	constexpr Vector3 DELTA_ROTATE = { 0.f, -15.f, 0.f };
+
+	tf_->SetPosition(POS);
 	tf_->SetRotation(ROTATE);
+	pivotTf_->AddRotate(DELTA_ROTATE);
+}
+
+void Hammer::UpdateDashAttack(float r)
+{
+
 }
 
 void Hammer::Attack(GameObject* go)

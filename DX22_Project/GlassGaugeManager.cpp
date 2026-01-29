@@ -15,7 +15,7 @@ void GlassGaugeManager::Start()
 {
 	GameObject* player = gameObject->world->FindWithTag(Tag::Player);
 	player_ = player->GetComponent<PlayerState>();
-	GameObject* hammer = player->FindChildWithTag(Tag::Hammer);
+	GameObject* hammer = gameObject->FindWithTag(Tag::Hammer);
 	hammer_ = hammer->GetComponent<Hammer>();
 
 	assert(player_ && hammer_ && "QÆ‚Ì‚Ç‚ê‚©‚ªnullptr‚Å‚·");

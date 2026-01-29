@@ -13,12 +13,8 @@ void PlayerAnimation::Start()
 	state_ = gameObject->GetComponent<PlayerState>();
 	anime_ = gameObject->GetComponent<Animator>();
 	AddAllAnimations();
-	anime_->Play(animation_[Type::Idle], true, 1.f);
+	anime_->Play(animation_[Type::Move], false, 1.f);
 	anime_->SetTimeSeconds(4.8f);
-
-	//AddHammerAllAnimations();
-	//hummerAnime_->Play(hummerAnimation_[Type::Move], true, 1.f);
-	//anime_->SetTimeSeconds(4.8f);
 
 	assert(state_ && anime_ && "PlayerAnimation	で プレイヤーの <PlayerState> か <Animator> が nullptr です");
 }
@@ -44,8 +40,8 @@ void PlayerAnimation::Update()
 
 		if (knockbackTimer_ >= knockbackDuration_)
 		{
-			isKnockback_ = false; currentType_ = Type::Idle;
-			anime_->Play(animation_[Type::Move], true, 1.0f);
+			isKnockback_ = false; currentType_ = Type::Move;
+			anime_->Play(animation_[Type::Move], false, 1.0f);
 
 		} // ノックバック中は他のアニメ判定を行わない
 	}
@@ -109,8 +105,9 @@ void PlayerAnimation::CheckMoveAnime()
 		//移動停止したら終了位置まで再生
 		if (state_->moveStoppedThisFrame)
 		{
-			currentType_ = Type::Idle;
-			anime_->Play(animation_[Type::Idle], true, 1.f);
+			anime_->SetTimeSeconds(4.8f);
+			//currentType_ = Type::Idle;
+			//anime_->Play(animation_[Type::Idle], true, 1.f);
 		}
 	}
 	else
@@ -136,9 +133,9 @@ void PlayerAnimation::CheckNormalAttackAnime()
 		//アニメーション終了したら待機アニメーションへ
 		if (t > 2.5f)
 		{
-			currentType_ = Type::Idle;
-			anime_->Play(animation_[Type::Idle], true, 1.f);
-
+			currentType_ = Type::Move;
+			anime_->Play(animation_[Type::Move], false, 1.f);
+			anime_->SetTimeSeconds(4.8f);
 		}
 	}
 	else
@@ -146,7 +143,7 @@ void PlayerAnimation::CheckNormalAttackAnime()
 		if (state_->actionedThisFrame[ToIndex(ActionId::NormalAttack)])
 		{
 			currentType_ = Type::NormalAttack;
-			anime_->Play(animation_[Type::NormalAttack], false, 3.0f);
+			anime_->Play(animation_[Type::NormalAttack], false, 4.0f);
 			anime_->SetTimeSeconds(1.3f);
 		}
 
@@ -162,11 +159,11 @@ void PlayerAnimation::CheckSpinAttackAnime()
 		const float t = anime_->GetCurrentAnimeTime();
 
 		//アニメーション終了したら待機アニメーションへ
-		if (t > 2.5f)
+		if (t > 2.1f)
 		{
-			currentType_ = Type::Idle;
-			anime_->Play(animation_[Type::Idle], true, 1.f);
-
+			currentType_ = Type::Move;
+			anime_->Play(animation_[Type::Move], false, 1.0f);
+			anime_->SetTimeSeconds(4.8f);
 		}
 	}
 	else
@@ -176,7 +173,7 @@ void PlayerAnimation::CheckSpinAttackAnime()
 		{
 			currentType_ = Type::SpinAttack;
 			anime_->Play(animation_[Type::SpinAttack], false, 1.0f);
-			anime_->SetTimeSeconds(1.f);
+			anime_->SetTimeSeconds(1.3f);
 		}
 
 	}
@@ -194,8 +191,9 @@ void PlayerAnimation::CheckDashAttackAnime()
 		//アニメーション終了したら待機アニメーションへ
 		if (t > 2.5)
 		{
-			currentType_ = Type::Idle;
-			anime_->Play(animation_[Type::Idle], true, 1.f);
+			currentType_ = Type::Move;
+			anime_->Play(animation_[Type::Move], false, 1.f);
+			anime_->SetTimeSeconds(4.8f);
 		}
 	}
 	else
@@ -205,7 +203,7 @@ void PlayerAnimation::CheckDashAttackAnime()
 		{
 			currentType_ = Type::DashAttack;
 			anime_->Play(animation_[Type::DashAttack], false, 1.0f);
-			anime_->SetTimeSeconds(1.3f);
+			anime_->SetTimeSeconds(1.0f);
 		}
 	}
 }

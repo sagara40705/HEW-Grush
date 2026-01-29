@@ -25,6 +25,7 @@ enum class Tag : std::uint8_t
     CamreraPivot,
     MainCamera,
     Player,
+	HammerPivot,
     Hammer,
     Enemy,
     Glass,

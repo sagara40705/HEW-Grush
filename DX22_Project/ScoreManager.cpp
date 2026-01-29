@@ -11,7 +11,7 @@
 
 void ScoreManager::Start()
 {
-	constexpr int kMaxScore[ToIndex(StageId::Count)] = { 50, 600, 700 };
+	constexpr int kMaxScore[ToIndex(StageId::Count)] = { 500, 600, 700 };
 	StageId stage = GetCurrentStage();
 	assert(stage != StageId::None && "Invalid StageId in ScoreManager::Start");
 
@@ -25,9 +25,6 @@ void ScoreManager::Start()
 	timer_ = timerObj->GetComponent<TimerUI>();
 	assert(timer_ && "TimerUI component not found in ScoreManager::GoToResultScene");
 	if (!timer_) return;
-
-	
-
 }
 
 void ScoreManager::UpScore(GlassGrade grade)
