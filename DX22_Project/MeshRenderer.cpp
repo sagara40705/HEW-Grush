@@ -183,6 +183,17 @@ void MeshRenderer::ModelRender()
             ShaderList::SetBones(bones);
         }
 
+
+        // ------------------------------------------------------------
+        // PS SRV leak prevention
+        // Clear t0 every mesh draw to avoid "previous object's texture" sticking.
+        // ------------------------------------------------------------
+        {
+            ID3D11ShaderResourceView* nullSRV = nullptr;
+            GetContext()->PSSetShaderResources(0, 1, &nullSRV); // t0 = nullptr
+        }
+
+
         const Model::Material* mat = model->GetMaterial(mesh->materialID);
         if (mat) ShaderList::SetMaterial(*mat);
 

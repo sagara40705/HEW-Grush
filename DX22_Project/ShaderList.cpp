@@ -748,7 +748,7 @@ cbuffer Camera : register(b2)
 cbuffer GlassParam : register(b3)
 {
     float4 glassTint;   // rgb=tint, a=base alpha
-    float4 glassParams; // x=fresnelPower, y=refl, z=trans, w=tintStrength
+    float4 glassParams; // x=fresnelPower, y=reflStrength, z=unused, w=tintStrength
 };
 
 cbuffer GlassScreen : register(b4)
@@ -758,13 +758,13 @@ cbuffer GlassScreen : register(b4)
     float  chromaStrength;
 };
 
-Texture2D tex      : register(t0);
-Texture2D sceneTex : register(t1);
+Texture2D tex      : register(t0); // object texture
+Texture2D sceneTex : register(t1); // scene color
 SamplerState samp  : register(s0);
 
 float Hash21(float2 p)
 {
-    // ascii comment: cheap hash
+    // ascii: cheap hash
     p = frac(p * float2(123.34f, 456.21f));
     p += dot(p, p + 34.345f);
     return frac(p.x * p.y);
@@ -796,53 +796,71 @@ float4 main(PS_IN pin) : SV_TARGET
     float2 safeScreen = max(screenSize, float2(1.0f, 1.0f));
     float2 scrUV = saturate(pin.pos.xy / safeScreen);
 
-    // ------------------------------------------------------------
-    // refraction offset (always non-zero)
-    // 1) view based dir
-    // 2) procedural noise (screen uv based)
-    // 3) edge stronger (fresnel)
-    // ------------------------------------------------------------
+    // ---- refraction direction (stable) ----
     float3 R = reflect(-V, N);
-
-    // base from reflection vector (works even if N.xy ~ 0 in many angles)
     float2 dir = normalize(R.xy + 1e-4f);
 
-    // procedural noise in screen space (always exists)
-    float n = Hash21(scrUV * 200.0f + pin.wPos.xz * 0.05f);
+    // ---- low freq noise (avoid mosaic) ----
+    float n = Hash21(scrUV * 60.0f + pin.wPos.xz * 0.02f);
     float2 noise = (n - 0.5f) * float2(1.0f, -1.0f);
 
-    // combine
     float2 offsetDir = dir * 0.85f + noise * 0.15f;
 
-    // strength: edge stronger
     float strength = refractStrength * (0.35f + 1.65f * fresnel);
-
-    // final offset in UV space
     float2 offset = offsetDir * (strength / safeScreen);
 
-    // chromatic aberration
-    float ca = saturate(chromaStrength) * 0.0100f;
+    float ca = saturate(chromaStrength) * 0.010f;
 
     float3 sceneCol = SampleScene(scrUV, offset, ca);
 
-    // tint & transmission
-    float tintStrength = saturate(glassParams.w);
-    float3 tintedScene = lerp(sceneCol, sceneCol * glassTint.rgb, 0.35f + 0.55f * tintStrength);
+// ============================================================
+// transparency control (keep object texture color)
+// ============================================================
 
-    // reflection (simple)
-    float reflStrength = saturate(glassParams.y);
-    float3 reflection = lightDiffuse.rgb * glassTint.rgb * (fresnel * reflStrength) * 0.25f;
+// objCol: use object texture color as-is
+// do NOT multiply by glassTint here. If glassTint is dark (or 0), it makes object black.
+float3 objCol = saturate(texCol.rgb);
 
-    float3 finalRGB = tintedScene + reflection;
+// tintStrength: how much tint is applied (0..1)
+float tintStrength = saturate(glassParams.w);
 
-    // alpha (edge slightly stronger)
+// safeTint: prevent black if glassTint.rgb is (0,0,0) by mistake
+float3 safeTint = max(glassTint.rgb, float3(0.20f, 0.20f, 0.20f));
+
+// tintCol: 1 means no tint, safeTint means tinted
+float3 tintCol = lerp(float3(1.0f, 1.0f, 1.0f), saturate(safeTint), tintStrength);
+
+// base transmission: tint the background by tintCol
+float3 tintedScene = lerp(sceneCol, sceneCol * tintCol, 0.35f + 0.55f * tintStrength);
+
+// keep a bit of object texture identity
+tintedScene = lerp(tintedScene, tintedScene * objCol, 0.35f);
+
+// solidity: reduce "too transparent" look, blend toward objCol (keeps texture pattern)
+// 0.0 = very transparent, 0.3 = more solid
+float solidity = 0.20f; // change here (0.10 - 0.30)
+tintedScene = lerp(tintedScene, objCol, solidity);
+
+// reflection: use tintCol so it does not get dark
+float reflStrength = saturate(glassParams.y);
+float3 reflection = lightDiffuse.rgb * tintCol * (fresnel * reflStrength) * 0.25f;
+
+float3 finalRGB = tintedScene + reflection;
+
+// small push to object color for thickness
+finalRGB = lerp(finalRGB, objCol, 0.05f);
+
+    // ---- alpha ----
     float alpha = saturate(glassTint.a * texCol.a);
-    alpha = max(alpha, 0.30f);
-    alpha = saturate(alpha + fresnel * 0.25f);
+
+    // minimum opacity to avoid "too see-through"
+    alpha = max(alpha, 0.55f); // change here (0.50 - 0.65)
+
+    // edge a bit stronger
+    alpha = saturate(alpha + fresnel * 0.20f);
 
     return float4(saturate(finalRGB), alpha);
 }
-
 )EOT";
 
 	m_pPS[PS_GLASS] = new PixelShader();
@@ -900,6 +918,8 @@ float4 main(PS_IN pin) : SV_TARGET
     float dummy = objDiffuse.x * 0.0;
 
     float4 texColor = tex.Sample(samp, pin.uv);
+
+	
 
     float3 N = normalize(pin.normal);
     float3 L = normalize(-lightDir.xyz);
