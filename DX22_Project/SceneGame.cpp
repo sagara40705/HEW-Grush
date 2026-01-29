@@ -320,8 +320,6 @@ void SceneGame::CreateStage3()
 	BoxCollider& collider1 = floor1.AddComponent<BoxCollider>();
 	collider1.layer = Layer::Ground;
 
-
-
 	//50 * 50 フィールド1
 	GameObject& floor2 = w.CreateGameObject(Vector3(0.f, -1.f, 70.f), Vector3::zero(), Vector3(80.f, 0.1f, 60.f));
 	MeshFilter& mf2 = floor2.AddComponent<MeshFilter>(PrimitiveMeshTag::Plane); mf2.boundsRadius = 0.f;
