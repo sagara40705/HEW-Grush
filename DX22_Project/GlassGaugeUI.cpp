@@ -29,7 +29,6 @@ void GlassGaugeUI::Update()
 {
 	if (!manager_->dirty_) return;
 
-
 	// 減衰が始まった瞬間にタイマーをリセット
 	static bool wasDecaying = false;
 	bool isNowDecaying = manager_->IsGaugeDecaying();
