@@ -28,7 +28,7 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     //// StageSelect 16～21 (6)
     "Assets/Texture/StageSelect/StageSelect_BG.png",            //StageSelect_BG = 16,
     "Assets/Texture/StageSelect/StageSelect_PlayerIcon.png",    //StageSelect_PlayerIcon = 17, 
-    "",//SpareSlot_05 = 18,
+    "Assets/Texture/StageSelect/StageSelect_",//SpareSlot_05 = 18,
     "",//SpareSlot_06 = 19,
     "",//SpareSlot_07 = 20,
     "",//SpareSlot_08 = 21,
@@ -116,6 +116,8 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     "Assets/Texture/option/GS/GS_back_to_stage_Frame_br.png",   //89
     "Assets/Texture/option/GS/instructions.png",                //90
     "Assets/Texture/option/GS/GS_retry_Frame_Back.png"          //91
+
+
 };
 
 // 配列のデフォルトパスを使用して登録

@@ -45,47 +45,45 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	switch (stage)
 	{
 	case StageId::Stage1:
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Isu); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Reizouko); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Eiseii); });
 		break;
 	case StageId::Stage2:
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Kuukiseizyouki); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::SagaraDoll); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Jihanki); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Star); });
 		break;
 	case StageId::Stage3a:
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Akican); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Isu); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Jihanki); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Reizouko); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Eiseii); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Star); });
 		break;
 	case StageId::Stage3b:
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Kuukiseizyouki); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::SagaraDoll); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Jihanki); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Reizouko); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Eiseii); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Star); });
 		break;
 	case StageId::Stage3c:
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Akican); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Isu); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Jihanki); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Reizouko); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Eiseii); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Star); });
 		break;
 	default:
 		assert(false && "不正なステージID");
 		break;
 
 	}
-
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Swing); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Akican); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Desktop); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Gomibukuro); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Isu); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Kuukiseizyouki); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Ningixyou); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::SagaraDoll); });
-
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Benti); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Aircon); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Jihanki); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Reizouko); });
-
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Ufo); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Eiseii); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Star); });
-
-	//outTasks.emplace_back([this] { ModelManager::Load(ModelTag::ProtPlay); });
-	//outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player2); });
-	//outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_1); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_2); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_3); });
-	//outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Fence); });
 
 	// テクスチャーロード
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_Sky); });
@@ -110,12 +108,33 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_GlassShard); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Finish); });
 
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Tutorial_UI_Task); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Tutorial_Road); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Tutorial_Targetlocation); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Option_BG); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Back); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font1); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font1_Back); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font1_OK); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font2); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font2_Back); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font2_OK); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font3); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font3_Back); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font3_OK); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font4); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font4_OK); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font5); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font5_OK); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font1_Break); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font2_Break); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font3_Break); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font4_screen); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_translucent); });
+
+	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Tutorial_UI_Task); });
+	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Tutorial_Road); });
+	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Tutorial_Targetlocation); });
 
 	// プレイハブ設定
-	outTasks.emplace_back([this] { RegisterAllPrefabs(); });
+	//outTasks.emplace_back([this] { RegisterAllPrefabs(); });
 
 	// ゲームオブジェクト生成
 	outTasks.emplace_back([this] { CreateManagers(); });
@@ -198,7 +217,7 @@ void SceneGame::CreateCameraAndPlayer()
 	GameObject& player = w.CreateGameObject(KPlayerInitPos[ToIndex(GetCurrentStage())], Vector3(0.f, 90.f, 0.f));
  
 	player.SetTag(Tag::Player);
-	player.AddComponent<MeshFilter>(ModelTag::Player2);
+	player.AddComponent<MeshFilter>(ModelTag::Player);
 	player.AddComponent<MeshRenderer>();
 	player.AddComponent<Rigidbody>();
 	player.AddComponent<BoxCollider>(false, Vector3(0.f, 0.5f, 0.f));
@@ -208,13 +227,15 @@ void SceneGame::CreateCameraAndPlayer()
 	player.AddComponent<Animator>();
 	player.AddComponent<PlayerAnimation>();
 
-	GameObject& hummer = player.CreateChild(Hammer::BasePos, Hammer::BaseRota, Vector3(0.2f, 0.2f, 0.2f));
+	GameObject& hammerPivot = player.CreateChild(Vector3::zero(), Vector3::zero(), Vector3::one());
+	hammerPivot.SetTag(Tag::HammerPivot);
+
+	GameObject& hummer = hammerPivot.CreateChild(Hammer::BasePos, Hammer::BaseRota, Vector3(0.2f, 0.2f, 0.2f));
 	hummer.SetTag(Tag::Hammer);
 	hummer.AddComponent<MeshFilter>(ModelTag::Hammer_1);
 	hummer.AddComponent<MeshRenderer>();
 	hummer.AddComponent<BoxCollider>(false, Vector3(-3.f, 2.f, -3.f), Vector3(5.f, 5.f, 2.f));
 	hummer.AddComponent<Hammer>();
-	//hummer.AddComponent<Animator>();
 	hummer.AddComponent<HammerEffects>();
 
 
@@ -232,7 +253,7 @@ void SceneGame::CreateStage()
 	StageId stage = GetCurrentStage();
 
 	// デバック用
-	//stage = StageId::Stage1;
+	stage = StageId::Stage1;
 
 	switch (stage)
 	{

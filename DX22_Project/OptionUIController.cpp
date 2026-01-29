@@ -59,6 +59,7 @@ void OptionUIController::Update()
 			DebugLog::Output("OptionUI: Triggering operation after delay");
             TriggerOperation();
         }
+        return;
     }
 
     // modal screen: ESC closes only the modal (do not close option)

@@ -25,6 +25,7 @@ enum class Tag : std::uint8_t
     CamreraPivot,
     MainCamera,
     Player,
+	HammerPivot,
     Hammer,
     Enemy,
     Glass,
@@ -169,6 +170,7 @@ T* GameObject::GetComponent() noexcept
     if (it == components.end()) return nullptr;
     return static_cast<T*>(it->second.get());
 }
+
 
 //=========================================================
 // Component 側テンプレートの実装

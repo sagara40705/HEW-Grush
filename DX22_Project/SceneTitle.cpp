@@ -14,8 +14,13 @@ void SceneTitle::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 			GetWorld().ClearAll();        // 既存の World API に合わせる
 		});
 
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player2); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer); });
+
+	outTasks.emplace_back([this] { ModelManager::Clear(); });	// モデルマネージャー初期化
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_3); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::SagaraDoll); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Ufo); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Swing); });
 
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Title_BG); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Title_Text); });
@@ -31,6 +36,8 @@ void SceneTitle::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { CreateTitleLogo(); });
 	outTasks.emplace_back([this] { CreateBreakTexture(); });
 	outTasks.emplace_back([this] { CreateTitleManager(); });
+	outTasks.emplace_back([this] { CreateObject(); });
+
 	outTasks.emplace_back([this] { SceneManager::CreateFadeAnimations(this); });
 
 	// 最後に Start を流す
@@ -72,7 +79,7 @@ void SceneTitle::CreateCameraAndPlayer()
 
 	// プレイヤー
 	GameObject& player = w.CreateGameObject(Vector3(0.f, 0.f, 0.f), Vector3(0.f, 0.f, 0.f), Vector3(2.f, 2.f, 2.f));
-	player.AddComponent<MeshFilter>(ModelTag::Player2);
+	player.AddComponent<MeshFilter>(ModelTag::Player);
 	player.AddComponent<MeshRenderer>();
 	player.AddComponent<PlayerState>();
 	//player.AddComponent<Animator>();
@@ -83,7 +90,7 @@ void SceneTitle::CreateCameraAndPlayer()
 
 	// ハンマー
 	GameObject& hummer = player.CreateChild(Hammer::BasePos, Hammer::BaseRota, Vector3(0.2f, 0.2f, 0.2f));
-	hummer.AddComponent<MeshFilter>(ModelTag::Hammer);
+	hummer.AddComponent<MeshFilter>(ModelTag::Hammer_3);
 	hummer.AddComponent<MeshRenderer>();
 	//hummer.AddComponent<Animator>();
 
@@ -138,6 +145,16 @@ void SceneTitle::CreateTitleManager()
 	manager.AddComponent<TitleManager>();
 }
 
+void SceneTitle::CreateObject()
+{
+	World& w = GetWorld();
+	go1 = &Prefab::Instantiate(w, PrefabId::SagaraDoll, Vector3(-4.7f, -50.f, 1.f), Vector3(0.f, 45.f, 0.f), Vector3(4.f, 4.f, 4.f));
+	World& u = GetWorld();
+	go2 = &Prefab::Instantiate(u, PrefabId::Ufo, Vector3(-4.7f, 0.f, 1.f), Vector3(0.f, 20.f, -10.f), Vector3(2.f, 2.f, 2.f));
+	World& v = GetWorld();
+	go3 = &Prefab::Instantiate(v, PrefabId::Swing, Vector3(15.f, 0.f, 1.f), Vector3(0.f, -20.f, 10.f), Vector3(3.f, 3.f, 3.f));
+
+}
 void SceneTitle::Update()
 {
 	//if (!m_breakButton) return;
@@ -212,4 +229,24 @@ void SceneTitle::UpdateTitleAnimations()
 		float yOffset = std::sin(m_animTimer * 1.5f) * 0.3f; // 1.5fが速さ、0.3fが振幅
 		trans->SetPosition(Vector3(2.f, yOffset, 15.f));
 	}
+	//人形揺れ
+	if (go1)
+	{
+		auto* trans = go1->GetComponent<Transform>();
+		float yOffset = std::sin(m_animTimer * 1.5f) * 0.3f; // 1.5fが速さ、0.3fが振幅
+		trans->SetPosition(Vector3(15.f, yOffset-8.f, 30.f));
+	}
+	if (go2)
+	{
+		auto* trans = go2->GetComponent<Transform>();
+		float yOffset = std::sin(m_animTimer * 1.5f) * 0.3f; // 1.5fが速さ、0.3fが振幅
+		trans->SetPosition(Vector3(10.f, yOffset+2.f, 30.f));
+	}
+	if (go3)
+	{
+		auto* trans = go3->GetComponent<Transform>();
+		float yOffset = std::sin(m_animTimer * 1.5f) * 0.3f; // 1.5fが速さ、0.3fが振幅
+		trans->SetPosition(Vector3(-15.f, yOffset -15.f,30.f));
+	}
 }
+

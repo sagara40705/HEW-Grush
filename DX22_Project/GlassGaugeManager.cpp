@@ -15,7 +15,7 @@ void GlassGaugeManager::Start()
 {
 	GameObject* player = gameObject->world->FindWithTag(Tag::Player);
 	player_ = player->GetComponent<PlayerState>();
-	GameObject* hammer = player->FindChildWithTag(Tag::Hammer);
+	GameObject* hammer = gameObject->FindWithTag(Tag::Hammer);
 	hammer_ = hammer->GetComponent<Hammer>();
 
 	assert(player_ && hammer_ && "QÆ‚Ì‚Ç‚ê‚©‚ªnullptr‚Å‚·");
@@ -44,6 +44,7 @@ void GlassGaugeManager::Update()
 			isLimitBreak_ = false;
 			limitBreakDurationTimer_ = 0.f;
 			hammer_->LimitBreakEnd();
+			changeLimitBreak = true;
 			DebugLog::Output("ŒÀŠE“Ë”jI—¹");
 		}
 		return;
@@ -62,6 +63,7 @@ void GlassGaugeManager::Update()
 			isLimitBreak_ = true;
 			limitBreakTimer_ = 0.f;
 			hammer_->LimitBreakStart();
+			changeLimitBreak = true;
 			DebugLog::Output("ŒÀŠE“Ë”jŠJn");
 		}
 	}
@@ -73,7 +75,7 @@ void GlassGaugeManager::Update()
 	{
 		// ƒQ[ƒW‚ğŒ¸Š + 0‚ğ‚µ‚½‰ñ‚Á‚½‚çGradeDown
 		dirty_ = true;
-		constexpr float kGaugeDecayValue = 0.01f;
+		constexpr float kGaugeDecayValue = 0.1f;
 		gauge_ -= kGaugeDecayValue;
 		if (gauge_ < 0.f)
 		{
@@ -196,6 +198,12 @@ bool GlassGaugeManager::IsMaxGauge()
 	return false;
 }
 
+bool GlassGaugeManager::GetIsLimitBreak()
+{
+	changeLimitBreak = false;
+	return isLimitBreak_;
+}
+
 #ifdef _DEBUG
 void GlassGaugeManager::DebugCommand()
 {
@@ -210,12 +218,14 @@ void GlassGaugeManager::DebugCommand()
 		isLimitBreak_ = true;
 		player_->LimitBreakOn();
 		hammer_->LimitBreakStart();
+		changeLimitBreak = true;
 	}
 	if (InputKeyboard::GetKeyDown('M'))
 	{
-		isLimitBreak_ = true;
+		isLimitBreak_ = false;
 		player_->LimitBreakOff();
 		hammer_->LimitBreakEnd();
+		changeLimitBreak = true;
 	}
 }
 #endif // DEBUG	
