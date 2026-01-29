@@ -104,12 +104,13 @@ void SelectPlayerControl::UpdateIdle()
         return;
     }
     //キーボード用
-	if (InputKeyboard::GetKeyDown('T'))
-	{
-		// タイトルへ戻る
-		SceneManager::ChangeSceneAsync<SceneTitle>();
-		return;
-	}
+    if (InputKeyboard::GetKeyDown('T') ||
+        InputGamepad::GetButtonDown(XINPUT_GAMEPAD_START))
+    {
+        // タイトルへ戻る
+        SceneManager::ChangeSceneAsync<SceneTitle>();
+        return;
+    }
 }
 
 Direction SelectPlayerControl::InputMove()
@@ -118,6 +119,40 @@ Direction SelectPlayerControl::InputMove()
     if (InputKeyboard::GetKeyDown(VK_RIGHT)) return Direction::Right;
     if (InputKeyboard::GetKeyDown(VK_UP))    return Direction::Up;
     if (InputKeyboard::GetKeyDown(VK_DOWN))  return Direction::Down;
+
+    // ここからパッド（左スティック）
+    const float lx = InputGamepad::GetLStickX();
+    const float ly = InputGamepad::GetLStickY();
+
+    // デッドゾーン（小さなブレを無視）
+    constexpr float dead = 0.35f;
+
+    // 前フレームでスティックがニュートラルだったか（GetKeyDown相当を作るため）
+    static bool wasNeutral = true;
+
+    const bool nowNeutral = (fabsf(lx) < dead) && (fabsf(ly) < dead);
+
+    // ニュートラル -> 倒した瞬間だけ方向を返す
+    if (wasNeutral && !nowNeutral)
+    {
+        // 斜め入力は、倒しが大きい方を優先
+        if (fabsf(lx) > fabsf(ly))
+        {
+            wasNeutral = false;
+            return (lx > 0.0f) ? Direction::Right : Direction::Left;
+        }
+        else
+        {
+            wasNeutral = false;
+            return (ly > 0.0f) ? Direction::Up : Direction::Down;
+        }
+    }
+
+    // ニュートラルに戻ったら、次の入力を受け付ける
+    if (nowNeutral)
+    {
+        wasNeutral = true;
+    }
 
     return Direction::Invalid;
 }
