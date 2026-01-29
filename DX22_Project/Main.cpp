@@ -13,6 +13,7 @@
 #include "LineManager.h"
 #include "SoundManager.h"
 #include "Game.h"
+#include "PrefabSet.h"
 
 
 HRESULT Init(HWND hWnd, UINT width, UINT height)

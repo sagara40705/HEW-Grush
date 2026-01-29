@@ -115,7 +115,7 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Tutorial_Targetlocation); });
 
 	// プレイハブ設定
-	outTasks.emplace_back([this] { RegisterAllPrefabs(); });
+	//outTasks.emplace_back([this] { RegisterAllPrefabs(); });
 
 	// ゲームオブジェクト生成
 	outTasks.emplace_back([this] { CreateManagers(); });

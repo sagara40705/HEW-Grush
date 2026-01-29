@@ -18,6 +18,13 @@ public:
 #include "Scene.h"
 #include "Component.h"
 //#include "BreakUiRenderer.h"
+#include "Prefab.h"
+#include "PrefabSet.h"
+
+
+//‘O•ûéŒ¾
+enum class PrefabId : std::uint8_t;
+
 
 class SceneTitle : public Scene
 {
@@ -41,6 +48,7 @@ private:
     void CreateBreakTexture();
     void CreateTitleManager();
     void UpdateTitleAnimations(); 
+    void CreateObject();
 private:
     float m_animTimer = 0.0f;
 

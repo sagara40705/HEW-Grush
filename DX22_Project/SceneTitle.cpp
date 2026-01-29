@@ -16,12 +16,17 @@ void SceneTitle::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player2); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::SagaraDoll); });
+
 
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Title_BG); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Title_Text); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Title_Logo); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Title_Fadein); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Title_FadeinID); });
+
+	// プレイハブ設定
+	outTasks.emplace_back([this] { RegisterAllPrefabs(); });
 	
 	// 各種オブジェクト生成タスクを追加
 	outTasks.emplace_back([this] { CreateCameraAndPlayer(); });
@@ -31,6 +36,8 @@ void SceneTitle::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { CreateTitleLogo(); });
 	outTasks.emplace_back([this] { CreateBreakTexture(); });
 	outTasks.emplace_back([this] { CreateTitleManager(); });
+	outTasks.emplace_back([this] { CreateObject(); });
+
 	outTasks.emplace_back([this] { SceneManager::CreateFadeAnimations(this); });
 
 	// 最後に Start を流す
@@ -212,4 +219,12 @@ void SceneTitle::UpdateTitleAnimations()
 		float yOffset = std::sin(m_animTimer * 1.5f) * 0.3f; // 1.5fが速さ、0.3fが振幅
 		trans->SetPosition(Vector3(2.f, yOffset, 15.f));
 	}
+	
+}
+
+void SceneTitle::CreateObject()
+{
+	World& w = GetWorld();
+	GameObject* go1 = &Prefab::Instantiate(w, PrefabId::SagaraDoll, Vector3(0.0f, 0.f, 5.f), Vector3(0.f, 0.f, 0.f), Vector3(1.f, 1.f, 1.f));
+
 }
