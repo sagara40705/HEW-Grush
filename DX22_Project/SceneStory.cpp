@@ -7,6 +7,7 @@
 #include "UiSpriteRenderer.h"
 #include "SceneStageSelect.h"
 #include"SceneStory.h"
+#include"InputGamepad.h"
 
 void SceneStory::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 {
@@ -97,15 +98,18 @@ void SceneStory::Update()
     // スライド中は入力を予約しつつスライド更新
     if (m_isSliding)
     {
-        if (InputKeyboard::GetKeyDown(VK_RIGHT)) m_pendingDir = +1;
-        if (InputKeyboard::GetKeyDown(VK_LEFT))  m_pendingDir = -1;
+        if (InputKeyboard::GetKeyDown(VK_RIGHT)
+            ||InputGamepad::GetButtonDown(XINPUT_GAMEPAD_X)) m_pendingDir = +1;
+        if (InputKeyboard::GetKeyDown(VK_LEFT)
+            || InputGamepad::GetButtonDown(XINPUT_GAMEPAD_Y))  m_pendingDir = -1;
 
         UpdateSlide();
         return;
     }
 
     // 右
-    if (InputKeyboard::GetKeyDown(VK_RIGHT))
+    if (InputKeyboard::GetKeyDown(VK_RIGHT)
+        || InputGamepad::GetButtonDown(XINPUT_GAMEPAD_X))
     {
         // 4枚目でさらに右ならステージセレクトへ
         if (m_pageIndex >= 3)
@@ -119,7 +123,8 @@ void SceneStory::Update()
     }
 
     // 左
-    if (InputKeyboard::GetKeyDown(VK_LEFT))
+    if (InputKeyboard::GetKeyDown(VK_LEFT)
+        || InputGamepad::GetButtonDown(XINPUT_GAMEPAD_Y))
     {
         if (m_pageIndex <= 0) return;
 
