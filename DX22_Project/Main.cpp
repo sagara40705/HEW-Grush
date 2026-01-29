@@ -33,6 +33,7 @@ HRESULT Init(HWND hWnd, UINT width, UINT height)
 	SoundManager::Load();
 	// ÉVÅ[Éì
 	Game::Init();
+	RegisterAllPrefabs();
 
 	return hr;
 }

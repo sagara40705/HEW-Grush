@@ -73,7 +73,7 @@ void GlassGaugeManager::Update()
 	{
 		// ƒQ[ƒW‚ğŒ¸Š + 0‚ğ‚µ‚½‰ñ‚Á‚½‚çGradeDown
 		dirty_ = true;
-		constexpr float kGaugeDecayValue = 0.01f;
+		constexpr float kGaugeDecayValue = 0.1f;
 		gauge_ -= kGaugeDecayValue;
 		if (gauge_ < 0.f)
 		{

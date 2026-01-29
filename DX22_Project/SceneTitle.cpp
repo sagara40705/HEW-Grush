@@ -26,7 +26,7 @@ void SceneTitle::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Title_FadeinID); });
 
 	// プレイハブ設定
-	outTasks.emplace_back([this] { RegisterAllPrefabs(); });
+	//outTasks.emplace_back([this] { RegisterAllPrefabs(); });
 	
 	// 各種オブジェクト生成タスクを追加
 	outTasks.emplace_back([this] { CreateCameraAndPlayer(); });
