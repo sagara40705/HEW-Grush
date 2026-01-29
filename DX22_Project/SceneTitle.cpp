@@ -17,7 +17,8 @@ void SceneTitle::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_3); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::SagaraDoll); });
-
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Ufo); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Swing); });
 
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Title_BG); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Title_Text); });
@@ -142,6 +143,16 @@ void SceneTitle::CreateTitleManager()
 	manager.AddComponent<TitleManager>();
 }
 
+void SceneTitle::CreateObject()
+{
+	World& w = GetWorld();
+	go1 = &Prefab::Instantiate(w, PrefabId::SagaraDoll, Vector3(-4.7f, -50.f, 1.f), Vector3(0.f, 45.f, 0.f), Vector3(4.f, 4.f, 4.f));
+	World& u = GetWorld();
+	go2 = &Prefab::Instantiate(u, PrefabId::Ufo, Vector3(-4.7f, 0.f, 1.f), Vector3(0.f, 20.f, -10.f), Vector3(2.f, 2.f, 2.f));
+	World& v = GetWorld();
+	go3 = &Prefab::Instantiate(v, PrefabId::Swing, Vector3(15.f, 0.f, 1.f), Vector3(0.f, -20.f, 10.f), Vector3(3.f, 3.f, 3.f));
+
+}
 void SceneTitle::Update()
 {
 	//if (!m_breakButton) return;
@@ -216,12 +227,24 @@ void SceneTitle::UpdateTitleAnimations()
 		float yOffset = std::sin(m_animTimer * 1.5f) * 0.3f; // 1.5f‚ª‘¬‚³A0.3f‚ªU•
 		trans->SetPosition(Vector3(2.f, yOffset, 15.f));
 	}
-	
+	//lŒ`—h‚ê
+	if (go1)
+	{
+		auto* trans = go1->GetComponent<Transform>();
+		float yOffset = std::sin(m_animTimer * 1.5f) * 0.3f; // 1.5f‚ª‘¬‚³A0.3f‚ªU•
+		trans->SetPosition(Vector3(15.f, yOffset-8.f, 15.f));
+	}
+	if (go2)
+	{
+		auto* trans = go2->GetComponent<Transform>();
+		float yOffset = std::sin(m_animTimer * 1.5f) * 0.3f; // 1.5f‚ª‘¬‚³A0.3f‚ªU•
+		trans->SetPosition(Vector3(10.f, yOffset+2.f, 15.f));
+	}
+	if (go3)
+	{
+		auto* trans = go3->GetComponent<Transform>();
+		float yOffset = std::sin(m_animTimer * 1.5f) * 0.3f; // 1.5f‚ª‘¬‚³A0.3f‚ªU•
+		trans->SetPosition(Vector3(-10.f, yOffset -4.f,10.f));
+	}
 }
 
-void SceneTitle::CreateObject()
-{
-	World& w = GetWorld();
-	GameObject* go1 = &Prefab::Instantiate(w, PrefabId::SagaraDoll, Vector3(0.0f, 0.f, 5.f), Vector3(0.f, 0.f, 0.f), Vector3(1.f, 1.f, 1.f));
-
-}
