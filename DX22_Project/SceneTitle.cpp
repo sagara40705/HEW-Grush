@@ -14,6 +14,8 @@ void SceneTitle::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 			GetWorld().ClearAll();        // 既存の World API に合わせる
 		});
 
+
+	outTasks.emplace_back([this] { ModelManager::Clear(); });	// モデルマネージャー初期化
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_3); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::SagaraDoll); });
