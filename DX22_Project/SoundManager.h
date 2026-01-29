@@ -23,6 +23,8 @@ enum SoundTag {
 	OptionSelectSE,
 	OptionCloseSE,
 	GlassCrackSE,
+	GameFinishSE,
+	ResultGaugeUpSE,
 	Count		//êî
 };
 

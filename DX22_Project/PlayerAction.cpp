@@ -78,6 +78,7 @@ void PlayerAction::InputWantAction()
 	{
 		state_->wantUseAction[ToIndex(ActionId::NormalAttack)] = true;
 		DebugLog::Output("NormalAttack 入力受付");
+		if(state_->canUseAction[ToIndex(ActionId::NormalAttack)])
 		SoundManager::SoundPlay(NomalAttackSE, 1.0f);
 	}
 
@@ -87,7 +88,8 @@ void PlayerAction::InputWantAction()
 	{
 		state_->wantUseAction[ToIndex(ActionId::SpinAttack)] = true;
 		DebugLog::Output("SpinAttack 入力受付");
-		SoundManager::SoundPlay(SoundTag::SpinAttackSE, 1.0f);
+		if (state_->canUseAction[ToIndex(ActionId::SpinAttack)]) 
+			SoundManager::SoundPlay(SoundTag::SpinAttackSE, 1.0f);
 	}
 
 	//==================== DashAttack (Fキー / L1ボタン) =====================
@@ -96,6 +98,7 @@ void PlayerAction::InputWantAction()
 	{
 		state_->wantUseAction[ToIndex(ActionId::DashAttack)] = true;
 		DebugLog::Output("DashAttack 入力受付");
+		if(state_->canUseAction[ToIndex(ActionId::DashAttack)])
 		SoundManager::SoundPlay(SoundTag::DashAttackSE, 1.0f);
 	}
 }

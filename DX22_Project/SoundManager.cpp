@@ -27,6 +27,8 @@ void SoundManager::Load()
 	s_sounds[SoundTag::OptionSelectSE]		= LoadSound("Assets/Sound/glassbreak2.mp3", false);
 	s_sounds[SoundTag::OptionCloseSE]		= LoadSound("Assets/Sound/maou_se_system07.mp3", false);
 	s_sounds[SoundTag::GlassCrackSE]		= LoadSound("Assets/Sound/glasscrack.mp3", false);
+	s_sounds[SoundTag::GameFinishSE]		= LoadSound("Assets/Sound/Finish.wav", false);
+	s_sounds[SoundTag::ResultGaugeUpSE]		= LoadSound("Assets/Sound/gage_up2.wav", false);
 }
 
 void SoundManager::Unload()
