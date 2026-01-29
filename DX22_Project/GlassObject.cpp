@@ -29,6 +29,7 @@ void GlassObject::Start()
 {
 	// ゲージマネージャーの参照を取得
 	GameObject* gaugeMgr = gameObject->world->FindWithTag(Tag::GaugeManager);
+	if (!gaugeMgr) return;
 	gaude_ = gaugeMgr->GetComponent<GlassGaugeManager>();
 
 	// スコアマネージャーの参照を取得

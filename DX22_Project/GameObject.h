@@ -25,12 +25,14 @@ enum class Tag : std::uint8_t
     CamreraPivot,
     MainCamera,
     Player,
+	HammerPivot,
     Hammer,
     Enemy,
     Glass,
     ActionUI,
     StageMap,
     ResultRankUI,
+    StageLevelUI,
     // 必要に応じて追加
 };
 
@@ -169,6 +171,7 @@ T* GameObject::GetComponent() noexcept
     if (it == components.end()) return nullptr;
     return static_cast<T*>(it->second.get());
 }
+
 
 //=========================================================
 // Component 側テンプレートの実装

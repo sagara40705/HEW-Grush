@@ -28,10 +28,10 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     //// StageSelect 16～21 (6)
     "Assets/Texture/StageSelect/StageSelect_BG.png",            //StageSelect_BG = 16,
     "Assets/Texture/StageSelect/StageSelect_PlayerIcon.png",    //StageSelect_PlayerIcon = 17, 
-    "",//SpareSlot_05 = 18,
-    "",//SpareSlot_06 = 19,
-    "",//SpareSlot_07 = 20,
-    "",//SpareSlot_08 = 21,
+    "Assets/Texture/StageSelect/StageSelect_RankS.png",//SpareSlot_05 = 18,
+    "Assets/Texture/StageSelect/StageSelect_RankA.png",//SpareSlot_06 = 19,
+    "Assets/Texture/StageSelect/StageSelect_RankB.png",//SpareSlot_07 = 20,
+    "Assets/Texture/StageSelect/StageSelect_RankC.png",//SpareSlot_08 = 21,
 
     //// Tutorial 22～27 (6)
     "Assets/Texture/Tutorial/Tutorial_UI_Task.png",         //Tutorial_UI_Task = 22,
@@ -115,7 +115,16 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     "Assets/Texture/option/GS/GS_retry_Frame_br.png",           //88
     "Assets/Texture/option/GS/GS_back_to_stage_Frame_br.png",   //89
     "Assets/Texture/option/GS/instructions.png",                //90
-    "Assets/Texture/option/GS/GS_retry_Frame_Back.png"          //91
+    "Assets/Texture/option/GS/GS_retry_Frame_Back.png",          //91
+
+
+	//ステージ選択難易度
+    "Assets/Texture/StageSelect/stage_lv1.png",
+    "Assets/Texture/StageSelect/stage_lv2.png",
+    "Assets/Texture/StageSelect/stage_lv3.png",
+    "Assets/Texture/StageSelect/StageLevel1.png",
+    "Assets/Texture/StageSelect/StageLevel2.png",
+
 };
 
 // 配列のデフォルトパスを使用して登録

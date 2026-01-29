@@ -6,8 +6,7 @@
 
 enum class ModelTag : uint8_t
 {
-	Karubi,
-
+	/*0-7*/
 	Swing,
 	Akican,
 	Desktop,
@@ -17,25 +16,25 @@ enum class ModelTag : uint8_t
 	Ningixyou,
 	SagaraDoll,
 
+	/*8-11*/
 	Benti,
 	Aircon,
 	Jihanki,
 	Reizouko,
 
+	/*12-14*/
 	Ufo,
 	Eiseii,
 	Star,
 
-	ProtPlay,
-	Player,
-	Player2,
+	Player, // 15
 
-	Hammer,
+	/*16-18*/
 	Hammer_1,
 	Hammer_2,
 	Hammer_3,
 
-	Fence,
+	Fence, //19
 
 	Count
 };

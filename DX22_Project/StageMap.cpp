@@ -1,6 +1,7 @@
 #include "StageMap.h"
 #include "GameState.h"
-
+#include "GameObject.h"
+#include "UiSpriteRenderer.h"
 namespace
 {
 	// ポイントごとに位置
@@ -18,13 +19,13 @@ namespace
 void StageMap::Start()
 {
 	//ステージポイントの初期化
-
 	//Stage1
 	stagePoints[ToIndex(StageId::Stage1)].stageId = StageId::Stage1;
 	stagePoints[ToIndex(StageId::Stage1)].position = stagePositions[ToIndex(StageId::Stage1)];
 	ConnectedStage stage1To2 = { Direction::Right,StageId::Stage2 };
 	stagePoints[ToIndex(StageId::Stage1)].connectedStages.push_back(stage1To2);
-
+	
+	
 	//Stage2
 	stagePoints[ToIndex(StageId::Stage2)].stageId = StageId::Stage2;
 	stagePoints[ToIndex(StageId::Stage2)].position = stagePositions[ToIndex(StageId::Stage2)];
@@ -66,4 +67,10 @@ void StageMap::Start()
 
 void StageMap::OnDestroy()
 {
+}
+
+void StageMap::Update()
+{
+	
+	
 }

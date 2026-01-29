@@ -4,6 +4,7 @@
 #include "SceneManager.h"
 #include "InputKeyboard.h"
 #include "SceneOption.h"
+#include "stageLevel.h"
 
 void SceneStageSelect::Load()
 {
@@ -23,18 +24,34 @@ void SceneStageSelect::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 		});
 
 	// モデルロード
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player2); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_1); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_2); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_3); });
+
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Swing); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Gomibukuro); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Benti); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Aircon); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Ufo); });
+
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Fence); });
 
 	// テクスチャーロード	
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::StageSelect_BG); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::StageSelect_PlayerIcon); });
-
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::stageLv1); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::stageLv2); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::stageLv3); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::stagelevel_Easy); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::stagelevel_Normal); });
 	// ゲームオブジェクト生成
 	outTasks.emplace_back([this] { CreateCanvas(); });
 	outTasks.emplace_back([this] { CreateStageMap(); });
 	outTasks.emplace_back([this] { CreateCamera(); });
 	outTasks.emplace_back([this] { CreatePlayer(); });
 	outTasks.emplace_back([this] { CreateGround(); });
+	outTasks.emplace_back([this] { CreateStageLevelUI(); });
 	outTasks.emplace_back([this] { SceneManager::CreateFadeAnimations(this); });
 
 	// 最後に Start を流す
@@ -75,9 +92,10 @@ void SceneStageSelect::CreatePlayer()
 
 	GameObject& playerObj = world.CreateGameObject(Vector3(-5.f, 0.f, 0.f));
 	playerObj.SetTag(Tag::Player);
-	playerObj.AddComponent<MeshFilter>(ModelTag::Player2);
+	playerObj.AddComponent<MeshFilter>(ModelTag::Player);
 	playerObj.AddComponent<MeshRenderer>();
 	playerObj.AddComponent<SelectPlayerControl>();
+	
 }
 
 void SceneStageSelect::CreateGround()
@@ -86,6 +104,15 @@ void SceneStageSelect::CreateGround()
 
 	GameObject& groundObj = world.CreateGameObject(Vector3::zero(), Vector3(90.f, 0.f, 0.f));
 	groundObj.AddComponent<Sprite3DRenderer>(TextureTag::StageSelect_BG, Vector2::zero(), Vector2(16.f, 9.f));
+}
+
+void SceneStageSelect::CreateStageLevelUI()
+{
+	World& world = GetWorld();
+
+	GameObject& stageLevelUIObj = world.CreateGameObject();
+	stageLevelUIObj.SetTag(Tag::StageLevelUI);
+	stageLevelUIObj.AddComponent<stageLevel>();
 }
 
 
@@ -98,10 +125,6 @@ void SceneStageSelect::Unload()
 
 void SceneStageSelect::Update()
 {
-	if (InputKeyboard::GetKeyDown('O'))
-	{
-		SceneManager::PushScene<SceneOption>();
-	}
 }
 
 void SceneStageSelect::Draw()
