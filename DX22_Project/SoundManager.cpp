@@ -13,9 +13,9 @@ void SoundManager::Load()
 	s_sounds[SoundTag::Level1GlassBreakSE]  = LoadSound("Assets/Sound/glassbreak1.mp3", false);
 	s_sounds[SoundTag::Level2GlassBreakSE]  = LoadSound("Assets/Sound/glassbreak6.wav", false);
 	s_sounds[SoundTag::Level3GlassBreakSE]  = LoadSound("Assets/Sound/glassbreak5.mp3", false);
-	s_sounds[SoundTag::GradeUpSE]			= LoadSound("Assets/Sound/gauge_up.wav", false);
-	s_sounds[SoundTag::GradeDownSE]			= LoadSound("Assets/Sound/gauge_down_v2.wav", false);
-	s_sounds[SoundTag::GaugeDownSE]			= LoadSound("Assets/Sound/gauge_attention.wav", true);
+	s_sounds[SoundTag::GradeUpSE]			= LoadSound("Assets/Sound/gauge_up_Side.wav", false);
+	s_sounds[SoundTag::GradeDownSE]			= LoadSound("Assets/Sound/gauge_down_v2_Side.wav", false);
+	s_sounds[SoundTag::GaugeDownSE]			= LoadSound("Assets/Sound/gauge_attention_Side.wav", true);
 	s_sounds[SoundTag::WalkSE]				= LoadSound("Assets/Sound/walk.mp3", true);
 	s_sounds[SoundTag::TitleBGM]			= LoadSound("Assets/Sound/maou_bgm_cyber15.mp3",true);
 	s_sounds[SoundTag::TitleStartSE]		= LoadSound("Assets/Sound/glassbreak4.mp3",false);

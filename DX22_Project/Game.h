@@ -13,7 +13,7 @@ class Game
 {
 private:
     static std::unique_ptr<GameState> s_state;
-//	static bool CheckTitleSound;
+	static bool CheckTitleSound;
 public:
     static GameState* GetState() { return s_state.get(); }
     static void OriginalInit();

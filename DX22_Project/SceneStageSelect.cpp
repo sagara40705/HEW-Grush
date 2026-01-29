@@ -4,6 +4,7 @@
 #include "SceneManager.h"
 #include "InputKeyboard.h"
 #include "SceneOption.h"
+#include "SoundManager.h"
 
 void SceneStageSelect::Load()
 {
@@ -42,6 +43,8 @@ void SceneStageSelect::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 		{
 			GetWorld().Start();
 		});
+
+	SoundManager::SoundPlay(StageSelectBGM,0.5f);
 }
 
 void SceneStageSelect::CreateCanvas()
@@ -93,6 +96,7 @@ void SceneStageSelect::Unload()
 {
 	SceneManager::ReleaseFadeAnimations();
 	TextureManager::Clear();
+	SoundManager::StopSound(StageSelectBGM);
 }
 
 

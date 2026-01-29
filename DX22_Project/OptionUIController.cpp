@@ -6,6 +6,7 @@
 #include "SceneGame.h"
 #include "SceneStageSelect.h"
 #include "SceneTitle.h"
+#include "SoundManager.h"
 
 void OptionUIController::SetOptionRoot(GameObject* root)
 {
@@ -75,19 +76,28 @@ void OptionUIController::Update()
     // normal ESC toggles option open/close
     if (InputKeyboard::GetKeyDown(VK_ESCAPE))
     {
-        if (!m_isOpen) Open();
-        else           Close();
+        if (!m_isOpen)
+        {
+            Open();
+            SoundManager::SoundPlay(OptionOpenSE, 0.8f);
+        }
+        else
+        {
+            Close();
+            SoundManager::SoundPlay(OptionCloseSE, 0.8f);
+        }
         return;
     }
 
     if (!m_isOpen) return;
 
-    if (InputKeyboard::GetKeyDown(VK_UP)) { MoveUp(); return; }
-    if (InputKeyboard::GetKeyDown(VK_DOWN)) { MoveDown(); return; }
+    if (InputKeyboard::GetKeyDown(VK_UP)) { MoveUp(); SoundManager::SoundPlay(OptionMoveSE, 0.8f); return; }
+    if (InputKeyboard::GetKeyDown(VK_DOWN)) { MoveDown(); SoundManager::SoundPlay(OptionMoveSE, 0.8f); return; }
 
     if (InputKeyboard::GetKeyDown(VK_RETURN))
     {
         OnEnter();
+        SoundManager::SoundPlay(OptionSelectSE, 0.8f);
         return;
     }
 }

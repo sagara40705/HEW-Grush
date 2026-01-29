@@ -92,7 +92,7 @@ void GlassGaugeManager::Update()
 			isGaugeDecaying = true;
 			gaugeDecayDelayTimer = 0.f;
 			DebugLog::Output("ゲージ減衰開始");
-			SoundManager::SoundPlay(SoundTag::GaugeDownSE, 1.0f);
+			SoundManager::SoundPlay(SoundTag::GaugeDownSE, 5.0f);
 		}
 	}
 }
@@ -148,7 +148,7 @@ void GlassGaugeManager::GradeUp()
 	}
 
 	hammer_->GradeUp();
-	SoundManager::SoundPlay(SoundTag::GradeUpSE, 1.0f);
+	SoundManager::SoundPlay(SoundTag::GradeUpSE, 5.0f);
 
 	constexpr float kWhenGradeUpMinGauge = 5;
 	gauge_ = kWhenGradeUpMinGauge;
@@ -161,7 +161,7 @@ void GlassGaugeManager::GradeDown()
 		isGaugeEmpty = true;
 		gauge_ = 0.f;
 		DebugLog::Output("GlassGauge, is Empty");
-		SoundManager::SoundPlay(SoundTag::GradeDownSE ,1.0f);
+		SoundManager::SoundPlay(SoundTag::GradeDownSE ,5.0f);
 		return;
 	}
 
