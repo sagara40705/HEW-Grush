@@ -6,6 +6,7 @@
 #include "SceneGame.h"
 #include "SceneStageSelect.h"
 #include "SceneTitle.h"
+#include"InputGamepad.h"
 
 void OptionUIController::SetOptionRoot(GameObject* root)
 {
@@ -52,11 +53,11 @@ void OptionUIController::Update()
     if (m_isDelayActive)
     {
         if (!m_delayTimer.IsRunning()) return;
-        if (m_delayTimer.ElapsedRawSeconds() >= kDelayDuration) 
+        if (m_delayTimer.ElapsedRawSeconds() >= kDelayDuration)
         {
-			m_isDelayActive = false;
-			m_delayTimer.Stop();
-			DebugLog::Output("OptionUI: Triggering operation after delay");
+            m_isDelayActive = false;
+            m_delayTimer.Stop();
+            DebugLog::Output("OptionUI: Triggering operation after delay");
             TriggerOperation();
         }
     }
@@ -64,7 +65,8 @@ void OptionUIController::Update()
     // modal screen: ESC closes only the modal (do not close option)
     if (IsModalShowing())
     {
-        if (InputKeyboard::GetKeyDown(VK_RETURN))
+        if (InputKeyboard::GetKeyDown(VK_RETURN)
+            || InputGamepad::GetButtonDown(XINPUT_GAMEPAD_X))
         {
             m_isPressedVisual = false; // back to normal menu
             ApplyVisual();
@@ -73,7 +75,8 @@ void OptionUIController::Update()
     }
 
     // normal ESC toggles option open/close
-    if (InputKeyboard::GetKeyDown(VK_ESCAPE))
+    if (InputKeyboard::GetKeyDown(VK_ESCAPE)
+        || InputGamepad::GetButtonDown(XINPUT_GAMEPAD_START))
     {
         if (!m_isOpen) Open();
         else           Close();
@@ -82,14 +85,40 @@ void OptionUIController::Update()
 
     if (!m_isOpen) return;
 
-    if (InputKeyboard::GetKeyDown(VK_UP)) { MoveUp(); return; }
+    // --- Move (Keyboard or Left Stick) ---
+    if (InputKeyboard::GetKeyDown(VK_UP)) { MoveUp();   return; }
     if (InputKeyboard::GetKeyDown(VK_DOWN)) { MoveDown(); return; }
 
-    if (InputKeyboard::GetKeyDown(VK_RETURN))
+    // Left stick: Up/Down (edge trigger)
+
+    const float ly = InputGamepad::GetLStickY();
+    constexpr float dead = 0.35f;
+
+    // ÉjÉÖÅ[ÉgÉâÉã -> ì|ÇµÇΩèuä‘ÇæÇØîΩâûÅiòAë±ñ\î≠ñhé~Åj
+    static bool wasNeutral = true;
+
+    const bool nowNeutral = (fabsf(ly) < dead);
+
+    if (wasNeutral && !nowNeutral)
+    {
+        wasNeutral = false;
+
+        if (ly > 0.0f) { MoveUp();   return; }
+        else { MoveDown(); return; }
+    }
+
+    if (nowNeutral)
+    {
+        wasNeutral = true;
+    }
+
+    if (InputKeyboard::GetKeyDown(VK_RETURN) ||
+        InputGamepad::GetButtonDown(XINPUT_GAMEPAD_START))
     {
         OnEnter();
         return;
     }
+
 }
 
 void OptionUIController::Open()

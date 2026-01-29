@@ -44,7 +44,8 @@ bool TitleManager::InputNext()
 {
 	if (inputNext) return false;
 
-	return (InputKeyboard::GetKeyDown(VK_SPACE) || InputGamepad::GetButtonDown(XINPUT_GAMEPAD_X));
+	return (InputKeyboard::GetKeyDown(VK_SPACE) ||
+		InputGamepad::GetButtonDown(XINPUT_GAMEPAD_X));
 }
 
 void TitleManager::AnimationTimer()

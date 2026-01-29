@@ -14,6 +14,7 @@
 #include "SceneStageSelect.h"
 #include "SceneResult.h"
 #include "SceneOption.h"
+#include"InputGamepad.h"
 
 void SceneGame::Load()
 {
@@ -595,7 +596,8 @@ void SceneGame::Update()
 	}
 
 	// ƒIƒvƒVƒ‡ƒ“‰æ–Ê‚Ö
-	if (InputKeyboard::GetKeyDown('O'))
+	if (InputKeyboard::GetKeyDown('O') ||
+		InputGamepad::GetButtonDown(XINPUT_GAMEPAD_START))
 	{
 		SceneManager::PushScene<SceneOption>();
 	}
