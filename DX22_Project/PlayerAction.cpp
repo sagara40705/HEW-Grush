@@ -219,6 +219,9 @@ void PlayerAction::UpdateSpinAttack()
 // ダミー実装
 void PlayerAction::UpdateDashAttack()
 {
+	const float ratio = state_->actionTimer[ToIndex(ActionId::DashAttack)] / kActionTime[ToIndex(ActionId::DashAttack)];
+	hammer_->UpdateDashAttack(ratio);
+
 	// Rigidbody を取得（なければ何もしない）
 	auto* rb = gameObject->GetComponent<Rigidbody>();
 	if (!rb) return;

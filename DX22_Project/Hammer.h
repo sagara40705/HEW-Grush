@@ -33,11 +33,11 @@ class PlayerAnimation;
 class Hammer : public MonoBehaviour, public TriggerListener
 {
 public:
-	//static constexpr Vector3 BasePos = {-0.3f, -0.3f, 0.6f};
-	//static constexpr Vector3 BaseRota = { 0.f, 45.f, -30.f };
-	static constexpr Vector3 BasePos = { -1.2f, 1.0f, -1.0f };
-	//static constexpr Vector3 BaseRota = { 0.f, -45.f, -45.f };
-	static constexpr Vector3 BaseRota = { -75.f, -60.f, -5.f };
+	static constexpr Vector3 BasePos = {-0.3f, -0.3f, 0.6f};
+	static constexpr Vector3 BaseRota = { 0.f, 45.f, -30.f };
+	//static constexpr Vector3 BasePos = { -0.5f, 1.0f, -2.0f };
+	//static constexpr Vector3 BaseRota = { -90.f, -90.f, -45.f };
+	//static constexpr Vector3 BaseRota = { -75.f, -90.f, -5.f };
 private:
 	HammerGrade grade_ = HammerGrade::Grade_1;
 	bool isLimitBreak_ = false;

@@ -12,6 +12,7 @@
 #include "HammerEffects.h"
 #include "GlassObject.h"
 #include "DebugLog.h"
+#include <cmath>
 
 void Hammer::Start()
 { 
@@ -40,7 +41,7 @@ void Hammer::Start()
 	GameObject* pivot = gameObject->FindWithTag(Tag::HammerPivot);
 	pivotTf_ = pivot->GetComponent<Transform>();
 
-	SetModel();
+	//SetModel();
 }
 
 void Hammer::Update()
@@ -146,7 +147,19 @@ void Hammer::UpdateSpinAttack()
 
 void Hammer::UpdateDashAttack(float r)
 {
+	constexpr Vector3  PIVOT_ROTATE_START = { 45.f, 0.f, 0.f };
+	constexpr Vector3  PIVOT_ROTATE_END =	{  0.f, 0.f, 0.f };
 
+	constexpr Vector3 BASE_POS = { -0.5f,   1.f,  -2.f};
+	constexpr Vector3 BASE_ROT = { -90.f, -90.f, -45.f };
+
+	float s = std::sinf(r * 20.f);
+	float a = std::abs(s);
+	const Vector3 PIVOT_ROTATE = Vector3::Lerp(PIVOT_ROTATE_START, PIVOT_ROTATE_END, a);
+
+	pivotTf_->SetRotation(PIVOT_ROTATE);
+	tf_->SetPosition(BASE_POS);
+	tf_->SetRotation(BASE_ROT);
 }
 
 void Hammer::Attack(GameObject* go)

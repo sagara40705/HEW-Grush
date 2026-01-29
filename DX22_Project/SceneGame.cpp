@@ -213,7 +213,7 @@ void SceneGame::CreateCameraAndPlayer()
 
 	GameObject& hummer = hammerPivot.CreateChild(Hammer::BasePos, Hammer::BaseRota, Vector3(0.2f, 0.2f, 0.2f));
 	hummer.SetTag(Tag::Hammer);
-	hummer.AddComponent<MeshFilter>(ModelTag::Hammer_1);
+	hummer.AddComponent<MeshFilter>(ModelTag::Hammer_2);
 	hummer.AddComponent<MeshRenderer>();
 	hummer.AddComponent<BoxCollider>(false, Vector3(-3.f, 2.f, -3.f), Vector3(5.f, 5.f, 2.f));
 	hummer.AddComponent<Hammer>();

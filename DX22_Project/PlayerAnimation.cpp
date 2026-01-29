@@ -189,7 +189,7 @@ void PlayerAnimation::CheckDashAttackAnime()
 		const float t = anime_->GetCurrentAnimeTime();
 
 		//アニメーション終了したら待機アニメーションへ
-		if (t > 2.5)
+		if (t > 3.0)
 		{
 			currentType_ = Type::Move;
 			anime_->Play(animation_[Type::Move], false, 1.f);
@@ -203,7 +203,7 @@ void PlayerAnimation::CheckDashAttackAnime()
 		{
 			currentType_ = Type::DashAttack;
 			anime_->Play(animation_[Type::DashAttack], false, 1.0f);
-			anime_->SetTimeSeconds(1.0f);
+			anime_->SetTimeSeconds(1.5f);
 		}
 	}
 }
