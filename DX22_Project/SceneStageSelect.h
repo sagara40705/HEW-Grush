@@ -18,6 +18,7 @@ private:
     void CreatePlayer();
     void CreateGround();
 	void CreateStageLevelUI();
+	void CreateStageImageUI();
 public:
     void Update() override;
     void Draw() override;

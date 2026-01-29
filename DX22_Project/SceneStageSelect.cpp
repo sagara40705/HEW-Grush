@@ -5,6 +5,7 @@
 #include "InputKeyboard.h"
 #include "SceneOption.h"
 #include "stageLevel.h"
+#include "StageSentaku.h"
 
 void SceneStageSelect::Load()
 {
@@ -37,7 +38,7 @@ void SceneStageSelect::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Fence); });
 
-	// テクスチャーロード	
+	// テクスチャーロード	 
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::StageSelect_BG); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::StageSelect_PlayerIcon); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::stageLv1); });
@@ -45,6 +46,15 @@ void SceneStageSelect::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::stageLv3); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::stagelevel_Easy); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::stagelevel_Normal); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Stagelevel_Hard_a); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Stagelevel_Hard_b); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Stagelevel_Hard_c); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::StageImage); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Number); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Number2); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Number3); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::bou); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::bou2); });
 	// ゲームオブジェクト生成
 	outTasks.emplace_back([this] { CreateCanvas(); });
 	outTasks.emplace_back([this] { CreateStageMap(); });
@@ -52,6 +62,7 @@ void SceneStageSelect::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { CreatePlayer(); });
 	outTasks.emplace_back([this] { CreateGround(); });
 	outTasks.emplace_back([this] { CreateStageLevelUI(); });
+	outTasks.emplace_back([this] { CreateStageImageUI(); });
 	outTasks.emplace_back([this] { SceneManager::CreateFadeAnimations(this); });
 
 	// 最後に Start を流す
@@ -92,6 +103,7 @@ void SceneStageSelect::CreatePlayer()
 
 	GameObject& playerObj = world.CreateGameObject(Vector3(-5.f, 0.f, 0.f));
 	playerObj.SetTag(Tag::Player);
+
 	playerObj.AddComponent<MeshFilter>(ModelTag::Player);
 	playerObj.AddComponent<MeshRenderer>();
 	playerObj.AddComponent<SelectPlayerControl>();
@@ -113,6 +125,15 @@ void SceneStageSelect::CreateStageLevelUI()
 	GameObject& stageLevelUIObj = world.CreateGameObject();
 	stageLevelUIObj.SetTag(Tag::StageLevelUI);
 	stageLevelUIObj.AddComponent<stageLevel>();
+}
+
+void SceneStageSelect::CreateStageImageUI()
+{
+	World& world = GetWorld();
+
+	GameObject& stageImageUIObj = world.CreateGameObject();
+	stageImageUIObj.SetTag(Tag::StagesenntakuUI);
+	stageImageUIObj.AddComponent<StageSentaku>();
 }
 
 

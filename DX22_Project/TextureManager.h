@@ -123,7 +123,15 @@ enum class TextureTag : uint8_t
 	stageLv3 = 94,
 	stagelevel_Easy = 95,
 	stagelevel_Normal = 96,
-
+	Stagelevel_Hard_a = 97,
+	Stagelevel_Hard_b = 98,
+    Stagelevel_Hard_c = 99,
+    StageImage = 100,
+	bou = 101,
+	Number = 102,
+	Number2 = 103,
+	Number3 = 104,
+	bou2 = 105,
     Count,
 };
 

@@ -3,6 +3,8 @@
 #include "TextureManager.h"
 //#include "StagePoint.h"
 #include <array>
+
+
 class stageLevel : public MonoBehaviour
 {
 public:
@@ -12,5 +14,16 @@ public:
 	UiSpriteRenderer* level = nullptr;
 	UiSpriteRenderer* StageLevel2 = nullptr;
 	UiSpriteRenderer* level2 = nullptr;
+	UiSpriteRenderer* StageLevel3_a = nullptr;
+	UiSpriteRenderer* StageLevel3_b = nullptr;
+	UiSpriteRenderer* StageLevel3_c = nullptr;
+	UiSpriteRenderer* level3_a = nullptr;
+	UiSpriteRenderer* level3_b = nullptr;
+	UiSpriteRenderer* level3_c = nullptr;
+
+	UiSpriteRenderer* Image = nullptr;
+
+
 };
+	
 

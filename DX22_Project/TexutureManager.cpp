@@ -26,7 +26,7 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     "",//SpareSlot_04 = 15,
 
     //// StageSelect 16Å`21 (6)
-    "Assets/Texture/StageSelect/StageSelect_BG.png",            //StageSelect_BG = 16,
+    "Assets/Texture/StageSelect/Image.jpg",            //StageSelect_BG = 16,
     "Assets/Texture/StageSelect/StageSelect_PlayerIcon.png",    //StageSelect_PlayerIcon = 17, 
     "Assets/Texture/StageSelect/StageSelect_RankS.png",//SpareSlot_05 = 18,
     "Assets/Texture/StageSelect/StageSelect_RankA.png",//SpareSlot_06 = 19,
@@ -124,6 +124,15 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     "Assets/Texture/StageSelect/stage_lv3.png",
     "Assets/Texture/StageSelect/StageLevel1.png",
     "Assets/Texture/StageSelect/StageLevel2.png",
+    "Assets/Texture/StageSelect/StageLevel3_a.png",
+    "Assets/Texture/StageSelect/StageLevel3_b.png",
+    "Assets/Texture/StageSelect/StageLevel3_c.png",
+    "Assets/Texture/StageSelect/Image.jpg",
+    "Assets/Texture/StageSelect/bou.png",
+    "Assets/Texture/StageSelect/Number.png",
+    "Assets/Texture/StageSelect/Number2.png",
+    "Assets/Texture/StageSelect/Number3.png",
+    "Assets/Texture/StageSelect/bou2.png",
 
 };
 
