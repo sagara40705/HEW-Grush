@@ -6,6 +6,7 @@
 #include "SkyDomeShader.h"
 #include <cstdint>
 #include <string>
+#include "Texture.h"
 
 //‘O•ûéŒ¾
 enum class PrefabId : std::uint8_t;
@@ -53,6 +54,8 @@ private:
 	SkyDomeShader m_skyShader; 
 	SkyDomeMesh   m_skyMesh; 
 	Texture* m_pSkyTex = nullptr;
+private:
+	RenderTarget* m_sceneColorRT = nullptr;
 };
 
 #endif // __SCENE_GAME_H__

@@ -10,7 +10,58 @@
 #include <algorithm>
 #include <vector>
 #include "Sprite3DRenderer.h" 
+#include "MeshRenderer.h"
+#include "ShaderList.h"
 
+// scene color RT holder
+inline RenderTarget*& GetSceneColorRTRef()
+{
+    static RenderTarget* s_sceneColorRT = nullptr;
+    return s_sceneColorRT;
+}
+
+inline void SetSceneColorRT(RenderTarget* rt)
+{
+    GetSceneColorRTRef() = rt;
+}
+
+// backbuffer -> sceneRT copy
+inline void CopyBackBufferToSceneRT(RenderTarget* sceneRT)
+{
+    if (!sceneRT) return;
+
+    ID3D11DeviceContext* ctx = GetContext();
+    IDXGISwapChain* sc = GetSwapChain();
+    if (!ctx || !sc) return;
+
+    // backbuffer resource
+    ID3D11Texture2D* backTex = nullptr;
+    HRESULT hr = sc->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&backTex);
+    if (FAILED(hr) || !backTex) return;
+
+    // sceneRT must have SRV (Texture::GetResource())
+    ID3D11ShaderResourceView* srv = sceneRT->GetResource();
+    if (!srv)
+    {
+        backTex->Release();
+        return;
+    }
+
+    // SRV -> underlying resource
+    ID3D11Resource* dstRes = nullptr;
+    srv->GetResource(&dstRes);
+    if (!dstRes)
+    {
+        backTex->Release();
+        return;
+    }
+
+    // copy: backbuffer -> sceneRT texture
+    ctx->CopyResource(dstRes, backTex);
+
+    dstRes->Release();
+    backTex->Release();
+}
 
 inline void Render(const World& w)
 {
@@ -26,6 +77,11 @@ inline void Render(const World& w)
 	SetCullingMode(D3D11_CULL_NONE);
 
     std::vector<Sprite3DRenderer*> transparentSprites;
+
+    //=======================
+    //追加
+    //=======================
+    std::vector<MeshRenderer*> glassMeshes; // add
 
     for (auto* r : w.GetRenderers())
     {
@@ -43,6 +99,16 @@ inline void Render(const World& w)
         GameObject* go = c->gameObject;
         if (!go || !go->active) continue;
         if (isPending(go->id))  continue;
+
+        // add: glass mesh is rendered later (needs sceneTex)
+        if (auto* mr = dynamic_cast<MeshRenderer*>(r))
+        {
+            if (mr->psKind == ShaderList::PS_GLASS || mr->psKind == ShaderList::PS_GLASS_SHARD)
+            {
+                glassMeshes.push_back(mr);
+                continue;
+            }
+        }
 
         r->Render();
     }
@@ -111,9 +177,38 @@ inline void Render(const World& w)
         ui->Render();
     }
 
+    // add: copy backbuffer -> sceneRT for refraction sampling
+    RenderTarget* sceneRT = GetSceneColorRTRef();
+    RenderTarget* bb = GetDefaultRTV();
+    if (sceneRT && bb)
+    {
+        CopyBackBufferToSceneRT(sceneRT);
+
+        // set refraction inputs
+        ShaderList::SetGlassSceneTexture(sceneRT);
+
+        const float sw = (float)bb->GetWidth();
+        const float sh = (float)bb->GetHeight();
+        ShaderList::SetGlassScreenParam(sw, sh, 50.0f, 0.0f);
+    }
+
+    SetDepthTest(true); // これを追加
+
+    // add: render glass after sceneRT is ready
+    for (auto* mr : glassMeshes)
+    {
+        if (!mr) continue;
+
+        auto* c = static_cast<Component*>(mr);
+        if (!c->IsEnabled()) continue;
+        GameObject* go = c->gameObject;
+        if (!go || !go->active) continue;
+        if (isPending(go->id))  continue;
+
+        mr->Render();
+    }
+
 }
-
-
 
 /*
 inline void Render(const World& w)

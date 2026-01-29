@@ -14,6 +14,9 @@
 #include "SceneStageSelect.h"
 #include "SceneResult.h"
 #include "SceneOption.h"
+#include "RenderSystem.h"
+#include "DirectX.h"
+
 
 void SceneGame::Load()
 {
@@ -28,6 +31,8 @@ void SceneGame::Unload()
 	SceneManager::ReleaseFadeAnimations();
 	TextureManager::Clear();
 	ModelManager::Clear();
+	SetSceneColorRT(nullptr);
+	SAFE_DELETE(m_sceneColorRT);
 }
 
 void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
@@ -138,6 +143,34 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 
 	outTasks.emplace_back([this] { SceneManager::CreateFadeAnimations(this); });
 
+	outTasks.emplace_back([this]
+		{
+			// SceneColorRT (屈折用に画面をコピーする先) を作る
+			if (m_sceneColorRT)
+			{
+				return;
+			}
+
+			RenderTarget* bb = GetDefaultRTV();
+			if (!bb)
+			{
+				return;
+			}
+
+			m_sceneColorRT = new RenderTarget();
+
+			// ここは「CreateFromScreen」ではなく「Create」を使う（SRV付きのRTを作るため）
+			HRESULT hr = m_sceneColorRT->Create(DXGI_FORMAT_R8G8B8A8_UNORM, bb->GetWidth(), bb->GetHeight());
+			if (FAILED(hr) || m_sceneColorRT->GetView() == nullptr || m_sceneColorRT->GetResource() == nullptr)
+			{
+				SAFE_DELETE(m_sceneColorRT);
+				SetSceneColorRT(nullptr);
+				return;
+			}
+
+			// RenderSystem.h の保持領域へ登録
+			SetSceneColorRT(m_sceneColorRT);
+		});
 
 	// 最後に Start を流す
 	outTasks.emplace_back([this] 
