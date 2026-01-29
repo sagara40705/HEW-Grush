@@ -34,35 +34,57 @@ inline void CopyBackBufferToSceneRT(RenderTarget* sceneRT)
     IDXGISwapChain* sc = GetSwapChain();
     if (!ctx || !sc) return;
 
-    // backbuffer resource
     ID3D11Texture2D* backTex = nullptr;
     HRESULT hr = sc->GetBuffer(0, __uuidof(ID3D11Texture2D), (void**)&backTex);
     if (FAILED(hr) || !backTex) return;
 
-    // sceneRT must have SRV (Texture::GetResource())
-    ID3D11ShaderResourceView* srv = sceneRT->GetResource();
-    if (!srv)
+    ID3D11RenderTargetView* rtv = sceneRT->GetView();
+    if (!rtv)
     {
         backTex->Release();
         return;
     }
 
-    // SRV -> underlying resource
     ID3D11Resource* dstRes = nullptr;
-    srv->GetResource(&dstRes);
+    rtv->GetResource(&dstRes);
     if (!dstRes)
     {
         backTex->Release();
         return;
     }
 
-    // copy: backbuffer -> sceneRT texture
-    ctx->CopyResource(dstRes, backTex);
+    ID3D11Texture2D* dstTex = nullptr;
+    hr = dstRes->QueryInterface(__uuidof(ID3D11Texture2D), (void**)&dstTex);
+    if (FAILED(hr) || !dstTex)
+    {
+        dstRes->Release();
+        backTex->Release();
+        return;
+    }
 
+    // MSAA check
+    D3D11_TEXTURE2D_DESC srcDesc;
+    D3D11_TEXTURE2D_DESC dstDesc;
+    backTex->GetDesc(&srcDesc);
+    dstTex->GetDesc(&dstDesc);
+
+    // If sample count differs or src is MSAA, resolve is needed (src must be MSAA, dst must be non-MSAA)
+    // We expect dst to be non-MSAA (SampleCount=1) because it will be sampled in the shader.
+    if (srcDesc.SampleDesc.Count > 1 && dstDesc.SampleDesc.Count == 1)
+    {
+        // Resolve: MSAA -> non-MSAA
+        ctx->ResolveSubresource(dstTex, 0, backTex, 0, dstDesc.Format);
+    }
+    else
+    {
+        // Normal copy (non-MSAA -> non-MSAA)
+        ctx->CopyResource(dstTex, backTex);
+    }
+
+    dstTex->Release();
     dstRes->Release();
     backTex->Release();
 }
-
 inline void Render(const World& w)
 {
     auto isPending = [&w](ObjectId id)
