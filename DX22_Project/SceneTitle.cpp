@@ -232,19 +232,19 @@ void SceneTitle::UpdateTitleAnimations()
 	{
 		auto* trans = go1->GetComponent<Transform>();
 		float yOffset = std::sin(m_animTimer * 1.5f) * 0.3f; // 1.5f‚ª‘¬‚³A0.3f‚ªU•
-		trans->SetPosition(Vector3(15.f, yOffset-8.f, 15.f));
+		trans->SetPosition(Vector3(15.f, yOffset-8.f, 30.f));
 	}
 	if (go2)
 	{
 		auto* trans = go2->GetComponent<Transform>();
 		float yOffset = std::sin(m_animTimer * 1.5f) * 0.3f; // 1.5f‚ª‘¬‚³A0.3f‚ªU•
-		trans->SetPosition(Vector3(10.f, yOffset+2.f, 15.f));
+		trans->SetPosition(Vector3(10.f, yOffset+2.f, 30.f));
 	}
 	if (go3)
 	{
 		auto* trans = go3->GetComponent<Transform>();
 		float yOffset = std::sin(m_animTimer * 1.5f) * 0.3f; // 1.5f‚ª‘¬‚³A0.3f‚ªU•
-		trans->SetPosition(Vector3(-10.f, yOffset -4.f,10.f));
+		trans->SetPosition(Vector3(-15.f, yOffset -15.f,30.f));
 	}
 }
 

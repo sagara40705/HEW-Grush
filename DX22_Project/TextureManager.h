@@ -29,10 +29,10 @@ enum class TextureTag : uint8_t
     // StageSelect 16～21 (6)
     StageSelect_BG = 16,		    // 背景
     StageSelect_PlayerIcon = 17,    // プレイヤーアイコン
-    _SpareSlot_05 = 18,
-    _SpareSlot_06 = 19,
-    _SpareSlot_07 = 20,
-    _SpareSlot_08 = 21,
+    StageSelect_Rank_S = 18,
+    StageSelect_Rank_A = 19,
+    StageSelect_Rank_B = 20,
+    StageSelect_Rank_C = 21,
 
     // Tutorial 22～27 (6)
     Tutorial_UI_Task = 22,	        // チュートリアルタスク
