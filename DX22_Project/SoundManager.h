@@ -18,6 +18,11 @@ enum SoundTag {
 	StageSelectBGM,
 	SelectSE,
 	ResultSE,
+	OptionOpenSE,
+	OptionMoveSE,
+	OptionSelectSE,
+	OptionCloseSE,
+	GlassCrackSE,
 	Count		//êî
 };
 

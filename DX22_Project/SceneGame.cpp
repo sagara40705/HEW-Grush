@@ -15,6 +15,8 @@
 #include "SceneResult.h"
 #include "SceneOption.h"
 #include "SoundManager.h"
+#include "Defines.h"
+#include "OptionUIController.h"
 
 bool SceneGame::CheckGameSound;
 
@@ -112,6 +114,34 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { CreateTimerUI(); });
 	outTasks.emplace_back([this] { CreateScoreUI(); });
 	outTasks.emplace_back([this] { CreateActionUI(); });
+
+	//オプションのロード
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Back); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font1); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font1_Back); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font1_OK); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font2); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font2_Back); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font2_OK); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font3); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font3_Back); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font3_OK); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font4); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font4_OK); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font5); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font5_OK); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font1_Break); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font2_Break); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font3_Break); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font4_screen); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_translucent); });
+
+
+	//=================================
+	//オプションのUI
+	//=================================
+	outTasks.emplace_back([this] { CreateOptionUI(); });
+
 
 	//ギミック
 	outTasks.emplace_back([this] { CreateGlassObjectSpawner(); });
@@ -508,8 +538,7 @@ void SceneGame::Update()
 	// BGM再生
 	if (!CheckGameSound)
 	{
-		//        PlaySound(SoundManager::GetSound(SceneGameBGM));
-		SoundManager::SoundPlay(SceneGameBGM, 0.0f);
+		SoundManager::SoundPlay(SceneGameBGM, 0.4f);
 		CheckGameSound = true;
 	}
 
@@ -669,3 +698,182 @@ PrefabId SceneGame::GetPrefabIdFromString(const std::string& rawname)
 	return PrefabId::Swing;
 }
 
+void SceneGame::CreateOptionUI()
+{
+	World& w = GetWorld();
+
+	// オプション全体のRoot（最初は非表示）
+	GameObject& optionRoot = w.CreateGameObject();
+	optionRoot.SetActive(false);
+
+	// コントローラは常にActiveなオブジェクトに付ける
+	GameObject& optionCtrlObj = w.CreateGameObject();
+	auto& ctrl = optionCtrlObj.AddComponent<OptionUIController>();
+	ctrl.SetOptionRoot(&optionRoot);
+
+	// 背景（必要なら）
+	{
+		GameObject& bg = optionRoot.CreateChild();
+		bg.AddComponent<UiSpriteRenderer>
+			(TextureTag::option_translucent, Vector2(0.f, 0.f),
+				Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
+		bg.SetActive(false);
+
+		GameObject& bg1 = optionRoot.CreateChild();
+		bg1.AddComponent<UiSpriteRenderer>
+			(TextureTag::option_Back, Vector2(0.f, 0.f),
+				Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
+		bg1.SetActive(false);
+	}
+
+	// 5項目：Normal と Selected をペアで作る
+	// Selected(Back) は最初OFFにして、選択中だけONになるようにする
+
+	// ------------------------
+// 1
+// ------------------------
+
+// 通常枠（fs = 通常枠として使う）
+	GameObject& fs1 = optionRoot.CreateChild();
+	fs1.AddComponent<UiSpriteRenderer>(TextureTag::option_Font1_Back,
+		Vector2(0.f, 0.f), Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
+	fs1.SetActive(false);
+
+	// 割れ枠（1～3のみ）
+	GameObject& fp1 = optionRoot.CreateChild();
+	fp1.AddComponent<UiSpriteRenderer>(TextureTag::option_Font1_Break,
+		Vector2(0.f, 0.f), Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
+	fp1.SetActive(false);
+
+	// 通常文字
+	GameObject& tn1 = optionRoot.CreateChild();
+	tn1.AddComponent<UiSpriteRenderer>(TextureTag::option_Font1,
+		Vector2(0.f, 0.f), Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
+	tn1.SetActive(false);
+
+	// 選択中文字（無ければ option_Font1 にしてOK）
+	GameObject& ts1 = optionRoot.CreateChild();
+	ts1.AddComponent<UiSpriteRenderer>(TextureTag::option_Font1_OK,
+		Vector2(0.f, 0.f), Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
+	ts1.SetActive(false);
+
+	ctrl.AddItem(&tn1, &ts1, &fs1, &fp1, false);
+
+
+	// ------------------------
+	// 2
+	// ------------------------
+
+	GameObject& fs2 = optionRoot.CreateChild();
+	fs2.AddComponent<UiSpriteRenderer>(TextureTag::option_Font2_Back,
+		Vector2(0.f, 0.f), Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
+	fs2.SetActive(false);
+
+	// 割れ枠（1～3のみ）
+	GameObject& fp2 = optionRoot.CreateChild();
+	fp2.AddComponent<UiSpriteRenderer>(TextureTag::option_Font2_Break,
+		Vector2(0.f, 0.f), Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
+	fp2.SetActive(false);
+
+	// 通常文字
+	GameObject& tn2 = optionRoot.CreateChild();
+	tn2.AddComponent<UiSpriteRenderer>(TextureTag::option_Font2,
+		Vector2(0.f, 0.f), Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
+	tn2.SetActive(false);
+
+	// 選択中文字（無ければ option_Font2 にしてOK）
+	GameObject& ts2 = optionRoot.CreateChild();
+	ts2.AddComponent<UiSpriteRenderer>(TextureTag::option_Font2_OK,
+		Vector2(0.f, 0.f), Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
+	ts2.SetActive(false);
+
+	ctrl.AddItem(&tn2, &ts2, &fs2, &fp2, false);
+
+
+	// ------------------------
+	// 3
+	// ------------------------
+
+	GameObject& fs3 = optionRoot.CreateChild();
+	fs3.AddComponent<UiSpriteRenderer>(TextureTag::option_Font3_Back,
+		Vector2(0.f, 0.f), Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
+	fs3.SetActive(false);
+
+	// 割れ枠（1～3のみ）
+	GameObject& fp3 = optionRoot.CreateChild();
+	fp3.AddComponent<UiSpriteRenderer>(TextureTag::option_Font3_Break,
+		Vector2(0.f, 0.f), Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
+	fp3.SetActive(false);
+
+	// 通常文字
+	GameObject& tn3 = optionRoot.CreateChild();
+	tn3.AddComponent<UiSpriteRenderer>(TextureTag::option_Font3,
+		Vector2(0.f, 0.f), Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
+	tn3.SetActive(false);
+
+	// 選択中文字（無ければ option_Font3 にしてOK）
+	GameObject& ts3 = optionRoot.CreateChild();
+	ts3.AddComponent<UiSpriteRenderer>(TextureTag::option_Font3_OK,
+		Vector2(0.f, 0.f), Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
+	ts3.SetActive(false);
+
+	ctrl.AddItem(&tn3, &ts3, &fs3, &fp3, false);
+
+
+	// ------------------------
+	// 4（Enterで変化なし）
+	// ------------------------
+
+	GameObject& fs4 = optionRoot.CreateChild();
+	fs4.AddComponent<UiSpriteRenderer>(TextureTag::option_Font4,
+		Vector2(0.f, 0.f), Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
+	fs4.SetActive(false);
+
+	// 割れ枠（1～3のみ）
+	GameObject& fp4 = optionRoot.CreateChild();
+	fp4.AddComponent<UiSpriteRenderer>(TextureTag::option_Font4_screen,
+		Vector2(0.f, 0.f), Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
+	fp4.SetActive(false);
+
+	// 通常文字
+	GameObject& tn4 = optionRoot.CreateChild();
+	tn4.AddComponent<UiSpriteRenderer>(TextureTag::option_Font4,
+		Vector2(0.f, 0.f), Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
+	tn4.SetActive(false);
+
+	// 選択中文字（無ければ option_Font4 にしてOK）
+	GameObject& ts4 = optionRoot.CreateChild();
+	ts4.AddComponent<UiSpriteRenderer>(TextureTag::option_Font4_OK,
+		Vector2(0.f, 0.f), Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
+	ts4.SetActive(false);
+
+	// 4は pressed なし
+	ctrl.AddItem(&tn4, &ts4, &fs4, &fp4, true);
+
+
+	// ------------------------
+	// 5（Enterで変化なし）
+	// ------------------------
+
+	GameObject& fs5 = optionRoot.CreateChild();
+	fs5.AddComponent<UiSpriteRenderer>(TextureTag::option_Font5,
+		Vector2(0.f, 0.f), Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
+	fs5.SetActive(false);
+
+	// 割れ枠（1～3のみ）
+
+	// 通常文字
+	GameObject& tn5 = optionRoot.CreateChild();
+	tn5.AddComponent<UiSpriteRenderer>(TextureTag::option_Font5,
+		Vector2(0.f, 0.f), Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
+	tn5.SetActive(false);
+
+	// 選択中文字（無ければ option_Font5 にしてOK）
+	GameObject& ts5 = optionRoot.CreateChild();
+	ts5.AddComponent<UiSpriteRenderer>(TextureTag::option_Font5_OK,
+		Vector2(0.f, 0.f), Vector2(SCREEN_WIDTH, SCREEN_HEIGHT));
+	ts5.SetActive(false);
+
+	// 5は pressed なし
+	ctrl.AddItem(&tn5, &ts5, &fs5, nullptr, false);
+}

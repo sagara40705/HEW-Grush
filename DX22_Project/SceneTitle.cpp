@@ -148,7 +148,7 @@ void SceneTitle::Update()
 	//if (!m_breakButton) return;
 	if (!CheckTitleSound)
 	{
-		SoundManager::SoundPlay(TitleBGM, 0.3f);
+		SoundManager::SoundPlay(TitleBGM, 0.6f);
 		CheckTitleSound = true;
 	}
 	
@@ -191,7 +191,7 @@ void SceneTitle::Update()
 		{
 			m_isStarting = false;
 			break_->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
-			SoundManager::SoundPlay(TitleStartSE, 1.0f);
+			SoundManager::SoundPlay(TitleStartSE, 0.7f);
 		}
 	}
 

@@ -78,7 +78,7 @@ void PlayerAction::InputWantAction()
 	{
 		state_->wantUseAction[ToIndex(ActionId::NormalAttack)] = true;
 		DebugLog::Output("NormalAttack 入力受付");
-		SoundManager::SoundPlay(SoundTag::NomalAttackSE, 1.0f);
+		SoundManager::SoundPlay(NomalAttackSE, 1.0f);
 	}
 
 	//==================== SpinAttack (Rキー / R1ボタン) =====================
@@ -156,11 +156,11 @@ void PlayerAction::UpdateAction()
 	//使用中アクションごとに更新 *現在は空
 	switch (action)
 	{
-	case ActionId::NormalAttack: UpdateNormalAttack();	break;
+	case ActionId::NormalAttack: UpdateNormalAttack(); break;
 
-	case ActionId::SpinAttack:	 UpdateSpinAttack();	break;
+	case ActionId::SpinAttack: UpdateSpinAttack(); break;
 
-	case ActionId::DashAttack:	 UpdateDashAttack();	break;
+	case ActionId::DashAttack: UpdateDashAttack(); break;
 
 	default: assert(false && "state_->usingActionが範囲外です");
 		break;

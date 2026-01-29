@@ -18,6 +18,7 @@ private:
     void CreatePlayer();
     void CreateGround();
 
+ 
 public:
     void Update() override;
     void Draw() override;

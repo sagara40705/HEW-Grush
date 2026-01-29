@@ -32,6 +32,7 @@ private:
 	void CreateScoreUI();
 	void CreateActionUI();
 	void CreateTutorialWall();
+	void CreateOptionUI();
 
 	//ÉMÉ~ÉbÉN	
 	void CreateGlassObjectSpawner();

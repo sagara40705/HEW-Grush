@@ -271,3 +271,9 @@ void SceneManager::ReleaseFadeAnimations()
 	s_fadeOutAnime = nullptr;
 	s_fadeInAnime = nullptr;
 }
+
+bool SceneManager::CheckFinishFadeOut()
+{
+    if(s_timer.ElapsedSeconds() >= 1.0f) return true;
+    else  return false;
+}

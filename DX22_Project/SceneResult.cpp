@@ -63,11 +63,20 @@ void Result::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 			GetWorld().Start();
 		});
 
-	SoundManager::SoundPlay(ResultSE, 1.0f);
+	m_CheckResultSE = false;
 }
 
 void Result::Update()
 {
+	if (!m_CheckResultSE)
+	{
+		if (SceneManager::CheckFinishFadeOut())
+		{
+			SoundManager::SoundPlay(ResultSE, 0.6f);
+			m_CheckResultSE = true;
+		}
+	}
+
 	if (InputKeyboard::GetKeyDown(VK_SPACE))
 	{
 		SceneManager::ChangeSceneAsync<SceneStageSelect>();

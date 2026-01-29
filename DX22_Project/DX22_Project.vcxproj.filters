@@ -378,6 +378,9 @@
     <ClCompile Include="SceneOption.cpp">
       <Filter>Game\Scenes</Filter>
     </ClCompile>
+    <ClCompile Include="OptionUIController.cpp">
+      <Filter>Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -667,6 +670,9 @@
     </ClInclude>
     <ClInclude Include="SceneOption.h">
       <Filter>Game\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="OptionUIController.h">
+      <Filter>Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

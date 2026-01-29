@@ -43,7 +43,7 @@ void SceneStageSelect::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 		{
 			GetWorld().Start();
 		});
-	SoundManager::SoundPlay(StageSelectBGM, 0.6f);
+	SoundManager::SoundPlay(StageSelectBGM, 0.3f);
 }
 
 void SceneStageSelect::CreateCanvas()

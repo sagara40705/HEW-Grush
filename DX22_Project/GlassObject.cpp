@@ -64,13 +64,13 @@ void GlassObject::TakeDamage(float damage)
 		switch (grade_)
 		{
 		case GlassGrade::Grade_1:
-			SoundManager::SoundPlay(Level1GlassBreakSE,1.0f);
+			SoundManager::SoundPlay(Level1GlassBreakSE,0.7f);
 			break;
 		case GlassGrade::Grade_2:
-			SoundManager::SoundPlay(Level2GlassBreakSE, 1.0f);
+			SoundManager::SoundPlay(Level2GlassBreakSE, 0.7f);
 			break;
 		case GlassGrade::Grade_3:
-			SoundManager::SoundPlay(Level3GlassBreakSE, 1.0f);
+		SoundManager::SoundPlay(Level3GlassBreakSE, 0.8f);
 			break;
 		}
 		return;
@@ -78,6 +78,7 @@ void GlassObject::TakeDamage(float damage)
 	else
 	{
 		SpawnShardMini();
+		SoundManager::SoundPlay(GlassCrackSE, 1.0f);
 	}
 }
 

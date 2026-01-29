@@ -99,6 +99,8 @@ private:
 public:
     static void CreateFadeAnimations(Scene* scene);         // フェード用アニメーション作成
 	static void ReleaseFadeAnimations();        // フェード用アニメーション解放
+
+    static bool CheckFinishFadeOut();
 };
 
 // テンプレート関数の実装

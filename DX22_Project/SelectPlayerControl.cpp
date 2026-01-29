@@ -98,7 +98,7 @@ void SelectPlayerControl::UpdateIdle()
     {
         SetSelectedStage(currentStagePoint->stageId);
         SceneManager::ChangeSceneAsync<SceneGame>();
-        SoundManager::SoundPlay(SelectSE, 0.7f);
+        SoundManager::SoundPlay(SelectSE, 1.0f);
         return;
     }
 
@@ -112,10 +112,26 @@ void SelectPlayerControl::UpdateIdle()
 
 Direction SelectPlayerControl::InputMove()
 {
-    if (InputKeyboard::GetKeyDown(VK_LEFT))  return Direction::Left;
-    if (InputKeyboard::GetKeyDown(VK_RIGHT)) return Direction::Right;
-    if (InputKeyboard::GetKeyDown(VK_UP))    return Direction::Up;
-    if (InputKeyboard::GetKeyDown(VK_DOWN))  return Direction::Down;
+    if (InputKeyboard::GetKeyDown(VK_LEFT))
+    {
+        return Direction::Left;
+    }
+
+    if (InputKeyboard::GetKeyDown(VK_RIGHT))
+    {
+        return Direction::Right;
+    }
+
+    if (InputKeyboard::GetKeyDown(VK_UP))
+    {
+        return Direction::Up;
+    }
+
+    if (InputKeyboard::GetKeyDown(VK_DOWN))
+    {
+        return Direction::Down;
+    }
+
 
     return Direction::Invalid;
 }
