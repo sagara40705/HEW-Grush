@@ -355,6 +355,8 @@ void SceneGame::CreateStage3()
 	BoxCollider& collider3 = floor3.AddComponent<BoxCollider>();
 	collider3.layer = Layer::Ground;
 
+	
+
 	StageId stage = GetCurrentStage();
 
 	switch (stage)
