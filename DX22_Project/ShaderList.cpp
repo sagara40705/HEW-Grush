@@ -724,92 +724,99 @@ Texture2D tex : register(t0);
 SamplerState samp : register(s0);
 float4 main(PS_IN pin) : SV_TARGET
 {
-	 //return float4(1,0,1,1);
-
     float3 N = normalize(pin.normal);
     float3 L = normalize(-lightDir.xyz);
     float3 V = normalize(cameraPos.xyz - pin.wPos.xyz);
 
-    // ==========================
-    // 1) テクスチャ＋シンプル Lambert
-    // ==========================
+    // objAmbient.a を「テクスチャあり／なし」のフラグとして利用
+    bool hasTexture = (objAmbient.a >= 1.0f);
+
     float4 texColor = float4(1, 1, 1, 1);
-	// objAmbient.a を「テクスチャあり／なし」のフラグとして利用
-	bool hasTexture = (objAmbient.a >= 1.0f);
-	if (hasTexture)
-	{
-		texColor = tex.Sample(samp, pin.uv);
-	}
+    if (hasTexture)
+    {
+        texColor = tex.Sample(samp, pin.uv);
+    }
 
     float3 diffuseColor = objDiffuse.rgb * lightDiffuse.rgb;
     float3 ambientColor = objAmbient.rgb * lightDiffuse.rgb;
-    float3 specColor    = objSpecular.rgb * lightDiffuse.rgb;
 
-	//影の調整
-	float rawNL = dot(N, L);
-	float dotNL = saturate(rawNL * 0.5f + 0.5f);
-	const float kShadowMin = 0.7f;   
-	dotNL = lerp(kShadowMin, 1.0f, dotNL);
+    // 影の調整（元のコードを維持）
+    float rawNL = dot(N, L);
+    float dotNL = saturate(rawNL * 0.5f + 0.5f);
+    const float kShadowMin = 0.7f;
+    dotNL = lerp(kShadowMin, 1.0f, dotNL);
 
-    // ベース色（元モデルの見た目にかなり近い形）
-	float3 baseColor = (hasTexture || glassParams.w != 1) ? texColor.rgb : glassTint.rgb;
-    float3 base = baseColor * (ambientColor + diffuseColor * dotNL);
-
-    // 鏡面はかなり弱め
-    float3 R = reflect(-L, N);
-    float dotRV = saturate(dot(R, V));
-    float gloss = max(0.01f, objSpecular.a);
-    float3 specular = specColor * pow(dotRV, gloss * 4.0f);
-    base += specular * 0.2f;   // ← ここで 0.2 とかなり弱めに
-
-    // ==========================
-    // 2) ガラス用パラメータ（弱く使う）
-    // ==========================
+    // --------------------------
+    // ガラス用パラメータ
+    // x = fresnelPower, y = reflectionStrength, z = transmissionStrength, w = tintStrength
+    // --------------------------
     float fresnelPower         = max(glassParams.x, 1.0f);
-    float reflectionStrength   = glassParams.y;
-    float transmissionStrength = glassParams.z;
-    float tintStrength         = glassParams.w;
+    float reflectionStrength   = saturate(glassParams.y);
+    float transmissionStrength = saturate(glassParams.z);
+    float tintStrength         = saturate(glassParams.w);
 
     float dotNV   = saturate(dot(N, V));
     float fresnel = pow(1.0f - dotNV, fresnelPower);
 
-	// ==========================
-	// 3) ガラス色・反射成分（控えめ）
-	// ==========================
+    // --------------------------
+    // ベース色（テクスチャがあってもガラスTintを混ぜる）
+    // --------------------------
+    float3 baseAlbedo = hasTexture ? texColor.rgb : float3(1, 1, 1);
+    float3 tintAlbedo = glassTint.rgb;
 
-	// ほんのり色を寄せたいので、最低でも少しは Tint を効かせる
-	const float kTintBase  = 0.25f;      // 常に 15% くらいは色味を寄せる
-	const float kTintExtra = 0.25f;      // tintStrength で増える分
-	float tintFactor = kTintBase + saturate(tintStrength) * kTintExtra; // 最大 ~0.4
+    // tintStrength で「ガラス色寄り」にする（0=そのまま, 1=ガラス色）
+    float3 albedo = lerp(baseAlbedo, tintAlbedo, tintStrength);
 
-	// base → glassTint.rgb に寄せる（0.6 くらい glassTint 寄りの目標色）
-	float3 targetTint = lerp(base, glassTint.rgb, 0.6f);
+    float3 base = albedo * (ambientColor + diffuseColor * dotNL);
 
-	// 最終的な着色（base から targetTint へ tintFactor 分だけ寄せる）
-	float3 tintedBase = lerp(base, targetTint, tintFactor);
+    // --------------------------
+    // ガラスっぽい硬いハイライト（鏡面）
+    // --------------------------
+    float3 H = normalize(L + V);
+    float spec = pow(saturate(dot(N, H)), 160.0f);
 
-	// 透過パラメータは 10% だけ反映（ほぼ見た目は維持）
-	float transFactor = lerp(1.0f, transmissionStrength, 0.1f);
-	tintedBase *= transFactor;
+    // 光の色でハイライト。ガラスは白っぽく強めでOK
+    float3 specular = lightDiffuse.rgb * spec * 0.9f;
 
-	// 反射色もかなり弱く、Fresnel 依存で少しだけ足す
-	float3 reflectionColor = lightDiffuse.rgb * glassTint.rgb;
-	const float kReflMax = 0.2f;
-	float reflFactor = kReflMax * reflectionStrength * fresnel;
+    // --------------------------
+    // 透過（本来もっと効かせる）
+    // transmissionStrength を素直に反映
+    // --------------------------
+    float transFactor = lerp(1.0f, 1.35f, transmissionStrength);
+    float3 transmit = base * transFactor;
 
-	float3 finalRGB = tintedBase + reflectionColor * reflFactor;
+	// --------------------------
+    // 反射（Fresnelで縁が強くなる）
+    // 環境マップが無いので「白一色」だと板に見えやすい。
+    // そこで、上方向(擬似空)と下方向(擬似床)の簡易環境色を作って反射に使う。
+    // --------------------------
+    float upMask = saturate(N.y * 0.5f + 0.5f);          // 上向きほど1
+    float3 envUp   = float3(0.70f, 0.85f, 1.00f);        // 擬似空色
+    float3 envDown = float3(0.15f, 0.15f, 0.18f);        // 擬似床色
+    float3 reflectionColor = lerp(envDown, envUp, upMask);
 
-    // ==========================
-    // 4) アルファ（透明度も弱め）
-    // ==========================
-    float baseAlpha = glassTint.a;
+    float reflFactor = saturate(fresnel * reflectionStrength);
 
-    // Fresnel でほんの少しだけ縁を濃くするが、ほぼ一定// 0.9 - 1.0 の範囲
-    float fresnelAlpha = lerp(0.9f, 1.0f, fresnel); 
+    // 透過と反射を合成（縁ほど反射）
+    float3 finalRGB = lerp(transmit, reflectionColor, reflFactor);
 
-    float finalA = saturate(baseAlpha * fresnelAlpha);
+    // ハイライトは“硬さ”が命なので少し強めに加算
+    finalRGB += specular * (0.8f + 0.6f * fresnel);
 
-    return float4(finalRGB, finalA);
+    // --------------------------
+    // アルファ（中心は薄く、縁は濃く）
+    // 透明物っぽさを出すため、中心はしっかり薄くする
+    // --------------------------
+    float baseAlpha = saturate(glassTint.a);
+
+    // 中心は薄く（0.55倍）、縁は濃く（最大 +0.45）
+    float centerA = baseAlpha * 0.55f;
+    float edgeA   = saturate(baseAlpha + 0.45f);
+
+    float finalA = lerp(centerA, edgeA, fresnel);
+
+    return float4(saturate(finalRGB), finalA);   
+
 })EOT";
 	m_pPS[PS_GLASS] = new PixelShader();
 	m_pPS[PS_GLASS]->Compile(code);
