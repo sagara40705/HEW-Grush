@@ -5,7 +5,6 @@
 #include "TextureManager.h"
 #include "Defines.h"
 #include "InputKeyboard.h"
-#include "SoundManager.h"
 
 void SceneTitle::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 {
@@ -15,7 +14,7 @@ void SceneTitle::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 			GetWorld().ClearAll();        // 既存の World API に合わせる
 		});
 
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player2); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer); });
 
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Title_BG); });
@@ -40,7 +39,6 @@ void SceneTitle::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 			GetWorld().Start();
 		});
 		
-	CheckTitleSound = false;
 }
 
 void SceneTitle::Load()
@@ -55,7 +53,6 @@ void SceneTitle::Unload()
 {
 	SceneManager::ReleaseFadeAnimations();  // フェードアニメーション解放
 	TextureManager::Clear();
-	SoundManager::StopSound(TitleBGM);
 }
 
 void SceneTitle::CreateCameraAndPlayer()
@@ -64,38 +61,38 @@ void SceneTitle::CreateCameraAndPlayer()
 
 	// カメラ
 	GameObject& cameraPivot = w.CreateGameObject(Vector3(0.f, 2.0f, -5.0f), Vector3(0.f, 0.f, 0.f));
-	/*GameObject& cameraPivot = w.CreateGameObject(Vector3(0.f, 0.5f, 1.f), Vector3(0.f, 0.f, 0.f));*/
 	GameObject& mainCamera = cameraPivot.CreateChild(Camera::kInitPos, Camera::kInitRotate);
 	mainCamera.AddComponent<Camera>();
 
 	// カメラ生成時に指定した座標と同じ値を手動で入れる
 	m_camStartPos = Vector3(0.f, 2.0f, -5.0f); // カメラの初期座標
 
-	// ★ 保存
+	//保存
 	m_mainCamera = &mainCamera;
 
 	// プレイヤー
 	GameObject& player = w.CreateGameObject(Vector3(0.f, 0.f, 0.f), Vector3(0.f, 0.f, 0.f), Vector3(2.f, 2.f, 2.f));
-	player.AddComponent<MeshFilter>(ModelTag::Player);
+	player.AddComponent<MeshFilter>(ModelTag::Player2);
 	player.AddComponent<MeshRenderer>();
 	player.AddComponent<PlayerState>();
-	player.AddComponent<Animator>();
-	player.AddComponent<PlayerAnimation>();
+	//player.AddComponent<Animator>();
+	//player.AddComponent<PlayerAnimation>();
 
-	// ★ 保存
+	// 保存
 	m_player = &player;
 
 	// ハンマー
 	GameObject& hummer = player.CreateChild(Hammer::BasePos, Hammer::BaseRota, Vector3(0.2f, 0.2f, 0.2f));
 	hummer.AddComponent<MeshFilter>(ModelTag::Hammer);
 	hummer.AddComponent<MeshRenderer>();
+	//hummer.AddComponent<Animator>();
 
 }
 
 void SceneTitle::CreateCanvas()
 {
 	World& w = GetWorld();
-	////Canvas
+	//Canvas
 	GameObject& canvas = w.CreateGameObject();
 	canvas.AddComponent<Canvas>();
 }
@@ -113,25 +110,23 @@ void SceneTitle::CreateTitleFont()
 {
 	World& w = GetWorld();
 	////文字を出力する
-	GameObject& titleFont = w.CreateGameObject(Vector3(0.f, 0.f, 5.0f));
-	titleFont.AddComponent<Sprite3DRenderer>(TextureTag::Title_Text,Vector2(7.5f, -2.5f),Vector2(11.0f, 11.0f)/*100差*/);
+	m_titleFontObj = &w.CreateGameObject(Vector3(0.f, 0.f, 5.0f));
+	m_titleFontObj->AddComponent<Sprite3DRenderer>(TextureTag::Title_Text, Vector2(8.5f, -3.5f), Vector2(17.0f, 17.0f));
 }
 
 void SceneTitle::CreateTitleLogo()
 {
 	World& w = GetWorld();
-
-	GameObject& TitleLogo = w.CreateGameObject(Vector3(0.f, 0.f, 10.f));
-
-	TitleLogo.AddComponent<Sprite3DRenderer>(TextureTag::Title_Logo, Vector2(-4.7f, 5.0f), Vector2(20.0f, 20.0f)/*100差*/);
+	m_titleLogoObj = &w.CreateGameObject(Vector3(0.f, 0.f, 40.f));
+	m_titleLogoObj->AddComponent<Sprite3DRenderer>(TextureTag::Title_Logo, Vector2(-4.7f, 5.0f), Vector2(20.0f, 20.0f));
 }
 
 void SceneTitle::CreateBreakTexture()
 {
 	World& w = GetWorld();
 	GameObject& breakTexture = w.CreateGameObject(Vector3(0.f, -3.f, 5.0f));
-	break_ = &breakTexture.AddComponent<UiSpriteRenderer>(TextureTag::Title_Fadein, Vector2(0.0f, 0.0f), Vector2(1920.0f, 1080.0f));
-	break_->SetColor({ 1.0f, 1.0f, 1.0f, 0.0f });
+	breakTexture.AddComponent<UiSpriteRenderer>(TextureTag::Title_Fadein, Vector2(0.0f, 0.0f), Vector2(1500.0f, 900.0f));
+	break_ = &breakTexture.AddComponent<SpriteAnimation>(7, 7, 2, 48, false);
 
 }
 
@@ -146,18 +141,12 @@ void SceneTitle::CreateTitleManager()
 void SceneTitle::Update()
 {
 	//if (!m_breakButton) return;
-	if (!CheckTitleSound)
-	{
-		SoundManager::SoundPlay(TitleBGM, 0.6f);
-		CheckTitleSound = true;
-	}
-	
+
 	if (!m_isStarting && InputKeyboard::GetKeyDown(VK_SPACE))
 	{
 		m_isStarting = true;
 		m_zoomTimer = 0.0f;
-		//m_breakButton->StartBreak();
-
+		
 		// ★ 保存しておいた m_player を使う
 		if (m_player) {
 			auto* pState = m_player->GetComponent<PlayerState>();
@@ -190,9 +179,13 @@ void SceneTitle::Update()
 		if (t >= 1.0f)
 		{
 			m_isStarting = false;
-			break_->SetColor({ 1.0f, 1.0f, 1.0f, 1.0f });
-			SoundManager::SoundPlay(TitleStartSE, 0.7f);
+			break_->Play();
 		}
+	}
+	if(!m_isStarting)
+	{
+		
+		UpdateTitleAnimations();
 	}
 
 }
@@ -201,3 +194,22 @@ void SceneTitle::Draw()
 {
 }
 
+
+void SceneTitle::UpdateTitleAnimations()
+{
+	m_animTimer += (1.0f / 60.0f);
+
+	//(上下揺れ)
+	if (m_titleLogoObj) {
+		auto* trans = m_titleLogoObj->GetComponent<Transform>();
+		float yOffset = std::sin(m_animTimer * 1.5f) * 0.3f; // 1.5fが速さ、0.3fが振幅
+		trans->SetPosition(Vector3(0.f, yOffset, 10.f));
+	}
+
+	if (m_titleFontObj) {
+
+		auto* trans = m_titleFontObj->GetComponent<Transform>();
+		float yOffset = std::sin(m_animTimer * 1.5f) * 0.3f; // 1.5fが速さ、0.3fが振幅
+		trans->SetPosition(Vector3(2.f, yOffset, 15.f));
+	}
+}

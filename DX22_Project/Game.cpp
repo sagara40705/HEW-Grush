@@ -11,7 +11,7 @@
 #include "SoundManager.h"
 #include <memory>
 
-//bool Game::CheckTitleSound = false;
+bool Game::CheckTitleSound = false;
 
 void Game::Init()
 {
@@ -22,10 +22,10 @@ void Game::Init()
     //SceneManager::ChangeSceneAsync<SceneGame>();
     SceneManager::ChangeSceneAsync<SceneTitle>();
 	//SceneManager::ChangeSceneAsync<SceneStageSelect>();
-	//SceneManager::ChangeSceneAsync<Result>();
+	//SceneManager::ChangeSceneAsync<SceneResult>();
     //SceneManager::ChangeScene<SceneOption>();
 
-//	CheckTitleSound = false;
+	CheckTitleSound = false;
 }
 
 void Game::Uninit()
@@ -37,12 +37,12 @@ void Game::Uninit()
 void Game::Update()
 {
     // 入力更新・サウンド更新などがあればここで
-//    if (!CheckTitleSound)
-//   {
-//        //        PlaySound(SoundManager::GetSound(SceneGameBGM));
-//        SoundManager::SoundPlay(SceneGameBGM, 0.4f);
-//        CheckTitleSound = true;
-//    }
+    if (!CheckTitleSound)
+    {
+        //        PlaySound(SoundManager::GetSound(SceneGameBGM));
+        SoundManager::SoundPlay(SceneGameBGM, 0.4f);
+        CheckTitleSound = true;
+    }
 
     SceneManager::Update();
 }

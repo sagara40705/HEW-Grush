@@ -36,7 +36,7 @@ void GlassObject::Start()
 	GameObject* score = gameObject->FindWithTag(Tag::ScoreManager);
 	score_ = score->GetComponent<ScoreManager>();
 
-	constexpr float HP[ToIndex(GlassGrade::Count)] = { 1.f, 3.f, 5.f };
+	constexpr float HP[ToIndex(GlassGrade::Count)] = { 1.f, 5.f, 25.f };
 	hp_ = HP[ToIndex(grade_)];
 
 	tf_ = gameObject->GetComponent<Transform>();

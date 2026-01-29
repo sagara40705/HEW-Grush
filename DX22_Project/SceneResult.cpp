@@ -14,7 +14,7 @@
 
 
 constexpr Vector2 kNumberUVScale = { 0.1f, 1.0f };
-void Result::Load()
+void SceneResult::Load()
 {
 	// 従来の同期ロードが必要なら、タスクを構築して全部回す
 	std::vector<LoadTask> tasks;
@@ -22,7 +22,7 @@ void Result::Load()
 	for (auto& t : tasks) t();
 }
 
-void Result::BuildLoadTasks(std::vector<LoadTask>& outTasks)
+void SceneResult::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 {
 	// World の中身を消す
 	outTasks.emplace_back([this]
@@ -37,10 +37,10 @@ void Result::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Gauge_Bar); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Gauge_Frame); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Next_Text); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Rank_S); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Rank_A); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Rank_B); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Rank_C); });
+	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Rank_S); });
+	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Rank_A); });
+	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Rank_B); });
+	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Rank_C); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Job_Pikapika); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Job_Sugoude); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Result_Job_Tastuzin); });
@@ -49,7 +49,7 @@ void Result::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	// 各種オブジェクト生成タスクを追加
 	outTasks.emplace_back([this] { CreateCanvas(); });
 	outTasks.emplace_back([this] { CreateBace(); });
-	//outTasks.emplace_back([this] { CreateTimeUI(); });
+	outTasks.emplace_back([this] { CreateTimeUI(); });
 	outTasks.emplace_back([this] { CreateGaugeUI(); });
 	outTasks.emplace_back([this] { CreateRankUI(); });
 	//outTasks.emplace_back([this] { CreateJobUI(); });
@@ -66,7 +66,7 @@ void Result::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	m_CheckResultSE = false;
 }
 
-void Result::Update()
+void SceneResult::Update()
 {
 	if (!m_CheckResultSE)
 	{
@@ -83,17 +83,17 @@ void Result::Update()
 	}
 }
 
-void Result::Draw()
+void SceneResult::Draw()
 {
 }
 
-void Result::Unload()
+void SceneResult::Unload()
 {
 	SceneManager::ReleaseFadeAnimations();
 	TextureManager::Clear();
 }
 
-void Result::CreateCanvas()
+void SceneResult::CreateCanvas()
 {
 	World& w = GetWorld();
 	//Canvas
@@ -101,7 +101,7 @@ void Result::CreateCanvas()
 	canvas.AddComponent<Canvas>();
 }
 
-void Result::CreateBace()
+void SceneResult::CreateBace()
 {
 	World& w = GetWorld();
 	//背景生成
@@ -109,42 +109,39 @@ void Result::CreateBace()
 	bace.AddComponent<UiSpriteRenderer>(TextureTag::Result_Bace, Vector2::zero(), Vector2::WindowSize());
 }
 
-void Result::CreateTimeUI()
+void SceneResult::CreateTimeUI()
 {
 	World& w = GetWorld();
 
 	GameObject& timerUI = w.CreateGameObject();
-	timerUI.SetTag(Tag::ResultTimerUI);
 	timerUI.AddComponent<ResultTimerUI>();
 }
 
-void Result::CreateGaugeUI()
+void SceneResult::CreateGaugeUI()
 {
 	World& w = GetWorld();
 
 	GameObject& Gauge = w.CreateGameObject();
-	Gauge.SetTag(Tag::ResultGaugeUI);
 	Gauge.AddComponent<ResultGaugeUI>();
 }
 
-void Result::CreateRankUI()
+void SceneResult::CreateRankUI()
 {
 	World& w = GetWorld();
 
-	GameObject& Rank = w.CreateGameObject();
+	GameObject& Rank = w.CreateGameObject();;
 	Rank.SetTag(Tag::ResultRankUI);
 	Rank.AddComponent<ResultRankUI>();
 }
 
-void Result::CreateJobUI()
+void SceneResult::CreateJobUI()
 {
 	World& w = GetWorld();
 	//背景生成
-	GameObject& job = w.CreateGameObject();
-	job.AddComponent<UiSpriteRenderer>(TextureTag::Result_Job_Tastuzin, Vector2::zero(), Vector2::WindowSize());
+
 }
 
-void Result::CreateNextText()
+void SceneResult::CreateNextText()
 {
 	World& w = GetWorld();
 	//背景生成

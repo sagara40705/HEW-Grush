@@ -10,6 +10,7 @@ class GlassGaugeManager : public MonoBehaviour
 {
 private:
 	float gauge_ = 0.0f;
+	//float gauge_ = 0.0f;
 	bool isGaugeEmpty = true;
 	bool isGaugeDecaying = false;   //ƒQ[ƒWŒ¸Š’†‚©H
 	float gaugeDecayDelayTimer = 0.f; //ƒQ[ƒWŒ¸Š‚Ü‚Å‚Ìƒ^ƒCƒ}[
@@ -28,10 +29,12 @@ public:
 	bool dirty_ = true;
 	bool up_ = false;
 	float GetGaugeRatio();
+	float GetGaugeDecayTimer() { return gaugeDecayDelayTimer; }
+	bool  IsGaugeDecaying() { return isGaugeDecaying; }
 	HammerGrade GetHammerGrade();
 private:
 	//ŒÀŠE“Ë”j
-	const float kLimitBreakTime = 10.f; // ŒÀŠE“Ë”j‚·‚é‚Ü‚Å‚ÌŠÔ
+	const float kLimitBreakTime = 5.f; // ŒÀŠE“Ë”j‚·‚é‚Ü‚Å‚ÌŠÔ
 	float limitBreakTimer_ = 0.f;		// ŒÀŠE“Ë”j‚·‚é‚Ü‚Å‚Ìƒ^ƒCƒ}[
 
 	const float kLimitBreakDuration = 5.f; // ŒÀŠE“Ë”j‚Ì‘±ŠÔ

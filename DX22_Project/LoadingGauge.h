@@ -16,9 +16,12 @@ private:
 	Vector2 fullSize_ = Vector2::one(); // 最大サイズ
 	Vector2 baseCenterPos_ = Vector2::zero();   // 初期の中心座標
 
+
 public:
 	explicit LoadingGauge(LoadingScene* loading);
 	void Start() override;
 	void Update() override;
 	void OnDestroy() override;
+	// 文字のUIを教えるための関数
+	
 };

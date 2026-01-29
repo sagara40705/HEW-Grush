@@ -57,3 +57,5 @@
 #include "StageMap.h"
 #include "SelectPlayerControl.h"
 
+// ƒIƒvƒVƒ‡ƒ“UI
+#include "OptionUIController.h"

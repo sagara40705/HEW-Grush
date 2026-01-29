@@ -1,7 +1,11 @@
 #include "OptionUIController.h"
 #include "GameObject.h"
 #include "InputKeyboard.h"
-#include "SoundManager.h"
+#include "DebugLog.h"
+#include "SceneManager.h"
+#include "SceneGame.h"
+#include "SceneStageSelect.h"
+#include "SceneTitle.h"
 
 void OptionUIController::SetOptionRoot(GameObject* root)
 {
@@ -37,6 +41,7 @@ void OptionUIController::Start()
     m_selected = 0;
     m_isPressedVisual = false;
 
+	Open(); //最初から表示する
     if (m_isOpen) ApplyVisual();
 }
 
@@ -44,10 +49,22 @@ void OptionUIController::Update()
 {
     if (!m_optionRoot) return;
 
+    if (m_isDelayActive)
+    {
+        if (!m_delayTimer.IsRunning()) return;
+        if (m_delayTimer.ElapsedRawSeconds() >= kDelayDuration) 
+        {
+			m_isDelayActive = false;
+			m_delayTimer.Stop();
+			DebugLog::Output("OptionUI: Triggering operation after delay");
+            TriggerOperation();
+        }
+    }
+
     // modal screen: ESC closes only the modal (do not close option)
     if (IsModalShowing())
     {
-        if (InputKeyboard::GetKeyDown(VK_ESCAPE))
+        if (InputKeyboard::GetKeyDown(VK_RETURN))
         {
             m_isPressedVisual = false; // back to normal menu
             ApplyVisual();
@@ -58,39 +75,19 @@ void OptionUIController::Update()
     // normal ESC toggles option open/close
     if (InputKeyboard::GetKeyDown(VK_ESCAPE))
     {
-        if (!m_isOpen)
-        {
-            Open();
-            SoundManager::SoundPlay(OptionOpenSE, 1.0f);
-        }
-        else
-        {
-            Close();
-            SoundManager::SoundPlay(OptionCloseSE, 1.0f);
-        }
+        if (!m_isOpen) Open();
+        else           Close();
         return;
     }
 
     if (!m_isOpen) return;
 
-    if (InputKeyboard::GetKeyDown(VK_UP)) 
-    {
-        MoveUp(); 
-        SoundManager::SoundPlay(OptionMoveSE, 1.0f);
-        return; 
-    }
-
-    if (InputKeyboard::GetKeyDown(VK_DOWN)) 
-    { 
-        MoveDown(); 
-        SoundManager::SoundPlay(OptionMoveSE, 1.0f);
-        return;
-    }
+    if (InputKeyboard::GetKeyDown(VK_UP)) { MoveUp(); return; }
+    if (InputKeyboard::GetKeyDown(VK_DOWN)) { MoveDown(); return; }
 
     if (InputKeyboard::GetKeyDown(VK_RETURN))
     {
         OnEnter();
-        SoundManager::SoundPlay(OptionSelectSE, 1.0f);
         return;
     }
 }
@@ -150,6 +147,7 @@ void OptionUIController::OnEnter()
 
 void OptionUIController::ApplyVisual()
 {
+	// sanity check
     int n = (int)m_textNormal.size();
     if ((int)m_textSelected.size() < n) n = (int)m_textSelected.size();
     if ((int)m_frameNormal.size() < n)  n = (int)m_frameNormal.size();
@@ -201,6 +199,38 @@ void OptionUIController::ApplyVisual()
             fb->SetActive(true);
         }
     }
+
+	// 選択ごとの処理ログ出力
+	if (!m_isPressedVisual) return;
+
+	m_isDelayActive = true;
+	m_delayTimer.Start();
+
+    switch (m_selected)
+    {
+	case 0:     
+		m_operation = Operation::ReturnToGame;
+        DebugLog::Output("OptionUI: Selected 仕事に戻る");
+		break;
+	case 1:	
+        m_operation = Operation::Restart;
+        DebugLog::Output("OptionUI: Selected やり直す");
+		break;
+	case 2:      
+        m_operation = Operation::GoToStageSelect;
+        DebugLog::Output("OptionUI: Selected ステージ選択に戻る");
+		break;
+	case 3:	
+        m_operation = Operation::None;
+        DebugLog::Output("OptionUI: Selected 操作方法を表示");
+		break;
+	case 4:    
+        m_operation = Operation::GoToTitle;
+        DebugLog::Output("OptionUI: Selected タイトルへ");
+		break;
+	default:        DebugLog::Output("OptionUI: Selected 不明な項目");
+        break;
+    }
 }
 
 bool OptionUIController::IsModalShowing() const
@@ -213,4 +243,29 @@ bool OptionUIController::IsModalShowing() const
 
     // frameBreak exists -> modal screen
     return (m_frameBreak[m_selected] != nullptr);
+}
+
+void OptionUIController::TriggerOperation()
+{
+    switch (m_operation)
+    {
+    case OptionUIController::Operation::None:
+        break;
+    case OptionUIController::Operation::ReturnToGame:
+        SceneManager::PopScene();
+        break;
+    case OptionUIController::Operation::Restart:
+        SceneManager::ChangeSceneAsync<SceneGame>();
+        break;
+    case OptionUIController::Operation::GoToStageSelect:
+        SceneManager::ChangeSceneAsync<SceneStageSelect>();
+        break;
+    case OptionUIController::Operation::GoToTitle:
+        SceneManager::ChangeSceneAsync<SceneTitle>();
+        break;
+    default:
+        break;
+    }
+
+	m_operation = Operation::None; // reset
 }

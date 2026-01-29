@@ -20,6 +20,8 @@ void GlassGaugeManager::Start()
 
 	assert(player_ && hammer_ && "参照のどれかがnullptrです");
 	if (!player_ || !hammer_) return;
+
+	isGaugeDecaying = false;
 }
 
 void GlassGaugeManager::Update()
@@ -30,7 +32,7 @@ void GlassGaugeManager::Update()
 #ifdef _DEBUG
 	DebugCommand();
 #endif // DEBUG	
-
+	
 	// 限界突破中
 	if (isLimitBreak_)
 	{
@@ -51,7 +53,7 @@ void GlassGaugeManager::Update()
 		if (!IsMaxGauge())
 		{
 			limitBreakTimer_ = 0.f;
-			//return;
+			//return; ←これ
 		}
 
 		limitBreakTimer_ += 0.1f / 60.f;
@@ -83,8 +85,7 @@ void GlassGaugeManager::Update()
 	{
 		// 減衰までの時間を計る
 		constexpr float DT = 0.1f / 60.f;
-//		constexpr float kGaugeDecayDelayTime = 10.f; //ゲージ減衰までの時間
-		constexpr float kGaugeDecayDelayTime = 1.f; //ゲージ減衰までの時間
+		constexpr float kGaugeDecayDelayTime = 2.0f; //ゲージ減衰までの時間
 		gaugeDecayDelayTimer += DT;
 		if (gaugeDecayDelayTimer >=  kGaugeDecayDelayTime)
 		{
@@ -106,11 +107,6 @@ void GlassGaugeManager::BrakeGlass(GlassGrade grade)
 {
 	constexpr float kGaugeUpVale[ToIndex(GlassGrade::Count)] 
 					= {10.f, 10.f, 10.f};
-
-	if (isGaugeDecaying)
-	{
-		SoundManager::StopSound(GaugeDownSE);
-	}
 	
 	//減衰を止めタイマーをリセット
 	isGaugeDecaying = false;

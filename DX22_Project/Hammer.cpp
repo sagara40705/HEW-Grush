@@ -131,7 +131,7 @@ void Hammer::UpdateSpinAttack()
 
 void Hammer::Attack(GameObject* go)
 {
-	const float kDamage[ToIndex(HammerGrade::Count)] = { 1.f, 3.f, 5.f };
+	const float kDamage[ToIndex(HammerGrade::Count)] = { 1.f, 5.f, 25.f };
 
 	GlassObject* glass = go->GetComponent<GlassObject>();
 	if (!glass) return;

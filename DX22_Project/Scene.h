@@ -38,6 +38,9 @@ public:
     // より細かく分割したいシーンはオーバーライドして、
     // std::function を複数 emplace_back していく。
     virtual void BuildLoadTasks(std::vector<LoadTask>& outTasks);
+    
+    // Optionから帰って来た時に呼ばれる関数
+    virtual void OnReturnFromOption() {}
 
     // 1 回呼び出すごとに 1 タスクだけ実行。
     // すべてのタスクが完了すると true を返す。

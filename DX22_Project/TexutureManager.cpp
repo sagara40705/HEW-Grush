@@ -12,14 +12,14 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     "Assets/Texture/Loading/Load_Character.png",    //Load_Character = 3		
     "Assets/Texture/Loading/Load_Gauge_Bar.png",    //Load_Gauge_Bar = 4,		    
     "Assets/Texture/Loading/Load_Gauge_Frame.png",  //Load_Gauge_Frame = 5,       
-    "Assets/Texture/Loading/Load_Gauge_Text.png",   //Load_Text = 6,		        
+    "Assets/Texture/Loading/Load_Text.png",         //Load_Text = 6,		        
     "",//SpareSlot_01 = 7,
 
     /// Title 8Å`15(8)
     "Assets/Texture/Title/Title_BG.png",        //Title_BG = 8,
     "Assets/Texture/Title/Title_Text.png",      //Title_Text = 9,		     
     "Assets/Texture/Title/Title_Logo.png",      //Title_Logo = 10,
-    "Assets/Texture/Title/Title_Fadein.png",    //Title_Fadein = 11,		      
+    "Assets/Texture/Title/Title_FadeAnim.png",  //Title_Fadein = 11,		      
     "Assets/Texture/Title/Title_FadeinID.png",  //Title_FadeinID = 12,		
     "",//SpareSlot_02 = 13,
     "",//SpareSlot_03 = 14,
@@ -56,15 +56,15 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     "Assets/Texture/Game/UI/Timer/Colon.png",       //Game_UI_Timer_Colon = 38,
     "Assets/Texture/Game/UI/Score/Number.png",      //Game_UI_Score_Number = 39,
     "Assets/Texture/Game/UI/Score/Text.png",        //Game_UI_Score_Text = 40,
-    "Assets/Texture/Game/UI/Action/DashIcon.png",   //Game_UI_Action_DushIcon = 41,
-    "Assets/Texture/Game/UI/Action/SpinIcon.png",   //Game_UI_Action_SpinIcon = 42,
-    "Assets/Texture/Game/UI/Action/textIcon.png",   //Game_UI_Action_TextIcon = 43,
+    "Assets/Texture/Game/UI/Action/ActionIcon.png", //Game_UI_Action_DushIcon = 41,
+    "", //Game_UI_Action_SpinIcon = 42,
+    "Assets/Texture/Game/UI/Action/TextIcon.png",   //Game_UI_Action_TextIcon = 43,
 
-    "",//Game_UI_Gaug_Lv1 = 44,	 // (äÆ) Lv1ÇÃÉKÉâÉXÉQÅ[ÉWSS
-    "",//Game_UI_Gaug_Lv2 = 45,	 // (äÆ) Lv2ÇÃÉKÉâÉXÉQÅ[ÉWSS
-    "",//Game_UI_Gaug_Lv3 = 46,	 // (äÆ) Lv3ÇÃÉKÉâÉXÉQÅ[ÉWSS
+    "Assets/Texture/Game/UI/Gauge/Glass_lv1.png",//Game_UI_Gaug_Lv1 = 44,	 
+    "Assets/Texture/Game/UI/Gauge/Glass_lv2.png",//Game_UI_Gaug_Lv2 = 45,	
+    "Assets/Texture/Game/UI/Gauge/Glass_lv3.png",//Game_UI_Gaug_Lv3 = 46,	 
     "Assets/Texture/Game/GlassShard.png,",          //SpareSlot_12 = 47,
-    "",// _SpareSlot_12 = 48,
+    "Assets/Texture/Game/UI/Score/Finish.png",// _SpareSlot_12 = 48,
     "",//_SpareSlot_13 = 49,
     "",//_SpareSlot_14 = 50,
     "",//_SpareSlot_15 = 51,
@@ -76,7 +76,7 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     ////Result 56Å`71 (16)
     "Assets/Texture/Result/Bace.png",           //Result_Bace = 56,	
     "Assets/Texture/Result/Time/Text.png",      //Result_Time_Text = 57,
-    "Assets/Texture/Result/Time/Nuber.png",     //Result_Time_Number = 58,
+    "Assets/Texture/Result/Time/Number.png",     //Result_Time_Number = 58,
     "Assets/Texture/Result/Time/Colon.png",     //Result_Time_Colon = 59,
 
     "Assets/Texture/Result/Gauge_Bar.png",      //Result_Gauge_Bar = 60,	 // ÉQÅ[ÉWÇÃÉoÅ[
@@ -97,26 +97,25 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
 
     ////Option 72Å`
     "Assets/Texture/Option/Option_BG.png", //Option_BG = 72,
-
-        "Assets/Texture/option/menu_bace.png",            //26
-    "Assets/Texture/option/GS/GS_back_to_work.png",      //28
-    "Assets/Texture/option/GS/GS_back_to_work_color.png",//29
-    "Assets/Texture/option/GS/GS_retry.png",              //30
-    "Assets/Texture/option/GS/GS_retry_color.png",        //31
-    "Assets/Texture/option/GS/GS_back_to_stage.png",      //32
-    "Assets/Texture/option/GS/GS_back_to_stage_color.png",//33
-    "Assets/Texture/option/GS/GS_how_to.png",             //34
-    "Assets/Texture/option/GS/GS_go_title_color.png",     //35
-    "Assets/Texture/option/GS/GS_go_title.png",          //36
-    "Assets/Texture/option/GS/GS_how_to_color.png",       //37
-    "Assets/Texture/option/GS/GS_back_to_work_Frame.png", //38
-    "Assets/Texture/option/GS/GS_retry_Frame.png",        //39
-    "Assets/Texture/option/GS/GS_back_to_stage_Frame.png",//40
-    "Assets/Texture/option/GS/GS_back_to_work_Frame_br.png",//41
-    "Assets/Texture/option/GS/GS_retry_Frame_br.png",//42
-    "Assets/Texture/option/GS/GS_back_to_stage_Frame_br.png",//43
-    "Assets/Texture/option/GS/instructions.png",      //44
-    "Assets/Texture/option/GS/GS_retry_Frame_Back.png"//45
+    "Assets/Texture/option/menu_bace.png",                      //73
+    "Assets/Texture/option/GS/GS_back_to_work.png",             //74
+    "Assets/Texture/option/GS/GS_back_to_work_color.png",       //75
+    "Assets/Texture/option/GS/GS_retry.png",                    //76
+    "Assets/Texture/option/GS/GS_retry_color.png",              //77
+    "Assets/Texture/option/GS/GS_back_to_stage.png",            //78
+    "Assets/Texture/option/GS/GS_back_to_stage_color.png",      //79
+    "Assets/Texture/option/GS/GS_how_to.png",                   //80
+    "Assets/Texture/option/GS/GS_go_title_color.png",           //81
+    "Assets/Texture/option/GS/GS_go_title.png",                 //82
+    "Assets/Texture/option/GS/GS_how_to_color.png",             //83
+    "Assets/Texture/option/GS/GS_back_to_work_Frame.png",       //84
+    "Assets/Texture/option/GS/GS_retry_Frame.png",              //85
+    "Assets/Texture/option/GS/GS_back_to_stage_Frame.png",      //86
+    "Assets/Texture/option/GS/GS_back_to_work_Frame_br.png",    //87
+    "Assets/Texture/option/GS/GS_retry_Frame_br.png",           //88
+    "Assets/Texture/option/GS/GS_back_to_stage_Frame_br.png",   //89
+    "Assets/Texture/option/GS/instructions.png",                //90
+    "Assets/Texture/option/GS/GS_retry_Frame_Back.png"          //91
 };
 
 // îzóÒÇÃÉfÉtÉHÉãÉgÉpÉXÇégópÇµÇƒìoò^

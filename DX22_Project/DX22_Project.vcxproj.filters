@@ -379,7 +379,7 @@
       <Filter>Game\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="OptionUIController.cpp">
-      <Filter>Game</Filter>
+      <Filter>Game\Components\GameManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -672,7 +672,7 @@
       <Filter>Game\Scenes</Filter>
     </ClInclude>
     <ClInclude Include="OptionUIController.h">
-      <Filter>Game</Filter>
+      <Filter>Game\Components\GameManager</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

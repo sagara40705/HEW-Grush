@@ -5,6 +5,7 @@
 #include "SceneGame.h"
 #include "SceneTitle.h"
 #include "InputKeyboard.h"
+#include"InputGamepad.h"
 #include "DebugLog.h"
 #include "GameState.h"
 #include "SoundManager.h"
@@ -83,7 +84,8 @@ void SelectPlayerControl::UpdateIdle()
 
     if (inputDirection != Direction::Invalid)
     {
-        DebugLog::OutputValue("Input Direction dir = %d", static_cast<int>(inputDirection));
+        DebugLog::OutputValue("Input Direction dir = %d",
+            static_cast<int>(inputDirection));
 
         if (CanMove(inputDirection))
         {
@@ -94,14 +96,16 @@ void SelectPlayerControl::UpdateIdle()
     }
 
     // 決定
-    if (InputKeyboard::GetKeyDown(VK_SPACE))
+	//これでstageセレクト画面からゲーム画面に遷移する
+    if (InputKeyboard::GetKeyDown(VK_SPACE)
+        || InputGamepad::GetButtonDown(XINPUT_GAMEPAD_X))
     {
         SetSelectedStage(currentStagePoint->stageId);
         SceneManager::ChangeSceneAsync<SceneGame>();
         SoundManager::SoundPlay(SelectSE, 1.0f);
         return;
     }
-
+    //キーボード用
 	if (InputKeyboard::GetKeyDown('T'))
 	{
 		// タイトルへ戻る

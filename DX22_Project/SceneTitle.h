@@ -40,14 +40,16 @@ private:
     void CreateTitleLogo();
     void CreateBreakTexture();
     void CreateTitleManager();
+    void UpdateTitleAnimations(); 
 private:
-    // ★ エンターで割る対象のボタン
-    //BreakUiRenderer* m_breakButton = nullptr;
+    float m_animTimer = 0.0f;
 
+    // 生成したオブジェクトを動かすためのポインタ
+    GameObject* m_titleLogoObj = nullptr;
+    GameObject* m_titleFontObj = nullptr;
     GameObject* m_mainCamera = nullptr;
     GameObject* m_player = nullptr;
-
-    UiSpriteRenderer* break_ = nullptr;
+    SpriteAnimation* break_ = nullptr;
 
 
     bool m_isStarting = false;    // 演出中フラグ

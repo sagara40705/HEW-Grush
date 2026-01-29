@@ -77,5 +77,5 @@ private:
 	Model::AnimeNo hummerAnimation_[Type::Count]; //アニメーションナンバーの格納先
 	Animator* hummerAnime_ = nullptr;		//アニメーター
 private:
-	void AddHummerAllAnimations();
+	void AddHammerAllAnimations();
 };

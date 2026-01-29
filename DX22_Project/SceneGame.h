@@ -19,6 +19,7 @@ public:
 	void Unload() final;
 	// ”ñ“¯Šúƒ[ƒh—p
 	void BuildLoadTasks(std::vector<LoadTask>& outTasks) override;
+	void OnReturnFromOption() override;
 private:
 	void CreateManagers();
 	void CreateCameraAndPlayer();
