@@ -229,24 +229,31 @@ void SceneTitle::UpdateTitleAnimations()
 		float yOffset = std::sin(m_animTimer * 1.5f) * 0.3f; // 1.5fが速さ、0.3fが振幅
 		trans->SetPosition(Vector3(2.f, yOffset, 15.f));
 	}
-	//人形揺れ
-	if (go1)
-	{
-		auto* trans = go1->GetComponent<Transform>();
-		float yOffset = std::sin(m_animTimer * 1.5f) * 0.3f; // 1.5fが速さ、0.3fが振幅
-		trans->SetPosition(Vector3(15.f, yOffset-8.f, 30.f));
-	}
-	if (go2)
-	{
-		auto* trans = go2->GetComponent<Transform>();
-		float yOffset = std::sin(m_animTimer * 1.5f) * 0.3f; // 1.5fが速さ、0.3fが振幅
-		trans->SetPosition(Vector3(10.f, yOffset+2.f, 30.f));
-	}
-	if (go3)
-	{
-		auto* trans = go3->GetComponent<Transform>();
-		float yOffset = std::sin(m_animTimer * 1.5f) * 0.3f; // 1.5fが速さ、0.3fが振幅
-		trans->SetPosition(Vector3(-15.f, yOffset -15.f,30.f));
-	}
+	
+	// オブジェクトごとの動きを計算するラムダ関数
+	// 引数：(対象, 元の座標, 移動の幅, 揺れの速さ, 位相のズレ)
+	auto ApplySpaceFloat = [&](GameObject* obj, Vector3 basePos, float range, float speed, float offset) {
+		if (!obj) return;
+		auto* trans = obj->GetComponent<Transform>();
+
+		// 1. 座標の計算 (XとYで周期を変えて「8の字」や「円」を描くようにする)
+		float x = basePos.x + std::sin(m_animTimer * speed + offset) * range;
+		float y = basePos.y + std::cos(m_animTimer * (speed * 0.7f) + offset) * (range * 0.8f);
+		float z = basePos.z + std::sin(m_animTimer * (speed * 0.5f) + offset) * (range * 0.5f);
+		trans->SetPosition(Vector3(x, y, z));
+
+		// 2. 回転の計算 (ここが宇宙っぽさのキモ)
+		// 常に同じ軸で回るのではなく、ゆらゆらと傾かせる
+		float rotX = std::sin(m_animTimer * (speed * 0.4f) + offset) * 10.0f;
+		float rotY = m_animTimer * 5.0f + offset; // ゆっくり自転させる
+		float rotZ = std::cos(m_animTimer * (speed * 0.3f) + offset) * 5.0f;
+		trans->SetRotation(Vector3(rotX, rotY, rotZ));
+		};
+
+	// 各オブジェクトに宇宙漂流アニメーションを適用
+	// 位相(最後の引数)をバラバラにすることで、別々の動きに見えるようになります
+	ApplySpaceFloat(go1, Vector3(15.f, -8.f, 30.f), 2.0f, 0.5f, 0.0f);   // 人形
+	ApplySpaceFloat(go2, Vector3(10.f, 2.f, 30.f), 1.5f, 0.8f, 2.5f);    // UFO
+	ApplySpaceFloat(go3, Vector3(-15.f, -15.f, 30.f), 3.0f, 0.4f, 5.0f); // スイング
 }
 

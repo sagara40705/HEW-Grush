@@ -231,6 +231,7 @@
     <ClCompile Include="SpriteAnimation.cpp" />
     <ClCompile Include="stageLevel.cpp" />
     <ClCompile Include="StageMap.cpp" />
+    <ClCompile Include="StageSentaku.cpp" />
     <ClCompile Include="StageWall.cpp" />
     <ClCompile Include="Startup.cpp" />
     <ClCompile Include="Texture.cpp" />
@@ -332,6 +333,7 @@
     <ClInclude Include="stageLevel.h" />
     <ClInclude Include="StageMap.h" />
     <ClInclude Include="StagePoint.h" />
+    <ClInclude Include="StageSentaku.h" />
     <ClInclude Include="StageWall.h" />
     <ClInclude Include="Texture.h" />
     <ClInclude Include="TextureManager.h" />
