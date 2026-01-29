@@ -4,6 +4,7 @@
 #include <array>
 #include "Scene.h"
 #include "TextureManager.h"
+#include"Defines.h"
 
 class UiSpriteRenderer;
 class GameObject;
@@ -53,5 +54,5 @@ private:
     // UI設定
     Vector2 m_center2D = Vector2(0.0f, 0.0f);          // 中心（あなたのUI基準）
     float   m_slideOffsetPx = 1600.0f;                 // 画面外へ出す距離（px）
-    Vector2 m_uiSize = Vector2(1500.0f, 900.0f);       // 画像サイズ
+    Vector2 m_uiSize = Vector2(SCREEN_WIDTH, SCREEN_HEIGHT);       // 画像サイズ
 };
