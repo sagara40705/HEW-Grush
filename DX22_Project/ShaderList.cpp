@@ -718,58 +718,100 @@ void ShaderList::MakeGlassPS()
 {
 	const char* code = R"EOT(
 
+////////////////////////////////////////////////////////////
+// Glass Pixel Shader
+// - テクスチャがある場合 : テクスチャを使ったガラス
+// - テクスチャが無い場合 : ガラス色のみ（純ガラス）
+// - 背景屈折 + Fresnel反射あり
+//
+// 前提（C++側）
+//   objAmbient.a == 1.0 : テクスチャあり
+//   objAmbient.a == 0.0 : テクスチャなし
+//   ※ ShaderList::SetMaterial() が保証する
+////////////////////////////////////////////////////////////
+
 struct PS_IN
 {
-    float4 pos    : SV_POSITION;
-    float3 normal : NORMAL0;
-    float2 uv     : TEXCOORD0;
-    float4 color  : COLOR0;
-    float4 wPos   : POSITION0;
+    float4 pos    : SV_POSITION; // 画面座標（ピクセル）
+    float3 normal : NORMAL0;     // ワールド法線
+    float2 uv     : TEXCOORD0;   // UV
+    float4 color  : COLOR0;      // 未使用（将来用）
+    float4 wPos   : POSITION0;   // ワールド座標
 };
 
+////////////////////////////////////////////////////////////
+// b0 : Material
+// objAmbient.a に「テクスチャ有無フラグ」が入る
+////////////////////////////////////////////////////////////
 cbuffer Material : register(b0)
 {
-    float4 objDiffuse;
-    float4 objAmbient;
-    float4 objSpecular;
+    float4 objDiffuse;  // rgb=基本色, a=opacity
+    float4 objAmbient;  // rgb=環境光, a=hasTextureFlag (1 or 0)
+    float4 objSpecular; // rgb=鏡面色, a=gloss
 };
 
+////////////////////////////////////////////////////////////
+// b1 : Light
+////////////////////////////////////////////////////////////
 cbuffer Light : register(b1)
 {
-    float4 lightDiffuse;
-    float4 lightDir;
+    float4 lightDiffuse; // 光の色
+    float4 lightDir;     // 光の方向（正規化済み）
 };
 
+////////////////////////////////////////////////////////////
+// b2 : Camera
+////////////////////////////////////////////////////////////
 cbuffer Camera : register(b2)
 {
-    float4 cameraPos;
+    float4 cameraPos; // カメラのワールド座標
 };
 
+////////////////////////////////////////////////////////////
+// b3 : GlassParam
+// glassTint : ガラスの色 + ベースアルファ
+// glassParams.x : Fresnel強度
+// glassParams.y : 反射強度
+// glassParams.w : Tint強度
+////////////////////////////////////////////////////////////
 cbuffer GlassParam : register(b3)
 {
-    float4 glassTint;   // rgb=tint, a=base alpha
-    float4 glassParams; // x=fresnelPower, y=reflStrength, z=unused, w=tintStrength
+    float4 glassTint;
+    float4 glassParams;
 };
 
+////////////////////////////////////////////////////////////
+// b4 : GlassScreen
+// 画面サイズと屈折量
+////////////////////////////////////////////////////////////
 cbuffer GlassScreen : register(b4)
 {
-    float2 screenSize;
-    float  refractStrength;
-    float  chromaStrength;
+    float2 screenSize;       // (width, height)
+    float  refractStrength;  // 屈折の強さ（px感覚）
+    float  chromaStrength;   // 色収差（今回は弱め）
 };
 
-Texture2D tex      : register(t0); // object texture
-Texture2D sceneTex : register(t1); // scene color
+////////////////////////////////////////////////////////////
+// テクスチャ
+////////////////////////////////////////////////////////////
+Texture2D tex      : register(t0); // オブジェクトのテクスチャ（無い場合もある）
+Texture2D sceneTex : register(t1); // 背景（SceneColor）
 SamplerState samp  : register(s0);
 
+////////////////////////////////////////////////////////////
+// 簡易ハッシュ（低周波ノイズ用）
+// モザイク感を防ぐために使う
+////////////////////////////////////////////////////////////
 float Hash21(float2 p)
 {
-    // ascii: cheap hash
     p = frac(p * float2(123.34f, 456.21f));
     p += dot(p, p + 34.345f);
     return frac(p.x * p.y);
 }
 
+////////////////////////////////////////////////////////////
+// 背景サンプリング（色収差付き）
+////////////////////////////////////////////////////////////
 float3 SampleScene(float2 uv, float2 offset, float ca)
 {
     float2 uvR = saturate(uv + offset * (1.0f + ca));
@@ -782,82 +824,116 @@ float3 SampleScene(float2 uv, float2 offset, float ca)
     return float3(r, g, b);
 }
 
+////////////////////////////////////////////////////////////
+// main
+////////////////////////////////////////////////////////////
 float4 main(PS_IN pin) : SV_TARGET
 {
-    float4 texCol = tex.Sample(samp, pin.uv);
+    //////////////////////////////////////////////////////////
+    // テクスチャ有無判定
+    // objAmbient.a は C++ の SetMaterial() が保証する
+    //////////////////////////////////////////////////////////
+    float hasTex = (objAmbient.a >= 1.0f) ? 1.0f : 0.0f;
 
+    //////////////////////////////////////////////////////////
+    // テクスチャ取得
+    // テクスチャ無しの場合は「白」として扱う
+    //////////////////////////////////////////////////////////
+    float4 texCol = float4(1.0f, 1.0f, 1.0f, 1.0f);
+    if (hasTex > 0.5f)
+    {
+        texCol = tex.Sample(samp, pin.uv);
+    }
+
+    //////////////////////////////////////////////////////////
+    // ベース色
+    // ・テクスチャあり → texCol
+    // ・テクスチャなし → glassTint（純ガラス）
+    //////////////////////////////////////////////////////////
+    float3 baseCol = lerp(glassTint.rgb, texCol.rgb, hasTex);
+
+    //////////////////////////////////////////////////////////
+    // 法線・視線
+    //////////////////////////////////////////////////////////
     float3 N = normalize(pin.normal);
     float3 V = normalize(cameraPos.xyz - pin.wPos.xyz);
 
+    //////////////////////////////////////////////////////////
+    // Fresnel（縁を強くする）
+    //////////////////////////////////////////////////////////
     float fresnelPower = max(glassParams.x, 1.0f);
-    float dotNV = saturate(dot(N, V));
-    float fresnel = pow(1.0f - dotNV, fresnelPower);
+    float fresnel = pow(1.0f - saturate(dot(N, V)), fresnelPower);
 
+    //////////////////////////////////////////////////////////
+    // スクリーンUV
+    //////////////////////////////////////////////////////////
     float2 safeScreen = max(screenSize, float2(1.0f, 1.0f));
     float2 scrUV = saturate(pin.pos.xy / safeScreen);
 
-    // ---- refraction direction (stable) ----
+    //////////////////////////////////////////////////////////
+    // 屈折方向
+    //////////////////////////////////////////////////////////
     float3 R = reflect(-V, N);
     float2 dir = normalize(R.xy + 1e-4f);
 
-    // ---- low freq noise (avoid mosaic) ----
+    //////////////////////////////////////////////////////////
+    // ノイズ（モザイク防止）
+    //////////////////////////////////////////////////////////
     float n = Hash21(scrUV * 60.0f + pin.wPos.xz * 0.02f);
     float2 noise = (n - 0.5f) * float2(1.0f, -1.0f);
 
     float2 offsetDir = dir * 0.85f + noise * 0.15f;
 
+    //////////////////////////////////////////////////////////
+    // 屈折量
+    // ・中心は弱く
+    // ・縁（Fresnel）は強く
+    //////////////////////////////////////////////////////////
     float strength = refractStrength * (0.35f + 1.65f * fresnel);
     float2 offset = offsetDir * (strength / safeScreen);
 
-    float ca = saturate(chromaStrength) * 0.010f;
-
+    //////////////////////////////////////////////////////////
+    // 背景取得
+    //////////////////////////////////////////////////////////
+    float ca = saturate(chromaStrength) * 0.01f;
     float3 sceneCol = SampleScene(scrUV, offset, ca);
 
-// ============================================================
-// transparency control (keep object texture color)
-// ============================================================
+    //////////////////////////////////////////////////////////
+    // ガラス内部色（透過）
+    //////////////////////////////////////////////////////////
+    float tintStrength = saturate(glassParams.w);
+    float3 tintedScene =
+        lerp(sceneCol, sceneCol * baseCol, 0.35f + 0.55f * tintStrength);
 
-// objCol: use object texture color as-is
-// do NOT multiply by glassTint here. If glassTint is dark (or 0), it makes object black.
-float3 objCol = saturate(texCol.rgb);
+    //////////////////////////////////////////////////////////
+    // 透けすぎ防止（ガラスの厚み感）
+    // 0.15～0.30 で調整
+    //////////////////////////////////////////////////////////
+    float solidity = 0.20f;
+    tintedScene = lerp(tintedScene, baseCol, solidity);
 
-// tintStrength: how much tint is applied (0..1)
-float tintStrength = saturate(glassParams.w);
+    //////////////////////////////////////////////////////////
+    // Fresnel反射
+    //////////////////////////////////////////////////////////
+    float reflStrength = saturate(glassParams.y);
+    float3 reflection =
+        lightDiffuse.rgb * baseCol * fresnel * reflStrength * 0.25f;
 
-// safeTint: prevent black if glassTint.rgb is (0,0,0) by mistake
-float3 safeTint = max(glassTint.rgb, float3(0.20f, 0.20f, 0.20f));
+    float3 finalRGB = tintedScene + reflection;
 
-// tintCol: 1 means no tint, safeTint means tinted
-float3 tintCol = lerp(float3(1.0f, 1.0f, 1.0f), saturate(safeTint), tintStrength);
+    //////////////////////////////////////////////////////////
+    // わずかにオブジェクト色を戻す（存在感）
+    //////////////////////////////////////////////////////////
+    finalRGB = lerp(finalRGB, baseCol, 0.05f);
 
-// base transmission: tint the background by tintCol
-float3 tintedScene = lerp(sceneCol, sceneCol * tintCol, 0.35f + 0.55f * tintStrength);
-
-// keep a bit of object texture identity
-tintedScene = lerp(tintedScene, tintedScene * objCol, 0.35f);
-
-// solidity: reduce "too transparent" look, blend toward objCol (keeps texture pattern)
-// 0.0 = very transparent, 0.3 = more solid
-float solidity = 0.20f; // change here (0.10 - 0.30)
-tintedScene = lerp(tintedScene, objCol, solidity);
-
-// reflection: use tintCol so it does not get dark
-float reflStrength = saturate(glassParams.y);
-float3 reflection = lightDiffuse.rgb * tintCol * (fresnel * reflStrength) * 0.25f;
-
-float3 finalRGB = tintedScene + reflection;
-
-// small push to object color for thickness
-finalRGB = lerp(finalRGB, objCol, 0.05f);
-
-    // ---- alpha ----
-    float alpha = saturate(glassTint.a * texCol.a);
-
-    // minimum opacity to avoid "too see-through"
-    alpha = max(alpha, 0.55f); // change here (0.50 - 0.65)
-
-    // edge a bit stronger
-    alpha = saturate(alpha + fresnel * 0.20f);
+    //////////////////////////////////////////////////////////
+    // Alpha
+    // ・テクスチャ無し → 1.0 扱い
+    // ・最低不透明度を保証
+    //////////////////////////////////////////////////////////
+    float alpha = glassTint.a * lerp(1.0f, texCol.a, hasTex);
+    alpha = max(alpha, 0.55f);            // 透明すぎ防止
+    alpha = saturate(alpha + fresnel * 0.2f); // 縁を少し濃く
 
     return float4(saturate(finalRGB), alpha);
 }
