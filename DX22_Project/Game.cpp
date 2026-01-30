@@ -40,7 +40,7 @@ void Game::Update()
     if (!CheckTitleSound)
     {
         //        PlaySound(SoundManager::GetSound(SceneGameBGM));
-        SoundManager::SoundPlay(SceneGameBGM, 0.4f);
+        //SoundManager::SoundPlay(SceneGameBGM, 0.4f);
         CheckTitleSound = true;
     }
 
