@@ -23,6 +23,7 @@ void GlassGaugeManager::Start()
 	if (!player_ || !hammer_) return;
 
 	isGaugeDecaying = false;
+	m_checkGaugeSound = false;
 }
 
 void GlassGaugeManager::Update()
@@ -80,6 +81,21 @@ void GlassGaugeManager::Update()
 		dirty_ = true;
 		constexpr float kGaugeDecayValue = 0.1f;
 		gauge_ -= kGaugeDecayValue;
+
+		if (gauge_ < 40.f)
+		{
+			if (!m_checkGaugeSound)
+			{
+			SoundManager::SoundPlay(SoundTag::GaugeDownSE, 5.0f);
+			m_checkGaugeSound = true;
+			}
+		}
+		else
+		{
+			SoundManager::StopSound(GaugeDownSE);
+			m_checkGaugeSound = false;
+		}
+
 		if (gauge_ < 0.f)
 		{
 			GradeDown();
@@ -96,7 +112,7 @@ void GlassGaugeManager::Update()
 			isGaugeDecaying = true;
 			gaugeDecayDelayTimer = 0.f;
 			DebugLog::Output("ゲージ減衰開始");
-			SoundManager::SoundPlay(SoundTag::GaugeDownSE, 5.0f);
+
 		}
 	}
 }
@@ -117,6 +133,7 @@ void GlassGaugeManager::BrakeGlass(GlassGrade grade)
 	gaugeDecayDelayTimer = 0.f;
 
 	SoundManager::StopSound(GaugeDownSE);
+	m_checkGaugeSound = false;
 
 	dirty_ = true;
 	up_ = true;
@@ -167,11 +184,12 @@ void GlassGaugeManager::GradeDown()
 		isGaugeEmpty = true;
 		gauge_ = 0.f;
 		DebugLog::Output("GlassGauge, is Empty");
-		SoundManager::SoundPlay(SoundTag::GradeDownSE ,5.0f);
 		return;
 	}
 
 	hammer_->GradeDown();
+
+	SoundManager::SoundPlay(SoundTag::GradeDownSE, 5.0f);
 
 	gauge_ = kMaxGaugeVale[ToIndex(hammer_->GetGrade())];
 }
