@@ -11,22 +11,17 @@
 #include "SoundManager.h"
 #include <cassert>
 
-constexpr float kActionTime[ToIndex(ActionId::Count)] = { 0.4f, 1.f, 1.5f };
+constexpr float kActionTime[ToIndex(ActionId::Count)] = { 0.3f, 0.8f, 1.5f };
 constexpr float kCoolDown[ToIndex(ActionId::Count)]  = { 0.1f, 5.f, 5.f };
 
 void PlayerAction::Start()
 {
 	tf_ = gameObject->GetComponent<Transform>();
 	state_ = gameObject->GetComponent<PlayerState>();
-	for (GameObject* go : gameObject->GetChildren())
-	{
-		if (!go) continue;
-		if (go->CompareTag(Tag::Hammer))
-		{
-			hammer_ = go->GetComponent<Hammer>();
-			break;
-		}
-	}
+
+	GameObject* hammerObj = gameObject->FindWithTag(Tag::Hammer);
+	assert(hammerObj && "Hammerオブジェクトが見つかりません");
+	hammer_ = hammerObj->GetComponent<Hammer>();
 
 	assert(state_ && tf_ && hammer_ && "参照のどれかがnullptrです");
 	if (!state_ || !tf_ || !hammer_) return;
@@ -218,7 +213,7 @@ void PlayerAction::UpdateNormalAttack()
 // ダミー実装
 void PlayerAction::UpdateSpinAttack()
 {
-	constexpr Vector3 delta = { 0.f, -18.f, 0.f };
+	constexpr Vector3 delta = { 0.f, 0.f, 0.f };
 
 	tf_->AddRotate(delta);
 	hammer_->UpdateSpinAttack();
@@ -227,7 +222,9 @@ void PlayerAction::UpdateSpinAttack()
 // ダミー実装
 void PlayerAction::UpdateDashAttack()
 {
-	hammer_->UpdateSpinAttack();
+	const float ratio = state_->actionTimer[ToIndex(ActionId::DashAttack)] / kActionTime[ToIndex(ActionId::DashAttack)];
+	hammer_->UpdateDashAttack(ratio);
+
 	// Rigidbody を取得（なければ何もしない）
 	auto* rb = gameObject->GetComponent<Rigidbody>();
 	if (!rb) return;

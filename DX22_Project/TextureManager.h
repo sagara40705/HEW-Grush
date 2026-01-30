@@ -29,10 +29,10 @@ enum class TextureTag : uint8_t
     // StageSelect 16～21 (6)
     StageSelect_BG = 16,		    // 背景
     StageSelect_PlayerIcon = 17,    // プレイヤーアイコン
-    _SpareSlot_05 = 18,
-    _SpareSlot_06 = 19,
-    _SpareSlot_07 = 20,
-    _SpareSlot_08 = 21,
+    StageSelect_Rank_S = 18,
+    StageSelect_Rank_A = 19,
+    StageSelect_Rank_B = 20,
+    StageSelect_Rank_C = 21,
 
     // Tutorial 22～27 (6)
     Tutorial_UI_Task = 22,	        // チュートリアルタスク
@@ -118,26 +118,20 @@ enum class TextureTag : uint8_t
     option_Font4_screen = 90,
     option_translucent = 91,
 
-    //option_Back,//オプションの背景26
-    //option_Font1,//仕事に戻る28
-    //option_Font1_OK,//仕事に戻る選択29
-    //option_Font2,//やり直す30
-    //option_Font2_OK,//やり直す選択31
-    //option_Font3,//ステージセレクト32
-    //option_Font3_OK,//ステージセレクト選択33
-    //option_Font4,//操作方法34
-    //option_Font4_OK,//操作方法選択35
-    //option_Font5,//タイトルに戻る36
-    //option_Font5_OK,//タイトルに戻る選択37
-    //option_Font1_Back,//38
-    //option_Font2_Back,//39
-    //option_Font3_Back,//40
-    //option_Font1_Break,//41
-    //option_Font2_Break,//42
-    //option_Font3_Break,//43
-    //option_Font4_screen,//44
-    //option_translucent,//45
-
+	stageLv1 = 92,
+	stageLv2 = 93,
+	stageLv3 = 94,
+	stagelevel_Easy = 95,
+	stagelevel_Normal = 96,
+	Stagelevel_Hard_a = 97,
+	Stagelevel_Hard_b = 98,
+    Stagelevel_Hard_c = 99,
+    StageImage = 100,
+	bou = 101,
+	Number = 102,
+	Number2 = 103,
+	Number3 = 104,
+	bou2 = 105,
     Count,
 };
 

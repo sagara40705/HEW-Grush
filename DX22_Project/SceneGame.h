@@ -25,8 +25,11 @@ private:
 	void CreateCameraAndPlayer();
 	void CreateStage();
 	void CreateStage1();
+	void CreateStage1Wall();
 	void CreateStage2();
+	void CreateStage2Wall();
 	void CreateStage3();
+	void CreateStage3Wall();
 	void CreateUi();
 	void CreateGaugeUI();
 	void CreateTimerUI();
@@ -38,6 +41,7 @@ private:
 	//ÉMÉ~ÉbÉN	
 	void CreateGlassObjectSpawner();
 	void CreateWarp();
+	void CreateWarpStage2();
 
 	void CreateStageFromCSV(const std::string& filename);
 	PrefabId GetPrefabIdFromString(const std::string& rawname);

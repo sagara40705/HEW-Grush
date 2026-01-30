@@ -8,7 +8,6 @@
 #include"InputGamepad.h"
 #include "DebugLog.h"
 #include "GameState.h"
-#include "SoundManager.h"
 
 #include <assert.h>
 #include <algorithm>
@@ -97,45 +96,53 @@ void SelectPlayerControl::UpdateIdle()
 
     // 決定
 	//これでstageセレクト画面からゲーム画面に遷移する
-    if (InputKeyboard::GetKeyDown(VK_SPACE)
-        || InputGamepad::GetButtonDown(XINPUT_GAMEPAD_X))
+    if (InputKeyboard::GetKeyDown(VK_SPACE) || InputGamepad::GetButtonDown(XINPUT_GAMEPAD_X))
     {
         SetSelectedStage(currentStagePoint->stageId);
         SceneManager::ChangeSceneAsync<SceneGame>();
-        SoundManager::SoundPlay(SelectSE, 1.0f);
         return;
     }
-    //キーボード用
-	if (InputKeyboard::GetKeyDown('T'))
-	{
-		// タイトルへ戻る
-		SceneManager::ChangeSceneAsync<SceneTitle>();
-		return;
-	}
+
 }
 
 Direction SelectPlayerControl::InputMove()
 {
-    if (InputKeyboard::GetKeyDown(VK_LEFT))
+    //============================
+    // Gamepad: 左スティック（倒した瞬間だけ入力を出す）
+    //============================
+    Direction stickDown = Direction::Invalid;
+
     {
-        return Direction::Left;
+        constexpr float kStickThreshold = 0.5f; // 0..1（deadzone適用後の値に対する閾値）
+        const float lx = InputGamepad::GetLStickX();
+        const float ly = InputGamepad::GetLStickY();
+
+        Direction stickDir = Direction::Invalid;
+
+        const float ax = std::abs(lx);
+        const float ay = std::abs(ly);
+
+        // 斜めは大きい軸を優先して上下左右に丸める
+        if (ax >= kStickThreshold || ay >= kStickThreshold)
+        {
+            if (ax >= ay)
+                stickDir = (lx < 0.0f) ? Direction::Left : Direction::Right;
+            else
+                stickDir = (ly < 0.0f) ? Direction::Down : Direction::Up; // XInputは上が+
+        }
+
+        // 押し始め（ニュートラル→方向）だけを Down として返す
+        if (stickDir != Direction::Invalid && prevLStickDir == Direction::Invalid)
+            stickDown = stickDir;
+
+        // ニュートラルに戻るまで次の入力を出さない
+        prevLStickDir = stickDir;
     }
 
-    if (InputKeyboard::GetKeyDown(VK_RIGHT))
-    {
-        return Direction::Right;
-    }
-
-    if (InputKeyboard::GetKeyDown(VK_UP))
-    {
-        return Direction::Up;
-    }
-
-    if (InputKeyboard::GetKeyDown(VK_DOWN))
-    {
-        return Direction::Down;
-    }
-
+    if (InputKeyboard::GetKeyDown(VK_LEFT))  return Direction::Left;
+    if (InputKeyboard::GetKeyDown(VK_RIGHT)) return Direction::Right;
+    if (InputKeyboard::GetKeyDown(VK_UP))    return Direction::Up;
+    if (InputKeyboard::GetKeyDown(VK_DOWN))  return Direction::Down;
 
     return Direction::Invalid;
 }

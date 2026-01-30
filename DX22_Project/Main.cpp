@@ -13,6 +13,7 @@
 #include "LineManager.h"
 #include "SoundManager.h"
 #include "Game.h"
+#include "PrefabSet.h"
 
 
 HRESULT Init(HWND hWnd, UINT width, UINT height)
@@ -32,6 +33,7 @@ HRESULT Init(HWND hWnd, UINT width, UINT height)
 	SoundManager::Load();
 	// ÉVÅ[Éì
 	Game::Init();
+	RegisterAllPrefabs();
 
 	return hr;
 }
