@@ -7,6 +7,7 @@
 #include "DebugLog.h"
 #include "ShaderList.h"
 #include "SoundManager.h"
+#include "Time/Time.h"
 
 constexpr float kMaxGaugeVale[ToIndex(HammerGrade::Count)] 
 				= { 100.f, 200.f, 300.f };
@@ -32,11 +33,13 @@ void GlassGaugeManager::Update()
 #ifdef _DEBUG
 	DebugCommand();
 #endif // DEBUG	
+
+	const float DT = Time::UnscaledDeltaTime();
 	
 	// ŒÀŠE“Ë”j’†
 	if (isLimitBreak_)
 	{
-		limitBreakDurationTimer_ += 0.1f / 60.f;
+		limitBreakDurationTimer_ += DT;
 		ShaderList::SetRainbowTime(limitBreakDurationTimer_);
 
 		if (limitBreakDurationTimer_ >= kLimitBreakDuration)
@@ -57,7 +60,7 @@ void GlassGaugeManager::Update()
 			//return; ©‚±‚ê
 		}
 
-		limitBreakTimer_ += 0.1f / 60.f;
+		limitBreakTimer_ += DT;
 		if (limitBreakTimer_ >= kLimitBreakTime)
 		{
 			isLimitBreak_ = true;
@@ -86,7 +89,6 @@ void GlassGaugeManager::Update()
 	else
 	{
 		// Œ¸Š‚Ü‚Å‚ÌŽžŠÔ‚ðŒv‚é
-		constexpr float DT = 0.1f / 60.f;
 		constexpr float kGaugeDecayDelayTime = 2.0f; //ƒQ[ƒWŒ¸Š‚Ü‚Å‚ÌŽžŠÔ
 		gaugeDecayDelayTimer += DT;
 		if (gaugeDecayDelayTimer >=  kGaugeDecayDelayTime)

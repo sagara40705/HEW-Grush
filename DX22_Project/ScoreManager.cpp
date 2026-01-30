@@ -9,6 +9,7 @@
 #include "TimerUI.h"
 #include "TextureManager.h"
 #include "SoundManager.h"
+#include "Time/Time.h"
 
 #include <cassert>
 
@@ -61,7 +62,6 @@ void ScoreManager::Update()
 			// アニメーションが1.0fに達したらシーン切り替え
 			GoToResultScene();
 			
-			
 		}
 	}
 }
@@ -79,6 +79,7 @@ void ScoreManager::UpScore(GlassGrade grade)
 	{
 		score_ = 0;
 		isLock_ = true;
+		Time::SetTimeScale(0.2f);
 
 		m_animationTime = 0.0f;
 		uiFinish_->SetVisible(true);
@@ -97,6 +98,8 @@ void ScoreManager::GoToResultScene()
 	// ===== クリア時間をGameStateに保存 =====
 	float clearTime = timer_->GetTime();
 	SetRecentClearTimes(clearTime);
+
+	Time::SetTimeScale(1.0f); // 初期化
 
 	// ===== シーン切り替え =====
 	DebugLog::Output("Clear Stage");

@@ -14,6 +14,7 @@
 #include "SoundManager.h"
 #include "Game.h"
 #include "PrefabSet.h"
+#include "Time/Time.h"
 
 
 HRESULT Init(HWND hWnd, UINT width, UINT height)
@@ -22,6 +23,8 @@ HRESULT Init(HWND hWnd, UINT width, UINT height)
 	// DirectX初期化
 	hr = InitDirectX(hWnd, width, height, false);
 	if (FAILED(hr)) { return hr; }
+
+	Time::Initialize();
 
 	// 他機能初期化
 	PrimitiveMeshManager::Init();
@@ -34,6 +37,7 @@ HRESULT Init(HWND hWnd, UINT width, UINT height)
 	// シーン
 	Game::Init();
 	RegisterAllPrefabs();
+
 
 	return hr;
 }
@@ -51,11 +55,14 @@ void Uninit()
 	TextureManager::Clear();
 	Sprite::Uninit();
 	PrimitiveMeshManager::Uninit();
+
+	Time::Shutdown();
 	UninitDirectX();
 }
 
 void Update()
 {
+	Time::BeginFrame();
 	InputKeyboard::Update();
 	InputGamepad::Update();
 	Game::Update();
