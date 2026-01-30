@@ -86,18 +86,17 @@ void SceneTitle::CreateCameraAndPlayer()
 	player.AddComponent<MeshFilter>(ModelTag::Player);
 	player.AddComponent<MeshRenderer>();
 	player.AddComponent<PlayerState>();
-	//player.AddComponent<Animator>();
-	//player.AddComponent<PlayerAnimation>();
+	player.AddComponent<Animator>();
+	player.AddComponent<PlayerAnimation>();
 
 	// 保存
 	m_player = &player;
 
 	// ハンマー
 	GameObject& hummer = player.CreateChild(Hammer::BasePos, Hammer::BaseRota, Vector3(0.2f, 0.2f, 0.2f));
+	hummer.SetTag(Tag::Hammer);
 	hummer.AddComponent<MeshFilter>(ModelTag::Hammer_3);
 	hummer.AddComponent<MeshRenderer>();
-	//hummer.AddComponent<Animator>();
-
 }
 
 void SceneTitle::CreateCanvas()
@@ -177,9 +176,10 @@ void SceneTitle::Update()
 		m_zoomTimer = 0.0f;
 		
 		// ★ 保存しておいた m_player を使う
-		if (m_player) {
+		if (m_player)
+		{
 			auto* pState = m_player->GetComponent<PlayerState>();
-			if (pState) pState->actionedThisFrame[ToIndex(ActionId::SpinAttack)] = true;
+			//if (pState) pState->wantUseAction[ToIndex(ActionId::SpinAttack)] = true;
 		}
 	}
 
