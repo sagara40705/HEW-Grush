@@ -6,6 +6,7 @@
 #include "SceneOption.h"
 #include "stageLevel.h"
 #include "StageSentaku.h"
+#include "SoundManager.h"
 
 void SceneStageSelect::Load()
 {
@@ -65,6 +66,7 @@ void SceneStageSelect::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { CreateStageLevelUI(); });
 	outTasks.emplace_back([this] { CreateStageImageUI(); });
 	outTasks.emplace_back([this] { SceneManager::CreateFadeAnimations(this); });
+	outTasks.emplace_back([this] { SoundManager::SoundPlay(StageSelectBGM, 0.3f); });
 
 	// ç≈å„Ç… Start Çó¨Ç∑
 	outTasks.emplace_back([this]
@@ -142,6 +144,7 @@ void SceneStageSelect::Unload()
 {
 	SceneManager::ReleaseFadeAnimations();
 	TextureManager::Clear();
+	SoundManager::StopSound(StageSelectBGM);
 }
 
 

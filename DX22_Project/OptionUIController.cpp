@@ -6,7 +6,7 @@
 #include "SceneGame.h"
 #include "SceneStageSelect.h"
 #include "SceneTitle.h"
-
+#include "SoundManager.h"
 
 #include "InputGamepad.h"
 #include <cmath>
@@ -63,6 +63,8 @@ void OptionUIController::Start()
     m_isPressedVisual = false;
 
 	Open(); //最初から表示する
+    SoundManager::SoundPlay(OptionOpenSE, 0.8f);
+
     if (m_isOpen) ApplyVisual();
 }
 
@@ -88,6 +90,7 @@ void OptionUIController::Update()
     {
         if (InputKeyboard::GetKeyDown(VK_RETURN) || InputGamepad::GetButtonDown(XINPUT_GAMEPAD_X))
         {
+            SoundManager::SoundPlay(OptionCloseSE, 0.8f);
             m_isPressedVisual = false; // back to normal menu
             ApplyVisual();
         }
@@ -111,12 +114,14 @@ void OptionUIController::Update()
     if (InputKeyboard::GetKeyDown(VK_UP) || stickUpDown) 
     {
         prevLStickYDir_ = stickY;
+        SoundManager::SoundPlay(OptionMoveSE, 0.8f);
         MoveUp(); 
         return;
     }
     if (InputKeyboard::GetKeyDown(VK_DOWN) || stickDownDown)
     { 
         prevLStickYDir_ = stickY;
+        SoundManager::SoundPlay(OptionMoveSE, 0.8f);
         MoveDown(); 
         return; 
     }
@@ -246,22 +251,27 @@ void OptionUIController::ApplyVisual()
     {
 	case 0:     
 		m_operation = Operation::ReturnToGame;
+        SoundManager::SoundPlay(OptionCloseSE, 0.8f);
         DebugLog::Output("OptionUI: Selected 仕事に戻る");
 		break;
 	case 1:	
         m_operation = Operation::Restart;
+        SoundManager::SoundPlay(OptionSelectSE, 0.8f);
         DebugLog::Output("OptionUI: Selected やり直す");
 		break;
 	case 2:      
         m_operation = Operation::GoToStageSelect;
+        SoundManager::SoundPlay(OptionSelectSE, 0.8f);
         DebugLog::Output("OptionUI: Selected ステージ選択に戻る");
 		break;
 	case 3:	
         m_operation = Operation::None;
+        SoundManager::SoundPlay(OptionSelectSE, 0.8f);
         DebugLog::Output("OptionUI: Selected 操作方法を表示");
 		break;
 	case 4:    
         m_operation = Operation::GoToTitle;
+        SoundManager::SoundPlay(OptionSelectSE, 0.8f);
         DebugLog::Output("OptionUI: Selected タイトルへ");
 		break;
 	default:        DebugLog::Output("OptionUI: Selected 不明な項目");
