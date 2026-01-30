@@ -692,11 +692,7 @@ void SceneGame::CreateStage3()
 	floor3.AddComponent<GroundRenderer>();
 	BoxCollider& collider3 = floor3.AddComponent<BoxCollider>();
 
-<<<<<<< HEAD
-
-=======
 	CreateWarpStage3();
->>>>>>> 9b996fd83da0c8f28ad04c4e6c7c6b2dd01df05a
 	CreateStage3Wall();
 
 	StageId stage = GetCurrentStage();
