@@ -240,6 +240,7 @@
     <ClCompile Include="TimerUI.cpp" />
     <ClCompile Include="Time\Time.cpp" />
     <ClCompile Include="TitleManager.cpp" />
+    <ClCompile Include="TitlePlyerContoroll.cpp" />
     <ClCompile Include="Transform.cpp" />
     <ClCompile Include="TutorialManager.cpp" />
     <ClCompile Include="UIFrostRenderer.cpp" />
@@ -343,6 +344,7 @@
     <ClInclude Include="Time\Time.h" />
     <ClInclude Include="Time\Timer.h" />
     <ClInclude Include="TitleManager.h" />
+    <ClInclude Include="TitlePlyerContoroll.h" />
     <ClInclude Include="Transform.h" />
     <ClInclude Include="TutorialManager.h" />
     <ClInclude Include="UIFrostRenderer.h" />
