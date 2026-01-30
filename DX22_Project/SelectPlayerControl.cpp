@@ -105,6 +105,13 @@ void SelectPlayerControl::UpdateIdle()
         return;
     }
 
+    if (InputKeyboard::GetKeyDown('T') || InputGamepad::GetButtonDown(XINPUT_GAMEPAD_START))
+    {
+        // ƒ^ƒCƒgƒ‹‚Ö–ß‚é
+        SceneManager::ChangeSceneAsync<SceneTitle>();
+        return;
+    }
+
 }
 
 Direction SelectPlayerControl::InputMove()
