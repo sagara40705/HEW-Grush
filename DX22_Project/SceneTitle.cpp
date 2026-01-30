@@ -5,6 +5,7 @@
 #include "TextureManager.h"
 #include "Defines.h"
 #include "InputKeyboard.h"
+#include "InputGamePad.h"
 
 void SceneTitle::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 {
@@ -159,7 +160,7 @@ void SceneTitle::Update()
 {
 	//if (!m_breakButton) return;
 
-	if (!m_isStarting && InputKeyboard::GetKeyDown(VK_SPACE))
+	if (!m_isStarting && ( InputKeyboard::GetKeyDown(VK_SPACE) || InputGamepad::GetButtonDown(XINPUT_GAMEPAD_X)))
 	{
 		m_isStarting = true;
 		m_zoomTimer = 0.0f;

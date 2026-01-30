@@ -35,6 +35,7 @@ enum class ModelTag : uint8_t
 	Hammer_3,
 
 	Fence, //19
+	Warp,
 
 	Count
 };
