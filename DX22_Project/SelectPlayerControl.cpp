@@ -128,16 +128,22 @@ Direction SelectPlayerControl::InputMove()
             if (ax >= ay)
                 stickDir = (lx < 0.0f) ? Direction::Left : Direction::Right;
             else
-                stickDir = (ly < 0.0f) ? Direction::Down : Direction::Up; // XInputは上が+
+                stickDir = (ly < 0.0f) ? Direction::Down : Direction::Up;
         }
 
         // 押し始め（ニュートラル→方向）だけを Down として返す
         if (stickDir != Direction::Invalid && prevLStickDir == Direction::Invalid)
+        {
             stickDown = stickDir;
-
+        }
         // ニュートラルに戻るまで次の入力を出さない
         prevLStickDir = stickDir;
     }
+
+	if (stickDown != Direction::Invalid)
+	{
+		return stickDown;
+	}
 
     if (InputKeyboard::GetKeyDown(VK_LEFT))  return Direction::Left;
     if (InputKeyboard::GetKeyDown(VK_RIGHT)) return Direction::Right;

@@ -121,6 +121,8 @@ void OptionUIController::Update()
         return; 
     }
 
+	prevLStickYDir_ = stickY;
+
     if (InputKeyboard::GetKeyDown(VK_RETURN) || InputGamepad::GetButtonDown(XINPUT_GAMEPAD_X))
     {
         OnEnter();
