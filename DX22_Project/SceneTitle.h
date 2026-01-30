@@ -71,6 +71,6 @@ private:
     Vector3 m_camStartPos;        // 移動開始時のカメラ座標
     Vector3 m_camEndPos = Vector3(0.f, 0.5f, 1.f); // 最終的なカメラ座標（プレイヤーの目の前）
 
-    bool CheckTitleSound;
+    bool CheckTitleSound = false;
 };
 

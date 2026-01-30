@@ -77,6 +77,13 @@ void SceneGame::Unload()
 	default:
 		break;
 	}
+
+	if (CheckGameSound)
+	{
+		SoundManager::StopSound(SceneGameBGM);
+		CheckGameSound = false;
+	}
+
 }
 
 void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)

@@ -6,6 +6,7 @@
 #include "Defines.h"
 #include "InputKeyboard.h"
 #include "InputGamePad.h"
+#include "SoundManager.h"
 
 void SceneTitle::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 {
@@ -14,7 +15,6 @@ void SceneTitle::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 		{
 			GetWorld().ClearAll();        // 既存の World API に合わせる
 		});
-
 
 	outTasks.emplace_back([this] { ModelManager::Clear(); });	// モデルマネージャー初期化
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player); });
@@ -41,11 +41,13 @@ void SceneTitle::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 
 	outTasks.emplace_back([this] { SceneManager::CreateFadeAnimations(this); });
 
+
 	// 最後に Start を流す
 	outTasks.emplace_back([this]
 		{
 			GetWorld().Start();
 		});
+
 		
 }
 
@@ -61,6 +63,7 @@ void SceneTitle::Unload()
 {
 	SceneManager::ReleaseFadeAnimations();  // フェードアニメーション解放
 	TextureManager::Clear();
+	SoundManager::StopSound(TitleBGM);
 }
 
 void SceneTitle::CreateCameraAndPlayer()
@@ -156,9 +159,17 @@ void SceneTitle::CreateObject()
 	go3 = &Prefab::Instantiate(v, PrefabId::Swing, Vector3(15.f, 0.f, 1.f), Vector3(0.f, -20.f, 10.f), Vector3(3.f, 3.f, 3.f));
 
 }
+
 void SceneTitle::Update()
 {
 	//if (!m_breakButton) return;
+
+	// タイトルBGM再生
+	if (!CheckTitleSound)
+	{
+		SoundManager::SoundPlay(TitleBGM, 0.6f);
+		CheckTitleSound = true;
+	}
 
 	if (!m_isStarting && ( InputKeyboard::GetKeyDown(VK_SPACE) || InputGamepad::GetButtonDown(XINPUT_GAMEPAD_X)))
 	{
@@ -198,6 +209,7 @@ void SceneTitle::Update()
 		{
 			m_isStarting = false;
 			break_->Play();
+			SoundManager::SoundPlay(TitleStartSE, 1.0f);
 		}
 	}
 	if(!m_isStarting)
