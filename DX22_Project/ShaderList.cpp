@@ -916,6 +916,7 @@ float4 main(PS_IN pin) : SV_TARGET
     // Fresnel反射
     //////////////////////////////////////////////////////////
     float reflStrength = saturate(glassParams.y);
+	float reflectionScale = 0.60f; // ここを調整する
     float3 reflection =
         lightDiffuse.rgb * baseCol * fresnel * reflStrength * 0.25f;
 
