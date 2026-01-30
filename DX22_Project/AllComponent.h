@@ -19,6 +19,7 @@
 #include "CameraShake.h"
 
 #include "TitleManager.h"
+#include "TitlePlyerContoroll.h"
 
 #include "GroundRenderer.h"
 #include "StageWall.h"

@@ -63,6 +63,7 @@ void SceneTitle::Unload()
 {
 	SceneManager::ReleaseFadeAnimations();  // フェードアニメーション解放
 	TextureManager::Clear();
+	ModelManager::Clear();
 	SoundManager::StopSound(TitleBGM);
 }
 
@@ -85,15 +86,18 @@ void SceneTitle::CreateCameraAndPlayer()
 	GameObject& player = w.CreateGameObject(Vector3(0.f, 0.f, 0.f), Vector3(0.f, 0.f, 0.f), Vector3(2.f, 2.f, 2.f));
 	player.AddComponent<MeshFilter>(ModelTag::Player);
 	player.AddComponent<MeshRenderer>();
-	player.AddComponent<PlayerState>();
+	//player.AddComponent<PlayerState>();
 	player.AddComponent<Animator>();
-	player.AddComponent<PlayerAnimation>();
+	player.AddComponent<TitlePlyerContoroll>();
 
 	// 保存
 	m_player = &player;
 
 	// ハンマー
-	GameObject& hummer = player.CreateChild(Hammer::BasePos, Hammer::BaseRota, Vector3(0.2f, 0.2f, 0.2f));
+	GameObject& hammerPivot = player.CreateChild(Vector3::zero(), Vector3::zero(), Vector3::one());
+	hammerPivot.SetTag(Tag::HammerPivot);
+
+	GameObject& hummer = hammerPivot.CreateChild(Hammer::BasePos, Hammer::BaseRota, Vector3(0.2f, 0.2f, 0.2f));
 	hummer.SetTag(Tag::Hammer);
 	hummer.AddComponent<MeshFilter>(ModelTag::Hammer_3);
 	hummer.AddComponent<MeshRenderer>();
