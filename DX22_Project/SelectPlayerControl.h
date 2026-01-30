@@ -38,6 +38,7 @@ public:
 private:
     void UpdateIdle();
     Direction InputMove();
+	Direction prevLStickDir = Direction::Invalid;
     bool CanMove(Direction direction);
 
     // nextStagePoint まで単純に線形補間（斜めOK）

@@ -38,6 +38,8 @@ private:
     // modal flags (same size as items)
     std::vector<bool> m_isModal;
 
+    int prevLStickYDir_ = 0;   // -1:‰º, 0:ƒjƒ…[ƒgƒ‰ƒ‹, +1:ã
+
 private:
     void Open();
     void Close();

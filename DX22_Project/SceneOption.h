@@ -12,7 +12,6 @@ public:
     void Draw() override;
     void Unload() override;
 private:
-	void TexturesLoad();
 	void CheckCanvas();
     void CreateBG();
     void CreateOption();
