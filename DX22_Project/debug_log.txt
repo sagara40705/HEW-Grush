@@ -1,26 +1,94 @@
 [Debug Log Started]
-[17:49:53] Model::Load, material.pTexture: 0000025FCAC97390
-[17:49:53] Model::Load, material.pTexture: 0000025FCAC973F0
-[17:49:53] Model::Load, material.pTexture: 0000025FCAC97990
-[17:49:53] Model::Load, material.pTexture: 0000025FCAC97ED0
-[17:49:54] Model::Load, material.pTexture: 0000025FCAC91750
-[17:49:54] Model::Load, material.pTexture: 0000025FCAC9BDD0
-[17:49:54] Model::Load, material.pTexture: 0000025FCAC9B170
-[17:49:54] Model::Load, material.pTexture: 0000025FCAC9C670
-[17:49:54] Model::Load, material.pTexture: 0000025FCAC9C5B0
-[17:49:54] Model::Load, material.pTexture: 0000025FCACA8C10
-[17:49:54] Model::Load, material.pTexture: 0000025FCAC8C2F0
-[17:49:54] Model::Load, material.pTexture: 0000025FCAC8FA10
-[17:49:55] Start Player Animation
-[17:49:57] GlassGauge Ratio: 0.03
-[17:49:59] moveStartedThisFrame
-[17:50:00] Animation End OneLoop
-[17:50:00] DashAttack 入力受付
-[17:50:00] アクション実行
-[17:50:01] アクション終了
-[17:50:04] moveStoppedThisFrame
-[17:50:04] moveStartedThisFrame
-[17:50:05] moveStoppedThisFrame
-[17:50:05] moveStartedThisFrame
-[17:50:05] moveStoppedThisFrame
+[15:57:48] Model::Load, material.pTexture: 0000028C70EF6A60
+[15:57:49] Model::Load, material.pTexture: 0000028C70EF67C0
+[15:57:49] Model::Load, material.pTexture: 0000028C70EF6220
+[15:57:49] Model::Load, material.pTexture: 0000028C70EF6EE0
+[15:57:49] Model::Load, material.pTexture: 0000028C70F066C0
+[15:57:49] Model::Load, material.pTexture: 0000028C70F06A20
+[15:57:49] Model::Load, material.pTexture: 0000028C70F06960
+[15:57:53] Animation End OneLoop
+[15:57:59] Input Direction dir = %d: 3
+[15:57:59] Player move stage point id = %d: 1
+[15:57:59] Input Direction dir = %d: 3
+[15:57:59] Player move stage point id = %d: 3
+[15:58:00] Animation End OneLoop
+[15:58:01] Input Direction dir = %d: 3
+[15:58:02] Input Direction dir = %d: 2
+[15:58:02] Player move stage point id = %d: 1
+[15:58:02] Model::Load, material.pTexture: 0000028C70F06780
+[15:58:03] Model::Load, material.pTexture: 0000028C70F08520
+[15:58:03] Model::Load, material.pTexture: 0000028C70EF78A0
+[15:58:03] Model::Load, material.pTexture: 0000028C70EFAAE0
+[15:58:03] Model::Load, material.pTexture: 0000028C70EFE800
+[15:58:04] Start Player Animation
+[15:58:06] GlassGauge Ratio: 0
+[15:58:07] moveStartedThisFrame
+[15:58:08] moveStoppedThisFrame
+[15:58:08] moveStartedThisFrame
+[15:58:08] Animation End OneLoop
+[15:58:13] DashAttack 入力受付
+[15:58:13] アクション実行
+[15:58:13] Hammer Attack Glass Object, ID: 215
+[15:58:13] GlassShardPool::Instantiate: 0
+[15:58:13] GlassShardPool::Instantiate: 1
+[15:58:13] GlassShardPool::Instantiate: 2
+[15:58:13] GlassShardPool::Instantiate: 3
+[15:58:13] GlassShardPool::Instantiate: 4
+[15:58:13] GlassShardPool::Instantiate: 5
+[15:58:13] GlassShardPool::Instantiate: 6
+[15:58:13] GlassShardPool::Instantiate: 7
+[15:58:13] GlassShardPool::Instantiate: 8
+[15:58:13] GlassShardPool::Instantiate: 9
+[15:58:13] GlassShardPool::Instantiate: 10
+[15:58:13] GlassShardPool::Instantiate: 11
+[15:58:13] Hammer Effect Play: 2
+[15:58:13] Hammer Effect Angle: 100.909
+[15:58:13] CameraShake::Play, type: 0
+[15:58:13] CameraShake::Stop
+[15:58:14] Animation End OneLoop
+[15:58:15] アクション終了
+[15:58:16] DashAttack 入力受付
+[15:58:17] DashAttack 入力受付
+[15:58:19] DashAttack 入力受付
+[15:58:20] アクションCT終了
+[15:58:20] moveStoppedThisFrame
+[15:58:21] moveStartedThisFrame
+[15:58:21] ワープ起動, 番号: 2
+[15:58:21] moveStoppedThisFrame
+[15:58:21] moveStartedThisFrame
+[15:58:21] moveStoppedThisFrame
+[15:58:22] moveStartedThisFrame
+[15:58:22] ワープ起動, 番号: 3
+[15:58:22] moveStoppedThisFrame
+[15:58:22] moveStartedThisFrame
+[15:58:23] ワープ起動, 番号: 2
+[15:58:23] moveStoppedThisFrame
+[15:58:24] moveStartedThisFrame
+[15:58:24] moveStoppedThisFrame
+[15:58:25] moveStartedThisFrame
+[15:58:25] moveStoppedThisFrame
+[15:58:25] moveStartedThisFrame
+[15:58:26] ワープ起動, 番号: 3
+[15:58:26] moveStoppedThisFrame
+[15:58:26] moveStartedThisFrame
+[15:58:27] moveStoppedThisFrame
+[15:58:27] moveStartedThisFrame
+[15:58:27] moveStoppedThisFrame
+[15:58:27] moveStartedThisFrame
+[15:58:27] moveStoppedThisFrame
+[15:58:28] moveStartedThisFrame
+[15:58:28] moveStoppedThisFrame
+[15:58:28] moveStartedThisFrame
+[15:58:28] ワープ起動, 番号: 2
+[15:58:28] moveStoppedThisFrame
+[15:58:29] moveStartedThisFrame
+[15:58:29] moveStoppedThisFrame
+[15:58:29] moveStartedThisFrame
+[15:58:29] ワープ起動, 番号: 3
+[15:58:29] moveStoppedThisFrame
+[15:58:30] moveStartedThisFrame
+[15:58:30] moveStoppedThisFrame
+[15:58:30] moveStartedThisFrame
+[15:58:31] ワープ起動, 番号: 2
+[15:58:31] moveStoppedThisFrame
 [Debug Log End]

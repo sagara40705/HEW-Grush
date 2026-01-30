@@ -56,13 +56,13 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     "Assets/Texture/Game/UI/Timer/Colon.png",       //Game_UI_Timer_Colon = 38,
     "Assets/Texture/Game/UI/Score/Number.png",      //Game_UI_Score_Number = 39,
     "Assets/Texture/Game/UI/Score/Text.png",        //Game_UI_Score_Text = 40,
-    "Assets/Texture/Game/UI/Action/DushIcon.png",   //Game_UI_Action_DushIcon = 41,
-    "Assets/Texture/Game/UI/Action/SpinIcon.png",   //Game_UI_Action_SpinIcon = 42,
-    "Assets/Texture/Game/UI/Action/textIcon.png",   //Game_UI_Action_TextIcon = 43,
+    "Assets/Texture/Game/UI/Action/ActionIcon.png", //Game_UI_Action_DushIcon = 41,
+    "", //Game_UI_Action_SpinIcon = 42,
+    "Assets/Texture/Game/UI/Action/TextIcon.png",   //Game_UI_Action_TextIcon = 43,
 
-    "",//Game_UI_Gaug_Lv1 = 44,	 // (完) Lv1のガラスゲージSS
-    "",//Game_UI_Gaug_Lv2 = 45,	 // (完) Lv2のガラスゲージSS
-    "",//Game_UI_Gaug_Lv3 = 46,	 // (完) Lv3のガラスゲージSS
+    "Assets/Texture/Game/UI/Gauge/Glass_lv1.png",//Game_UI_Gaug_Lv1 = 44,	 
+    "Assets/Texture/Game/UI/Gauge/Glass_lv2.png",//Game_UI_Gaug_Lv2 = 45,	
+    "Assets/Texture/Game/UI/Gauge/Glass_lv3.png",//Game_UI_Gaug_Lv3 = 46,	 
     "Assets/Texture/Game/GlassShard.png,",          //SpareSlot_12 = 47,
     "",// _SpareSlot_12 = 48,
     "",//_SpareSlot_13 = 49,
@@ -97,6 +97,25 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
 
     ////Option 72～
     "Assets/Texture/Option/Option_BG.png", //Option_BG = 72,
+    "Assets/Texture/option/menu_bace.png",                      //73
+    "Assets/Texture/option/GS/GS_back_to_work.png",             //74
+    "Assets/Texture/option/GS/GS_back_to_work_color.png",       //75
+    "Assets/Texture/option/GS/GS_retry.png",                    //76
+    "Assets/Texture/option/GS/GS_retry_color.png",              //77
+    "Assets/Texture/option/GS/GS_back_to_stage.png",            //78
+    "Assets/Texture/option/GS/GS_back_to_stage_color.png",      //79
+    "Assets/Texture/option/GS/GS_how_to.png",                   //80
+    "Assets/Texture/option/GS/GS_go_title_color.png",           //81
+    "Assets/Texture/option/GS/GS_go_title.png",                 //82
+    "Assets/Texture/option/GS/GS_how_to_color.png",             //83
+    "Assets/Texture/option/GS/GS_back_to_work_Frame.png",       //84
+    "Assets/Texture/option/GS/GS_retry_Frame.png",              //85
+    "Assets/Texture/option/GS/GS_back_to_stage_Frame.png",      //86
+    "Assets/Texture/option/GS/GS_back_to_work_Frame_br.png",    //87
+    "Assets/Texture/option/GS/GS_retry_Frame_br.png",           //88
+    "Assets/Texture/option/GS/GS_back_to_stage_Frame_br.png",   //89
+    "Assets/Texture/option/GS/instructions.png",                //90
+    "Assets/Texture/option/GS/GS_retry_Frame_Back.png"          //91
 };
 
 // 配列のデフォルトパスを使用して登録

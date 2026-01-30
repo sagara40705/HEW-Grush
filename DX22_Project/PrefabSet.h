@@ -25,12 +25,14 @@ enum class PrefabId : std::uint8_t
 	// Grade_3
     Ufo,
     Eisei,
+    Star,
 
 	// ‚»‚Ì‘¼
     ProtPlay,
     GlassShard,
 
     StageWall,
+    StageWall2,
 
     Count
 };

@@ -15,11 +15,11 @@ void ResultTimerUI::Awake()
 {
 
 	constexpr Vector2 kMinutePos[ToIndex(TimerDigits::Count)] = { {790.f, 270.f}, {700.f, 270.f} };
-	constexpr Vector2 kColonPos = { 900.f,310.f };
+	constexpr Vector2 kColonPos = { 1289.f,700.f };
 	constexpr Vector2 kSecondPos[ToIndex(TimerDigits::Count)] = { {1040.f, 270.f}, {950.f, 270.f} };
 
 	constexpr Vector2 kNumberSize = { 100.f,100.f };
-	constexpr Vector2 kColonSize = { 40.f, 40.f };
+	//constexpr Vector2 kColonSize = { 40.f, 40.f };
 
 	GameObject& textObj = gameObject->CreateChild();
 	textObj.AddComponent<UiSpriteRenderer>(TextureTag::Result_Time_Text, Vector2::zero(), Vector2::WindowSize());
@@ -33,7 +33,7 @@ void ResultTimerUI::Awake()
 		(TextureTag::Result_Time_Number, kMinutePos[ToIndex(TimerDigits::One)], kNumberSize, Vector2::zero(), kNumberUVScale);
 
 	GameObject& colon = gameObject->CreateChild();
-	uiColon_ = &colon.AddComponent<UiSpriteRenderer>(TextureTag::Result_Time_Colon, kColonPos, kColonSize);
+	uiColon_ = &colon.AddComponent<UiSpriteRenderer>(TextureTag::Result_Time_Colon, Vector2::zero(), kColonPos);
 
 	GameObject& tenSecond = gameObject->CreateChild();
 	uiSecond_[ToIndex(TimerDigits::Ten)] = &tenSecond.AddComponent<UiSpriteRenderer>(

@@ -15,4 +15,5 @@ private:
 	void TexturesLoad();
 	void CheckCanvas();
     void CreateBG();
+    void CreateOption();
 };

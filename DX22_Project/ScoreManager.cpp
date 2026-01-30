@@ -53,7 +53,6 @@ void ScoreManager::UpScore(GlassGrade grade)
 
 	score_ -= kUpValue[ToIndex(grade)];
 	DebugLog::OutputValue("Up Score", score_);
-
 	if (score_ <= 0.f)
 	{
 		score_ = 0;
