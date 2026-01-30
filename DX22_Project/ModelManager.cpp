@@ -16,8 +16,8 @@ const ModelLoadData ModelManager::kModelData[static_cast<size_t>(ModelTag::Count
     {"Assets/Model/Grade_1/MD_actionkomuSwing_251221_test2.fbx",              0.01f, Model::Flip::ZFlip}, //1
     {"Assets/Model/Grade_1/MD_akican_251208.fbx",                             0.01f, Model::Flip::ZFlip}, //2
     {"Assets/Model/Grade_1/MD_desktop_260121.fbx",                            0.2f,  Model::Flip::ZFlip}, //3
-    //{"Assets/Model/Grade_1/MD_gomibukuro_251208.fbx",                       0.01f, Model::Flip::ZFlip}, //4
-    {"Assets/Model/Grade_1/MD_gomibukuro_260126.fbx",                         0.01f, Model::Flip::ZFlip}, //4
+    {"Assets/Model/Grade_1/MD_gomibukuro_251208.fbx",                       0.01f, Model::Flip::ZFlip}, //4
+    //{"Assets/Model/Grade_1/MD_gomibukuro_260126.fbx",                         0.01f, Model::Flip::ZFlip}, //4
     {"Assets/Model/Grade_1/MD_isu_251208.fbx",                                0.01f, Model::Flip::ZFlip}, //5
     {"Assets/Model/Grade_1/MD_kuukseizixyoukii_20251205.fbx",                 0.15f, Model::Flip::ZFlip}, //6
     {"Assets/Model/Grade_1/MD_ningixyou_20251205.fbx",                        0.15f, Model::Flip::ZFlip}, //7
@@ -28,8 +28,8 @@ const ModelLoadData ModelManager::kModelData[static_cast<size_t>(ModelTag::Count
     {"Assets/Model/Grade_2/MD_jihanki_251208.fbx",                            0.006f,Model::Flip::ZFlip}, //11
     {"Assets/Model/Grade_2/MD_reizouko_20251205.fbx",                         0.5f,  Model::Flip::ZFlip}, //12
     
-    //{"Assets/Model/Grade_3/MD_UFO_prototype.fbx",                           0.01f, Model::Flip::ZFlip}, //13
-    {"Assets/Model/Grade_3/MD_UFO_260126.fbx",                                0.01f, Model::Flip::ZFlip}, //13
+    {"Assets/Model/Grade_3/MD_UFO_prototype.fbx",                           0.01f, Model::Flip::ZFlip}, //13
+    //{"Assets/Model/Grade_3/MD_UFO_260126.fbx",                                0.01f, Model::Flip::ZFlip}, //13
     {"Assets/Model/Grade_3/MD_eisei_251208.fbx",                              0.015f,Model::Flip::ZFlip}, //14
     {"Assets/Model/Grade_3/MD_star_251231.fbx",                               0.015f,Model::Flip::ZFlip}, //15
 
