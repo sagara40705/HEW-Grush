@@ -13,7 +13,7 @@
 
 void ScoreManager::Start()
 {
-	constexpr int kMaxScore[ToIndex(StageId::Count)] = { 50, 600, 700 };
+	constexpr int kMaxScore[ToIndex(StageId::Count)] = { 50, 600, 700, 700, 700 };
 	StageId stage = GetCurrentStage();
 	assert(stage != StageId::None && "Invalid StageId in ScoreManager::Start");
 
