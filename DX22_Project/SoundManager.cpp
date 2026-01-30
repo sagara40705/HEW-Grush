@@ -56,5 +56,6 @@ void SoundManager::SoundPlay(SoundTag tag,float volume)
 
 void SoundManager::StopSound(SoundTag tag)
 {
+	if(speakers[tag])
 	speakers[tag]->Stop();
 }

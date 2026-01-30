@@ -114,6 +114,8 @@ void GlassGaugeManager::BrakeGlass(GlassGrade grade)
 	isGaugeDecaying = false;
 	gaugeDecayDelayTimer = 0.f;
 
+	SoundManager::StopSound(GaugeDownSE);
+
 	dirty_ = true;
 	up_ = true;
 	//ƒQ[ƒW‚ğ‰ÁZ

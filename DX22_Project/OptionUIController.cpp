@@ -88,7 +88,7 @@ void OptionUIController::Update()
     // modal screen: ESC closes only the modal (do not close option)
     if (IsModalShowing())
     {
-        if (InputKeyboard::GetKeyDown(VK_RETURN) || InputGamepad::GetButtonDown(XINPUT_GAMEPAD_X))
+        if (InputKeyboard::GetKeyDown(VK_SPACE) || InputGamepad::GetButtonDown(XINPUT_GAMEPAD_X))
         {
             SoundManager::SoundPlay(OptionCloseSE, 0.8f);
             m_isPressedVisual = false; // back to normal menu
@@ -126,7 +126,7 @@ void OptionUIController::Update()
         return; 
     }
 
-    if (InputKeyboard::GetKeyDown(VK_RETURN) || InputGamepad::GetButtonDown(XINPUT_GAMEPAD_X))
+    if (InputKeyboard::GetKeyDown(VK_SPACE) || InputGamepad::GetButtonDown(XINPUT_GAMEPAD_X))
     {
         OnEnter();
         return;
