@@ -54,6 +54,7 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::SagaraDoll); });
 		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Jihanki); });
 		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Star); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Warp); });
 		break;
 	case StageId::Stage3a:
 		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Akican); });
@@ -62,6 +63,7 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Reizouko); });
 		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Eiseii); });
 		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Star); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Warp); });
 		break;
 	case StageId::Stage3b:
 		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Kuukiseizyouki); });
@@ -70,6 +72,7 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Reizouko); });
 		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Eiseii); });
 		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Star); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Warp); });
 		break;
 	case StageId::Stage3c:
 		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Akican); });
@@ -78,6 +81,7 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Reizouko); });
 		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Eiseii); });
 		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Star); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Warp); });
 		break;
 	default:
 		assert(false && "不正なステージID");
@@ -220,7 +224,7 @@ void SceneGame::CreateCameraAndPlayer()
 	player.AddComponent<MeshFilter>(ModelTag::Player);
 	player.AddComponent<MeshRenderer>();
 	player.AddComponent<Rigidbody>();
-	player.AddComponent<BoxCollider>(false, Vector3(0.f, 0.5f, 0.f));
+	player.AddComponent<BoxCollider>(false, Vector3(0.f, 0.5f, -0.1f), Vector3(0.7f, 1.f, 0.7f));
 	player.AddComponent<PlayerState>();
 	player.AddComponent<PlayerMove>();
 	player.AddComponent<PlayerAction>();
@@ -514,13 +518,13 @@ void SceneGame::CreateWarpStage2()
 	World& w = GetWorld();
 
 	GameObject& warpA = w.CreateGameObject(Vector3(37.f, 0.f, 0.f), Vector3::zero(), Vector3::one());
-	warpA.AddComponent< MeshFilter >(PrimitiveMeshTag::Sphere);
+	warpA.AddComponent< MeshFilter >(ModelTag::Warp);
 	warpA.AddComponent<MeshRenderer>();
 	BoxCollider& bcA = warpA.AddComponent<BoxCollider>(true); bcA.isTrigger = true;
 	warpA.AddComponent<WarpPoint>(Point::AtoB);
 
 	GameObject& warpB = w.CreateGameObject(Vector3(53.f, 0.f, 0.f), Vector3::zero(), Vector3::one());
-	warpB.AddComponent< MeshFilter >(PrimitiveMeshTag::Sphere);
+	warpB.AddComponent< MeshFilter >(ModelTag::Warp);
 	warpB.AddComponent<MeshRenderer>();
 	BoxCollider& bcB = warpB.AddComponent<BoxCollider>(true); bcB.isTrigger = true;
 	warpB.AddComponent<WarpPoint>(Point::BtoA);
