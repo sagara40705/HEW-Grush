@@ -36,12 +36,11 @@ private:
 	void CreateScoreUI();
 	void CreateActionUI();
 	void CreateTutorialWall();
-	void CreateOptionUI();
 
 	//ÉMÉ~ÉbÉN	
 	void CreateGlassObjectSpawner();
-	void CreateWarp();
 	void CreateWarpStage2();
+	void CreateWarpStage3();
 
 	void CreateStageFromCSV(const std::string& filename);
 	PrefabId GetPrefabIdFromString(const std::string& rawname);
