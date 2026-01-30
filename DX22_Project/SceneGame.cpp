@@ -621,11 +621,8 @@ void SceneGame::CreateStage3()
 	BoxCollider& collider3 = floor3.AddComponent<BoxCollider>();
 	collider3.layer = Layer::Ground;
 
-<<<<<<< HEAD
-	
-=======
+
 	CreateStage3Wall();
->>>>>>> 98558258910730aa527d4d9a60d49fc960f1c49f
 
 	StageId stage = GetCurrentStage();
 
