@@ -51,7 +51,7 @@ XAUDIO2_BUFFER* SoundManager::GetSound(SoundTag tag)
 void SoundManager::SoundPlay(SoundTag tag,float volume)
 {
 	speakers[tag] = PlaySound(GetSound(tag));
-	speakers[tag]->SetVolume(volume);
+	speakers[tag]->SetVolume(volume * 0.5);
 }
 
 void SoundManager::StopSound(SoundTag tag)

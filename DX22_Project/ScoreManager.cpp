@@ -9,12 +9,13 @@
 #include "TimerUI.h"
 #include "TextureManager.h"
 #include "SoundManager.h"
+#include "Time/Time.h"
 
 #include <cassert>
 
 void ScoreManager::Start()
 {
-	constexpr int kMaxScore[ToIndex(StageId::Count)] = { 50, 600, 700, 700, 700 };
+	constexpr int kMaxScore[ToIndex(StageId::Count)] = { 500, 600, 700, 700, 700 };
 	StageId stage = GetCurrentStage();
 	assert(stage != StageId::None && "Invalid StageId in ScoreManager::Start");
 
@@ -24,7 +25,7 @@ void ScoreManager::Start()
 	GameObject* timerObj = gameObject->world->FindWithTag(Tag::TimerUI);
 	assert(timerObj && "TimerUI not found in ScoreManager::GoToResultScene");
 	if (!timerObj) return;
-	//TimerUIコンポーネントを取得
+		//TimerUIコンポーネントを取得
 	timer_ = timerObj->GetComponent<TimerUI>();
 	assert(timer_ && "TimerUI component not found in ScoreManager::GoToResultScene");
 	if (!timer_) return;
@@ -61,7 +62,6 @@ void ScoreManager::Update()
 			// アニメーションが1.0fに達したらシーン切り替え
 			GoToResultScene();
 			
-			
 		}
 	}
 }
@@ -79,6 +79,7 @@ void ScoreManager::UpScore(GlassGrade grade)
 	{
 		score_ = 0;
 		isLock_ = true;
+		Time::SetTimeScale(0.2f);
 
 		m_animationTime = 0.0f;
 		uiFinish_->SetVisible(true);
@@ -97,6 +98,8 @@ void ScoreManager::GoToResultScene()
 	// ===== クリア時間をGameStateに保存 =====
 	float clearTime = timer_->GetTime();
 	SetRecentClearTimes(clearTime);
+
+	Time::SetTimeScale(1.0f); // 初期化
 
 	// ===== シーン切り替え =====
 	DebugLog::Output("Clear Stage");
