@@ -246,24 +246,42 @@ void SceneTitle::UpdateTitleAnimations()
 		float yOffset = std::sin(m_animTimer * 1.5f) * 0.3f; // 1.5fが速さ、0.3fが振幅
 		trans->SetPosition(Vector3(2.f, yOffset, 15.f));
 	}
-	const float ySpeed = 1.5f;   // 上下の速さ
-	const float yRange = 0.3f;   // 上下の幅
-	const float xSpeed = 0.8f;   // 左右の揺れの速さ
-	const float xRange = 0.5f;   // 左右の揺れの幅
 	if (go2)
 	{
 		auto* trans = go2->GetComponent<Transform>();
 
-		// 常に右へ移動し続け、画面端でループさせる例（-20 から 20 まで）
-		static float moveX = 10.0f;
-		moveX += 0.05f; // 移動速度
-		if (moveX > 20.0f) moveX = -20.0f;
+		// 静的変数で状態を保持
+		static float moveX = 0.0f;
+		static float direction = 1.0f; // 1.0なら右、-1.0なら左
+		const float speed = 0.05f;     // 移動速度
+		const float limitX = 18.0f;    // 画面端のしきい値（消えない範囲に調整）
 
-		float y = std::sin(m_animTimer * 2.0f) * 0.5f; // UFOなので少し速めに揺らす
+		// 1. 移動計算
+		moveX += speed * direction;
 
+		// 2. 端に到達したら反転
+		if (moveX > limitX) {
+			moveX = limitX;
+			direction = -1.0f;
+		}
+		else if (moveX < -limitX) {
+			moveX = -limitX;
+			direction = 1.0f;
+		}
+
+		// 3. 座標の設定（上下の揺れは継続）
+		float y = std::sin(m_animTimer * 2.0f) * 0.5f;
 		trans->SetPosition(Vector3(moveX, y + 2.0f, 30.0f));
+
+		// 4. 【おまけ】進行方向に向きを変える
+		// モデルの初期の向きに合わせて Vector3 の値を調整してください
+		if (direction > 0) {
+			trans->SetRotation(Vector3(0.f, 20.f, -10.f)); // 右向き
+		}
+		else {
+			trans->SetRotation(Vector3(0.f, 200.f, 10.f)); // 左向き（180度くらい回す）
+		}
 	}
-	
 	// オブジェクトごとの動きを計算するラムダ関数
 	// 引数：(対象, 元の座標, 移動の幅, 揺れの速さ, 位相のズレ)
 	auto ApplySpaceFloat = [&](GameObject* obj, Vector3 basePos, float range, float speed, float offset) {
