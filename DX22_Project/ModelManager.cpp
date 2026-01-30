@@ -8,7 +8,7 @@ std::array<float, static_cast<size_t>(ModelTag::Count)> ModelManager::modelBound
 	2.4f, 3.f, 3.f,  /*12 - 14*/
     0.f,   //15
     0.f,0.f,0.f,   /*16 - 18*/
-	0.f  /*19*/
+	0.f, 0.f  /*19*/
 };
 
 const ModelLoadData ModelManager::kModelData[static_cast<size_t>(ModelTag::Count)] =
@@ -38,6 +38,7 @@ const ModelLoadData ModelManager::kModelData[static_cast<size_t>(ModelTag::Count
     {"Assets/Model/Hammer/Grade_3/hammer_grade3.fbx",                         0.08f, Model::Flip::ZFlip}, //22
 
     {"Assets/Model/Stage/MD_fence_260118.fbx",                                0.04f, Model::Flip::ZFlip}, //23
+	{"Assets/Model/Stage/warp.fbx",                                           0.5f, Model::Flip::ZFlip}, //24
 };
 
 bool ModelManager::Load(ModelTag tag)

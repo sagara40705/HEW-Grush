@@ -7,6 +7,27 @@
 #include "SceneStageSelect.h"
 #include "SceneTitle.h"
 
+
+#include "InputGamepad.h"
+#include <cmath>
+namespace
+{
+    // 上下入力として扱う閾値（InputGamepad::GetLStickY() が [-1,1] 前提）
+    constexpr float kLStickThreshold = 0.5f;
+
+    // 縦方向の倒れ具合を -1/0/+1 に丸める（横成分が強いときは無視）
+    int CalcLStickYDir()
+    {
+        const float lx = InputGamepad::GetLStickX();
+        const float ly = InputGamepad::GetLStickY();
+
+        if (std::fabs(ly) < kLStickThreshold) return 0;
+        if (std::fabs(ly) < std::fabs(lx))   return 0; // 斜めは強い軸優先：横が強ければ上下入力にしない
+
+        return (ly > 0.0f) ? +1 : -1; // XInput は上が +（もし逆なら符号を反転）
+    }
+}
+
 void OptionUIController::SetOptionRoot(GameObject* root)
 {
     m_optionRoot = root;
@@ -65,7 +86,7 @@ void OptionUIController::Update()
     // modal screen: ESC closes only the modal (do not close option)
     if (IsModalShowing())
     {
-        if (InputKeyboard::GetKeyDown(VK_RETURN))
+        if (InputKeyboard::GetKeyDown(VK_RETURN) || InputGamepad::GetButtonDown(XINPUT_GAMEPAD_X))
         {
             m_isPressedVisual = false; // back to normal menu
             ApplyVisual();
@@ -74,19 +95,33 @@ void OptionUIController::Update()
     }
 
     // normal ESC toggles option open/close
-    if (InputKeyboard::GetKeyDown(VK_ESCAPE))
-    {
-        if (!m_isOpen) Open();
-        else           Close();
-        return;
-    }
+    //if (InputKeyboard::GetKeyDown(VK_ESCAPE))
+    //{
+    //    if (!m_isOpen) Open();
+    //    else           Close();
+    //    return;
+    //}
 
     if (!m_isOpen) return;
 
-    if (InputKeyboard::GetKeyDown(VK_UP)) { MoveUp(); return; }
-    if (InputKeyboard::GetKeyDown(VK_DOWN)) { MoveDown(); return; }
+    const int stickY = CalcLStickYDir();
+    const bool stickUpDown = (stickY == +1 && prevLStickYDir_ == 0); // ニュートラル→上
+    const bool stickDownDown = (stickY == -1 && prevLStickYDir_ == 0); // ニュートラル→下
 
-    if (InputKeyboard::GetKeyDown(VK_RETURN))
+    if (InputKeyboard::GetKeyDown(VK_UP) || stickUpDown) 
+    {
+        prevLStickYDir_ = stickY;
+        MoveUp(); 
+        return;
+    }
+    if (InputKeyboard::GetKeyDown(VK_DOWN) || stickDownDown)
+    { 
+        prevLStickYDir_ = stickY;
+        MoveDown(); 
+        return; 
+    }
+
+    if (InputKeyboard::GetKeyDown(VK_RETURN) || InputGamepad::GetButtonDown(XINPUT_GAMEPAD_X))
     {
         OnEnter();
         return;

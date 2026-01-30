@@ -5,6 +5,7 @@
 #include "TextureManager.h"
 #include "Defines.h"
 #include "InputKeyboard.h"
+#include "InputGamePad.h"
 
 void SceneTitle::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 {
@@ -159,7 +160,7 @@ void SceneTitle::Update()
 {
 	//if (!m_breakButton) return;
 
-	if (!m_isStarting && InputKeyboard::GetKeyDown(VK_SPACE))
+	if (!m_isStarting && ( InputKeyboard::GetKeyDown(VK_SPACE) || InputGamepad::GetButtonDown(XINPUT_GAMEPAD_X)))
 	{
 		m_isStarting = true;
 		m_zoomTimer = 0.0f;
@@ -229,6 +230,23 @@ void SceneTitle::UpdateTitleAnimations()
 		float yOffset = std::sin(m_animTimer * 1.5f) * 0.3f; // 1.5fが速さ、0.3fが振幅
 		trans->SetPosition(Vector3(2.f, yOffset, 15.f));
 	}
+	const float ySpeed = 1.5f;   // 上下の速さ
+	const float yRange = 0.3f;   // 上下の幅
+	const float xSpeed = 0.8f;   // 左右の揺れの速さ
+	const float xRange = 0.5f;   // 左右の揺れの幅
+	if (go2)
+	{
+		auto* trans = go2->GetComponent<Transform>();
+
+		// 常に右へ移動し続け、画面端でループさせる例（-20 から 20 まで）
+		static float moveX = 10.0f;
+		moveX += 0.05f; // 移動速度
+		if (moveX > 20.0f) moveX = -20.0f;
+
+		float y = std::sin(m_animTimer * 2.0f) * 0.5f; // UFOなので少し速めに揺らす
+
+		trans->SetPosition(Vector3(moveX, y + 2.0f, 30.0f));
+	}
 	
 	// オブジェクトごとの動きを計算するラムダ関数
 	// 引数：(対象, 元の座標, 移動の幅, 揺れの速さ, 位相のズレ)
@@ -253,7 +271,6 @@ void SceneTitle::UpdateTitleAnimations()
 	// 各オブジェクトに宇宙漂流アニメーションを適用
 	// 位相(最後の引数)をバラバラにすることで、別々の動きに見えるようになります
 	ApplySpaceFloat(go1, Vector3(15.f, -8.f, 30.f), 2.0f, 0.5f, 0.0f);   // 人形
-	ApplySpaceFloat(go2, Vector3(10.f, 2.f, 30.f), 1.5f, 0.8f, 2.5f);    // UFO
 	ApplySpaceFloat(go3, Vector3(-15.f, -15.f, 30.f), 3.0f, 0.4f, 5.0f); // スイング
 }
 

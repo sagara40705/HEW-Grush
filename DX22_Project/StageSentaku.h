@@ -23,7 +23,6 @@ class StageSentaku : public MonoBehaviour
 	UiSpriteRenderer* Stage3_[ToIndex(StageSlect::Count)]{};;
 	UiSpriteRenderer* Stage4_[ToIndex(StageSlect::Count)]{};;
 	UiSpriteRenderer* Stage5_[ToIndex(StageSlect::Count)]{};;
-	UiSpriteRenderer* bou = nullptr;
-	UiSpriteRenderer* bou2 = nullptr;
+	
 };
 
