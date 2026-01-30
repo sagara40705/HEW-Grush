@@ -21,7 +21,7 @@ void Game::Init()
 
     //SceneManager::ChangeSceneAsync<SceneGame>();
     SceneManager::ChangeSceneAsync<SceneTitle>();
-	//SceneManager::ChangeSceneAsync<SceneStageSelect>();
+    //SceneManager::ChangeSceneAsync<SceneStageSelect>();
 	//SceneManager::ChangeSceneAsync<SceneResult>();
     //SceneManager::ChangeScene<SceneOption>();
 
