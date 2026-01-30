@@ -8,6 +8,7 @@
 #include "SceneManager.h"
 #include "TimerUI.h"
 #include "TextureManager.h"
+#include "SoundManager.h"
 
 #include <cassert>
 
@@ -33,12 +34,19 @@ void ScoreManager::Start()
 		(TextureTag::Game_UI_Finish, Vector2(130.f, -20.f), Vector2(1024.f, 741.f));
 	uiFinish_->SetVisible(false);
 
+	m_CheckFinishSE = false;
 }
 
 void ScoreManager::Update()
 {
 	if (isLock_ && uiFinish_->IsVisible()) // スコアが0になり、演出中
 	{
+		if(!m_CheckFinishSE)
+		{
+			SoundManager::SoundPlay(GameFinishSE,1.0f);
+			m_CheckFinishSE = true;
+		}
+
 		if (m_animationTime < 1.0f)
 		{
 			m_animationTime += 1.0f / 80.0f; // 約1.3秒

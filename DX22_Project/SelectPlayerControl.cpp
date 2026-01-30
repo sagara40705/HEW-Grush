@@ -8,6 +8,7 @@
 #include"InputGamepad.h"
 #include "DebugLog.h"
 #include "GameState.h"
+#include "SoundManager.h"
 
 #include <assert.h>
 #include <algorithm>
@@ -99,6 +100,7 @@ void SelectPlayerControl::UpdateIdle()
     if (InputKeyboard::GetKeyDown(VK_SPACE) || InputGamepad::GetButtonDown(XINPUT_GAMEPAD_X))
     {
         SetSelectedStage(currentStagePoint->stageId);
+        SoundManager::SoundPlay(SelectSE, 1.0f);
         SceneManager::ChangeSceneAsync<SceneGame>();
         return;
     }
@@ -128,16 +130,22 @@ Direction SelectPlayerControl::InputMove()
             if (ax >= ay)
                 stickDir = (lx < 0.0f) ? Direction::Left : Direction::Right;
             else
-                stickDir = (ly < 0.0f) ? Direction::Down : Direction::Up; // XInputは上が+
+                stickDir = (ly < 0.0f) ? Direction::Down : Direction::Up;
         }
 
         // 押し始め（ニュートラル→方向）だけを Down として返す
         if (stickDir != Direction::Invalid && prevLStickDir == Direction::Invalid)
+        {
             stickDown = stickDir;
-
+        }
         // ニュートラルに戻るまで次の入力を出さない
         prevLStickDir = stickDir;
     }
+
+	if (stickDown != Direction::Invalid)
+	{
+		return stickDown;
+	}
 
     if (InputKeyboard::GetKeyDown(VK_LEFT))  return Direction::Left;
     if (InputKeyboard::GetKeyDown(VK_RIGHT)) return Direction::Right;

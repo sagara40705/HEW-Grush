@@ -13,6 +13,18 @@ enum SoundTag {
 	GradeDownSE,
 	GaugeDownSE,
 	WalkSE,
+	TitleBGM,
+	TitleStartSE,
+	StageSelectBGM,
+	SelectSE,
+	ResultSE,
+	OptionOpenSE,
+	OptionMoveSE,
+	OptionSelectSE,
+	OptionCloseSE,
+	GlassCrackSE,
+	GameFinishSE,
+	ResultGaugeUpSE,
 	Count		//êî
 };
 
