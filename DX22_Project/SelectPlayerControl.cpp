@@ -10,7 +10,7 @@
 
 #include <assert.h>
 #include <algorithm>
-
+#include"InputGamepad.h"
 namespace
 {
     // World::Update が fixedDt=1/60 で回っている前提
@@ -93,14 +93,14 @@ void SelectPlayerControl::UpdateIdle()
     }
 
     // 決定
-    if (InputKeyboard::GetKeyDown(VK_SPACE))
+    if (InputKeyboard::GetKeyDown(VK_SPACE)||InputGamepad::GetButtonDown(XINPUT_GAMEPAD_Y))
     {
         SetSelectedStage(currentStagePoint->stageId);
         SceneManager::ChangeSceneAsync<SceneGame>();
         return;
     }
 
-	if (InputKeyboard::GetKeyDown('T'))
+	if (InputKeyboard::GetKeyDown('T')|| InputGamepad::GetButtonDown(XINPUT_GAMEPAD_START))
 	{
 		// タイトルへ戻る
 		SceneManager::ChangeSceneAsync<SceneTitle>();
