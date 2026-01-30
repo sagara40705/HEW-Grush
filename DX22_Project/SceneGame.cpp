@@ -14,6 +14,9 @@
 #include "SceneStageSelect.h"
 #include "SceneResult.h"
 #include "SceneOption.h"
+#include "SoundManager.h"
+
+bool SceneGame::CheckGameSound = false;
 
 void SceneGame::Load()
 {
@@ -27,7 +30,60 @@ void SceneGame::Unload()
 {
 	SceneManager::ReleaseFadeAnimations();
 	TextureManager::Clear();
-	ModelManager::Clear();
+
+	//model‚Ì‰ð•ú
+	StageId stage = GetCurrentStage();
+	switch (stage)
+	{
+	case StageId::Stage1:
+		ModelManager::Unload(ModelTag::Isu);
+		ModelManager::Unload(ModelTag::Reizouko);
+		ModelManager::Unload(ModelTag::Eiseii);
+		break;
+	case StageId::Stage2:
+		ModelManager::Unload(ModelTag::Kuukiseizyouki);
+		ModelManager::Unload(ModelTag::SagaraDoll);
+		ModelManager::Unload(ModelTag::Jihanki);
+		ModelManager::Unload(ModelTag::Star);
+		ModelManager::Unload(ModelTag::Warp);
+		break;
+	case StageId::Stage3a:
+		ModelManager::Unload(ModelTag::Akican);
+		ModelManager::Unload(ModelTag::Isu);
+		ModelManager::Unload(ModelTag::Jihanki);
+		ModelManager::Unload(ModelTag::Reizouko);
+		ModelManager::Unload(ModelTag::Eiseii);
+		ModelManager::Unload(ModelTag::Star);
+		ModelManager::Unload(ModelTag::Warp);
+		break;
+	case StageId::Stage3b:
+		ModelManager::Unload(ModelTag::Kuukiseizyouki);
+		ModelManager::Unload(ModelTag::SagaraDoll);
+		ModelManager::Unload(ModelTag::Jihanki);
+		ModelManager::Unload(ModelTag::Reizouko);
+		ModelManager::Unload(ModelTag::Eiseii);
+		ModelManager::Unload(ModelTag::Star);
+		ModelManager::Unload(ModelTag::Warp);
+		break;
+	case StageId::Stage3c:
+		ModelManager::Unload(ModelTag::Akican);
+		ModelManager::Unload(ModelTag::Isu);
+		ModelManager::Unload(ModelTag::Jihanki);
+		ModelManager::Unload(ModelTag::Reizouko);
+		ModelManager::Unload(ModelTag::Eiseii);
+		ModelManager::Unload(ModelTag::Star);
+		ModelManager::Unload(ModelTag::Warp);
+		break;
+	default:
+		break;
+	}
+
+	if (CheckGameSound)
+	{
+		SoundManager::StopSound(SceneGameBGM);
+		CheckGameSound = false;
+	}
+
 }
 
 void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
@@ -1027,6 +1083,12 @@ void SceneGame::SkyDomeDorw()
 
 void SceneGame::Update()
 {
+	if (!CheckGameSound)
+	{
+		SoundManager::SoundPlay(SceneGameBGM, 0.4f);
+		CheckGameSound = true;
+	}
+
 	// ƒIƒvƒVƒ‡ƒ“‰æ–Ê‚Ö
 	if (InputKeyboard::GetKeyDown('O'))
 	{

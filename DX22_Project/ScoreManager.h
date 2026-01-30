@@ -30,4 +30,6 @@ private:
 	void GoToResultScene();
     // イージング関数（バウンス・アウト）
 	float EaseOutBounce(float x);
+
+	bool m_CheckFinishSE;
 };
