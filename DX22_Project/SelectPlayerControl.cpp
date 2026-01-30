@@ -148,6 +148,8 @@ Direction SelectPlayerControl::InputMove()
         prevLStickDir = stickDir;
     }
 
+	if (stickDown != Direction::Invalid) return stickDown;
+
     if (InputKeyboard::GetKeyDown(VK_LEFT))  return Direction::Left;
     if (InputKeyboard::GetKeyDown(VK_RIGHT)) return Direction::Right;
     if (InputKeyboard::GetKeyDown(VK_UP))    return Direction::Up;
