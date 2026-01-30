@@ -56,4 +56,7 @@ private:
 #ifdef _DEBUG
 	void DebugCommand();
 #endif // DEBUG	
+
+private:
+	bool m_checkGaugeSound;
 };

@@ -26,7 +26,7 @@ void SelectPlayerControl::Start()
     stageMap = stage->GetComponent<StageMap>();
     assert(stageMap && "SelectPlayerControl::Start stageMap is null");
 
-    currentStagePoint = stageMap->GetStagePoint(StageId::Stage1);
+    currentStagePoint = stageMap->GetStagePoint(GetCurrentStage());
     nextStagePoint = nullptr;
 
     tf = gameObject->GetComponent<Transform>();
