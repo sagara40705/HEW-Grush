@@ -6,6 +6,7 @@
 #include "SceneOption.h"
 #include "stageLevel.h"
 #include "StageSentaku.h"
+#include "SoundManager.h"
 
 void SceneStageSelect::Load()
 {
@@ -65,6 +66,7 @@ void SceneStageSelect::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { CreateStageLevelUI(); });
 	outTasks.emplace_back([this] { CreateStageImageUI(); });
 	outTasks.emplace_back([this] { SceneManager::CreateFadeAnimations(this); });
+	outTasks.emplace_back([this] { SoundManager::SoundPlay(StageSelectBGM, 0.3f); });
 
 	// ç≈å„Ç… Start Çó¨Ç∑
 	outTasks.emplace_back([this]
@@ -102,11 +104,13 @@ void SceneStageSelect::CreatePlayer()
 {
 	World& world = GetWorld();
 
-	GameObject& playerObj = world.CreateGameObject(Vector3(-5.f, 0.f, 0.f));
+	GameObject& playerObj = world.CreateGameObject(Vector3(-5.f, 0.f, 0.f), Vector3(90.f, 0.f, 0.f));
 	playerObj.SetTag(Tag::Player);
 
-	playerObj.AddComponent<MeshFilter>(ModelTag::Player);
-	playerObj.AddComponent<MeshRenderer>();
+	playerObj.AddComponent<Sprite3DRenderer>(TextureTag::StageSelect_PlayerIcon, Vector2(0.f, 0.f), Vector2(2.f, 2.f));
+
+	//playerObj.AddComponent<MeshFilter>(ModelTag::Player);
+	//playerObj.AddComponent<MeshRenderer>();
 	playerObj.AddComponent<SelectPlayerControl>();
 	
 }
@@ -142,6 +146,7 @@ void SceneStageSelect::Unload()
 {
 	SceneManager::ReleaseFadeAnimations();
 	TextureManager::Clear();
+	SoundManager::StopSound(StageSelectBGM);
 }
 
 

@@ -88,7 +88,7 @@ void HammerEffects::CreateGradeUpEffect()
 	{
 		GameObject& effect = world->CreateGameObject();
 		effect.AddComponent<Sprite3DRenderer>(TextureTag::Game_3DEffect_GradeUp, Vector2::zero(), Vector2(2.f, 2.f));
-		effect.AddComponent<SpriteAnimation>(5, 5, 2, 25, false);
+		effect.AddComponent<SpriteAnimation>(4, 4, 2, 16, false);
 		effect.SetActive(false);
 		gradeUp_[i] = &effect;
 	}
@@ -115,7 +115,7 @@ void HammerEffects::CreateGradeDownEffect()
 	{
 		GameObject& effect = world->CreateGameObject();
 		effect.AddComponent<Sprite3DRenderer>(TextureTag::Game_3DEffect_GradeDown, Vector2::zero(), Vector2(2.f, 2.f));
-		effect.AddComponent<SpriteAnimation>(5, 5, 2, 25, false);
+		effect.AddComponent<SpriteAnimation>(4, 4, 2, 16, false);
 		effect.SetActive(false);
 		gradeDown_[i] = &effect;
 	}
@@ -142,7 +142,7 @@ void HammerEffects::CreateHitEffect()
 	{
 		GameObject& effect = world->CreateGameObject();
 		effect.AddComponent<Sprite3DRenderer>(TextureTag::Game_3DEffect_Hit, Vector2::zero(), Vector2(2.f, 2.f));
-		effect.AddComponent<SpriteAnimation>(5, 5, 1, 25, false);
+		effect.AddComponent<SpriteAnimation>(4, 4, 2, 16, false);
 		effect.SetActive(false);
 		hit_[i] = &effect;
 	}

@@ -8,6 +8,8 @@ namespace
 	{
 		AtoB,
 		BtoA,
+		CtoD,
+		DtoC,
 		Count
 	};
 	constexpr size_t ToIndex(Point p) noexcept { return static_cast<size_t>(p); }

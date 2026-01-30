@@ -387,6 +387,9 @@
     <ClCompile Include="StageSentaku.cpp">
       <Filter>Game\Components\StageSelect</Filter>
     </ClCompile>
+    <ClCompile Include="TitlePlyerContoroll.cpp">
+      <Filter>Game\Components\Title</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -685,6 +688,9 @@
     </ClInclude>
     <ClInclude Include="StageSentaku.h">
       <Filter>Game\Components\StageSelect</Filter>
+    </ClInclude>
+    <ClInclude Include="TitlePlyerContoroll.h">
+      <Filter>Game\Components\Title</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

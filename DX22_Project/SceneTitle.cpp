@@ -6,6 +6,7 @@
 #include "Defines.h"
 #include "InputKeyboard.h"
 #include "InputGamePad.h"
+#include "SoundManager.h"
 
 void SceneTitle::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 {
@@ -14,7 +15,6 @@ void SceneTitle::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 		{
 			GetWorld().ClearAll();        // 既存の World API に合わせる
 		});
-
 
 	outTasks.emplace_back([this] { ModelManager::Clear(); });	// モデルマネージャー初期化
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player); });
@@ -41,11 +41,13 @@ void SceneTitle::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 
 	outTasks.emplace_back([this] { SceneManager::CreateFadeAnimations(this); });
 
+
 	// 最後に Start を流す
 	outTasks.emplace_back([this]
 		{
 			GetWorld().Start();
 		});
+
 		
 }
 
@@ -61,6 +63,8 @@ void SceneTitle::Unload()
 {
 	SceneManager::ReleaseFadeAnimations();  // フェードアニメーション解放
 	TextureManager::Clear();
+	ModelManager::Clear();
+	SoundManager::StopSound(TitleBGM);
 }
 
 void SceneTitle::CreateCameraAndPlayer()
@@ -82,19 +86,21 @@ void SceneTitle::CreateCameraAndPlayer()
 	GameObject& player = w.CreateGameObject(Vector3(0.f, 0.f, 0.f), Vector3(0.f, 0.f, 0.f), Vector3(2.f, 2.f, 2.f));
 	player.AddComponent<MeshFilter>(ModelTag::Player);
 	player.AddComponent<MeshRenderer>();
-	player.AddComponent<PlayerState>();
-	//player.AddComponent<Animator>();
-	//player.AddComponent<PlayerAnimation>();
+	//player.AddComponent<PlayerState>();
+	player.AddComponent<Animator>();
+	player.AddComponent<TitlePlyerContoroll>();
 
 	// 保存
 	m_player = &player;
 
 	// ハンマー
-	GameObject& hummer = player.CreateChild(Hammer::BasePos, Hammer::BaseRota, Vector3(0.2f, 0.2f, 0.2f));
+	GameObject& hammerPivot = player.CreateChild(Vector3::zero(), Vector3::zero(), Vector3::one());
+	hammerPivot.SetTag(Tag::HammerPivot);
+
+	GameObject& hummer = hammerPivot.CreateChild(Hammer::BasePos, Hammer::BaseRota, Vector3(0.2f, 0.2f, 0.2f));
+	hummer.SetTag(Tag::Hammer);
 	hummer.AddComponent<MeshFilter>(ModelTag::Hammer_3);
 	hummer.AddComponent<MeshRenderer>();
-	//hummer.AddComponent<Animator>();
-
 }
 
 void SceneTitle::CreateCanvas()
@@ -156,9 +162,17 @@ void SceneTitle::CreateObject()
 	go3 = &Prefab::Instantiate(v, PrefabId::Swing, Vector3(15.f, 0.f, 1.f), Vector3(0.f, -20.f, 10.f), Vector3(3.f, 3.f, 3.f));
 
 }
+
 void SceneTitle::Update()
 {
 	//if (!m_breakButton) return;
+
+	// タイトルBGM再生
+	if (!CheckTitleSound)
+	{
+		SoundManager::SoundPlay(TitleBGM, 0.6f);
+		CheckTitleSound = true;
+	}
 
 	if (!m_isStarting && ( InputKeyboard::GetKeyDown(VK_SPACE) || InputGamepad::GetButtonDown(XINPUT_GAMEPAD_X)))
 	{
@@ -166,9 +180,10 @@ void SceneTitle::Update()
 		m_zoomTimer = 0.0f;
 		
 		// ★ 保存しておいた m_player を使う
-		if (m_player) {
+		if (m_player)
+		{
 			auto* pState = m_player->GetComponent<PlayerState>();
-			if (pState) pState->actionedThisFrame[ToIndex(ActionId::SpinAttack)] = true;
+			//if (pState) pState->wantUseAction[ToIndex(ActionId::SpinAttack)] = true;
 		}
 	}
 
@@ -198,6 +213,7 @@ void SceneTitle::Update()
 		{
 			m_isStarting = false;
 			break_->Play();
+			SoundManager::SoundPlay(TitleStartSE, 1.0f);
 		}
 	}
 	if(!m_isStarting)

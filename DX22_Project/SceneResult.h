@@ -26,5 +26,7 @@ private:
 	void CreateRankUI();
     void CreateJobUI();
     void CreateNextText();
+
+    bool m_CheckResultSE;
 };
 

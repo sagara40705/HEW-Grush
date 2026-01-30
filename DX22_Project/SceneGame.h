@@ -39,8 +39,8 @@ private:
 
 	//ÉMÉ~ÉbÉN	
 	void CreateGlassObjectSpawner();
-	void CreateWarp();
 	void CreateWarpStage2();
+	void CreateWarpStage3();
 
 	void CreateStageFromCSV(const std::string& filename);
 	PrefabId GetPrefabIdFromString(const std::string& rawname);
@@ -57,6 +57,8 @@ private:
 	SkyDomeShader m_skyShader; 
 	SkyDomeMesh   m_skyMesh; 
 	Texture* m_pSkyTex = nullptr;
+
+	static bool CheckGameSound;
 };
 
 #endif // __SCENE_GAME_H__

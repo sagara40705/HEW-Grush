@@ -8,6 +8,7 @@
 #include"InputGamepad.h"
 #include "DebugLog.h"
 #include "GameState.h"
+#include "SoundManager.h"
 
 #include <assert.h>
 #include <algorithm>
@@ -99,7 +100,15 @@ void SelectPlayerControl::UpdateIdle()
     if (InputKeyboard::GetKeyDown(VK_SPACE) || InputGamepad::GetButtonDown(XINPUT_GAMEPAD_X))
     {
         SetSelectedStage(currentStagePoint->stageId);
+        SoundManager::SoundPlay(SelectSE, 1.0f);
         SceneManager::ChangeSceneAsync<SceneGame>();
+        return;
+    }
+
+    if (InputKeyboard::GetKeyDown('T') || InputGamepad::GetButtonDown(XINPUT_GAMEPAD_START))
+    {
+        // ƒ^ƒCƒgƒ‹‚Ö–ß‚é
+        SceneManager::ChangeSceneAsync<SceneTitle>();
         return;
     }
 
