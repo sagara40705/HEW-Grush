@@ -277,6 +277,7 @@ void SceneGame::CreateStage()
 	}
 }
 
+// ステージ１生成
 void SceneGame::CreateStage1()
 {
 	World& w = GetWorld();
@@ -327,6 +328,7 @@ void SceneGame::CreateStage1()
 	return;
 }
 
+// ステージ１の壁生成
 void SceneGame::CreateStage1Wall()
 {
 	World& w = GetWorld();
@@ -419,7 +421,7 @@ void SceneGame::CreateStage1Wall()
 	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-39.77f, -0.75f, -37.88f), Vector3(0.f, 90.0f, 0.f), Vector3(0.33f, 0.4f, 1.0f));
 }
 
-
+// ステージ２生成
 void SceneGame::CreateStage2(){
 	World& w = GetWorld();
 
@@ -447,7 +449,7 @@ void SceneGame::CreateStage2(){
 	CreateStageFromCSV("CSV/Stage2RightData_Grade3.csv");
 }
 
-
+// ステージ２の壁生成
 void SceneGame::CreateStage2Wall()
 {
 	World& w = GetWorld();
@@ -596,6 +598,7 @@ void SceneGame::CreateStage2Wall()
 	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(129.8f, -0.75f, 22.f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
 }
 
+// ステージ3の作成
 void SceneGame::CreateStage3()
 {
 	World& w = GetWorld();
@@ -667,6 +670,7 @@ void SceneGame::CreateStage3()
 
 }
 
+// ステージ3の壁の作成
 void SceneGame::CreateStage3Wall()
 {
 	World& w = GetWorld();
