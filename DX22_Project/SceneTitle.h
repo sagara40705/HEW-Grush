@@ -55,6 +55,10 @@ private:
     // 生成したオブジェクトを動かすためのポインタ
     GameObject* m_titleLogoObj = nullptr;
     GameObject* m_titleFontObj = nullptr;
+	GameObject* go1 = nullptr;
+    GameObject* go2 = nullptr;
+	GameObject* go3 = nullptr;
+
     GameObject* m_mainCamera = nullptr;
     GameObject* m_player = nullptr;
     SpriteAnimation* break_ = nullptr;

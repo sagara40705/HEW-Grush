@@ -19,7 +19,8 @@ void SceneTitle::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_3); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::SagaraDoll); });
-
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Ufo); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Swing); });
 
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Title_BG); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Title_Text); });
@@ -144,6 +145,16 @@ void SceneTitle::CreateTitleManager()
 	manager.AddComponent<TitleManager>();
 }
 
+void SceneTitle::CreateObject()
+{
+	World& w = GetWorld();
+	go1 = &Prefab::Instantiate(w, PrefabId::SagaraDoll, Vector3(-4.7f, -50.f, 1.f), Vector3(0.f, 45.f, 0.f), Vector3(4.f, 4.f, 4.f));
+	World& u = GetWorld();
+	go2 = &Prefab::Instantiate(u, PrefabId::Ufo, Vector3(-4.7f, 0.f, 1.f), Vector3(0.f, 20.f, -10.f), Vector3(2.f, 2.f, 2.f));
+	World& v = GetWorld();
+	go3 = &Prefab::Instantiate(v, PrefabId::Swing, Vector3(15.f, 0.f, 1.f), Vector3(0.f, -20.f, 10.f), Vector3(3.f, 3.f, 3.f));
+
+}
 void SceneTitle::Update()
 {
 	//if (!m_breakButton) return;
@@ -219,11 +230,30 @@ void SceneTitle::UpdateTitleAnimations()
 		trans->SetPosition(Vector3(2.f, yOffset, 15.f));
 	}
 	
+	// オブジェクトごとの動きを計算するラムダ関数
+	// 引数：(対象, 元の座標, 移動の幅, 揺れの速さ, 位相のズレ)
+	auto ApplySpaceFloat = [&](GameObject* obj, Vector3 basePos, float range, float speed, float offset) {
+		if (!obj) return;
+		auto* trans = obj->GetComponent<Transform>();
+
+		// 1. 座標の計算 (XとYで周期を変えて「8の字」や「円」を描くようにする)
+		float x = basePos.x + std::sin(m_animTimer * speed + offset) * range;
+		float y = basePos.y + std::cos(m_animTimer * (speed * 0.7f) + offset) * (range * 0.8f);
+		float z = basePos.z + std::sin(m_animTimer * (speed * 0.5f) + offset) * (range * 0.5f);
+		trans->SetPosition(Vector3(x, y, z));
+
+		// 2. 回転の計算 (ここが宇宙っぽさのキモ)
+		// 常に同じ軸で回るのではなく、ゆらゆらと傾かせる
+		float rotX = std::sin(m_animTimer * (speed * 0.4f) + offset) * 10.0f;
+		float rotY = m_animTimer * 5.0f + offset; // ゆっくり自転させる
+		float rotZ = std::cos(m_animTimer * (speed * 0.3f) + offset) * 5.0f;
+		trans->SetRotation(Vector3(rotX, rotY, rotZ));
+		};
+
+	// 各オブジェクトに宇宙漂流アニメーションを適用
+	// 位相(最後の引数)をバラバラにすることで、別々の動きに見えるようになります
+	ApplySpaceFloat(go1, Vector3(15.f, -8.f, 30.f), 2.0f, 0.5f, 0.0f);   // 人形
+	ApplySpaceFloat(go2, Vector3(10.f, 2.f, 30.f), 1.5f, 0.8f, 2.5f);    // UFO
+	ApplySpaceFloat(go3, Vector3(-15.f, -15.f, 30.f), 3.0f, 0.4f, 5.0f); // スイング
 }
 
-void SceneTitle::CreateObject()
-{
-	World& w = GetWorld();
-	GameObject* go1 = &Prefab::Instantiate(w, PrefabId::SagaraDoll, Vector3(0.0f, 0.f, 5.f), Vector3(0.f, 0.f, 0.f), Vector3(1.f, 1.f, 1.f));
-
-}

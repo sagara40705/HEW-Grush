@@ -381,6 +381,12 @@
     <ClCompile Include="OptionUIController.cpp">
       <Filter>Game\Components\GameManager</Filter>
     </ClCompile>
+    <ClCompile Include="stageLevel.cpp">
+      <Filter>Game\Components\StageSelect</Filter>
+    </ClCompile>
+    <ClCompile Include="StageSentaku.cpp">
+      <Filter>Game\Components\StageSelect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -673,6 +679,12 @@
     </ClInclude>
     <ClInclude Include="OptionUIController.h">
       <Filter>Game\Components\GameManager</Filter>
+    </ClInclude>
+    <ClInclude Include="stageLevel.h">
+      <Filter>Game\Components\StageSelect</Filter>
+    </ClInclude>
+    <ClInclude Include="StageSentaku.h">
+      <Filter>Game\Components\StageSelect</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
