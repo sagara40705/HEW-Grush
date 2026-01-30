@@ -187,14 +187,30 @@ inline void Render(const World& w)
     RenderTarget* bb = GetDefaultRTV();
     if (sceneRT && bb)
     {
+        // (1) 背景を sceneRT にコピー（屈折で読む元）
         CopyBackBufferToSceneRT(sceneRT);
 
-        // set refraction inputs
+        // (2) ガラスPSが読む SceneColor を t1 にセット
         ShaderList::SetGlassSceneTexture(sceneRT);
 
+        // (3) 画面サイズ等（b4）
         const float sw = (float)bb->GetWidth();
         const float sh = (float)bb->GetHeight();
         ShaderList::SetGlassScreenParam(sw, sh, 50.0f, 0.0f);
+
+        // (4) ガラスの見た目パラメータ（b3）
+        // tint = ガラス色 + ベース透明度
+        // fresnelPower = 縁の出方（大きいほど縁が強い）
+        // reflectionStrength = 反射の強さ（0だと反射ゼロ）
+        // transmissionStrength = 透過の強さ（あなたの簡易PSでは弱くしか使ってない）
+        // v = tintStrength（色寄せ強さ）
+        ShaderList::SetGlassParam(
+            DirectX::XMFLOAT4(1.0f, 1.0f, 1.0f, 0.60f), // ガラス色(白) + 透明度(0.0-1.0)
+            3.0f,                                       // FresnelPower
+            1.0f,                                       // ReflectionStrength ここが0だと反射消える
+            1.0f,                                       // TransmissionStrength
+            0.5f                                        // TintStrength
+        );
     }
 
     SetDepthTest(true); // これを追加
