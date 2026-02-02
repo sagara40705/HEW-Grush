@@ -756,7 +756,7 @@ void SceneGame::CreateStage3()
 	switch (stage)
 	{
 	case StageId::Stage3a:
-		CreateStageFromCSV("CSV/Stage3-1LeftData_Grade1.csv");
+		/*CreateStageFromCSV("CSV/Stage3-1LeftData_Grade1.csv");
 		CreateStageFromCSV("CSV/Stage3-1LeftData_Grade2.csv");
 		CreateStageFromCSV("CSV/Stage3-1LeftData_Grade3.csv");
 		CreateStageFromCSV("CSV/Stage3-1RightData_Grade1.csv");
@@ -764,21 +764,21 @@ void SceneGame::CreateStage3()
 		CreateStageFromCSV("CSV/Stage3-1RightData_Grade3.csv");
 		CreateStageFromCSV("CSV/Stage3-1UEData_Grade1.csv");
 		CreateStageFromCSV("CSV/Stage3-1UEData_Grade2.csv");
-		CreateStageFromCSV("CSV/Stage3-1UEData_Grade3.csv");
+		CreateStageFromCSV("CSV/Stage3-1UEData_Grade3.csv");*/
 		break;
 	case StageId::Stage3b:
 		CreateStageFromCSV("CSV/Stage3-2LeftData_Grade1.csv");
 		CreateStageFromCSV("CSV/Stage3-2LeftData_Grade2.csv");
-		CreateStageFromCSV("CSV/Stage3-2LeftData_Grade3.csv");
+		//CreateStageFromCSV("CSV/Stage3-2LeftData_Grade3.csv");
 		CreateStageFromCSV("CSV/Stage3-2RightData_Grade1.csv");
 		CreateStageFromCSV("CSV/Stage3-2RightData_Grade2.csv");
-		CreateStageFromCSV("CSV/Stage3-2RightData_Grade3.csv");
+		//CreateStageFromCSV("CSV/Stage3-2RightData_Grade3.csv");
 		CreateStageFromCSV("CSV/Stage3-2UEData_Grade1.csv");
 		CreateStageFromCSV("CSV/Stage3-2UEData_Grade2.csv");
-		CreateStageFromCSV("CSV/Stage3-2UEData_Grade3.csv");
+		//CreateStageFromCSV("CSV/Stage3-2UEData_Grade3.csv");
 		break;
 	case StageId::Stage3c:
-		CreateStageFromCSV("CSV/Stage3-3LeftData_Grade1.csv");
+		/*CreateStageFromCSV("CSV/Stage3-3LeftData_Grade1.csv");
 		CreateStageFromCSV("CSV/Stage3-3LeftData_Grade2.csv");
 		CreateStageFromCSV("CSV/Stage3-3LeftData_Grade3.csv");
 		CreateStageFromCSV("CSV/Stage3-3RightData_Grade1.csv");
@@ -786,7 +786,7 @@ void SceneGame::CreateStage3()
 		CreateStageFromCSV("CSV/Stage3-3RightData_Grade3.csv");
 		CreateStageFromCSV("CSV/Stage3-3UEData_Grade1.csv");
 		CreateStageFromCSV("CSV/Stage3-3UEData_Grade2.csv");
-		CreateStageFromCSV("CSV/Stage3-3UEData_Grade3.csv");
+		CreateStageFromCSV("CSV/Stage3-3UEData_Grade3.csv");*/
 		break;
 	default:
 		assert(false && "不正なステージID");
