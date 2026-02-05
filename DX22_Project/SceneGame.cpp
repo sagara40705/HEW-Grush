@@ -81,7 +81,8 @@ void SceneGame::Unload()
 
 	if (CheckGameSound)
 	{
-		SoundManager::StopSound(SceneGameBGM);
+		SoundManager::StopSound(SceneGameBGM1);
+		SoundManager::StopSound(SceneGameBGM2);
 		CheckGameSound = false;
 	}
 
@@ -1097,7 +1098,17 @@ void SceneGame::Update()
 {
 	if (!CheckGameSound)
 	{
-		SoundManager::SoundPlay(SceneGameBGM, 0.4f);
+//		SoundManager::SoundPlay(SceneGameBGM, 0.4f);
+		int GameBGM = rand() % 2;
+		switch (GameBGM)
+		{
+		case 0:
+			SoundManager::SoundPlay(SceneGameBGM1,0.4f);
+			break;
+		case 1:
+			SoundManager::SoundPlay(SceneGameBGM2, 0.5f);
+			break;
+		}
 		CheckGameSound = true;
 	}
 
