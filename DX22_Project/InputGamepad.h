@@ -78,6 +78,17 @@ public:
     static float GetLTrigger();
     static float GetRTrigger();
 
+	//==================== 振動(バイブ) ======================
+
+	// 左右モーターの振動強度を直接設定 [leftMotor : (大きいモーター(低周波)), right motor: (小さいモーター(高周波))]
+	static void SetVibration(float leftMotor, float rightMotor);
+
+	// 指定した時間だけ振動させる
+	static void SetVibrationTime(float leftMotor, float rightMotor, float duration);
+
+	// 振動を停止する
+	static void StopVibration();
+
     //==================== ユーティリティ =============
 
     // このフレーム「何らかの入力」があったか？
@@ -92,6 +103,7 @@ public:
     static void SetDeadZone(
         SHORT ls, SHORT rs,
         BYTE  lt, BYTE  rt);
+
 private:
     // 操作用（0 番）パッドの現在/前フレーム状態
     static XINPUT_STATE s_curr;
@@ -103,6 +115,10 @@ private:
     static SHORT s_rStickDead;
     static BYTE  s_lTriggerDead;
     static BYTE  s_rTriggerDead;
+
+	// 振動の管理
+	static bool s_vibTime;
+	static ULONGLONG s_vibEndTick;
 
     // 内部ヘルパ
     static float NormalizeStick(SHORT v, SHORT dead);

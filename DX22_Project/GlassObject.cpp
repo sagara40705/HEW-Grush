@@ -13,6 +13,7 @@
 #include "Sprite3DRenderer.h"
 #include "SpriteAnimation.h"
 #include "SoundManager.h"
+#include "InputGamepad.h"
 
 void  GlassObject::Awake()
 {
@@ -66,12 +67,15 @@ void GlassObject::TakeDamage(float damage)
 		{
 		case GlassGrade::Grade_1:
 			SoundManager::SoundPlay(Level1GlassBreakSE,0.7f);
+			InputGamepad::SetVibrationTime(0.3f, 0.3f, 0.3f);
 			break;
 		case GlassGrade::Grade_2:
 			SoundManager::SoundPlay(Level2GlassBreakSE, 0.7f);
+			InputGamepad::SetVibrationTime(0.6f, 0.6f,0.5f);
 			break;
 		case GlassGrade::Grade_3:
 		SoundManager::SoundPlay(Level3GlassBreakSE, 0.8f);
+		InputGamepad::SetVibrationTime(0.9f, 0.9f, 0.7f);
 			break;
 		}
 		return;
@@ -80,6 +84,7 @@ void GlassObject::TakeDamage(float damage)
 	{
 		SpawnShardMini();
 		SoundManager::SoundPlay(GlassCrackSE, 1.0f);
+		InputGamepad::SetVibrationTime(0.2f, 0.3f, 0.1f);
 	}
 }
 

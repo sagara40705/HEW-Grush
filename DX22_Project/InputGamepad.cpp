@@ -16,6 +16,24 @@ SHORT InputGamepad::s_rStickDead = XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE;  // 8689
 BYTE  InputGamepad::s_lTriggerDead = XINPUT_GAMEPAD_TRIGGER_THRESHOLD;     // 30
 BYTE  InputGamepad::s_rTriggerDead = XINPUT_GAMEPAD_TRIGGER_THRESHOLD;     // 30
 
+//================ êUìÆ==================
+
+bool      InputGamepad::s_vibTime = false;
+ULONGLONG InputGamepad::s_vibEndTick = 0;
+
+namespace
+{
+    // 0.0fÅ`1.0f Ç XInput ÇÃ 0Å`65535 Ç…ïœä∑
+    WORD ToMotorSpeed(float v)
+    {
+        if (v < 0.0f) v = 0.0f;
+        if (v > 1.0f) v = 1.0f;
+        return static_cast<WORD>(v * 65535.0f);
+    }
+}
+
+
+
 //================ ì‡ïîÉwÉãÉp ========================
 
 // SHORT [-32768,32767] Ç [-1,1] Ç…ê≥ãKâªÅBdead ì‡ÇÕ 0ÅB
@@ -79,6 +97,15 @@ void InputGamepad::Update()
         // ñ¢ê⁄ë± or ÉGÉâÅ[ Å® ì¸óÕÇ»ÇµàµÇ¢
         std::memset(&s_curr, 0, sizeof(XINPUT_STATE));
         s_connected = false;
+    }
+
+    if (s_vibTime)
+    {
+        ULONGLONG currentTick = GetTickCount64();
+        if (currentTick >= s_vibEndTick)
+        {
+            StopVibration();
+        }
     }
 }
 
@@ -152,6 +179,50 @@ float InputGamepad::GetRTrigger()
 {
     if (!s_connected) return 0.0f;
     return NormalizeTrigger(s_curr.Gamepad.bRightTrigger, s_rTriggerDead);
+}
+
+//================ êUìÆ=============================
+
+
+void InputGamepad::SetVibration(float leftMotor, float rightMotor)
+{
+    s_vibTime = false;
+    s_vibEndTick = 0;
+
+	XINPUT_VIBRATION vib{};
+	vib.wLeftMotorSpeed = ToMotorSpeed(leftMotor);
+	vib.wRightMotorSpeed = ToMotorSpeed(rightMotor);
+    
+    // é∏îsóp
+	XInputSetState(0, &vib);
+}
+
+void InputGamepad::SetVibrationTime(float leftMotor, float rightMotor, float duration)
+{
+    if (duration<= 0.0f)
+    {
+        StopVibration();
+        return;
+    }
+
+	SetVibration(leftMotor, rightMotor);
+
+	// êUìÆèIóπéûä‘Çê›íË
+	const double ms = static_cast<double>(duration) * 1000.0;
+	const ULONGLONG dur = static_cast<ULONGLONG>(ms + 0.5);
+    s_vibTime = true;
+	s_vibEndTick = GetTickCount64() + dur;
+}
+
+void InputGamepad::StopVibration()
+{
+	XINPUT_VIBRATION vib{};
+	vib.wLeftMotorSpeed = 0;
+    vib.wRightMotorSpeed = 0;
+   XInputSetState(0, &vib);
+
+    s_vibTime = false;
+	s_vibEndTick = 0;
 }
 
 //================ ÉÜÅ[ÉeÉBÉäÉeÉB ====================

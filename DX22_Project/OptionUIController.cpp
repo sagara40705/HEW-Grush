@@ -130,6 +130,7 @@ void OptionUIController::Update()
 
     if (InputKeyboard::GetKeyDown(VK_RETURN) || InputGamepad::GetButtonDown(XINPUT_GAMEPAD_X))
     {
+        InputGamepad::SetVibrationTime(0.3f, 0.5f, 0.2f);
         OnEnter();
         return;
     }

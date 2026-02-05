@@ -1,607 +1,555 @@
 [Debug Log Started]
-[14:26:25] Model::Load, material.pTexture: 00000200127512B0
-[14:26:25] Model::Load, material.pTexture: 0000020012750710
-[14:26:25] Model::Load, material.pTexture: 0000020012750170
-[14:26:25] Model::Load, material.pTexture: 0000020012754A90
-[14:26:25] Model::Load, material.pTexture: 0000020012754B50
-[14:26:25] Model::Load, material.pTexture: 0000020012754C10
-[14:26:25] Model::Load, material.pTexture: 0000020012754E50
-[14:26:25] Model::Load, material.pTexture: 0000020012752150
-[14:26:29] Animation End OneLoop
-[14:26:31] Animation End OneLoop
-[14:26:32] Model::Load, material.pTexture: 0000020012C15FE0
-[14:26:32] Model::Load, material.pTexture: 0000020012756EF0
-[14:26:32] Model::Load, material.pTexture: 0000020012757190
-[14:26:35] Input Direction dir = %d: 3
-[14:26:35] Player move stage point id = %d: 1
-[14:26:35] Input Direction dir = %d: 2
-[14:26:35] Player move stage point id = %d: 0
-[14:26:36] Animation End OneLoop
-[14:26:37] Input Direction dir = %d: 3
-[14:26:37] Player move stage point id = %d: 1
-[14:26:37] Input Direction dir = %d: 3
-[14:26:37] Player move stage point id = %d: 3
-[14:26:40] Start Player Animation
-[14:26:41] [GlassObjectSpawner] Start()
-[14:26:41] GlassGauge Ratio: 0
-[14:26:43] moveStartedThisFrame
-[14:26:44] Animation End OneLoop
-[14:26:46] DashAttack 入力受付
-[14:26:46] アクション実行
-[14:26:46] Hammer Attack Glass Object, ID: 22
-[14:26:46] GlassGaugeManager::BrakeGlass, Gauhe: 10
-[14:26:46] Up Score: 47
-[14:26:46] GlassShardPool::Instantiate: 0
-[14:26:46] GlassShardPool::Instantiate: 1
-[14:26:46] GlassShardPool::Instantiate: 2
-[14:26:46] GlassShardPool::Instantiate: 3
-[14:26:46] GlassShardPool::Instantiate: 4
-[14:26:46] GlassShardPool::Instantiate: 5
-[14:26:46] GlassObject Destory, ID: 22
-[14:26:46] Hammer Effect Play: 2
-[14:26:46] Hammer Effect Angle: 204.568
-[14:26:46] CameraShake::Play, type: 0
-[14:26:46] GlassGauge Effect Play
-[14:26:46] GlassGauge Ratio: 0.1
-[14:26:46] Hammer Attack Glass Object, ID: 24
-[14:26:46] GlassGaugeManager::BrakeGlass, Gauhe: 20
-[14:26:46] Up Score: 44
-[14:26:46] GlassShardPool::Instantiate: 6
-[14:26:46] GlassShardPool::Instantiate: 7
-[14:26:46] GlassShardPool::Instantiate: 8
-[14:26:46] GlassShardPool::Instantiate: 9
-[14:26:46] GlassShardPool::Instantiate: 10
-[14:26:46] GlassShardPool::Instantiate: 11
-[14:26:46] GlassObject Destory, ID: 24
-[14:26:46] Hammer Effect Play: 2
-[14:26:46] Hammer Effect Angle: 204.575
-[14:26:46] CameraShake::Play, type: 0
-[14:26:46] GlassGauge Effect Play
-[14:26:46] GlassGauge Ratio: 0.2
-[14:26:46] Hammer Attack Glass Object, ID: 25
-[14:26:46] GlassGaugeManager::BrakeGlass, Gauhe: 30
-[14:26:46] Up Score: 41
-[14:26:46] GlassShardPool::Instantiate: 12
-[14:26:46] GlassShardPool::Instantiate: 13
-[14:26:46] GlassShardPool::Instantiate: 14
-[14:26:46] GlassShardPool::Instantiate: 15
-[14:26:46] GlassShardPool::Instantiate: 16
-[14:26:46] GlassShardPool::Instantiate: 17
-[14:26:46] GlassObject Destory, ID: 25
-[14:26:46] Hammer Effect Play: 2
-[14:26:46] Hammer Effect Angle: 204.512
-[14:26:46] CameraShake::Play, type: 0
-[14:26:46] GlassGauge Effect Play
-[14:26:46] GlassGauge Ratio: 0.3
-[14:26:46] Hammer Attack Glass Object, ID: 46
-[14:26:46] GlassGaugeManager::BrakeGlass, Gauhe: 40
-[14:26:46] Up Score: 38
-[14:26:46] GlassShardPool::Instantiate: 18
-[14:26:46] GlassShardPool::Instantiate: 19
-[14:26:46] GlassShardPool::Instantiate: 20
-[14:26:46] GlassShardPool::Instantiate: 21
-[14:26:46] GlassShardPool::Instantiate: 22
-[14:26:46] GlassShardPool::Instantiate: 23
-[14:26:46] GlassObject Destory, ID: 46
-[14:26:46] Hammer Effect Play: 2
-[14:26:46] Hammer Effect Angle: 203.269
-[14:26:46] CameraShake::Play, type: 0
-[14:26:46] GlassGauge Effect Play
-[14:26:46] GlassGauge Ratio: 0.4
-[14:26:46] Hammer Attack Glass Object, ID: 60
-[14:26:46] GlassGaugeManager::BrakeGlass, Gauhe: 50
-[14:26:46] Up Score: 35
-[14:26:46] GlassShardPool::Instantiate: 24
-[14:26:46] GlassShardPool::Instantiate: 25
-[14:26:46] GlassShardPool::Instantiate: 26
-[14:26:46] GlassShardPool::Instantiate: 27
-[14:26:46] GlassShardPool::Instantiate: 28
-[14:26:46] GlassShardPool::Instantiate: 29
-[14:26:46] GlassObject Destory, ID: 60
-[14:26:46] Hammer Effect Play: 2
-[14:26:46] Hammer Effect Angle: 199.518
-[14:26:46] CameraShake::Play, type: 0
-[14:26:46] GlassGauge Effect Play
-[14:26:46] GlassGauge Ratio: 0.5
-[14:26:47] Animation End OneLoop
-[14:26:47] Hammer Attack Glass Object, ID: 40
-[14:26:47] GlassGaugeManager::BrakeGlass, Gauhe: 60
-[14:26:47] Up Score: 32
-[14:26:47] GlassShardPool::Instantiate: 30
-[14:26:47] GlassShardPool::Instantiate: 31
-[14:26:47] GlassShardPool::Instantiate: 32
-[14:26:47] GlassShardPool::Instantiate: 33
-[14:26:47] GlassShardPool::Instantiate: 34
-[14:26:47] GlassShardPool::Instantiate: 35
-[14:26:47] GlassObject Destory, ID: 40
-[14:26:47] Hammer Effect Play: 2
-[14:26:47] Hammer Effect Angle: 181.056
-[14:26:47] CameraShake::Play, type: 0
-[14:26:47] GlassGauge Effect Play
-[14:26:47] GlassGauge Ratio: 0.6
-[14:26:47] Animation End OneLoop
-[14:26:47] CameraShake::Stop
-[14:26:47] Animation End OneLoop
-[14:26:47] Animation End OneLoop
-[14:26:47] Animation End OneLoop
-[14:26:47] Animation End OneLoop
-[14:26:47] アクション終了
-[14:26:48] DashAttack 入力受付
-[14:26:48] Animation End OneLoop
-[14:26:50] DashAttack 入力受付
-[14:26:51] DashAttack 入力受付
-[14:26:51] DashAttack 入力受付
-[14:26:52] DashAttack 入力受付
-[14:26:52] アクションCT終了
-[14:26:52] DashAttack 入力受付
-[14:26:52] アクション実行
-[14:26:53] Hammer Attack Glass Object, ID: 41
-[14:26:53] GlassGaugeManager::BrakeGlass, Gauhe: 70
-[14:26:53] Up Score: 29
-[14:26:53] GlassShardPool::Instantiate: 0
-[14:26:53] GlassShardPool::Instantiate: 1
-[14:26:53] GlassShardPool::Instantiate: 2
-[14:26:53] GlassShardPool::Instantiate: 3
-[14:26:53] GlassShardPool::Instantiate: 4
-[14:26:53] GlassShardPool::Instantiate: 5
-[14:26:53] GlassObject Destory, ID: 41
-[14:26:53] Hammer Effect Play: 2
-[14:26:53] Hammer Effect Angle: 318.471
-[14:26:53] CameraShake::Play, type: 0
-[14:26:53] GlassGauge Effect Play
-[14:26:53] GlassGauge Ratio: 0.7
-[14:26:53] CameraShake::Stop
-[14:26:53] Animation End OneLoop
-[14:26:53] Hammer Attack Glass Object, ID: 104
-[14:26:53] GlassShardPool::Instantiate: 6
-[14:26:53] GlassShardPool::Instantiate: 7
-[14:26:53] GlassShardPool::Instantiate: 8
-[14:26:53] GlassShardPool::Instantiate: 9
-[14:26:53] GlassShardPool::Instantiate: 10
-[14:26:53] GlassShardPool::Instantiate: 11
-[14:26:53] Hammer Effect Play: 2
-[14:26:53] Hammer Effect Angle: 292.816
-[14:26:53] CameraShake::Play, type: 0
-[14:26:54] Hammer Attack Glass Object, ID: 115
-[14:26:54] GlassShardPool::Instantiate: 12
-[14:26:54] GlassShardPool::Instantiate: 13
-[14:26:54] GlassShardPool::Instantiate: 14
-[14:26:54] GlassShardPool::Instantiate: 15
-[14:26:54] GlassShardPool::Instantiate: 16
-[14:26:54] GlassShardPool::Instantiate: 17
-[14:26:54] Hammer Effect Play: 2
-[14:26:54] Hammer Effect Angle: 295.408
-[14:26:54] CameraShake::Play, type: 0
-[14:26:54] CameraShake::Stop
-[14:26:54] Hammer Attack Glass Object, ID: 115
-[14:26:54] GlassShardPool::Instantiate: 0
-[14:26:54] GlassShardPool::Instantiate: 1
-[14:26:54] GlassShardPool::Instantiate: 2
-[14:26:54] GlassShardPool::Instantiate: 3
-[14:26:54] GlassShardPool::Instantiate: 4
-[14:26:54] GlassShardPool::Instantiate: 5
-[14:26:54] Hammer Effect Play: 2
-[14:26:54] Hammer Effect Angle: 293.055
-[14:26:54] CameraShake::Play, type: 0
-[14:26:54] Animation End OneLoop
-[14:26:54] Hammer Attack Glass Object, ID: 104
-[14:26:54] GlassShardPool::Instantiate: 18
-[14:26:54] GlassShardPool::Instantiate: 19
-[14:26:54] GlassShardPool::Instantiate: 20
-[14:26:54] GlassShardPool::Instantiate: 21
-[14:26:54] GlassShardPool::Instantiate: 22
-[14:26:54] GlassShardPool::Instantiate: 23
-[14:26:54] Hammer Effect Play: 2
-[14:26:54] Hammer Effect Angle: 289.511
-[14:26:54] CameraShake::Play, type: 0
-[14:26:54] Animation End OneLoop
-[14:26:54] アクション終了
-[14:26:54] CameraShake::Stop
-[14:26:54] Animation End OneLoop
-[14:26:54] moveStoppedThisFrame
-[14:26:54] Animation End OneLoop
-[14:26:54] Animation End OneLoop
-[14:26:55] Canvas already exists.
-[14:26:58] OptionUI: Selected ステージ選択に戻る
-[14:26:58] OptionUI: Triggering operation after delay
-[14:27:03] Input Direction dir = %d: 3
-[14:27:03] Player move stage point id = %d: 1
-[14:27:04] Animation End OneLoop
-[14:27:07] Model::Load, material.pTexture: 0000020013E2C9C0
-[14:27:09] Start Player Animation
-[14:27:11] [GlassObjectSpawner] Start()
-[14:27:11] GlassGauge Ratio: 0
-[14:27:12] moveStartedThisFrame
-[14:27:13] Animation End OneLoop
-[14:27:18] moveStoppedThisFrame
-[14:27:18] moveStartedThisFrame
-[14:27:18] DashAttack 入力受付
-[14:27:18] アクション実行
-[14:27:19] Hammer Attack Glass Object, ID: 215
-[14:27:19] GlassShardPool::Instantiate: 0
-[14:27:19] GlassShardPool::Instantiate: 1
-[14:27:19] GlassShardPool::Instantiate: 2
-[14:27:19] GlassShardPool::Instantiate: 3
-[14:27:19] GlassShardPool::Instantiate: 4
-[14:27:19] GlassShardPool::Instantiate: 5
-[14:27:19] Hammer Effect Play: 2
-[14:27:19] Hammer Effect Angle: 290.793
-[14:27:19] CameraShake::Play, type: 0
-[14:27:19] CameraShake::Stop
-[14:27:20] Animation End OneLoop
-[14:27:20] Hammer Attack Glass Object, ID: 215
-[14:27:20] GlassShardPool::Instantiate: 6
-[14:27:20] GlassShardPool::Instantiate: 7
-[14:27:20] GlassShardPool::Instantiate: 8
-[14:27:20] GlassShardPool::Instantiate: 9
-[14:27:20] GlassShardPool::Instantiate: 10
-[14:27:20] GlassShardPool::Instantiate: 11
-[14:27:20] Hammer Effect Play: 2
-[14:27:20] Hammer Effect Angle: 276.529
-[14:27:20] CameraShake::Play, type: 0
-[14:27:20] アクション終了
-[14:27:20] CameraShake::Stop
-[14:27:20] Animation End OneLoop
-[14:27:25] アクションCT終了
-[14:27:25] ワープ起動, 番号: 1
-[14:27:26] NormalAttack 入力受付
-[14:27:26] アクション実行
-[14:27:26] Hammer Attack Glass Object, ID: 338
-[14:27:26] GlassShardPool::Instantiate: 0
-[14:27:26] GlassShardPool::Instantiate: 1
-[14:27:26] GlassShardPool::Instantiate: 2
-[14:27:26] GlassShardPool::Instantiate: 3
-[14:27:26] GlassShardPool::Instantiate: 4
-[14:27:26] GlassShardPool::Instantiate: 5
-[14:27:26] GlassShardPool::Instantiate: 6
-[14:27:26] GlassShardPool::Instantiate: 7
-[14:27:26] GlassShardPool::Instantiate: 8
-[14:27:26] GlassShardPool::Instantiate: 9
-[14:27:26] GlassShardPool::Instantiate: 10
-[14:27:26] GlassShardPool::Instantiate: 11
-[14:27:26] Hammer Effect Play: 2
-[14:27:26] Hammer Effect Angle: 269.713
-[14:27:26] CameraShake::Play, type: 0
-[14:27:26] Hammer Attack Glass Object, ID: 337
-[14:27:26] GlassShardPool::Instantiate: 12
-[14:27:26] GlassShardPool::Instantiate: 13
-[14:27:26] GlassShardPool::Instantiate: 14
-[14:27:26] GlassShardPool::Instantiate: 15
-[14:27:26] GlassShardPool::Instantiate: 16
-[14:27:26] GlassShardPool::Instantiate: 17
-[14:27:26] GlassShardPool::Instantiate: 18
-[14:27:26] GlassShardPool::Instantiate: 19
-[14:27:26] GlassShardPool::Instantiate: 20
-[14:27:26] GlassShardPool::Instantiate: 21
-[14:27:26] GlassShardPool::Instantiate: 22
-[14:27:26] GlassShardPool::Instantiate: 23
-[14:27:26] Hammer Effect Play: 2
-[14:27:26] Hammer Effect Angle: 263.7
-[14:27:26] CameraShake::Play, type: 0
-[14:27:26] アクション終了
-[14:27:26] CameraShake::Stop
-[14:27:27] アクションCT終了
-[14:27:27] NormalAttack 入力受付
-[14:27:27] アクション実行
-[14:27:27] Animation End OneLoop
-[14:27:27] Animation End OneLoop
-[14:27:27] アクション終了
-[14:27:27] アクションCT終了
-[14:27:27] NormalAttack 入力受付
-[14:27:27] アクション実行
-[14:27:27] Hammer Attack Glass Object, ID: 285
-[14:27:27] GlassShardPool::Instantiate: 0
-[14:27:27] GlassShardPool::Instantiate: 1
-[14:27:27] GlassShardPool::Instantiate: 2
-[14:27:27] GlassShardPool::Instantiate: 3
-[14:27:27] GlassShardPool::Instantiate: 4
-[14:27:27] GlassShardPool::Instantiate: 5
-[14:27:27] Hammer Effect Play: 2
-[14:27:27] Hammer Effect Angle: 269.713
-[14:27:27] CameraShake::Play, type: 0
-[14:27:27] Hammer Attack Glass Object, ID: 658
-[14:27:27] GlassShardPool::Instantiate: 6
-[14:27:27] GlassShardPool::Instantiate: 7
-[14:27:27] GlassShardPool::Instantiate: 8
-[14:27:27] GlassShardPool::Instantiate: 9
-[14:27:27] GlassShardPool::Instantiate: 10
-[14:27:27] GlassShardPool::Instantiate: 11
-[14:27:27] Hammer Effect Play: 2
-[14:27:27] Hammer Effect Angle: 269.713
-[14:27:27] CameraShake::Play, type: 0
-[14:27:28] CameraShake::Stop
-[14:27:28] アクション終了
-[14:27:28] アクションCT終了
-[14:27:28] Animation End OneLoop
-[14:27:28] Animation End OneLoop
-[14:27:29] NormalAttack 入力受付
-[14:27:29] アクション実行
-[14:27:29] Hammer Attack Glass Object, ID: 311
-[14:27:29] GlassShardPool::Instantiate: 0
-[14:27:29] GlassShardPool::Instantiate: 1
-[14:27:29] GlassShardPool::Instantiate: 2
-[14:27:29] GlassShardPool::Instantiate: 3
-[14:27:29] GlassShardPool::Instantiate: 4
-[14:27:29] GlassShardPool::Instantiate: 5
-[14:27:29] Hammer Effect Play: 2
-[14:27:29] Hammer Effect Angle: 269.708
-[14:27:29] CameraShake::Play, type: 0
-[14:27:29] CameraShake::Stop
-[14:27:29] Hammer Attack Glass Object, ID: 319
-[14:27:29] GlassShardPool::Instantiate: 6
-[14:27:29] GlassShardPool::Instantiate: 7
-[14:27:29] GlassShardPool::Instantiate: 8
-[14:27:29] GlassShardPool::Instantiate: 9
-[14:27:29] GlassShardPool::Instantiate: 10
-[14:27:29] GlassShardPool::Instantiate: 11
-[14:27:29] GlassShardPool::Instantiate: 12
-[14:27:29] GlassShardPool::Instantiate: 13
-[14:27:29] GlassShardPool::Instantiate: 14
-[14:27:29] GlassShardPool::Instantiate: 15
-[14:27:29] GlassShardPool::Instantiate: 16
-[14:27:29] GlassShardPool::Instantiate: 17
-[14:27:29] Hammer Effect Play: 2
-[14:27:29] Hammer Effect Angle: 258.092
-[14:27:29] CameraShake::Play, type: 0
-[14:27:29] アクション終了
-[14:27:29] アクションCT終了
-[14:27:29] Animation End OneLoop
-[14:27:29] CameraShake::Stop
-[14:27:29] Animation End OneLoop
-[14:27:30] NormalAttack 入力受付
-[14:27:30] アクション実行
-[14:27:30] Hammer Attack Glass Object, ID: 272
-[14:27:30] GlassGaugeManager::BrakeGlass, Gauhe: 10
-[14:27:30] Up Score: 597
-[14:27:30] GlassShardPool::Instantiate: 18
-[14:27:30] GlassShardPool::Instantiate: 19
-[14:27:30] GlassShardPool::Instantiate: 20
-[14:27:30] GlassShardPool::Instantiate: 21
-[14:27:30] GlassShardPool::Instantiate: 22
-[14:27:30] GlassShardPool::Instantiate: 23
-[14:27:30] GlassObject Destory, ID: 272
-[14:27:30] Hammer Effect Play: 2
-[14:27:30] Hammer Effect Angle: 213.24
-[14:27:30] CameraShake::Play, type: 0
-[14:27:30] GlassGauge Effect Play
-[14:27:30] GlassGauge Ratio: 0.1
-[14:27:30] Hammer Attack Glass Object, ID: 319
-[14:27:30] GlassShardPool::Instantiate: 24
-[14:27:30] GlassShardPool::Instantiate: 25
-[14:27:30] GlassShardPool::Instantiate: 26
-[14:27:30] GlassShardPool::Instantiate: 27
-[14:27:30] GlassShardPool::Instantiate: 28
-[14:27:30] GlassShardPool::Instantiate: 29
-[14:27:30] GlassShardPool::Instantiate: 30
-[14:27:30] GlassShardPool::Instantiate: 31
-[14:27:30] GlassShardPool::Instantiate: 32
-[14:27:30] GlassShardPool::Instantiate: 33
-[14:27:30] GlassShardPool::Instantiate: 34
-[14:27:30] GlassShardPool::Instantiate: 35
-[14:27:30] Hammer Effect Play: 2
-[14:27:30] Hammer Effect Angle: 208.077
-[14:27:30] CameraShake::Play, type: 0
-[14:27:30] Hammer Attack Glass Object, ID: 319
-[14:27:30] GlassShardPool::Instantiate: 0
-[14:27:30] GlassShardPool::Instantiate: 1
-[14:27:30] GlassShardPool::Instantiate: 2
-[14:27:30] GlassShardPool::Instantiate: 3
-[14:27:30] GlassShardPool::Instantiate: 4
-[14:27:30] GlassShardPool::Instantiate: 5
-[14:27:30] GlassShardPool::Instantiate: 36
-[14:27:30] GlassShardPool::Instantiate: 37
-[14:27:30] GlassShardPool::Instantiate: 38
-[14:27:30] GlassShardPool::Instantiate: 39
-[14:27:30] GlassShardPool::Instantiate: 40
-[14:27:30] GlassShardPool::Instantiate: 41
-[14:27:30] Hammer Effect Play: 2
-[14:27:30] Hammer Effect Angle: 201.027
-[14:27:30] CameraShake::Play, type: 0
-[14:27:30] アクション終了
-[14:27:30] アクションCT終了
-[14:27:30] Animation End OneLoop
-[14:27:30] CameraShake::Stop
-[14:27:30] Animation End OneLoop
-[14:27:30] Animation End OneLoop
-[14:27:31] moveStoppedThisFrame
-[14:27:31] Animation End OneLoop
-[14:27:32] Canvas already exists.
-[14:27:33] OptionUI: Selected ステージ選択に戻る
-[14:27:33] OptionUI: Triggering operation after delay
-[14:27:37] Input Direction dir = %d: 3
-[14:27:37] Player move stage point id = %d: 1
-[14:27:37] Input Direction dir = %d: 3
-[14:27:38] Player move stage point id = %d: 3
-[14:27:38] Input Direction dir = %d: 3
-[14:27:38] Input Direction dir = %d: 3
-[14:27:39] Input Direction dir = %d: 3
-[14:27:39] Input Direction dir = %d: 3
-[14:27:39] Input Direction dir = %d: 0
-[14:27:39] Animation End OneLoop
-[14:27:39] Player move stage point id = %d: 2
-[14:27:42] Model::Load, material.pTexture: 0000020013311F60
-[14:27:44] Start Player Animation
-[14:27:45] [GlassObjectSpawner] Start()
-[14:27:45] GlassGauge Ratio: 0
-[14:27:47] moveStartedThisFrame
-[14:27:48] Animation End OneLoop
-[14:27:49] DashAttack 入力受付
-[14:27:49] アクション実行
-[14:27:51] アクション終了
-[14:27:55] moveStoppedThisFrame
-[14:27:56] moveStartedThisFrame
-[14:27:56] moveStoppedThisFrame
-[14:27:56] moveStartedThisFrame
-[14:27:56] アクションCT終了
-[14:27:57] DashAttack 入力受付
-[14:27:57] アクション実行
-[14:27:58] アクション終了
-[14:28:03] DashAttack 入力受付
-[14:28:03] DashAttack 入力受付
-[14:28:03] DashAttack 入力受付
-[14:28:03] アクションCT終了
-[14:28:05] DashAttack 入力受付
-[14:28:05] アクション実行
-[14:28:07] アクション終了
-[14:28:11] NormalAttack 入力受付
-[14:28:11] アクション実行
-[14:28:11] Hammer Attack Glass Object, ID: 325
-[14:28:11] GlassShardPool::Instantiate: 0
-[14:28:11] GlassShardPool::Instantiate: 1
-[14:28:11] GlassShardPool::Instantiate: 2
-[14:28:11] GlassShardPool::Instantiate: 3
-[14:28:11] GlassShardPool::Instantiate: 4
-[14:28:11] GlassShardPool::Instantiate: 5
-[14:28:11] GlassShardPool::Instantiate: 6
-[14:28:11] GlassShardPool::Instantiate: 7
-[14:28:11] GlassShardPool::Instantiate: 8
-[14:28:11] GlassShardPool::Instantiate: 9
-[14:28:11] GlassShardPool::Instantiate: 10
-[14:28:11] GlassShardPool::Instantiate: 11
-[14:28:11] Hammer Effect Play: 2
-[14:28:11] Hammer Effect Angle: 125.841
-[14:28:11] CameraShake::Play, type: 0
-[14:28:12] CameraShake::Stop
-[14:28:12] アクション終了
-[14:28:12] アクションCT終了
-[14:28:12] アクションCT終了
-[14:28:12] Animation End OneLoop
-[14:28:14] moveStoppedThisFrame
-[14:28:14] moveStartedThisFrame
-[14:28:15] NormalAttack 入力受付
-[14:28:15] アクション実行
-[14:28:15] Hammer Attack Glass Object, ID: 251
-[14:28:15] GlassGaugeManager::BrakeGlass, Gauhe: 10
-[14:28:15] Up Score: 697
-[14:28:15] GlassShardPool::Instantiate: 0
-[14:28:15] GlassShardPool::Instantiate: 1
-[14:28:15] GlassShardPool::Instantiate: 2
-[14:28:15] GlassShardPool::Instantiate: 3
-[14:28:15] GlassShardPool::Instantiate: 4
-[14:28:15] GlassShardPool::Instantiate: 5
-[14:28:15] GlassObject Destory, ID: 251
-[14:28:15] Hammer Effect Play: 2
-[14:28:15] Hammer Effect Angle: 198.003
-[14:28:15] CameraShake::Play, type: 0
-[14:28:15] GlassGauge Effect Play
-[14:28:15] GlassGauge Ratio: 0.1
-[14:28:15] CameraShake::Stop
-[14:28:15] アクション終了
-[14:28:15] NormalAttack 入力受付
-[14:28:15] アクションCT終了
-[14:28:15] Animation End OneLoop
-[14:28:16] NormalAttack 入力受付
-[14:28:16] アクション実行
-[14:28:16] Hammer Attack Glass Object, ID: 328
-[14:28:16] GlassShardPool::Instantiate: 6
-[14:28:16] GlassShardPool::Instantiate: 7
-[14:28:16] GlassShardPool::Instantiate: 8
-[14:28:16] GlassShardPool::Instantiate: 9
-[14:28:16] GlassShardPool::Instantiate: 10
-[14:28:16] GlassShardPool::Instantiate: 11
-[14:28:16] GlassShardPool::Instantiate: 12
-[14:28:16] GlassShardPool::Instantiate: 13
-[14:28:16] GlassShardPool::Instantiate: 14
-[14:28:16] GlassShardPool::Instantiate: 15
-[14:28:16] GlassShardPool::Instantiate: 16
-[14:28:16] GlassShardPool::Instantiate: 17
-[14:28:16] Hammer Effect Play: 2
-[14:28:16] Hammer Effect Angle: 260.257
-[14:28:16] CameraShake::Play, type: 0
-[14:28:16] アクション終了
-[14:28:16] NormalAttack 入力受付
-[14:28:16] アクションCT終了
-[14:28:16] CameraShake::Stop
-[14:28:16] NormalAttack 入力受付
-[14:28:16] アクション実行
-[14:28:16] Hammer Attack Glass Object, ID: 328
-[14:28:16] GlassShardPool::Instantiate: 0
-[14:28:16] GlassShardPool::Instantiate: 1
-[14:28:16] GlassShardPool::Instantiate: 2
-[14:28:16] GlassShardPool::Instantiate: 3
-[14:28:16] GlassShardPool::Instantiate: 4
-[14:28:16] GlassShardPool::Instantiate: 5
-[14:28:16] GlassShardPool::Instantiate: 18
-[14:28:16] GlassShardPool::Instantiate: 19
-[14:28:16] GlassShardPool::Instantiate: 20
-[14:28:16] GlassShardPool::Instantiate: 21
-[14:28:16] GlassShardPool::Instantiate: 22
-[14:28:16] GlassShardPool::Instantiate: 23
-[14:28:16] Hammer Effect Play: 2
-[14:28:16] Hammer Effect Angle: 269.708
-[14:28:16] CameraShake::Play, type: 0
-[14:28:16] Animation End OneLoop
-[14:28:16] CameraShake::Stop
-[14:28:17] アクション終了
-[14:28:17] アクションCT終了
-[14:28:17] Animation End OneLoop
-[14:28:17] Animation End OneLoop
-[14:28:18] NormalAttack 入力受付
-[14:28:18] アクション実行
-[14:28:18] アクション終了
-[14:28:18] アクションCT終了
-[14:28:26] DashAttack 入力受付
-[14:28:26] アクション実行
-[14:28:26] Hammer Attack Glass Object, ID: 219
-[14:28:26] GlassShardPool::Instantiate: 0
-[14:28:26] GlassShardPool::Instantiate: 1
-[14:28:26] GlassShardPool::Instantiate: 2
-[14:28:26] GlassShardPool::Instantiate: 3
-[14:28:26] GlassShardPool::Instantiate: 4
-[14:28:26] GlassShardPool::Instantiate: 5
-[14:28:26] GlassShardPool::Instantiate: 6
-[14:28:26] GlassShardPool::Instantiate: 7
-[14:28:26] GlassShardPool::Instantiate: 8
-[14:28:26] GlassShardPool::Instantiate: 9
-[14:28:26] GlassShardPool::Instantiate: 10
-[14:28:26] GlassShardPool::Instantiate: 11
-[14:28:26] Hammer Effect Play: 2
-[14:28:26] Hammer Effect Angle: 204.587
-[14:28:26] CameraShake::Play, type: 0
-[14:28:27] Hammer Attack Glass Object, ID: 182
-[14:28:27] GlassGaugeManager::BrakeGlass, Gauhe: 20
-[14:28:27] Up Score: 694
-[14:28:27] GlassShardPool::Instantiate: 12
-[14:28:27] GlassShardPool::Instantiate: 13
-[14:28:27] GlassShardPool::Instantiate: 14
-[14:28:27] GlassShardPool::Instantiate: 15
-[14:28:27] GlassShardPool::Instantiate: 16
-[14:28:27] GlassShardPool::Instantiate: 17
-[14:28:27] GlassObject Destory, ID: 182
-[14:28:27] Hammer Effect Play: 2
-[14:28:27] Hammer Effect Angle: 203.242
-[14:28:27] CameraShake::Play, type: 0
-[14:28:27] GlassGauge Effect Play
-[14:28:27] GlassGauge Ratio: 0.2
-[14:28:27] CameraShake::Stop
-[14:28:27] Animation End OneLoop
-[14:28:27] Animation End OneLoop
-[14:28:27] アクション終了
-[14:28:28] moveStoppedThisFrame
-[14:28:28] moveStartedThisFrame
-[14:28:28] Animation End OneLoop
-[14:28:28] NormalAttack 入力受付
-[14:28:28] アクション実行
-[14:28:28] Hammer Attack Glass Object, ID: 178
-[14:28:28] GlassGaugeManager::BrakeGlass, Gauhe: 30
-[14:28:28] Up Score: 691
-[14:28:28] GlassShardPool::Instantiate: 0
-[14:28:28] GlassShardPool::Instantiate: 1
-[14:28:28] GlassShardPool::Instantiate: 2
-[14:28:28] GlassShardPool::Instantiate: 3
-[14:28:28] GlassShardPool::Instantiate: 4
-[14:28:28] GlassShardPool::Instantiate: 5
-[14:28:28] GlassObject Destory, ID: 178
-[14:28:28] Hammer Effect Play: 2
-[14:28:28] Hammer Effect Angle: 86.586
-[14:28:28] CameraShake::Play, type: 0
-[14:28:28] GlassGauge Effect Play
-[14:28:28] GlassGauge Ratio: 0.3
-[14:28:29] CameraShake::Stop
-[14:28:29] アクション終了
-[14:28:29] アクションCT終了
-[14:28:29] Animation End OneLoop
-[14:28:30] Animation End OneLoop
-[14:28:33] アクションCT終了
-[14:28:35] moveStoppedThisFrame
+[11:38:36] Model::Load, material.pTexture: 000002ABCE1EB290
+[11:38:36] Model::Load, material.pTexture: 000002ABCE1EB230
+[11:38:36] Model::Load, material.pTexture: 000002ABCE1EB0B0
+[11:38:36] Model::Load, material.pTexture: 000002ABC5D4F1E0
+[11:38:36] Model::Load, material.pTexture: 000002ABC5D4F0C0
+[11:38:36] Model::Load, material.pTexture: 000002ABC5D4EAC0
+[11:38:36] Model::Load, material.pTexture: 000002ABC5D4EA60
+[11:38:36] Model::Load, material.pTexture: 000002ABC5D49C00
+[11:38:40] Animation End OneLoop
+[11:38:42] Animation End OneLoop
+[11:38:43] Model::Load, material.pTexture: 000002ABCE1EA990
+[11:38:43] Model::Load, material.pTexture: 000002ABCE1EB0B0
+[11:38:43] Model::Load, material.pTexture: 000002ABCE1EC3D0
+[11:38:47] Animation End OneLoop
+[11:38:49] Input Direction dir = %d: 3
+[11:38:49] Player move stage point id = %d: 1
+[11:38:53] Start Player Animation
+[11:38:54] [GlassObjectSpawner] Start()
+[11:38:54] GlassGauge Ratio: 0
+[11:38:57] moveStartedThisFrame
+[11:38:57] Animation End OneLoop
+[11:38:58] NormalAttack 入力受付
+[11:38:58] アクション実行
+[11:38:58] Hammer Attack Glass Object, ID: 74
+[11:38:58] GlassGaugeManager::BrakeGlass, Gauhe: 10
+[11:38:58] Up Score: 47
+[11:38:58] GlassShardPool::Instantiate: 0
+[11:38:58] GlassShardPool::Instantiate: 1
+[11:38:58] GlassShardPool::Instantiate: 2
+[11:38:58] GlassShardPool::Instantiate: 3
+[11:38:58] GlassShardPool::Instantiate: 4
+[11:38:58] GlassShardPool::Instantiate: 5
+[11:38:58] GlassObject Destory, ID: 74
+[11:38:58] Hammer Effect Play: 2
+[11:38:58] Hammer Effect Angle: 251.734
+[11:38:58] CameraShake::Play, type: 0
+[11:38:58] GlassGauge Effect Play
+[11:38:58] GlassGauge Ratio: 0.1
+[11:38:58] アクション終了
+[11:38:58] CameraShake::Stop
+[11:38:58] moveStoppedThisFrame
+[11:38:58] アクションCT終了
+[11:38:58] Animation End OneLoop
+[11:38:58] moveStartedThisFrame
+[11:38:58] NormalAttack 入力受付
+[11:38:58] アクション実行
+[11:38:59] Hammer Attack Glass Object, ID: 41
+[11:38:59] GlassGaugeManager::BrakeGlass, Gauhe: 20
+[11:38:59] Up Score: 44
+[11:38:59] GlassShardPool::Instantiate: 6
+[11:38:59] GlassShardPool::Instantiate: 7
+[11:38:59] GlassShardPool::Instantiate: 8
+[11:38:59] GlassShardPool::Instantiate: 9
+[11:38:59] GlassShardPool::Instantiate: 10
+[11:38:59] GlassShardPool::Instantiate: 11
+[11:38:59] GlassObject Destory, ID: 41
+[11:38:59] Hammer Effect Play: 2
+[11:38:59] Hammer Effect Angle: 292.233
+[11:38:59] CameraShake::Play, type: 0
+[11:38:59] GlassGauge Effect Play
+[11:38:59] GlassGauge Ratio: 0.2
+[11:38:59] アクション終了
+[11:38:59] CameraShake::Stop
+[11:38:59] アクションCT終了
+[11:38:59] Animation End OneLoop
+[11:38:59] moveStoppedThisFrame
+[11:39:00] moveStartedThisFrame
+[11:39:00] NormalAttack 入力受付
+[11:39:00] アクション実行
+[11:39:00] Hammer Attack Glass Object, ID: 26
+[11:39:00] GlassGaugeManager::BrakeGlass, Gauhe: 30
+[11:39:00] Up Score: 41
+[11:39:00] GlassShardPool::Instantiate: 0
+[11:39:00] GlassShardPool::Instantiate: 1
+[11:39:00] GlassShardPool::Instantiate: 2
+[11:39:00] GlassShardPool::Instantiate: 3
+[11:39:00] GlassShardPool::Instantiate: 4
+[11:39:00] GlassShardPool::Instantiate: 5
+[11:39:00] GlassObject Destory, ID: 26
+[11:39:00] Hammer Effect Play: 2
+[11:39:00] Hammer Effect Angle: 354.965
+[11:39:00] CameraShake::Play, type: 0
+[11:39:00] Hammer Attack Glass Object, ID: 30
+[11:39:00] GlassGaugeManager::BrakeGlass, Gauhe: 40
+[11:39:00] Up Score: 38
+[11:39:00] GlassShardPool::Instantiate: 6
+[11:39:00] GlassShardPool::Instantiate: 7
+[11:39:00] GlassShardPool::Instantiate: 8
+[11:39:00] GlassShardPool::Instantiate: 9
+[11:39:00] GlassShardPool::Instantiate: 10
+[11:39:00] GlassShardPool::Instantiate: 11
+[11:39:00] GlassObject Destory, ID: 30
+[11:39:00] Hammer Effect Play: 2
+[11:39:00] Hammer Effect Angle: 354.965
+[11:39:00] CameraShake::Play, type: 0
+[11:39:00] Hammer Attack Glass Object, ID: 64
+[11:39:00] GlassGaugeManager::BrakeGlass, Gauhe: 50
+[11:39:00] Up Score: 35
+[11:39:00] GlassShardPool::Instantiate: 12
+[11:39:00] GlassShardPool::Instantiate: 13
+[11:39:00] GlassShardPool::Instantiate: 14
+[11:39:00] GlassShardPool::Instantiate: 15
+[11:39:00] GlassShardPool::Instantiate: 16
+[11:39:00] GlassShardPool::Instantiate: 17
+[11:39:00] GlassObject Destory, ID: 64
+[11:39:00] Hammer Effect Play: 2
+[11:39:00] Hammer Effect Angle: 354.965
+[11:39:00] CameraShake::Play, type: 0
+[11:39:00] GlassGauge Effect Play
+[11:39:00] GlassGauge Ratio: 0.5
+[11:39:00] CameraShake::Stop
+[11:39:00] Hammer Attack Glass Object, ID: 42
+[11:39:00] GlassGaugeManager::BrakeGlass, Gauhe: 60
+[11:39:00] Up Score: 32
+[11:39:00] GlassShardPool::Instantiate: 18
+[11:39:00] GlassShardPool::Instantiate: 19
+[11:39:00] GlassShardPool::Instantiate: 20
+[11:39:00] GlassShardPool::Instantiate: 21
+[11:39:00] GlassShardPool::Instantiate: 22
+[11:39:00] GlassShardPool::Instantiate: 23
+[11:39:00] GlassObject Destory, ID: 42
+[11:39:00] Hammer Effect Play: 2
+[11:39:00] Hammer Effect Angle: 345.692
+[11:39:00] CameraShake::Play, type: 0
+[11:39:00] GlassGauge Effect Play
+[11:39:00] GlassGauge Ratio: 0.6
+[11:39:00] アクション終了
+[11:39:00] NormalAttack 入力受付
+[11:39:00] アクションCT終了
+[11:39:00] CameraShake::Stop
+[11:39:00] Animation End OneLoop
+[11:39:00] Animation End OneLoop
+[11:39:00] Animation End OneLoop
+[11:39:01] NormalAttack 入力受付
+[11:39:01] アクション実行
+[11:39:01] Animation End OneLoop
+[11:39:01] Hammer Attack Glass Object, ID: 76
+[11:39:01] GlassGaugeManager::BrakeGlass, Gauhe: 70
+[11:39:01] Up Score: 29
+[11:39:01] GlassShardPool::Instantiate: 24
+[11:39:01] GlassShardPool::Instantiate: 25
+[11:39:01] GlassShardPool::Instantiate: 26
+[11:39:01] GlassShardPool::Instantiate: 27
+[11:39:01] GlassShardPool::Instantiate: 28
+[11:39:01] GlassShardPool::Instantiate: 29
+[11:39:01] GlassObject Destory, ID: 76
+[11:39:01] Hammer Effect Play: 2
+[11:39:01] Hammer Effect Angle: 358.747
+[11:39:01] CameraShake::Play, type: 0
+[11:39:01] GlassGauge Effect Play
+[11:39:01] GlassGauge Ratio: 0.7
+[11:39:01] Hammer Attack Glass Object, ID: 38
+[11:39:01] GlassGaugeManager::BrakeGlass, Gauhe: 80
+[11:39:01] Up Score: 26
+[11:39:01] GlassShardPool::Instantiate: 30
+[11:39:01] GlassShardPool::Instantiate: 31
+[11:39:01] GlassShardPool::Instantiate: 32
+[11:39:01] GlassShardPool::Instantiate: 33
+[11:39:01] GlassShardPool::Instantiate: 34
+[11:39:01] GlassShardPool::Instantiate: 35
+[11:39:01] GlassObject Destory, ID: 38
+[11:39:01] Hammer Effect Play: 2
+[11:39:01] Hammer Effect Angle: 0.808228
+[11:39:01] CameraShake::Play, type: 0
+[11:39:01] GlassGauge Effect Play
+[11:39:01] GlassGauge Ratio: 0.8
+[11:39:01] Hammer Attack Glass Object, ID: 78
+[11:39:01] GlassGaugeManager::BrakeGlass, Gauhe: 90
+[11:39:01] Up Score: 23
+[11:39:01] GlassShardPool::Instantiate: 36
+[11:39:01] GlassShardPool::Instantiate: 37
+[11:39:01] GlassShardPool::Instantiate: 38
+[11:39:01] GlassShardPool::Instantiate: 39
+[11:39:01] GlassShardPool::Instantiate: 40
+[11:39:01] GlassShardPool::Instantiate: 41
+[11:39:01] GlassObject Destory, ID: 78
+[11:39:01] Hammer Effect Play: 2
+[11:39:01] Hammer Effect Angle: 3.11902
+[11:39:01] CameraShake::Play, type: 0
+[11:39:01] GlassGauge Effect Play
+[11:39:01] GlassGauge Ratio: 0.9
+[11:39:01] アクション終了
+[11:39:01] CameraShake::Stop
+[11:39:01] NormalAttack 入力受付
+[11:39:01] アクションCT終了
+[11:39:01] Animation End OneLoop
+[11:39:01] Animation End OneLoop
+[11:39:01] Animation End OneLoop
+[11:39:01] NormalAttack 入力受付
+[11:39:01] アクション実行
+[11:39:01] Hammer Attack Glass Object, ID: 66
+[11:39:01] GlassGaugeManager::BrakeGlass, Gauhe: 100
+[11:39:01] Up Score: 20
+[11:39:01] GlassShardPool::Instantiate: 0
+[11:39:01] GlassShardPool::Instantiate: 1
+[11:39:01] GlassShardPool::Instantiate: 2
+[11:39:01] GlassShardPool::Instantiate: 3
+[11:39:01] GlassShardPool::Instantiate: 4
+[11:39:01] GlassShardPool::Instantiate: 5
+[11:39:01] GlassObject Destory, ID: 66
+[11:39:01] Hammer Effect Play: 2
+[11:39:01] Hammer Effect Angle: 1.79678
+[11:39:01] CameraShake::Play, type: 0
+[11:39:01] GlassGauge Effect Play
+[11:39:01] GlassGauge Ratio: 1
+[11:39:01] Hammer Attack Glass Object, ID: 71
+[11:39:01] GlassGaugeManager::BrakeGlass, Gauhe: 110
+[11:39:01] Hammer Effect Play: 0
+[11:39:01] Hammer Effect Angle: 358.474
+[11:39:01] Hammer::GradeUp, Grade: 2
+[11:39:01] Up Score: 17
+[11:39:01] GlassShardPool::Instantiate: 6
+[11:39:01] GlassShardPool::Instantiate: 7
+[11:39:01] GlassShardPool::Instantiate: 8
+[11:39:01] GlassShardPool::Instantiate: 9
+[11:39:01] GlassShardPool::Instantiate: 10
+[11:39:01] GlassShardPool::Instantiate: 11
+[11:39:01] GlassObject Destory, ID: 71
+[11:39:01] Hammer Effect Play: 2
+[11:39:01] Hammer Effect Angle: 358.474
+[11:39:01] CameraShake::Play, type: 0
+[11:39:01] GlassGauge Effect Play
+[11:39:01] GlassGauge Ratio: 0.025
+[11:39:01] Hammer Attack Glass Object, ID: 34
+[11:39:01] GlassGaugeManager::BrakeGlass, Gauhe: 15
+[11:39:01] Up Score: 14
+[11:39:01] GlassShardPool::Instantiate: 12
+[11:39:01] GlassShardPool::Instantiate: 13
+[11:39:01] GlassShardPool::Instantiate: 14
+[11:39:01] GlassShardPool::Instantiate: 15
+[11:39:01] GlassShardPool::Instantiate: 16
+[11:39:01] GlassShardPool::Instantiate: 17
+[11:39:01] GlassObject Destory, ID: 34
+[11:39:01] Hammer Effect Play: 2
+[11:39:01] Hammer Effect Angle: 358.315
+[11:39:01] CameraShake::Play, type: 0
+[11:39:01] GlassGauge Effect Play
+[11:39:01] GlassGauge Ratio: 0.075
+[11:39:01] CameraShake::Stop
+[11:39:01] アクション終了
+[11:39:02] アクションCT終了
+[11:39:02] Animation End OneLoop
+[11:39:02] Animation End OneLoop
+[11:39:02] Animation End OneLoop
+[11:39:02] NormalAttack 入力受付
+[11:39:02] アクション実行
+[11:39:02] Hammer Attack Glass Object, ID: 21
+[11:39:02] GlassGaugeManager::BrakeGlass, Gauhe: 25
+[11:39:02] Up Score: 11
+[11:39:02] GlassShardPool::Instantiate: 18
+[11:39:02] GlassShardPool::Instantiate: 19
+[11:39:02] GlassShardPool::Instantiate: 20
+[11:39:02] GlassShardPool::Instantiate: 21
+[11:39:02] GlassShardPool::Instantiate: 22
+[11:39:02] GlassShardPool::Instantiate: 23
+[11:39:02] GlassObject Destory, ID: 21
+[11:39:02] Hammer Effect Play: 2
+[11:39:02] Hammer Effect Angle: 359.553
+[11:39:02] CameraShake::Play, type: 0
+[11:39:02] Hammer Attack Glass Object, ID: 23
+[11:39:02] GlassGaugeManager::BrakeGlass, Gauhe: 35
+[11:39:02] Up Score: 8
+[11:39:02] GlassShardPool::Instantiate: 24
+[11:39:02] GlassShardPool::Instantiate: 25
+[11:39:02] GlassShardPool::Instantiate: 26
+[11:39:02] GlassShardPool::Instantiate: 27
+[11:39:02] GlassShardPool::Instantiate: 28
+[11:39:02] GlassShardPool::Instantiate: 29
+[11:39:02] GlassObject Destory, ID: 23
+[11:39:02] Hammer Effect Play: 2
+[11:39:02] Hammer Effect Angle: 359.553
+[11:39:02] CameraShake::Play, type: 0
+[11:39:02] Hammer Attack Glass Object, ID: 47
+[11:39:02] GlassGaugeManager::BrakeGlass, Gauhe: 45
+[11:39:02] Up Score: 5
+[11:39:02] GlassShardPool::Instantiate: 30
+[11:39:02] GlassShardPool::Instantiate: 31
+[11:39:02] GlassShardPool::Instantiate: 32
+[11:39:02] GlassShardPool::Instantiate: 33
+[11:39:02] GlassShardPool::Instantiate: 34
+[11:39:02] GlassShardPool::Instantiate: 35
+[11:39:02] GlassObject Destory, ID: 47
+[11:39:02] Hammer Effect Play: 2
+[11:39:02] Hammer Effect Angle: 359.553
+[11:39:02] CameraShake::Play, type: 0
+[11:39:02] Hammer Attack Glass Object, ID: 61
+[11:39:02] GlassGaugeManager::BrakeGlass, Gauhe: 55
+[11:39:02] Up Score: 2
+[11:39:02] GlassShardPool::Instantiate: 36
+[11:39:02] GlassShardPool::Instantiate: 37
+[11:39:02] GlassShardPool::Instantiate: 38
+[11:39:02] GlassShardPool::Instantiate: 39
+[11:39:02] GlassShardPool::Instantiate: 40
+[11:39:02] GlassShardPool::Instantiate: 41
+[11:39:02] GlassObject Destory, ID: 61
+[11:39:02] Hammer Effect Play: 2
+[11:39:02] Hammer Effect Angle: 359.553
+[11:39:02] CameraShake::Play, type: 0
+[11:39:02] Hammer Attack Glass Object, ID: 62
+[11:39:02] GlassGaugeManager::BrakeGlass, Gauhe: 65
+[11:39:02] Up Score: -1
+[11:39:02] GlassShardPool::Instantiate: 42
+[11:39:02] GlassShardPool::Instantiate: 43
+[11:39:02] GlassShardPool::Instantiate: 44
+[11:39:02] GlassShardPool::Instantiate: 45
+[11:39:02] GlassShardPool::Instantiate: 46
+[11:39:02] GlassShardPool::Instantiate: 47
+[11:39:02] GlassObject Destory, ID: 62
+[11:39:02] Hammer Effect Play: 2
+[11:39:02] Hammer Effect Angle: 359.553
+[11:39:02] CameraShake::Play, type: 0
+[11:39:02] GlassGauge Effect Play
+[11:39:02] GlassGauge Ratio: 0.325
+[11:39:02] CameraShake::Stop
+[11:39:02] アクション終了
+[11:39:02] NormalAttack 入力受付
+[11:39:02] Animation End OneLoop
+[11:39:02] アクションCT終了
+[11:39:02] Animation End OneLoop
+[11:39:02] Animation End OneLoop
+[11:39:02] Animation End OneLoop
+[11:39:02] Animation End OneLoop
+[11:39:02] Animation End OneLoop
+[11:39:02] NormalAttack 入力受付
+[11:39:02] アクション実行
+[11:39:03] アクション終了
+[11:39:03] アクションCT終了
+[11:39:03] Clear Stage
+[11:39:03] Clear Stage
+[11:39:03] Clear Stage
+[11:39:03] Clear Stage
+[11:39:03] Clear Stage
+[11:39:03] Clear Stage
+[11:39:03] Clear Stage
+[11:39:03] Clear Stage
+[11:39:03] Clear Stage
+[11:39:03] Clear Stage
+[11:39:03] Clear Stage
+[11:39:03] Clear Stage
+[11:39:03] Clear Stage
+[11:39:03] Clear Stage
+[11:39:03] Clear Stage
+[11:39:03] Animation End OneLoop
+[11:39:03] Clear Stage
+[11:39:03] Clear Stage
+[11:39:03] Clear Stage
+[11:39:03] Clear Stage
+[11:39:03] Clear Stage
+[11:39:03] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] NormalAttack 入力受付
+[11:39:04] アクション実行
+[11:39:04] Clear Stage
+[11:39:04] Hammer Attack Glass Object, ID: 48
+[11:39:04] GlassGaugeManager::BrakeGlass, Gauhe: 75
+[11:39:04] GlassShardPool::Instantiate: 0
+[11:39:04] GlassShardPool::Instantiate: 1
+[11:39:04] GlassShardPool::Instantiate: 2
+[11:39:04] GlassShardPool::Instantiate: 3
+[11:39:04] GlassShardPool::Instantiate: 4
+[11:39:04] GlassShardPool::Instantiate: 5
+[11:39:04] GlassObject Destory, ID: 48
+[11:39:04] Hammer Effect Play: 2
+[11:39:04] Hammer Effect Angle: 354.636
+[11:39:04] CameraShake::Play, type: 0
+[11:39:04] Hammer Attack Glass Object, ID: 49
+[11:39:04] GlassGaugeManager::BrakeGlass, Gauhe: 85
+[11:39:04] GlassShardPool::Instantiate: 6
+[11:39:04] GlassShardPool::Instantiate: 7
+[11:39:04] GlassShardPool::Instantiate: 8
+[11:39:04] GlassShardPool::Instantiate: 9
+[11:39:04] GlassShardPool::Instantiate: 10
+[11:39:04] GlassShardPool::Instantiate: 11
+[11:39:04] GlassObject Destory, ID: 49
+[11:39:04] Hammer Effect Play: 2
+[11:39:04] Hammer Effect Angle: 354.636
+[11:39:04] CameraShake::Play, type: 0
+[11:39:04] GlassGauge Effect Play
+[11:39:04] GlassGauge Ratio: 0.425
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:04] Hammer Attack Glass Object, ID: 80
+[11:39:04] GlassGaugeManager::BrakeGlass, Gauhe: 95
+[11:39:04] GlassShardPool::Instantiate: 12
+[11:39:04] GlassShardPool::Instantiate: 13
+[11:39:04] GlassShardPool::Instantiate: 14
+[11:39:04] GlassShardPool::Instantiate: 15
+[11:39:04] GlassShardPool::Instantiate: 16
+[11:39:04] GlassShardPool::Instantiate: 17
+[11:39:04] GlassShardPool::Instantiate: 18
+[11:39:04] GlassShardPool::Instantiate: 19
+[11:39:04] GlassShardPool::Instantiate: 20
+[11:39:04] GlassShardPool::Instantiate: 21
+[11:39:04] GlassShardPool::Instantiate: 22
+[11:39:04] GlassShardPool::Instantiate: 23
+[11:39:04] GlassObject Destory, ID: 80
+[11:39:04] Hammer Effect Play: 2
+[11:39:04] Hammer Effect Angle: 345.841
+[11:39:04] CameraShake::Play, type: 0
+[11:39:04] Hammer Attack Glass Object, ID: 81
+[11:39:04] GlassGaugeManager::BrakeGlass, Gauhe: 105
+[11:39:04] GlassShardPool::Instantiate: 24
+[11:39:04] GlassShardPool::Instantiate: 25
+[11:39:04] GlassShardPool::Instantiate: 26
+[11:39:04] GlassShardPool::Instantiate: 27
+[11:39:04] GlassShardPool::Instantiate: 28
+[11:39:04] GlassShardPool::Instantiate: 29
+[11:39:04] GlassShardPool::Instantiate: 30
+[11:39:04] GlassShardPool::Instantiate: 31
+[11:39:04] GlassShardPool::Instantiate: 32
+[11:39:04] GlassShardPool::Instantiate: 33
+[11:39:04] GlassShardPool::Instantiate: 34
+[11:39:04] GlassShardPool::Instantiate: 35
+[11:39:04] GlassObject Destory, ID: 81
+[11:39:04] Hammer Effect Play: 2
+[11:39:04] Hammer Effect Angle: 345.841
+[11:39:04] CameraShake::Play, type: 0
+[11:39:04] GlassGauge Effect Play
+[11:39:04] GlassGauge Ratio: 0.525
+[11:39:04] Clear Stage
+[11:39:04] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] アクション終了
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] CameraShake::Stop
+[11:39:05] NormalAttack 入力受付
+[11:39:05] Clear Stage
+[11:39:05] アクションCT終了
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] Animation End OneLoop
+[11:39:05] Animation End OneLoop
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] Animation End OneLoop
+[11:39:05] Animation End OneLoop
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] NormalAttack 入力受付
+[11:39:05] アクション実行
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] アクション終了
+[11:39:05] Clear Stage
+[11:39:05] NormalAttack 入力受付
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] アクションCT終了
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:05] Clear Stage
+[11:39:06] Clear Stage
+[11:39:06] Clear Stage
+[11:39:06] NormalAttack 入力受付
+[11:39:06] アクション実行
+[11:39:06] Clear Stage
+[11:39:06] Clear Stage
+[11:39:09] ResultGaugeUI-StartGaugeUp
+[11:39:09] Animation End OneLoop
 [Debug Log End]

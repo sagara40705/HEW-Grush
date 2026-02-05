@@ -7,6 +7,7 @@
 #include "InputKeyboard.h"
 #include "InputGamePad.h"
 #include "SoundManager.h"
+#include "InputGamepad.h"
 
 void SceneTitle::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 {

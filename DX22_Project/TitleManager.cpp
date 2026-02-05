@@ -10,10 +10,12 @@
 #include "UiSpriteRenderer.h"
 #include "TextureManager.h"
 #include "SceneStageSelect.h"
+#include "InputGamepad.h"
 
 //FadeOutê∂ê¨
 void TitleManager::Awake()
 {
+
 }
 
 void TitleManager::Start()
@@ -27,7 +29,9 @@ void TitleManager::Update()
 	if (InputNext())
 	{
 		inputNext = true;
+		InputGamepad::SetVibrationTime(0.4f, 0.6f, 0.5f);
 	}
+
 
 	if (inputNext) AnimationTimer();
 
