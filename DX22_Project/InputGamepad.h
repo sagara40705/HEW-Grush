@@ -92,7 +92,6 @@ public:
     static void SetDeadZone(
         SHORT ls, SHORT rs,
         BYTE  lt, BYTE  rt);
-
 private:
     // 操作用（0 番）パッドの現在/前フレーム状態
     static XINPUT_STATE s_curr;

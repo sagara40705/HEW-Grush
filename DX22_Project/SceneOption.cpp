@@ -7,40 +7,18 @@
 
 void SceneOption::Load()
 {
-	TexturesLoad();
 	CheckCanvas();
 	CreateBG();
 	CreateOption();
+	SceneManager::CreateFadeAnimations(this);
 }
 
 void SceneOption::Unload()
 {
-	
+	SceneManager::ReleaseFadeAnimations();
 }
 
-void SceneOption::TexturesLoad()
-{
-	TextureManager::Load(TextureTag::Option_BG);
-	TextureManager::Load(TextureTag::option_Back);
-	TextureManager::Load(TextureTag::option_Font1);
-	TextureManager::Load(TextureTag::option_Font1_Back); 
-	TextureManager::Load(TextureTag::option_Font1_OK);
-	TextureManager::Load(TextureTag::option_Font2); 
-	TextureManager::Load(TextureTag::option_Font2_Back); 
-	TextureManager::Load(TextureTag::option_Font2_OK); 
-	TextureManager::Load(TextureTag::option_Font3);
-	TextureManager::Load(TextureTag::option_Font3_Back); 
-	TextureManager::Load(TextureTag::option_Font3_OK); 
-	TextureManager::Load(TextureTag::option_Font4); 
-	TextureManager::Load(TextureTag::option_Font4_OK); 
-	TextureManager::Load(TextureTag::option_Font5); 
-	TextureManager::Load(TextureTag::option_Font5_OK); 
-	TextureManager::Load(TextureTag::option_Font1_Break); 
-	TextureManager::Load(TextureTag::option_Font2_Break); 
-	TextureManager::Load(TextureTag::option_Font3_Break); 
-	TextureManager::Load(TextureTag::option_Font4_screen); 
-	TextureManager::Load(TextureTag::option_translucent); ;
-}
+
 
 void SceneOption::CheckCanvas()
 {
@@ -248,10 +226,6 @@ void SceneOption::CreateOption()
 
 void SceneOption::Update()
 {
-	if (InputKeyboard::GetKeyDown('O'))
-	{
-		SceneManager::PopScene();
-	}
 }
 
 void SceneOption::Draw()

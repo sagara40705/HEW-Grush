@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
 #include "Component.h"
+#include <cstdint>
+#include "Time/Timer.h"
 
 class GameObject;
 
@@ -26,7 +28,7 @@ private:
     bool m_isOpen = false;
 
     int m_selected = 0;
-    bool m_isPressedVisual = false;
+    bool m_isPressedVisual = false; //
 
     std::vector<GameObject*> m_textNormal;
     std::vector<GameObject*> m_textSelected;
@@ -35,6 +37,8 @@ private:
 
     // modal flags (same size as items)
     std::vector<bool> m_isModal;
+
+    int prevLStickYDir_ = 0;   // -1:â∫, 0:ÉjÉÖÅ[ÉgÉâÉã, +1:è„
 
 private:
     void Open();
@@ -47,4 +51,18 @@ private:
     void ApplyVisual();
 
     bool IsModalShowing() const;
+private:
+	enum class Operation : std::uint8_t
+	{
+		None,
+		ReturnToGame,
+        Restart,
+		GoToStageSelect,
+		GoToTitle,
+	};
+	Operation m_operation = Operation::None;
+	static constexpr float kDelayDuration = 0.3f; // seconds
+	Timer m_delayTimer;
+	bool m_isDelayActive = false;
+	void TriggerOperation();
 };

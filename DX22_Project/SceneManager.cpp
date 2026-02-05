@@ -149,6 +149,7 @@ void SceneManager::ApplyNextScene()
             s_scenes.back()->RootUnload();          // Unload() + World.ClearAll()
             s_scenes.pop_back();
         }
+		GetActiveScene()->OnReturnFromOption(); // ƒIƒvƒVƒ‡ƒ“‰æ–Ê‚©‚ç–ß‚Á‚Ä‚«‚½ê‡‚Ìˆ—
         break;
     }
 
@@ -270,4 +271,10 @@ void SceneManager::ReleaseFadeAnimations()
 {
 	s_fadeOutAnime = nullptr;
 	s_fadeInAnime = nullptr;
+}
+
+bool SceneManager::CheckFinishFadeOut()
+{
+    if(s_timer.ElapsedSeconds() >= 1.0f) return true;
+    else  return false;
 }

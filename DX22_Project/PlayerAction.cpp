@@ -11,22 +11,17 @@
 #include "SoundManager.h"
 #include <cassert>
 
-constexpr float kActionTime[ToIndex(ActionId::Count)] = { 0.4f, 1.f, 1.5f };
+constexpr float kActionTime[ToIndex(ActionId::Count)] = { 0.3f, 0.8f, 1.5f };
 constexpr float kCoolDown[ToIndex(ActionId::Count)]  = { 0.1f, 5.f, 5.f };
 
 void PlayerAction::Start()
 {
 	tf_ = gameObject->GetComponent<Transform>();
 	state_ = gameObject->GetComponent<PlayerState>();
-	for (GameObject* go : gameObject->GetChildren())
-	{
-		if (!go) continue;
-		if (go->CompareTag(Tag::Hammer))
-		{
-			hammer_ = go->GetComponent<Hammer>();
-			break;
-		}
-	}
+
+	GameObject* hammerObj = gameObject->FindWithTag(Tag::Hammer);
+	assert(hammerObj && "Hammerオブジェクトが見つかりません");
+	hammer_ = hammerObj->GetComponent<Hammer>();
 
 	assert(state_ && tf_ && hammer_ && "参照のどれかがnullptrです");
 	if (!state_ || !tf_ || !hammer_) return;
@@ -78,7 +73,8 @@ void PlayerAction::InputWantAction()
 	{
 		state_->wantUseAction[ToIndex(ActionId::NormalAttack)] = true;
 		DebugLog::Output("NormalAttack 入力受付");
-		SoundManager::SoundPlay(SoundTag::NomalAttackSE, 1.0f);
+		if(state_->canUseAction[ToIndex(ActionId::NormalAttack)])
+		SoundManager::SoundPlay(NomalAttackSE, 1.0f);
 	}
 
 	//==================== SpinAttack (Rキー / R1ボタン) =====================
@@ -87,7 +83,8 @@ void PlayerAction::InputWantAction()
 	{
 		state_->wantUseAction[ToIndex(ActionId::SpinAttack)] = true;
 		DebugLog::Output("SpinAttack 入力受付");
-		SoundManager::SoundPlay(SoundTag::SpinAttackSE, 1.0f);
+		if (state_->canUseAction[ToIndex(ActionId::SpinAttack)]) 
+			SoundManager::SoundPlay(SoundTag::SpinAttackSE, 1.0f);
 	}
 
 	//==================== DashAttack (Fキー / L1ボタン) =====================
@@ -96,6 +93,7 @@ void PlayerAction::InputWantAction()
 	{
 		state_->wantUseAction[ToIndex(ActionId::DashAttack)] = true;
 		DebugLog::Output("DashAttack 入力受付");
+		if(state_->canUseAction[ToIndex(ActionId::DashAttack)])
 		SoundManager::SoundPlay(SoundTag::DashAttackSE, 1.0f);
 	}
 }
@@ -156,11 +154,11 @@ void PlayerAction::UpdateAction()
 	//使用中アクションごとに更新 *現在は空
 	switch (action)
 	{
-	case ActionId::NormalAttack: UpdateNormalAttack();	break;
+	case ActionId::NormalAttack: UpdateNormalAttack(); break;
 
-	case ActionId::SpinAttack:	 UpdateSpinAttack();	break;
+	case ActionId::SpinAttack: UpdateSpinAttack(); break;
 
-	case ActionId::DashAttack:	 UpdateDashAttack();	break;
+	case ActionId::DashAttack: UpdateDashAttack(); break;
 
 	default: assert(false && "state_->usingActionが範囲外です");
 		break;
@@ -215,7 +213,7 @@ void PlayerAction::UpdateNormalAttack()
 // ダミー実装
 void PlayerAction::UpdateSpinAttack()
 {
-	constexpr Vector3 delta = { 0.f, -18.f, 0.f };
+	constexpr Vector3 delta = { 0.f, 0.f, 0.f };
 
 	tf_->AddRotate(delta);
 	hammer_->UpdateSpinAttack();
@@ -224,7 +222,9 @@ void PlayerAction::UpdateSpinAttack()
 // ダミー実装
 void PlayerAction::UpdateDashAttack()
 {
-	hammer_->UpdateSpinAttack();
+	const float ratio = state_->actionTimer[ToIndex(ActionId::DashAttack)] / kActionTime[ToIndex(ActionId::DashAttack)];
+	hammer_->UpdateDashAttack(ratio);
+
 	// Rigidbody を取得（なければ何もしない）
 	auto* rb = gameObject->GetComponent<Rigidbody>();
 	if (!rb) return;

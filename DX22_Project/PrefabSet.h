@@ -28,7 +28,6 @@ enum class PrefabId : std::uint8_t
     Star,
 
 	// ‚»‚Ì‘¼
-    ProtPlay,
     GlassShard,
 
     StageWall,

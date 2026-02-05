@@ -18,6 +18,13 @@ public:
 #include "Scene.h"
 #include "Component.h"
 //#include "BreakUiRenderer.h"
+#include "Prefab.h"
+#include "PrefabSet.h"
+
+
+//前方宣言
+enum class PrefabId : std::uint8_t;
+
 
 class SceneTitle : public Scene
 {
@@ -41,12 +48,17 @@ private:
     void CreateBreakTexture();
     void CreateTitleManager();
     void UpdateTitleAnimations(); 
+    void CreateObject();
 private:
     float m_animTimer = 0.0f;
 
     // 生成したオブジェクトを動かすためのポインタ
     GameObject* m_titleLogoObj = nullptr;
     GameObject* m_titleFontObj = nullptr;
+	GameObject* go1 = nullptr;
+    GameObject* go2 = nullptr;
+	GameObject* go3 = nullptr;
+
     GameObject* m_mainCamera = nullptr;
     GameObject* m_player = nullptr;
     SpriteAnimation* break_ = nullptr;
@@ -58,5 +70,7 @@ private:
 
     Vector3 m_camStartPos;        // 移動開始時のカメラ座標
     Vector3 m_camEndPos = Vector3(0.f, 0.5f, 1.f); // 最終的なカメラ座標（プレイヤーの目の前）
+
+    bool CheckTitleSound = false;
 };
 

@@ -21,7 +21,7 @@ void Game::Init()
 
     //SceneManager::ChangeSceneAsync<SceneGame>();
     SceneManager::ChangeSceneAsync<SceneTitle>();
-	//SceneManager::ChangeSceneAsync<SceneStageSelect>();
+    //SceneManager::ChangeSceneAsync<SceneStageSelect>();
 	//SceneManager::ChangeSceneAsync<SceneResult>();
     //SceneManager::ChangeScene<SceneOption>();
 
@@ -40,7 +40,7 @@ void Game::Update()
     if (!CheckTitleSound)
     {
         //        PlaySound(SoundManager::GetSound(SceneGameBGM));
-        SoundManager::SoundPlay(SceneGameBGM, 0.4f);
+        //SoundManager::SoundPlay(SceneGameBGM, 0.4f);
         CheckTitleSound = true;
     }
 

@@ -381,6 +381,15 @@
     <ClCompile Include="OptionUIController.cpp">
       <Filter>Game\Components\GameManager</Filter>
     </ClCompile>
+    <ClCompile Include="stageLevel.cpp">
+      <Filter>Game\Components\StageSelect</Filter>
+    </ClCompile>
+    <ClCompile Include="StageSentaku.cpp">
+      <Filter>Game\Components\StageSelect</Filter>
+    </ClCompile>
+    <ClCompile Include="TitlePlyerContoroll.cpp">
+      <Filter>Game\Components\Title</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -673,6 +682,15 @@
     </ClInclude>
     <ClInclude Include="OptionUIController.h">
       <Filter>Game\Components\GameManager</Filter>
+    </ClInclude>
+    <ClInclude Include="stageLevel.h">
+      <Filter>Game\Components\StageSelect</Filter>
+    </ClInclude>
+    <ClInclude Include="StageSentaku.h">
+      <Filter>Game\Components\StageSelect</Filter>
+    </ClInclude>
+    <ClInclude Include="TitlePlyerContoroll.h">
+      <Filter>Game\Components\Title</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

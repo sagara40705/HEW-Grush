@@ -35,6 +35,9 @@ class Hammer : public MonoBehaviour, public TriggerListener
 public:
 	static constexpr Vector3 BasePos = {-0.3f, -0.3f, 0.6f};
 	static constexpr Vector3 BaseRota = { 0.f, 45.f, -30.f };
+	//static constexpr Vector3 BasePos = { -0.5f, 1.0f, -2.0f };
+	//static constexpr Vector3 BaseRota = { -90.f, -90.f, -45.f };
+	//static constexpr Vector3 BaseRota = { -75.f, -90.f, -5.f };
 private:
 	HammerGrade grade_ = HammerGrade::Grade_1;
 	bool isLimitBreak_ = false;
@@ -48,6 +51,7 @@ private:
 	ScoreManager* score_ = nullptr;
 	PlayerAnimation* playerAnim_ = nullptr;
 	HammerEffects* effects_ = nullptr;
+	Transform* pivotTf_ = nullptr;
 public:
 	void Start() override;
 	void Update() override;
@@ -62,6 +66,7 @@ public:
 	void UpdateNormalAttack(float dt);
 	void ResetPos();
 	void UpdateSpinAttack();
+	void UpdateDashAttack(float r);
 private:
 	void Attack(GameObject* go);
 	bool CanBrake(GlassGrade glass);

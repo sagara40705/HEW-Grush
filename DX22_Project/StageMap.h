@@ -1,8 +1,16 @@
 #pragma once
 #include "Component.h"
 #include "StagePoint.h"
+#include "TextureManager.h"
 #include <array>
 
+enum class Stagelevel : std::uint8_t
+{
+	Easy,
+	level1,
+	level2,
+	level3,
+};
 // StageSelect‘S‘Ì‚ÌŠÇ—
 class StageMap : public Component
 {
@@ -12,6 +20,7 @@ private:
 public:
 	void Start() override;
 	void OnDestroy() override;
-
+	void Update();
+	
 	StagePoint* GetStagePoint(StageId stageId) { return &stagePoints[ToIndex(stageId)]; }
 };
