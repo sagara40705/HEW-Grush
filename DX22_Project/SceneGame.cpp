@@ -81,7 +81,8 @@ void SceneGame::Unload()
 
 	if (CheckGameSound)
 	{
-		SoundManager::StopSound(SceneGameBGM);
+		SoundManager::StopSound(SceneGameBGM1);
+		SoundManager::StopSound(SceneGameBGM2);
 		CheckGameSound = false;
 	}
 
@@ -189,6 +190,7 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font3_Break); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font4_screen); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_translucent); });
+	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Start); });
 
 	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Tutorial_UI_Task); });
 	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Tutorial_Road); });
@@ -1096,7 +1098,17 @@ void SceneGame::Update()
 {
 	if (!CheckGameSound)
 	{
-		SoundManager::SoundPlay(SceneGameBGM, 0.4f);
+//		SoundManager::SoundPlay(SceneGameBGM, 0.4f);
+		int GameBGM = rand() % 2;
+		switch (GameBGM)
+		{
+		case 0:
+			SoundManager::SoundPlay(SceneGameBGM1,0.4f);
+			break;
+		case 1:
+			SoundManager::SoundPlay(SceneGameBGM2, 0.5f);
+			break;
+		}
 		CheckGameSound = true;
 	}
 

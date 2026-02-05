@@ -23,7 +23,8 @@ void GlassGaugeManager::Start()
 	if (!player_ || !hammer_) return;
 
 	isGaugeDecaying = false;
-	m_checkGaugeSound = false;
+	m_checkGaugeDownSound = false;
+	m_checkFeverGaugeSound = false;
 }
 
 void GlassGaugeManager::Update()
@@ -50,6 +51,7 @@ void GlassGaugeManager::Update()
 			hammer_->LimitBreakEnd();
 			changeLimitBreak = true;
 			DebugLog::Output("ŒÀŠE“Ë”jI—¹");
+			SoundManager::StopSound(FeverGaugeSE);
 		}
 		return;
 	}
@@ -69,6 +71,7 @@ void GlassGaugeManager::Update()
 			hammer_->LimitBreakStart();
 			changeLimitBreak = true;
 			DebugLog::Output("ŒÀŠE“Ë”jŠJŽn");
+			SoundManager::SoundPlay(FeverGaugeSE, 2.0f);
 		}
 	}
 
@@ -84,16 +87,16 @@ void GlassGaugeManager::Update()
 
 		if (gauge_ < 40.f)
 		{
-			if (!m_checkGaugeSound)
+			if (!m_checkGaugeDownSound)
 			{
 			SoundManager::SoundPlay(SoundTag::GaugeDownSE, 5.0f);
-			m_checkGaugeSound = true;
+			m_checkGaugeDownSound = true;
 			}
 		}
 		else
 		{
 			SoundManager::StopSound(GaugeDownSE);
-			m_checkGaugeSound = false;
+			m_checkGaugeDownSound = false;
 		}
 
 		if (gauge_ < 0.f)
@@ -133,7 +136,7 @@ void GlassGaugeManager::BrakeGlass(GlassGrade grade)
 	gaugeDecayDelayTimer = 0.f;
 
 	SoundManager::StopSound(GaugeDownSE);
-	m_checkGaugeSound = false;
+	m_checkGaugeDownSound = false;
 
 	dirty_ = true;
 	up_ = true;
