@@ -189,6 +189,7 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font3_Break); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font4_screen); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_translucent); });
+	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Start); });
 
 	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Tutorial_UI_Task); });
 	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Tutorial_Road); });
