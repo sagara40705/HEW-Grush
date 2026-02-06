@@ -35,12 +35,15 @@ struct GameState
 	JobType job_ = JobType::Pikapika;
 	int jobGauge_ = 0;
 
+    bool isLock_ = true;
+
 	// 直近クリアしたステージのタイム（秒）
 	float recentClearTimes_ = 0.0f;
 
     void Reset()
     {
         hasPlayedIntroMovie = false;
+		isLock_ = true;
     }
     
 };
@@ -64,3 +67,7 @@ void SetJobType(JobType job);
 
 int GetJobGauge();
 void SetJobGauge(int gauge);
+
+// スタートUI用(他を動かさないようにするため)
+bool IsGameLocked();
+void SetGameLock(bool lock);

@@ -1,5 +1,6 @@
 #include "PlayerMove.h"
 #include "GameObject.h"
+#include "GameState.h"
 #include "Rigidbody.h"
 #include "PlayerState.h"
 #include "PlayerAction.h"
@@ -31,6 +32,7 @@ void PlayerMove::Start()
 */
 void PlayerMove::Update()
 {
+	if (IsGameLocked()) return;
 
 	CheckGround();
 	Jump();

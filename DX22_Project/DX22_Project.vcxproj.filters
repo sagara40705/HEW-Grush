@@ -692,6 +692,9 @@
     <ClInclude Include="TitlePlyerContoroll.h">
       <Filter>Game\Components\Title</Filter>
     </ClInclude>
+    <ClInclude Include="Easing.h">
+      <Filter>Game\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="SceneManager.inl">

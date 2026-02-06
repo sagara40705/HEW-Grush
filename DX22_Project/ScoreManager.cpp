@@ -53,7 +53,7 @@ void ScoreManager::Update()
 			m_animationTime += 1.0f / 80.0f; // 約1.3秒
 			if (m_animationTime > 1.0f) m_animationTime = 1.0f;
 
-			float bounce = EaseOutBounce(m_animationTime);
+			float bounce = Easing::EaseOutBounce(m_animationTime);
 			float yPos = -800.0f + (800.0f * bounce);
 			uiFinish_->SetOffset({ 130.0f, yPos });
 		}
@@ -75,11 +75,13 @@ void ScoreManager::UpScore(GlassGrade grade)
 	score_ -= kUpValue[ToIndex(grade)];
 	DebugLog::OutputValue("Up Score", score_);
 
+	// スコアが0以下になったら
 	if (score_ <= 0.f)
 	{
 		score_ = 0;
 		isLock_ = true;
 		Time::SetTimeScale(0.2f);
+
 
 		m_animationTime = 0.0f;
 		uiFinish_->SetVisible(true);
@@ -98,35 +100,9 @@ void ScoreManager::GoToResultScene()
 	// ===== クリア時間をGameStateに保存 =====
 	float clearTime = timer_->GetTime();
 	SetRecentClearTimes(clearTime);
-
 	Time::SetTimeScale(1.0f); // 初期化
-
 	// ===== シーン切り替え =====
 	DebugLog::Output("Clear Stage");
 	SceneManager::ChangeSceneAsync<SceneResult>();
 	//uiFinish_->SetVisible(false);
-}
-
-float ScoreManager::EaseOutBounce(float x)
-{
-	const float n1 = 7.5625f;
-	const float d1 = 2.75f;
-
-	// x自体を書き換えず計算する
-	if (x < 1.0f / d1) {
-		return n1 * x * x;
-	}
-	else if (x < 2.0f / d1) {
-		float t = x - 1.5f / d1;
-		return n1 * t * t + 0.75f;
-	}
-	else if (x < 2.5f / d1) {
-		float t = x - 2.25f / d1;
-		return n1 * t * t + 0.9375f;
-	}
-	else {
-		float t = x - 2.625f / d1;
-		return n1 * t * t + 0.984375f;
-	}
-
 }
