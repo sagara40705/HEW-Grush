@@ -17,14 +17,14 @@
 #include "SceneOption.h"
 #include "SoundManager.h"
 
-bool SceneGame::CheckGameSound = false;
-
 void SceneGame::Load()
 {
 	// 従来の同期ロードが必要なら、タスクを構築して全部回す
 	std::vector<LoadTask> tasks;
 	BuildLoadTasks(tasks);
 	for (auto& t : tasks) t();
+	CheckStartSE = false;
+	CheckGameSound = false;
 }
 
 void SceneGame::Unload()
@@ -1113,6 +1113,12 @@ void SceneGame::Update()
 	if (IsGameLocked()) {
 
 		if (waitTimer_.ElapsedRawSeconds() < WAIT_TIME) return;
+
+		if(!CheckStartSE)
+		{
+			SoundManager::SoundPlay(GameStartSE,1.0f);
+			CheckStartSE = true;
+		}
 
 		// スタートUIアニメーション
 		if (m_animationTime < 1.0f)

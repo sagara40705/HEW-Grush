@@ -27,6 +27,7 @@ enum SoundTag {
 	GameFinishSE,
 	ResultGaugeUpSE,
 	FeverGaugeSE,
+	GameStartSE,
 	Count		//”
 };
 
