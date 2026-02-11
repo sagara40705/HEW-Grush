@@ -62,7 +62,8 @@ private:
 	SkyDomeMesh   m_skyMesh; 
 	Texture* m_pSkyTex = nullptr;
 
-	static bool CheckGameSound;
+	bool CheckGameSound;
+	bool CheckStartSE;
 private:
 	//スタートUI用
 	UiSpriteRenderer* uiStart_ = nullptr;

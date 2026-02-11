@@ -124,6 +124,7 @@ void GlassGaugeManager::OnDestroy()
 {
 	hammer_ = nullptr;
 	player_ = nullptr;
+	SoundManager::StopSound(FeverGaugeSE);
 }
 
 void GlassGaugeManager::BrakeGlass(GlassGrade grade)
