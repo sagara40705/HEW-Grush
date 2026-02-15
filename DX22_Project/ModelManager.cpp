@@ -30,7 +30,7 @@ const ModelLoadData ModelManager::kModelData[static_cast<size_t>(ModelTag::Count
     {"Assets/Model/Grade_2/MD_jihanki_251208.fbx",                            0.006f,Model::Flip::ZFlip}, //11
     {"Assets/Model/Grade_2/MD_reizouko_20251205.fbx",                         0.5f,  Model::Flip::ZFlip}, //12
      
-    {"Assets/Model/Grade_3/MD_UFO_260126.fbx",                                0.01f, Model::Flip::ZFlip}, //13
+    {"Assets/Model/Grade_3/UFO/UFO.fbx",                                      0.01f, Model::Flip::ZFlip}, //13
     {"Assets/Model/Grade_3/MD_eisei_251208.fbx",                              0.015f,Model::Flip::ZFlip}, //14
     {"Assets/Model/Grade_3/MD_star_251231.fbx",                               0.015f,Model::Flip::ZFlip}, //15
 
