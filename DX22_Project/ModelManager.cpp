@@ -25,7 +25,7 @@ const ModelLoadData ModelManager::kModelData[static_cast<size_t>(ModelTag::Count
     {"Assets/Model/Grade_1/MD_ningixyou_20251205.fbx",                        0.15f, Model::Flip::ZFlip}, //7
     {"Assets/Model/Grade_1/MD_SagaraDoll/MD_SagaraDoll_260126.fbx",                         0.01f, Model::Flip::ZFlip}, //8
 
-    {"Assets/Model/MD_REbenti_prototype.fbx",                                 0.01f, Model::Flip::ZFlip}, //9
+    {"Assets/Model/Grade_2/MD_benti/MD_benti_20251118.fbx",                                 0.01f, Model::Flip::ZFlip}, //9
     {"Assets/Model/Grade_2/MD_aircon_251208.fbx",                             0.01f, Model::Flip::ZFlip}, //10
     {"Assets/Model/Grade_2/MD_jiihannki/MD_jiihannki.fbx",                            0.006f,Model::Flip::ZFlip}, //11
     {"Assets/Model/Grade_2/MD_reizouko_20251205.fbx",                         0.5f,  Model::Flip::ZFlip}, //12
