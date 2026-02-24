@@ -81,3 +81,13 @@ void SetJobGauge(int gauge)
 {
 	Game::GetState()->jobGauge_ = gauge;
 }
+
+// スタートUI用(他を動かさないようにするため)
+bool IsGameLocked()
+{
+	return Game::GetState()->isLock_;
+}
+void SetGameLock(bool lock)
+{
+	Game::GetState()->isLock_ = lock;
+}

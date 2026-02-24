@@ -9,6 +9,7 @@
 #include "BoxCollider.h"
 #include "Rigidbody.h"
 #include "SoundManager.h"
+#include "GameState.h"
 #include <cassert>
 
 constexpr float kActionTime[ToIndex(ActionId::Count)] = { 0.3f, 0.8f, 1.5f };
@@ -35,6 +36,7 @@ void PlayerAction::Start()
 
 void PlayerAction::Update()
 {
+	if (IsGameLocked()) return;
 	assert(state_ && tf_ && hammer_ && "参照のどれかがnullptrです");
 	if (!state_ || !tf_ || !hammer_) return;
 
@@ -73,7 +75,8 @@ void PlayerAction::InputWantAction()
 	{
 		state_->wantUseAction[ToIndex(ActionId::NormalAttack)] = true;
 		DebugLog::Output("NormalAttack 入力受付");
-		SoundManager::SoundPlay(SoundTag::NomalAttackSE, 1.0f);
+		if(state_->canUseAction[ToIndex(ActionId::NormalAttack)])
+		SoundManager::SoundPlay(NomalAttackSE, 1.0f);
 	}
 
 	//==================== SpinAttack (Rキー / R1ボタン) =====================
@@ -82,7 +85,8 @@ void PlayerAction::InputWantAction()
 	{
 		state_->wantUseAction[ToIndex(ActionId::SpinAttack)] = true;
 		DebugLog::Output("SpinAttack 入力受付");
-		SoundManager::SoundPlay(SoundTag::SpinAttackSE, 1.0f);
+		if (state_->canUseAction[ToIndex(ActionId::SpinAttack)]) 
+			SoundManager::SoundPlay(SoundTag::SpinAttackSE, 1.0f);
 	}
 
 	//==================== DashAttack (Fキー / L1ボタン) =====================
@@ -91,6 +95,7 @@ void PlayerAction::InputWantAction()
 	{
 		state_->wantUseAction[ToIndex(ActionId::DashAttack)] = true;
 		DebugLog::Output("DashAttack 入力受付");
+		if(state_->canUseAction[ToIndex(ActionId::DashAttack)])
 		SoundManager::SoundPlay(SoundTag::DashAttackSE, 1.0f);
 	}
 }
@@ -151,11 +156,11 @@ void PlayerAction::UpdateAction()
 	//使用中アクションごとに更新 *現在は空
 	switch (action)
 	{
-	case ActionId::NormalAttack: UpdateNormalAttack();	break;
+	case ActionId::NormalAttack: UpdateNormalAttack(); break;
 
-	case ActionId::SpinAttack:	 UpdateSpinAttack();	break;
+	case ActionId::SpinAttack: UpdateSpinAttack(); break;
 
-	case ActionId::DashAttack:	 UpdateDashAttack();	break;
+	case ActionId::DashAttack: UpdateDashAttack(); break;
 
 	default: assert(false && "state_->usingActionが範囲外です");
 		break;

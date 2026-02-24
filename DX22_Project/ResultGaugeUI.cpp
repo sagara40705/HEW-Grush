@@ -9,6 +9,7 @@
 #include "GameState.h"
 #include "ResultRankUI.h"
 #include "DebugLog.h"
+#include "SoundManager.h"
 
 void ResultGaugeUI::Awake()
 {
@@ -152,6 +153,8 @@ void ResultGaugeUI::UpdateGauge()
 			job = static_cast<JobType>(static_cast<std::uint8_t>(job) + 1);
 			SetJobType(job);
 			ChangeJobUI();
+
+			SoundManager::SoundPlay(ResultGaugeUpSE, 0.8f);
 
 			jobGlowTimer_ = JOB_GLOW_DURATION;
 

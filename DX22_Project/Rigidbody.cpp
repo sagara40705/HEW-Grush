@@ -2,6 +2,7 @@
 #include "Rigidbody.h"
 #include "Transform.h"
 #include "GameObject.h"
+#include "Time/Time.h"
 
 void Rigidbody::Start()
 {
@@ -11,8 +12,8 @@ void Rigidbody::Start()
 
 void Rigidbody::FixedUpdate()
 {
-    // å≈íËÉ¢t
-    constexpr float dt = 1.0f / 60.0f;
+    // É¢t
+    const float dt = Time::DeltaTime();
 
     // 1) èdóÕ
     if (useGravity)

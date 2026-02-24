@@ -7,6 +7,8 @@
 constexpr Vector3 kWarpPos[ToIndex(Point::Count)] = {
 	{55.f, 0.f, 0.f}, // toB
 	{35.f, 0.f, 0.f}, // toA
+	{75.f, 0.f, 0.f}, // toD 73.f, 0.f, 0.f
+	{33.f, 0.f, 0.f}, // toC 37.f, 0.f, 0.f
 };
 
 //‰Šú‰»ˆ—

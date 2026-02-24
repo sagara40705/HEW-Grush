@@ -5,6 +5,8 @@
 #include "TextureManager.h"
 #include "Defines.h"
 #include "InputKeyboard.h"
+#include "InputGamePad.h"
+#include "SoundManager.h"
 
 void SceneTitle::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 {
@@ -13,7 +15,6 @@ void SceneTitle::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 		{
 			GetWorld().ClearAll();        // 既存の World API に合わせる
 		});
-
 
 	outTasks.emplace_back([this] { ModelManager::Clear(); });	// モデルマネージャー初期化
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player); });
@@ -40,11 +41,13 @@ void SceneTitle::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 
 	outTasks.emplace_back([this] { SceneManager::CreateFadeAnimations(this); });
 
+
 	// 最後に Start を流す
 	outTasks.emplace_back([this]
 		{
 			GetWorld().Start();
 		});
+
 		
 }
 
@@ -60,6 +63,8 @@ void SceneTitle::Unload()
 {
 	SceneManager::ReleaseFadeAnimations();  // フェードアニメーション解放
 	TextureManager::Clear();
+	ModelManager::Clear();
+	SoundManager::StopSound(TitleBGM);
 }
 
 void SceneTitle::CreateCameraAndPlayer()
@@ -81,19 +86,21 @@ void SceneTitle::CreateCameraAndPlayer()
 	GameObject& player = w.CreateGameObject(Vector3(0.f, 0.f, 0.f), Vector3(0.f, 0.f, 0.f), Vector3(2.f, 2.f, 2.f));
 	player.AddComponent<MeshFilter>(ModelTag::Player);
 	player.AddComponent<MeshRenderer>();
-	player.AddComponent<PlayerState>();
-	//player.AddComponent<Animator>();
-	//player.AddComponent<PlayerAnimation>();
+	//player.AddComponent<PlayerState>();
+	player.AddComponent<Animator>();
+	player.AddComponent<TitlePlyerContoroll>();
 
 	// 保存
 	m_player = &player;
 
 	// ハンマー
-	GameObject& hummer = player.CreateChild(Hammer::BasePos, Hammer::BaseRota, Vector3(0.2f, 0.2f, 0.2f));
+	GameObject& hammerPivot = player.CreateChild(Vector3::zero(), Vector3::zero(), Vector3::one());
+	hammerPivot.SetTag(Tag::HammerPivot);
+
+	GameObject& hummer = hammerPivot.CreateChild(Hammer::BasePos, Hammer::BaseRota, Vector3(0.2f, 0.2f, 0.2f));
+	hummer.SetTag(Tag::Hammer);
 	hummer.AddComponent<MeshFilter>(ModelTag::Hammer_3);
 	hummer.AddComponent<MeshRenderer>();
-	//hummer.AddComponent<Animator>();
-
 }
 
 void SceneTitle::CreateCanvas()
@@ -155,19 +162,28 @@ void SceneTitle::CreateObject()
 	go3 = &Prefab::Instantiate(v, PrefabId::Swing, Vector3(15.f, 0.f, 1.f), Vector3(0.f, -20.f, 10.f), Vector3(3.f, 3.f, 3.f));
 
 }
+
 void SceneTitle::Update()
 {
 	//if (!m_breakButton) return;
 
-	if (!m_isStarting && InputKeyboard::GetKeyDown(VK_SPACE))
+	// タイトルBGM再生
+	if (!CheckTitleSound)
+	{
+		SoundManager::SoundPlay(TitleBGM, 0.6f);
+		CheckTitleSound = true;
+	}
+
+	if (!m_isStarting && ( InputKeyboard::GetKeyDown(VK_SPACE) || InputGamepad::GetButtonDown(XINPUT_GAMEPAD_X)))
 	{
 		m_isStarting = true;
 		m_zoomTimer = 0.0f;
 		
 		// ★ 保存しておいた m_player を使う
-		if (m_player) {
+		if (m_player)
+		{
 			auto* pState = m_player->GetComponent<PlayerState>();
-			if (pState) pState->actionedThisFrame[ToIndex(ActionId::SpinAttack)] = true;
+			//if (pState) pState->wantUseAction[ToIndex(ActionId::SpinAttack)] = true;
 		}
 	}
 
@@ -197,6 +213,7 @@ void SceneTitle::Update()
 		{
 			m_isStarting = false;
 			break_->Play();
+			SoundManager::SoundPlay(TitleStartSE, 1.0f);
 		}
 	}
 	if(!m_isStarting)
@@ -229,7 +246,42 @@ void SceneTitle::UpdateTitleAnimations()
 		float yOffset = std::sin(m_animTimer * 1.5f) * 0.3f; // 1.5fが速さ、0.3fが振幅
 		trans->SetPosition(Vector3(2.f, yOffset, 15.f));
 	}
-	
+	if (go2)
+	{
+		auto* trans = go2->GetComponent<Transform>();
+
+		// 静的変数で状態を保持
+		static float moveX = 0.0f;
+		static float direction = 1.0f; // 1.0なら右、-1.0なら左
+		const float speed = 0.05f;     // 移動速度
+		const float limitX = 18.0f;    // 画面端のしきい値（消えない範囲に調整）
+
+		// 1. 移動計算
+		moveX += speed * direction;
+
+		// 2. 端に到達したら反転
+		if (moveX > limitX) {
+			moveX = limitX;
+			direction = -1.0f;
+		}
+		else if (moveX < -limitX) {
+			moveX = -limitX;
+			direction = 1.0f;
+		}
+
+		// 3. 座標の設定（上下の揺れは継続）
+		float y = std::sin(m_animTimer * 2.0f) * 0.5f;
+		trans->SetPosition(Vector3(moveX, y + 2.0f, 30.0f));
+
+		// 4. 【おまけ】進行方向に向きを変える
+		// モデルの初期の向きに合わせて Vector3 の値を調整してください
+		if (direction > 0) {
+			trans->SetRotation(Vector3(0.f, 20.f, -10.f)); // 右向き
+		}
+		else {
+			trans->SetRotation(Vector3(0.f, 200.f, 10.f)); // 左向き（180度くらい回す）
+		}
+	}
 	// オブジェクトごとの動きを計算するラムダ関数
 	// 引数：(対象, 元の座標, 移動の幅, 揺れの速さ, 位相のズレ)
 	auto ApplySpaceFloat = [&](GameObject* obj, Vector3 basePos, float range, float speed, float offset) {
@@ -253,7 +305,6 @@ void SceneTitle::UpdateTitleAnimations()
 	// 各オブジェクトに宇宙漂流アニメーションを適用
 	// 位相(最後の引数)をバラバラにすることで、別々の動きに見えるようになります
 	ApplySpaceFloat(go1, Vector3(15.f, -8.f, 30.f), 2.0f, 0.5f, 0.0f);   // 人形
-	ApplySpaceFloat(go2, Vector3(10.f, 2.f, 30.f), 1.5f, 0.8f, 2.5f);    // UFO
 	ApplySpaceFloat(go3, Vector3(-15.f, -15.f, 30.f), 3.0f, 0.4f, 5.0f); // スイング
 }
 

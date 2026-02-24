@@ -7,6 +7,7 @@
 #include "DebugLog.h"
 #include "ShaderList.h"
 #include "SoundManager.h"
+#include "Time/Time.h"
 
 constexpr float kMaxGaugeVale[ToIndex(HammerGrade::Count)] 
 				= { 100.f, 200.f, 300.f };
@@ -22,6 +23,8 @@ void GlassGaugeManager::Start()
 	if (!player_ || !hammer_) return;
 
 	isGaugeDecaying = false;
+	m_checkGaugeDownSound = false;
+	m_checkFeverGaugeSound = false;
 }
 
 void GlassGaugeManager::Update()
@@ -32,11 +35,13 @@ void GlassGaugeManager::Update()
 #ifdef _DEBUG
 	DebugCommand();
 #endif // DEBUG	
+
+	const float DT = Time::UnscaledDeltaTime();
 	
 	// ŒÀŠE“Ë”j’†
 	if (isLimitBreak_)
 	{
-		limitBreakDurationTimer_ += 0.1f / 60.f;
+		limitBreakDurationTimer_ += DT;
 		ShaderList::SetRainbowTime(limitBreakDurationTimer_);
 
 		if (limitBreakDurationTimer_ >= kLimitBreakDuration)
@@ -46,6 +51,7 @@ void GlassGaugeManager::Update()
 			hammer_->LimitBreakEnd();
 			changeLimitBreak = true;
 			DebugLog::Output("ŒÀŠE“Ë”jI—¹");
+			SoundManager::StopSound(FeverGaugeSE);
 		}
 		return;
 	}
@@ -57,7 +63,7 @@ void GlassGaugeManager::Update()
 			//return; ©‚±‚ê
 		}
 
-		limitBreakTimer_ += 0.1f / 60.f;
+		limitBreakTimer_ += DT;
 		if (limitBreakTimer_ >= kLimitBreakTime)
 		{
 			isLimitBreak_ = true;
@@ -65,6 +71,7 @@ void GlassGaugeManager::Update()
 			hammer_->LimitBreakStart();
 			changeLimitBreak = true;
 			DebugLog::Output("ŒÀŠE“Ë”jŠJŽn");
+			SoundManager::SoundPlay(FeverGaugeSE, 2.0f);
 		}
 	}
 
@@ -77,6 +84,21 @@ void GlassGaugeManager::Update()
 		dirty_ = true;
 		constexpr float kGaugeDecayValue = 0.1f;
 		gauge_ -= kGaugeDecayValue;
+
+		if (gauge_ < 40.f)
+		{
+			if (!m_checkGaugeDownSound)
+			{
+			SoundManager::SoundPlay(SoundTag::GaugeDownSE, 5.0f);
+			m_checkGaugeDownSound = true;
+			}
+		}
+		else
+		{
+			SoundManager::StopSound(GaugeDownSE);
+			m_checkGaugeDownSound = false;
+		}
+
 		if (gauge_ < 0.f)
 		{
 			GradeDown();
@@ -86,7 +108,6 @@ void GlassGaugeManager::Update()
 	else
 	{
 		// Œ¸Š‚Ü‚Å‚ÌŽžŠÔ‚ðŒv‚é
-		constexpr float DT = 0.1f / 60.f;
 		constexpr float kGaugeDecayDelayTime = 2.0f; //ƒQ[ƒWŒ¸Š‚Ü‚Å‚ÌŽžŠÔ
 		gaugeDecayDelayTimer += DT;
 		if (gaugeDecayDelayTimer >=  kGaugeDecayDelayTime)
@@ -94,7 +115,7 @@ void GlassGaugeManager::Update()
 			isGaugeDecaying = true;
 			gaugeDecayDelayTimer = 0.f;
 			DebugLog::Output("ƒQ[ƒWŒ¸ŠŠJŽn");
-			SoundManager::SoundPlay(SoundTag::GaugeDownSE, 1.0f);
+
 		}
 	}
 }
@@ -103,6 +124,7 @@ void GlassGaugeManager::OnDestroy()
 {
 	hammer_ = nullptr;
 	player_ = nullptr;
+	SoundManager::StopSound(FeverGaugeSE);
 }
 
 void GlassGaugeManager::BrakeGlass(GlassGrade grade)
@@ -113,6 +135,9 @@ void GlassGaugeManager::BrakeGlass(GlassGrade grade)
 	//Œ¸Š‚ðŽ~‚ßƒ^ƒCƒ}[‚ðƒŠƒZƒbƒg
 	isGaugeDecaying = false;
 	gaugeDecayDelayTimer = 0.f;
+
+	SoundManager::StopSound(GaugeDownSE);
+	m_checkGaugeDownSound = false;
 
 	dirty_ = true;
 	up_ = true;
@@ -150,7 +175,7 @@ void GlassGaugeManager::GradeUp()
 	}
 
 	hammer_->GradeUp();
-	SoundManager::SoundPlay(SoundTag::GradeUpSE, 1.0f);
+	SoundManager::SoundPlay(SoundTag::GradeUpSE, 5.0f);
 
 	constexpr float kWhenGradeUpMinGauge = 5;
 	gauge_ = kWhenGradeUpMinGauge;
@@ -163,11 +188,12 @@ void GlassGaugeManager::GradeDown()
 		isGaugeEmpty = true;
 		gauge_ = 0.f;
 		DebugLog::Output("GlassGauge, is Empty");
-		SoundManager::SoundPlay(SoundTag::GradeDownSE ,1.0f);
 		return;
 	}
 
 	hammer_->GradeDown();
+
+	SoundManager::SoundPlay(SoundTag::GradeDownSE, 5.0f);
 
 	gauge_ = kMaxGaugeVale[ToIndex(hammer_->GetGrade())];
 }

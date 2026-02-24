@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
 #include "UiSpriteRenderer.h"
+#include "Easing.h"
 
 enum class GlassGrade : std::uint8_t;
 class TimerUI;
@@ -28,6 +29,5 @@ public:
 	void Reset();
 private:
 	void GoToResultScene();
-    // イージング関数（バウンス・アウト）
-	float EaseOutBounce(float x);
+	bool m_CheckFinishSE;
 };
