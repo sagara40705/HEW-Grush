@@ -19,6 +19,7 @@ private:
     void CreateGround();
 	void CreateStageLevelUI();
 	void CreateStageImageUI();
+    void CreateStageClearRank();
 public:
     void Update() override;
     void Draw() override;

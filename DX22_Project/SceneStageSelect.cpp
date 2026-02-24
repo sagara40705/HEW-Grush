@@ -6,6 +6,7 @@
 #include "SceneOption.h"
 #include "stageLevel.h"
 #include "StageSentaku.h"
+#include "StageClearRank.h"
 
 void SceneStageSelect::Load()
 {
@@ -61,9 +62,10 @@ void SceneStageSelect::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { CreateCamera(); });
 	outTasks.emplace_back([this] { CreatePlayer(); });
 	outTasks.emplace_back([this] { CreateGround(); });
-
 	outTasks.emplace_back([this] { CreateStageLevelUI(); });
 	outTasks.emplace_back([this] { CreateStageImageUI(); });
+	outTasks.emplace_back([this] { CreateStageClearRank(); });
+
 	outTasks.emplace_back([this] { SceneManager::CreateFadeAnimations(this); });
 
 	// ç≈å„Ç… Start Çó¨Ç∑
@@ -135,6 +137,15 @@ void SceneStageSelect::CreateStageImageUI()
 	GameObject& stageImageUIObj = world.CreateGameObject();
 	stageImageUIObj.SetTag(Tag::StagesenntakuUI);
 	stageImageUIObj.AddComponent<StageSentaku>();
+}
+
+void SceneStageSelect::CreateStageClearRank()
+{
+	World& world = GetWorld();
+
+	GameObject& StageClearRankUIObj = world.CreateGameObject();
+	StageClearRankUIObj.SetTag(Tag::StageClearRank);
+	StageClearRankUIObj.AddComponent<StageClearRank>();
 }
 
 

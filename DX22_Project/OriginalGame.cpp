@@ -64,6 +64,14 @@ void SetJobType(JobType job)
 	Game::GetState()->job_ = job;
 }
 
+//Rank GetRankType()
+//{
+//	
+//	return Rank();
+//}
+
+
+
 // ジョブゲージの取得・設定
 int GetJobGauge()
 {

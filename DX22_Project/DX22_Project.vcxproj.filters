@@ -387,6 +387,9 @@
     <ClCompile Include="StageSentaku.cpp">
       <Filter>Game\Components\StageSelect</Filter>
     </ClCompile>
+    <ClCompile Include="StageClearRank.cpp">
+      <Filter>Game\Components\StageSelect</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -635,9 +638,6 @@
     <ClInclude Include="ResultGaugeUI.h">
       <Filter>Game\Components\Result</Filter>
     </ClInclude>
-    <ClInclude Include="ResultRankUI.h">
-      <Filter>Game\Components\Result</Filter>
-    </ClInclude>
     <ClInclude Include="ResultTimerUI.h">
       <Filter>Game\Components\Result</Filter>
     </ClInclude>
@@ -685,6 +685,12 @@
     </ClInclude>
     <ClInclude Include="StageSentaku.h">
       <Filter>Game\Components\StageSelect</Filter>
+    </ClInclude>
+    <ClInclude Include="StageClearRank.h">
+      <Filter>Game\Components\StageSelect</Filter>
+    </ClInclude>
+    <ClInclude Include="ResultRankUI.h">
+      <Filter>Game\Components\Result</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
