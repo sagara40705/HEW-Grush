@@ -17,22 +17,22 @@ const ModelLoadData ModelManager::kModelData[static_cast<size_t>(ModelTag::Count
     {"Assets/Ç‹ÇØÇÒéÆê‘å©Ç©ÇÈÇ—ïPàﬂëïMMD/Ç‹ÇØÇÒéÆê‘å©Ç©ÇÈÇ—ïPàﬂëïver1.0.pmx", 0.08f, Model::Flip::ZFlip}, //0
 
     {"Assets/Model/Grade_1/MD_actionkomuSwing_251221_test2.fbx",              0.01f, Model::Flip::ZFlip}, //1
-    {"Assets/Model/Grade_1/MD_akican_251208.fbx",                             0.01f, Model::Flip::ZFlip}, //2
-    {"Assets/Model/Grade_1/MD_desktop_260121.fbx",                            0.2f,  Model::Flip::ZFlip}, //3
+    {"Assets/Model/Grade_1/MD_akican/MD_akican.fbx",                             0.01f, Model::Flip::ZFlip}, //2
+    {"Assets/Model/Grade_1/MD_desktop/MD_desktop.fbx",                            0.2f,  Model::Flip::ZFlip}, //3
     {"Assets/Model/Grade_1/MD_gomibukuro/MD_gomibukuro_260126.fbx",                         0.01f, Model::Flip::ZFlip}, //4
     {"Assets/Model/Grade_1/MD_isu/MD_isu_20251207.fbx",                                0.01f, Model::Flip::ZFlip}, //5
-    {"Assets/Model/Grade_1/MD_kuukseizixyoukii_20251205.fbx",                 0.15f, Model::Flip::ZFlip}, //6
-    {"Assets/Model/Grade_1/MD_ningixyou_20251205.fbx",                        0.15f, Model::Flip::ZFlip}, //7
+    {"Assets/Model/Grade_1/MD_kuukseizixyoukii/MD_kuukseizixyoukii.fbx",                 0.15f, Model::Flip::ZFlip}, //6
+    {"Assets/Model/Grade_1/MD_ningixyou/MD_ningixyou.fbx",                        0.15f, Model::Flip::ZFlip}, //7
     {"Assets/Model/Grade_1/MD_SagaraDoll/MD_SagaraDoll_260126.fbx",                         0.01f, Model::Flip::ZFlip}, //8
 
     {"Assets/Model/Grade_2/MD_benti/MD_benti_20251118.fbx",                                 0.01f, Model::Flip::ZFlip}, //9
-    {"Assets/Model/Grade_2/MD_aircon_251208.fbx",                             0.01f, Model::Flip::ZFlip}, //10
+    {"Assets/Model/Grade_2/MD_aircon/MD_aircon.fbx",                             0.01f, Model::Flip::ZFlip}, //10
     {"Assets/Model/Grade_2/MD_ziihannki/MD_ziihannki.fbx",                            0.006f,Model::Flip::ZFlip}, //11
     {"Assets/Model/Grade_2/MD_reizouko_20251205.fbx",                         0.5f,  Model::Flip::ZFlip}, //12
      
-    {"Assets/Model/Grade_3/UFO/UFO.fbx",                                      0.01f, Model::Flip::ZFlip}, //13
-    {"Assets/Model/Grade_3/MD_eisei_251208.fbx",                              0.015f,Model::Flip::ZFlip}, //14
-    {"Assets/Model/Grade_3/MD_star_251231.fbx",                               0.015f,Model::Flip::ZFlip}, //15
+    {"Assets/Model/Grade_3/UFO/UFO.fbx",                                        0.01f, Model::Flip::ZFlip}, //13
+    {"Assets/Model/Grade_3/MD_eisei/MD_eisei.fbx",                              0.015f,Model::Flip::ZFlip}, //14
+    {"Assets/Model/Grade_3/MD_star/MD_star.fbx",                                0.015f,Model::Flip::ZFlip}, //15
 
 
     {"Assets/Model/MD_player_prototype.fbx",                                  0.01f, Model::Flip::ZFlip}, //16
