@@ -4,6 +4,7 @@
 #include "TextureManager.h"
 #include "GameState.h"
 
+
 constexpr Vector2 kNumberUVScale = { 0.2f, 0.5f };
 constexpr Vector2 kNumberUVPos[10] =
 {

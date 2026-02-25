@@ -64,6 +64,14 @@ void SetJobType(JobType job)
 	Game::GetState()->job_ = job;
 }
 
+//Rank GetRankType()
+//{
+//	
+//	return Rank();
+//}
+
+
+
 // ジョブゲージの取得・設定
 int GetJobGauge()
 {
@@ -72,4 +80,14 @@ int GetJobGauge()
 void SetJobGauge(int gauge)
 {
 	Game::GetState()->jobGauge_ = gauge;
+}
+
+// スタートUI用(他を動かさないようにするため)
+bool IsGameLocked()
+{
+	return Game::GetState()->isLock_;
+}
+void SetGameLock(bool lock)
+{
+	Game::GetState()->isLock_ = lock;
 }

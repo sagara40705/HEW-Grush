@@ -229,6 +229,7 @@
     <ClCompile Include="Sprite.cpp" />
     <ClCompile Include="Sprite3DRenderer.cpp" />
     <ClCompile Include="SpriteAnimation.cpp" />
+    <ClCompile Include="StageClearRank.cpp" />
     <ClCompile Include="stageLevel.cpp" />
     <ClCompile Include="StageMap.cpp" />
     <ClCompile Include="StageSentaku.cpp" />
@@ -266,6 +267,7 @@
     <ClInclude Include="DebugLog.h" />
     <ClInclude Include="Defines.h" />
     <ClInclude Include="DirectX.h" />
+    <ClInclude Include="Easing.h" />
     <ClInclude Include="ElectricFan.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
@@ -331,6 +333,7 @@
     <ClInclude Include="Sprite.h" />
     <ClInclude Include="Sprite3DRenderer.h" />
     <ClInclude Include="SpriteAnimation.h" />
+    <ClInclude Include="StageClearRank.h" />
     <ClInclude Include="stageLevel.h" />
     <ClInclude Include="StageMap.h" />
     <ClInclude Include="StagePoint.h" />

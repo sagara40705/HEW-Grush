@@ -4,6 +4,8 @@
 #include "Scene.h"
 #include "SkyDomeMesh.h"
 #include "SkyDomeShader.h"
+#include "UiSpriteRenderer.h"
+#include "Time/Timer.h"
 #include <cstdint>
 #include <string>
 
@@ -13,6 +15,7 @@ enum class PrefabId : std::uint8_t;
 class SceneGame : public Scene
 {
 public:
+
 	void Update() final;
 	void Draw() final;
 	void Load() final;
@@ -35,6 +38,7 @@ private:
 	void CreateTimerUI();
 	void CreateScoreUI();
 	void CreateActionUI();
+	void CreateStartUI();
 	void CreateTutorialWall();
 
 	//ギミック	
@@ -58,7 +62,14 @@ private:
 	SkyDomeMesh   m_skyMesh; 
 	Texture* m_pSkyTex = nullptr;
 
-	static bool CheckGameSound;
+	bool CheckGameSound;
+	bool CheckStartSE;
+private:
+	//スタートUI用
+	UiSpriteRenderer* uiStart_ = nullptr;
+	float m_animationTime = 0.0f; // アニメーションの経過時間
+	Timer waitTimer_;
+	const float WAIT_TIME = 4.0f;
 };
 
 #endif // __SCENE_GAME_H__

@@ -19,7 +19,7 @@ void GlassGaugeUI::Awake()
 	effect_ = &gaugeEffect.AddComponent<SpriteAnimation>(6, 4, 3, 24, false);
 
 	GameObject& feverGuage= gameObject->CreateChild();
-	fever_ = &feverGuage.AddComponent<UiSpriteRenderer>(TextureTag::Game_UI_Gauge_Fever, Vector2({ 25.f,10.f }), Vector2(200, 200));
+	fever_ = &feverGuage.AddComponent<UiSpriteRenderer>(TextureTag::Game_UI_Gauge_Fever, Vector2({ 25.f,10.f }), Vector2(220, 200));
 	fever_->SetEnabled(false);
 }
 

@@ -65,7 +65,7 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     "Assets/Texture/Game/UI/Gauge/Glass_lv3.png",//Game_UI_Gaug_Lv3 = 46,	 
     "Assets/Texture/Game/GlassShard.png,",          //SpareSlot_12 = 47,
     "Assets/Texture/Game/UI/Score/Finish.png",// _SpareSlot_12 = 48,
-    "",//_SpareSlot_13 = 49,
+    "Assets/Texture/Game/UI/Score/start.png",//_SpareSlot_13 = 49,
     "",//_SpareSlot_14 = 50,
     "",//_SpareSlot_15 = 51,
     "",//_SpareSlot_16 = 52,
@@ -133,9 +133,10 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     "Assets/Texture/StageSelect/Number2.png",
     "Assets/Texture/StageSelect/Number3.png",
     "Assets/Texture/StageSelect/bou2.png",
+  //  "Assets/Texture/StageSelect/StageSelect_RankS.png",
    // "Assets/Texture/StageSelect/bou2.png",
 
-	"Assets/Texture/Score/Start.png",
+	
 
 };
 

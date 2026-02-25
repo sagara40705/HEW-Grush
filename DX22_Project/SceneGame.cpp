@@ -17,14 +17,14 @@
 #include "SceneOption.h"
 #include "SoundManager.h"
 
-bool SceneGame::CheckGameSound = false;
-
 void SceneGame::Load()
 {
 	// 従来の同期ロードが必要なら、タスクを構築して全部回す
 	std::vector<LoadTask> tasks;
 	BuildLoadTasks(tasks);
 	for (auto& t : tasks) t();
+	CheckStartSE = false;
+	CheckGameSound = false;
 }
 
 void SceneGame::Unload()
@@ -190,7 +190,7 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font3_Break); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font4_screen); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_translucent); });
-	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Start); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Start); });
 
 	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Tutorial_UI_Task); });
 	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Tutorial_Road); });
@@ -210,6 +210,7 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { CreateTimerUI(); });
 	outTasks.emplace_back([this] { CreateScoreUI(); });
 	outTasks.emplace_back([this] { CreateActionUI(); });
+	outTasks.emplace_back([this] { CreateStartUI(); });
 
 	//ギミック
 	outTasks.emplace_back([this] { CreateGlassObjectSpawner(); });
@@ -902,9 +903,9 @@ void SceneGame::CreateStage3Wall()
 void SceneGame::CreateUi()
 {
 	World& w = GetWorld();
-
 	GameObject& canvas = w.CreateGameObject();
 	canvas.AddComponent<Canvas>();
+
 }
 
 void SceneGame::CreateGaugeUI()
@@ -943,6 +944,18 @@ void SceneGame::CreateActionUI()
 	GameObject& actionManager = w.CreateGameObject();
 	actionManager.SetTag(Tag::ActionUI);
 	actionManager.AddComponent<ActionUI>();
+}
+
+void SceneGame::CreateStartUI()
+{
+	World& w = GetWorld();
+
+	GameObject& startObj = w.CreateGameObject();
+	uiStart_ = &startObj.AddComponent<UiSpriteRenderer>(TextureTag::Game_UI_Start, Vector2(0.f, -20.f), Vector2(1280.f, 720.f));
+	uiStart_->SetVisible(false);
+
+	waitTimer_.Start();
+	SetGameLock(true);
 }
 
 void SceneGame::CreateTutorialWall()
@@ -1096,6 +1109,36 @@ void SceneGame::SkyDomeDorw()
 
 void SceneGame::Update()
 {
+	
+	if (IsGameLocked()) {
+
+		if (waitTimer_.ElapsedRawSeconds() < WAIT_TIME) return;
+
+		if(!CheckStartSE)
+		{
+			SoundManager::SoundPlay(GameStartSE,1.0f);
+			CheckStartSE = true;
+		}
+
+		// スタートUIアニメーション
+		if (m_animationTime < 1.0f)
+		{
+			uiStart_->SetVisible(true);
+			m_animationTime += 1.0f / 80.0f; // 約1.3秒
+			if (m_animationTime > 1.0f) m_animationTime = 1.0f;
+
+			float bounce = Easing::EaseOutBounce(m_animationTime);
+			float yPos = -800.0f + (800.0f * bounce);
+			uiStart_->SetOffset({ 30.0f, yPos });
+		}
+		else
+		{
+			uiStart_->SetVisible(false);
+			SetGameLock(false);
+		}
+		return;
+	}
+
 	if (!CheckGameSound)
 	{
 //		SoundManager::SoundPlay(SceneGameBGM, 0.4f);
@@ -1262,4 +1305,3 @@ PrefabId SceneGame::GetPrefabIdFromString(const std::string& rawname)
 	// とりあえず無効な値を返すか、Swing等をデフォルトにする
 	return PrefabId::Swing;
 }
-
