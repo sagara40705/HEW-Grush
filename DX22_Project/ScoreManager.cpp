@@ -34,7 +34,26 @@ void ScoreManager::Update()
 	{
 		if (goToResultSceneTimer_.ElapsedRawSeconds() >= kGoToResultSceneTime)
 		{
+<<<<<<< HEAD
 			goToResultSceneTimer_.Stop();
+=======
+			SoundManager::SoundPlay(GameFinishSE,1.0f);
+			m_CheckFinishSE = true;
+		}
+
+		if (m_animationTime < 1.0f)
+		{
+			m_animationTime += 1.0f / 80.0f; // 約1.3秒
+			if (m_animationTime > 1.0f) m_animationTime = 1.0f;
+
+			float bounce = Easing::EaseOutBounce(m_animationTime);
+			float yPos = -800.0f + (800.0f * bounce);
+			uiFinish_->SetOffset({ 130.0f, yPos });
+		}
+		else
+		{
+			// アニメーションが1.0fに達したらシーン切り替え
+>>>>>>> a414c1e51b6f6c88c93b09de5092ab71a7793e28
 			GoToResultScene();
 		}
 	}
@@ -53,6 +72,11 @@ void ScoreManager::UpScore(GlassGrade grade)
 
 	score_ -= kUpValue[ToIndex(grade)];
 	DebugLog::OutputValue("Up Score", score_);
+<<<<<<< HEAD
+=======
+
+	// スコアが0以下になったら
+>>>>>>> a414c1e51b6f6c88c93b09de5092ab71a7793e28
 	if (score_ <= 0.f)
 	{
 		score_ = 0;
@@ -61,6 +85,13 @@ void ScoreManager::UpScore(GlassGrade grade)
 		Time::SetTimeScale(0.2f); //スローモーション
 		GoToResultScene();
 
+<<<<<<< HEAD
+=======
+
+		m_animationTime = 0.0f;
+		uiFinish_->SetVisible(true);
+		uiFinish_->SetOffset({ 130.0f, 800.0f });
+>>>>>>> a414c1e51b6f6c88c93b09de5092ab71a7793e28
 	}
 }
 
@@ -75,8 +106,16 @@ void ScoreManager::GoToResultScene()
 	// ===== クリア時間をGameStateに保存 =====
 	float clearTime = timer_->GetTime();
 	SetRecentClearTimes(clearTime);
+<<<<<<< HEAD
 
 	// ===== シーン切り替え =====
 	DebugLog::Output("Clear Stage");
 	SceneManager::ChangeSceneAsync<SceneResult>();
+=======
+	Time::SetTimeScale(1.0f); // 初期化
+	// ===== シーン切り替え =====
+	DebugLog::Output("Clear Stage");
+	SceneManager::ChangeSceneAsync<SceneResult>();
+	//uiFinish_->SetVisible(false);
+>>>>>>> a414c1e51b6f6c88c93b09de5092ab71a7793e28
 }

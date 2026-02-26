@@ -25,6 +25,15 @@ enum class JobType : std::uint8_t
 	Tastuzin = 2,
 	Count = 3
 };
+//enum class Rank : std::uint8_t
+//{
+//	None,
+//	Rank_S,
+//	Rank_A,
+//	Rank_B,
+//	Rank_C,
+//	Count
+//};
 
 struct GameState
 {
@@ -33,7 +42,10 @@ struct GameState
     StageId stage_ = StageId::Stage1;
 
 	JobType job_ = JobType::Pikapika;
+	//Rank rank_ = Rank::None;
 	int jobGauge_ = 0;
+
+    bool isLock_ = true;
 
 	// 直近クリアしたステージのタイム（秒）
 	float recentClearTimes_ = 0.0f;
@@ -41,6 +53,7 @@ struct GameState
     void Reset()
     {
         hasPlayedIntroMovie = false;
+		isLock_ = true;
     }
     
 };
@@ -62,5 +75,10 @@ void SetRecentClearTimes(float time);
 JobType GetJobType();
 void SetJobType(JobType job);
 
+//Rank GetRankType();
 int GetJobGauge();
 void SetJobGauge(int gauge);
+
+// スタートUI用(他を動かさないようにするため)
+bool IsGameLocked();
+void SetGameLock(bool lock);

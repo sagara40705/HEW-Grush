@@ -14,6 +14,10 @@
 #include "SceneStageSelect.h"
 #include "SceneResult.h"
 #include "SceneOption.h"
+<<<<<<< HEAD
+=======
+#include "SoundManager.h"
+>>>>>>> a414c1e51b6f6c88c93b09de5092ab71a7793e28
 
 void SceneGame::Load()
 {
@@ -21,13 +25,73 @@ void SceneGame::Load()
 	std::vector<LoadTask> tasks;
 	BuildLoadTasks(tasks);
 	for (auto& t : tasks) t();
+	CheckStartSE = false;
+	CheckGameSound = false;
 }
 
 void SceneGame::Unload()
 {
 	SceneManager::ReleaseFadeAnimations();
 	TextureManager::Clear();
+<<<<<<< HEAD
 	ModelManager::Clear();
+=======
+
+	//modelの解放
+	StageId stage = GetCurrentStage();
+	switch (stage)
+	{
+	case StageId::Stage1:
+		ModelManager::Unload(ModelTag::Isu);
+		ModelManager::Unload(ModelTag::Reizouko);
+		ModelManager::Unload(ModelTag::Eiseii);
+		break;
+	case StageId::Stage2:
+		ModelManager::Unload(ModelTag::Kuukiseizyouki);
+		ModelManager::Unload(ModelTag::SagaraDoll);
+		ModelManager::Unload(ModelTag::Jihanki);
+		ModelManager::Unload(ModelTag::Star);
+		ModelManager::Unload(ModelTag::Warp);
+		break;
+	case StageId::Stage3a:
+		ModelManager::Unload(ModelTag::Akican);
+		ModelManager::Unload(ModelTag::Isu);
+		ModelManager::Unload(ModelTag::Jihanki);
+		ModelManager::Unload(ModelTag::Reizouko);
+		ModelManager::Unload(ModelTag::Eiseii);
+		ModelManager::Unload(ModelTag::Star);
+		ModelManager::Unload(ModelTag::Warp);
+		break;
+	case StageId::Stage3b:
+		ModelManager::Unload(ModelTag::Kuukiseizyouki);
+		ModelManager::Unload(ModelTag::SagaraDoll);
+		ModelManager::Unload(ModelTag::Jihanki);
+		ModelManager::Unload(ModelTag::Reizouko);
+		ModelManager::Unload(ModelTag::Eiseii);
+		ModelManager::Unload(ModelTag::Star);
+		ModelManager::Unload(ModelTag::Warp);
+		break;
+	case StageId::Stage3c:
+		ModelManager::Unload(ModelTag::Akican);
+		ModelManager::Unload(ModelTag::Isu);
+		ModelManager::Unload(ModelTag::Jihanki);
+		ModelManager::Unload(ModelTag::Reizouko);
+		ModelManager::Unload(ModelTag::Eiseii);
+		ModelManager::Unload(ModelTag::Star);
+		ModelManager::Unload(ModelTag::Warp);
+		break;
+	default:
+		break;
+	}
+
+	if (CheckGameSound)
+	{
+		SoundManager::StopSound(SceneGameBGM1);
+		SoundManager::StopSound(SceneGameBGM2);
+		CheckGameSound = false;
+	}
+
+>>>>>>> a414c1e51b6f6c88c93b09de5092ab71a7793e28
 }
 
 void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
@@ -89,9 +153,37 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Action_TextIcon); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_GlassShard); });
 
+<<<<<<< HEAD
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Tutorial_UI_Task); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Tutorial_Road); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Tutorial_Targetlocation); });
+=======
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Option_BG); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Back); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font1); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font1_Back); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font1_OK); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font2); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font2_Back); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font2_OK); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font3); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font3_Back); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font3_OK); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font4); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font4_OK); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font5); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font5_OK); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font1_Break); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font2_Break); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font3_Break); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font4_screen); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_translucent); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Start); });
+
+	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Tutorial_UI_Task); });
+	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Tutorial_Road); });
+	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Tutorial_Targetlocation); });
+>>>>>>> a414c1e51b6f6c88c93b09de5092ab71a7793e28
 
 	// プレイハブ設定
 	outTasks.emplace_back([this] { RegisterAllPrefabs(); });
@@ -107,6 +199,7 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { CreateTimerUI(); });
 	outTasks.emplace_back([this] { CreateScoreUI(); });
 	outTasks.emplace_back([this] { CreateActionUI(); });
+	outTasks.emplace_back([this] { CreateStartUI(); });
 
 	//ギミック
 	outTasks.emplace_back([this] { CreateGlassObjectSpawner(); });
@@ -797,9 +890,9 @@ void SceneGame::CreateStage3()
 void SceneGame::CreateUi()
 {
 	World& w = GetWorld();
-
 	GameObject& canvas = w.CreateGameObject();
 	canvas.AddComponent<Canvas>();
+
 }
 
 void SceneGame::CreateGaugeUI()
@@ -838,6 +931,18 @@ void SceneGame::CreateActionUI()
 	GameObject& actionManager = w.CreateGameObject();
 	actionManager.SetTag(Tag::ActionUI);
 	actionManager.AddComponent<ActionUI>();
+}
+
+void SceneGame::CreateStartUI()
+{
+	World& w = GetWorld();
+
+	GameObject& startObj = w.CreateGameObject();
+	uiStart_ = &startObj.AddComponent<UiSpriteRenderer>(TextureTag::Game_UI_Start, Vector2(0.f, -20.f), Vector2(1280.f, 720.f));
+	uiStart_->SetVisible(false);
+
+	waitTimer_.Start();
+	SetGameLock(true);
 }
 
 void SceneGame::CreateTutorialWall()
@@ -1002,10 +1107,57 @@ void SceneGame::SkyDomeDorw()
 
 void SceneGame::Update()
 {
+<<<<<<< HEAD
 	// 強制敵にステージセレクトへ戻る
 	if (InputKeyboard::GetKey(VK_SPACE) && InputKeyboard::GetKeyDown('Q'))
 	{
 		SceneManager::ChangeSceneAsync<SceneStageSelect>();
+=======
+	
+	if (IsGameLocked()) {
+
+		if (waitTimer_.ElapsedRawSeconds() < WAIT_TIME) return;
+
+		if(!CheckStartSE)
+		{
+			SoundManager::SoundPlay(GameStartSE,1.0f);
+			CheckStartSE = true;
+		}
+
+		// スタートUIアニメーション
+		if (m_animationTime < 1.0f)
+		{
+			uiStart_->SetVisible(true);
+			m_animationTime += 1.0f / 80.0f; // 約1.3秒
+			if (m_animationTime > 1.0f) m_animationTime = 1.0f;
+
+			float bounce = Easing::EaseOutBounce(m_animationTime);
+			float yPos = -800.0f + (800.0f * bounce);
+			uiStart_->SetOffset({ 30.0f, yPos });
+		}
+		else
+		{
+			uiStart_->SetVisible(false);
+			SetGameLock(false);
+		}
+		return;
+	}
+
+	if (!CheckGameSound)
+	{
+//		SoundManager::SoundPlay(SceneGameBGM, 0.4f);
+		int GameBGM = rand() % 2;
+		switch (GameBGM)
+		{
+		case 0:
+			SoundManager::SoundPlay(SceneGameBGM1,0.4f);
+			break;
+		case 1:
+			SoundManager::SoundPlay(SceneGameBGM2, 0.5f);
+			break;
+		}
+		CheckGameSound = true;
+>>>>>>> a414c1e51b6f6c88c93b09de5092ab71a7793e28
 	}
 
 	// オプション画面へ
@@ -1159,4 +1311,3 @@ PrefabId SceneGame::GetPrefabIdFromString(const std::string& rawname)
 	// とりあえず無効な値を返すか、Swing等をデフォルトにする
 	return PrefabId::Swing;
 }
-

@@ -1,6 +1,11 @@
 #pragma once
 #include "Component.h"
+<<<<<<< HEAD
 #include "Time/Timer.h"
+=======
+#include "UiSpriteRenderer.h"
+#include "Easing.h"
+>>>>>>> a414c1e51b6f6c88c93b09de5092ab71a7793e28
 
 enum class GlassGrade : std::uint8_t;
 class TimerUI;
@@ -24,8 +29,12 @@ public:
 	void Reset();
 private:
 	void GoToResultScene();
+<<<<<<< HEAD
 private:
 	//演出用タイマー
 	Timer goToResultSceneTimer_;
 	static constexpr float kGoToResultSceneTime = 2.0f; //リザルトシーンへ行くまでの時間
+=======
+	bool m_CheckFinishSE;
+>>>>>>> a414c1e51b6f6c88c93b09de5092ab71a7793e28
 };

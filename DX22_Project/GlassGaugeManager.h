@@ -58,5 +58,6 @@ private:
 #endif // DEBUG	
 
 private:
-	bool m_checkGaugeSound;
+	bool m_checkGaugeDownSound;
+	bool m_checkFeverGaugeSound;
 };

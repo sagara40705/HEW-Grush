@@ -6,7 +6,8 @@ IXAudio2SourceVoice* SoundManager::speakers[SoundTag::Count];
 void SoundManager::Load()
 {
 	InitSound();
-	s_sounds[SoundTag::SceneGameBGM]	    = LoadSound("Assets/Sound/maou_bgm_cyber02.mp3", true);
+	s_sounds[SoundTag::SceneGameBGM1]	    = LoadSound("Assets/Sound/maou_bgm_cyber02.mp3", true);
+	s_sounds[SoundTag::SceneGameBGM2]       = LoadSound("Assets/Sound/maou_bgm_cyber41.mp3", true);
 	s_sounds[SoundTag::NomalAttackSE]	    = LoadSound("Assets/Sound/WeaponSwing.mp3", false);
 	s_sounds[SoundTag::DashAttackSE]        = LoadSound("Assets/Sound/DashAttack.mp3", false);
 	s_sounds[SoundTag::SpinAttackSE]		= LoadSound("Assets/Sound/SpinAttack.mp3", false);
@@ -29,6 +30,8 @@ void SoundManager::Load()
 	s_sounds[SoundTag::GlassCrackSE]		= LoadSound("Assets/Sound/glasscrack.mp3", false);
 	s_sounds[SoundTag::GameFinishSE]		= LoadSound("Assets/Sound/Finish.wav", false);
 	s_sounds[SoundTag::ResultGaugeUpSE]		= LoadSound("Assets/Sound/gage_up2.wav", false);
+	s_sounds[SoundTag::FeverGaugeSE]        = LoadSound("Assets/Sound/maru.wav", true);
+	s_sounds[SoundTag::GameStartSE]			= LoadSound("Assets/Sound/gauge_down.wav", false);
 }
 
 void SoundManager::Unload()

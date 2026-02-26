@@ -2,7 +2,8 @@
 #include "Sound.h"
 
 enum SoundTag {
-	SceneGameBGM,
+	SceneGameBGM1,
+	SceneGameBGM2,
 	NomalAttackSE,
 	DashAttackSE,
 	SpinAttackSE,
@@ -25,6 +26,8 @@ enum SoundTag {
 	GlassCrackSE,
 	GameFinishSE,
 	ResultGaugeUpSE,
+	FeverGaugeSE,
+	GameStartSE,
 	Count		//êî
 };
 

@@ -9,6 +9,7 @@
 #include "BoxCollider.h"
 #include "Rigidbody.h"
 #include "SoundManager.h"
+#include "GameState.h"
 #include <cassert>
 
 constexpr float kActionTime[ToIndex(ActionId::Count)] = { 0.3f, 0.8f, 1.5f };
@@ -35,6 +36,7 @@ void PlayerAction::Start()
 
 void PlayerAction::Update()
 {
+	if (IsGameLocked()) return;
 	assert(state_ && tf_ && hammer_ && "éQè∆ÇÃÇ«ÇÍÇ©Ç™nullptrÇ≈Ç∑");
 	if (!state_ || !tf_ || !hammer_) return;
 
