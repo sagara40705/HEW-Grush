@@ -19,9 +19,9 @@ void SceneTitle::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { ModelManager::Clear(); });	// モデルマネージャー初期化
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_3); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::SagaraDoll); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Ufo); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Swing); });
+	//outTasks.emplace_back([this] { ModelManager::Load(ModelTag::SagaraDoll); });
+	//outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Ufo); });
+	//outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Swing); });
 
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Title_BG); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Title_Text); });
