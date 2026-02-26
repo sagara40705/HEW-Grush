@@ -1,6 +1,7 @@
 #pragma once
 #include "Component.h"
 #include <cstdint>
+#include "ScoreManager.h"
 
 enum class TimerDigits : std::uint8_t
 {
@@ -15,6 +16,8 @@ class TimerUI : public MonoBehaviour
 private:
 	float timer_ = 0.f;
 	static constexpr int MAX_SECONDS = 99 * 60 + 59;
+	ScoreManager* scoreManager_ = nullptr;
+	int score_ = 0;
 private:
 	UiSpriteRenderer* uiMinute_[ToIndex(TimerDigits::Count)]{};
 	UiSpriteRenderer* uiColon_ = nullptr;

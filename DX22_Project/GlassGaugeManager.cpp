@@ -7,6 +7,7 @@
 #include "DebugLog.h"
 #include "ShaderList.h"
 #include "SoundManager.h"
+#include "Time/Time.h"
 
 constexpr float kMaxGaugeVale[ToIndex(HammerGrade::Count)] 
 				= { 100.f, 200.f, 300.f };
@@ -15,13 +16,15 @@ void GlassGaugeManager::Start()
 {
 	GameObject* player = gameObject->world->FindWithTag(Tag::Player);
 	player_ = player->GetComponent<PlayerState>();
-	GameObject* hammer = player->FindChildWithTag(Tag::Hammer);
+	GameObject* hammer = gameObject->FindWithTag(Tag::Hammer);
 	hammer_ = hammer->GetComponent<Hammer>();
 
 	assert(player_ && hammer_ && "参照のどれかがnullptrです");
 	if (!player_ || !hammer_) return;
 
 	isGaugeDecaying = false;
+	m_checkGaugeDownSound = false;
+	m_checkFeverGaugeSound = false;
 }
 
 void GlassGaugeManager::Update()
@@ -32,11 +35,13 @@ void GlassGaugeManager::Update()
 #ifdef _DEBUG
 	DebugCommand();
 #endif // DEBUG	
+
+	const float DT = Time::UnscaledDeltaTime();
 	
 	// 限界突破中
 	if (isLimitBreak_)
 	{
-		limitBreakDurationTimer_ += 0.1f / 60.f;
+		limitBreakDurationTimer_ += DT;
 		ShaderList::SetRainbowTime(limitBreakDurationTimer_);
 
 		if (limitBreakDurationTimer_ >= kLimitBreakDuration)
@@ -44,7 +49,9 @@ void GlassGaugeManager::Update()
 			isLimitBreak_ = false;
 			limitBreakDurationTimer_ = 0.f;
 			hammer_->LimitBreakEnd();
+			changeLimitBreak = true;
 			DebugLog::Output("限界突破終了");
+			SoundManager::StopSound(FeverGaugeSE);
 		}
 		return;
 	}
@@ -56,13 +63,15 @@ void GlassGaugeManager::Update()
 			//return; ←これ
 		}
 
-		limitBreakTimer_ += 0.1f / 60.f;
+		limitBreakTimer_ += DT;
 		if (limitBreakTimer_ >= kLimitBreakTime)
 		{
 			isLimitBreak_ = true;
 			limitBreakTimer_ = 0.f;
 			hammer_->LimitBreakStart();
+			changeLimitBreak = true;
 			DebugLog::Output("限界突破開始");
+			SoundManager::SoundPlay(FeverGaugeSE, 2.0f);
 		}
 	}
 
@@ -73,8 +82,23 @@ void GlassGaugeManager::Update()
 	{
 		// ゲージを減衰 + 0をした回ったらGradeDown
 		dirty_ = true;
-		constexpr float kGaugeDecayValue = 0.01f;
+		constexpr float kGaugeDecayValue = 0.1f;
 		gauge_ -= kGaugeDecayValue;
+
+		if (gauge_ < 40.f)
+		{
+			if (!m_checkGaugeDownSound)
+			{
+			SoundManager::SoundPlay(SoundTag::GaugeDownSE, 5.0f);
+			m_checkGaugeDownSound = true;
+			}
+		}
+		else
+		{
+			SoundManager::StopSound(GaugeDownSE);
+			m_checkGaugeDownSound = false;
+		}
+
 		if (gauge_ < 0.f)
 		{
 			GradeDown();
@@ -84,7 +108,6 @@ void GlassGaugeManager::Update()
 	else
 	{
 		// 減衰までの時間を計る
-		constexpr float DT = 0.1f / 60.f;
 		constexpr float kGaugeDecayDelayTime = 2.0f; //ゲージ減衰までの時間
 		gaugeDecayDelayTimer += DT;
 		if (gaugeDecayDelayTimer >=  kGaugeDecayDelayTime)
@@ -92,7 +115,7 @@ void GlassGaugeManager::Update()
 			isGaugeDecaying = true;
 			gaugeDecayDelayTimer = 0.f;
 			DebugLog::Output("ゲージ減衰開始");
-			SoundManager::SoundPlay(SoundTag::GaugeDownSE, 1.0f);
+
 		}
 	}
 }
@@ -101,6 +124,7 @@ void GlassGaugeManager::OnDestroy()
 {
 	hammer_ = nullptr;
 	player_ = nullptr;
+	SoundManager::StopSound(FeverGaugeSE);
 }
 
 void GlassGaugeManager::BrakeGlass(GlassGrade grade)
@@ -111,6 +135,9 @@ void GlassGaugeManager::BrakeGlass(GlassGrade grade)
 	//減衰を止めタイマーをリセット
 	isGaugeDecaying = false;
 	gaugeDecayDelayTimer = 0.f;
+
+	SoundManager::StopSound(GaugeDownSE);
+	m_checkGaugeDownSound = false;
 
 	dirty_ = true;
 	up_ = true;
@@ -148,7 +175,7 @@ void GlassGaugeManager::GradeUp()
 	}
 
 	hammer_->GradeUp();
-	SoundManager::SoundPlay(SoundTag::GradeUpSE, 1.0f);
+	SoundManager::SoundPlay(SoundTag::GradeUpSE, 5.0f);
 
 	constexpr float kWhenGradeUpMinGauge = 5;
 	gauge_ = kWhenGradeUpMinGauge;
@@ -161,11 +188,12 @@ void GlassGaugeManager::GradeDown()
 		isGaugeEmpty = true;
 		gauge_ = 0.f;
 		DebugLog::Output("GlassGauge, is Empty");
-		SoundManager::SoundPlay(SoundTag::GradeDownSE ,1.0f);
 		return;
 	}
 
 	hammer_->GradeDown();
+
+	SoundManager::SoundPlay(SoundTag::GradeDownSE, 5.0f);
 
 	gauge_ = kMaxGaugeVale[ToIndex(hammer_->GetGrade())];
 }
@@ -196,6 +224,12 @@ bool GlassGaugeManager::IsMaxGauge()
 	return false;
 }
 
+bool GlassGaugeManager::GetIsLimitBreak()
+{
+	changeLimitBreak = false;
+	return isLimitBreak_;
+}
+
 #ifdef _DEBUG
 void GlassGaugeManager::DebugCommand()
 {
@@ -210,12 +244,14 @@ void GlassGaugeManager::DebugCommand()
 		isLimitBreak_ = true;
 		player_->LimitBreakOn();
 		hammer_->LimitBreakStart();
+		changeLimitBreak = true;
 	}
 	if (InputKeyboard::GetKeyDown('M'))
 	{
-		isLimitBreak_ = true;
+		isLimitBreak_ = false;
 		player_->LimitBreakOff();
 		hammer_->LimitBreakEnd();
+		changeLimitBreak = true;
 	}
 }
 #endif // DEBUG	

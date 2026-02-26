@@ -4,9 +4,10 @@
 #include "Scene.h"
 #include "SkyDomeMesh.h"
 #include "SkyDomeShader.h"
+#include "UiSpriteRenderer.h"
+#include "Time/Timer.h"
 #include <cstdint>
 #include <string>
-#include "Texture.h"
 
 //前方宣言
 enum class PrefabId : std::uint8_t;
@@ -14,6 +15,7 @@ enum class PrefabId : std::uint8_t;
 class SceneGame : public Scene
 {
 public:
+
 	void Update() final;
 	void Draw() final;
 	void Load() final;
@@ -26,18 +28,23 @@ private:
 	void CreateCameraAndPlayer();
 	void CreateStage();
 	void CreateStage1();
+	void CreateStage1Wall();
 	void CreateStage2();
+	void CreateStage2Wall();
 	void CreateStage3();
+	void CreateStage3Wall();
 	void CreateUi();
 	void CreateGaugeUI();
 	void CreateTimerUI();
 	void CreateScoreUI();
 	void CreateActionUI();
+	void CreateStartUI();
 	void CreateTutorialWall();
 
 	//ギミック	
 	void CreateGlassObjectSpawner();
-	void CreateWarp();
+	void CreateWarpStage2();
+	void CreateWarpStage3();
 
 	void CreateStageFromCSV(const std::string& filename);
 	PrefabId GetPrefabIdFromString(const std::string& rawname);
@@ -54,8 +61,15 @@ private:
 	SkyDomeShader m_skyShader; 
 	SkyDomeMesh   m_skyMesh; 
 	Texture* m_pSkyTex = nullptr;
+
+	bool CheckGameSound;
+	bool CheckStartSE;
 private:
-	RenderTarget* m_sceneColorRT = nullptr;
+	//スタートUI用
+	UiSpriteRenderer* uiStart_ = nullptr;
+	float m_animationTime = 0.0f; // アニメーションの経過時間
+	Timer waitTimer_;
+	const float WAIT_TIME = 4.0f;
 };
 
 #endif // __SCENE_GAME_H__

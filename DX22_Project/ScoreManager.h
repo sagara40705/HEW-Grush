@@ -1,20 +1,26 @@
 #pragma once
 #include "Component.h"
+#include "UiSpriteRenderer.h"
+#include "Easing.h"
 
 enum class GlassGrade : std::uint8_t;
 class TimerUI;
 
-class ScoreManager : public Component
+class ScoreManager : public MonoBehaviour
 {
 private:
 	int score_ = 500;
 	bool dirty_ = true;
 	TimerUI* timer_ = nullptr;
 	bool isLock_ = false;
+	UiSpriteRenderer* uiFinish_ = nullptr;
+
+	float m_animationTime = 0.0f; // アニメーションの経過時間
 
 
 public:
 	void Start() override;
+	void Update() override;
 public:
 	int GetScore() { return score_; }
 	bool GetDirty() { return dirty_; }
@@ -23,5 +29,5 @@ public:
 	void Reset();
 private:
 	void GoToResultScene();
-
+	bool m_CheckFinishSE;
 };

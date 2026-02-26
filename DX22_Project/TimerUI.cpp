@@ -4,6 +4,7 @@
 #include "TextureManager.h"
 #include "GameState.h"
 
+
 constexpr Vector2 kNumberUVScale = { 0.1f, 1.0f };
 
 void TimerUI::Awake()
@@ -39,12 +40,36 @@ void TimerUI::Awake()
 void TimerUI::Start()
 {
 	timer_ = 0.f;
+
 }
 
 void TimerUI::Update()
 {
-	timer_ += 1.f / 60.f;
+	if (IsGameLocked()) return;
 
+	if (scoreManager_ != nullptr)
+	{
+		score_ = scoreManager_->GetScore();
+	}
+	else
+	{
+		// ScoreManagerを探す
+		GameObject* scoreManagerObj = gameObject->world->FindWithTag(Tag::ScoreManager);
+		if (scoreManagerObj)
+		{
+			scoreManager_ = scoreManagerObj->GetComponent<ScoreManager>();
+			if (scoreManager_)
+			{
+				score_ = scoreManager_->GetScore();
+			}
+		}
+	}
+
+	
+
+	// ---- 1) タイマー更新 ----
+	if (score_ <= 0) return; // スコアが0以下ならタイマー停止
+	timer_ += 1.f / 60.f;
 	// 上限 99:59 でクランプ
 	int totalSec = static_cast<int>(timer_);
 	if (totalSec > MAX_SECONDS) totalSec = MAX_SECONDS;
@@ -68,4 +93,5 @@ void TimerUI::OnDestroy()
 	uiColon_ = nullptr;
 	uiSecond_[ToIndex(TimerDigits::Ten)] = nullptr;
 	uiSecond_[ToIndex(TimerDigits::One)] = nullptr;
+	scoreManager_ = nullptr;
 }

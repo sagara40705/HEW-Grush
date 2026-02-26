@@ -7,6 +7,7 @@ struct Vector2
     float x; float y;
 
     // --- ctor ---
+	constexpr Vector2() noexcept : x(0.f), y(0.f) {}
     constexpr Vector2(float _x, float _y) noexcept : x(_x), y(_y) {}
     constexpr Vector2(const DirectX::XMFLOAT2& v) noexcept : x(v.x), y(v.y) {}
 

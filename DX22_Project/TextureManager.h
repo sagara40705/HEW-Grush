@@ -29,10 +29,10 @@ enum class TextureTag : uint8_t
     // StageSelect 16～21 (6)
     StageSelect_BG = 16,		    // 背景
     StageSelect_PlayerIcon = 17,    // プレイヤーアイコン
-    _SpareSlot_05 = 18,
-    _SpareSlot_06 = 19,
-    _SpareSlot_07 = 20,
-    _SpareSlot_08 = 21,
+    StageSelect_Rank_S = 18,
+    StageSelect_Rank_A = 19,
+    StageSelect_Rank_B = 20,
+    StageSelect_Rank_C = 21,
 
     // Tutorial 22～27 (6)
     Tutorial_UI_Task = 22,	        // チュートリアルタスク
@@ -66,7 +66,7 @@ enum class TextureTag : uint8_t
     Game_UI_Gaug_Lv3 = 46,	 // (完) Lv3のガラスゲージSS
 	Game_GlassShard = 47,			 // ガラスの破片
 	Game_UI_Finish = 48,
-    _SpareSlot_13 = 49,
+    Game_UI_Start = 49,
     _SpareSlot_14 = 50,
     _SpareSlot_15 = 51,
     _SpareSlot_16 = 52,
@@ -118,6 +118,21 @@ enum class TextureTag : uint8_t
     option_Font4_screen = 90,
     option_translucent = 91,
 
+	stageLv1 = 92,
+	stageLv2 = 93,
+	stageLv3 = 94,
+	stagelevel_Easy = 95,
+	stagelevel_Normal = 96,
+	Stagelevel_Hard_a = 97,
+	Stagelevel_Hard_b = 98,
+    Stagelevel_Hard_c = 99,
+    StageImage = 100,
+	bou = 101,
+	Number = 102,
+	Number2 = 103,
+	Number3 = 104,
+	bou2 = 105,
+    StageClearRank=106,
     Count,
 };
 

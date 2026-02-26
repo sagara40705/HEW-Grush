@@ -10,6 +10,8 @@
 #include "ResultGaugeUI.h"
 #include "ResultRankUI.h"
 #include "SceneStageSelect.h"
+#include "InputGamepad.h"
+#include "SoundManager.h"
 
 
 constexpr Vector2 kNumberUVScale = { 0.1f, 1.0f };
@@ -66,7 +68,17 @@ void SceneResult::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 
 void SceneResult::Update()
 {
-	if (InputKeyboard::GetKeyDown(VK_SPACE))
+	if (!m_CheckResultSE)
+	{
+		if (SceneManager::CheckFinishFadeOut())
+		{
+			SoundManager::SoundPlay(ResultSE, 0.6f);
+			m_CheckResultSE = true;
+		}
+	}
+
+
+	if (InputKeyboard::GetKeyDown(VK_SPACE) || InputGamepad::GetButtonDown(XINPUT_GAMEPAD_X))
 	{
 		SceneManager::ChangeSceneAsync<SceneStageSelect>();
 	}

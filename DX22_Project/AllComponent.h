@@ -14,11 +14,13 @@
 #include "Sprite3DRenderer.h"
 #include "SpriteAnimation.h"
 #include "Animator.h"
+#include "Easing.h"
 
 #include "CameraContorol.h"
 #include "CameraShake.h"
 
 #include "TitleManager.h"
+#include "TitlePlyerContoroll.h"
 
 #include "GroundRenderer.h"
 #include "StageWall.h"

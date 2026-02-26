@@ -5,6 +5,8 @@
 #include "TextureManager.h"
 #include "Defines.h"
 #include "InputKeyboard.h"
+#include "InputGamePad.h"
+#include "SoundManager.h"
 
 void SceneTitle::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 {
@@ -14,8 +16,12 @@ void SceneTitle::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 			GetWorld().ClearAll();        // 既存の World API に合わせる
 		});
 
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player2); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer); });
+	outTasks.emplace_back([this] { ModelManager::Clear(); });	// モデルマネージャー初期化
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_3); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::SagaraDoll); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Ufo); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Swing); });
 
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Title_BG); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Title_Text); });
@@ -31,13 +37,17 @@ void SceneTitle::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { CreateTitleLogo(); });
 	outTasks.emplace_back([this] { CreateBreakTexture(); });
 	outTasks.emplace_back([this] { CreateTitleManager(); });
+	outTasks.emplace_back([this] { CreateObject(); });
+
 	outTasks.emplace_back([this] { SceneManager::CreateFadeAnimations(this); });
+
 
 	// 最後に Start を流す
 	outTasks.emplace_back([this]
 		{
 			GetWorld().Start();
 		});
+
 		
 }
 
@@ -53,6 +63,8 @@ void SceneTitle::Unload()
 {
 	SceneManager::ReleaseFadeAnimations();  // フェードアニメーション解放
 	TextureManager::Clear();
+	ModelManager::Clear();
+	SoundManager::StopSound(TitleBGM);
 }
 
 void SceneTitle::CreateCameraAndPlayer()
@@ -72,21 +84,23 @@ void SceneTitle::CreateCameraAndPlayer()
 
 	// プレイヤー
 	GameObject& player = w.CreateGameObject(Vector3(0.f, 0.f, 0.f), Vector3(0.f, 0.f, 0.f), Vector3(2.f, 2.f, 2.f));
-	player.AddComponent<MeshFilter>(ModelTag::Player2);
+	player.AddComponent<MeshFilter>(ModelTag::Player);
 	player.AddComponent<MeshRenderer>();
-	player.AddComponent<PlayerState>();
-	//player.AddComponent<Animator>();
-	//player.AddComponent<PlayerAnimation>();
+	//player.AddComponent<PlayerState>();
+	player.AddComponent<Animator>();
+	player.AddComponent<TitlePlyerContoroll>();
 
 	// 保存
 	m_player = &player;
 
 	// ハンマー
-	GameObject& hummer = player.CreateChild(Hammer::BasePos, Hammer::BaseRota, Vector3(0.2f, 0.2f, 0.2f));
-	hummer.AddComponent<MeshFilter>(ModelTag::Hammer);
-	hummer.AddComponent<MeshRenderer>();
-	//hummer.AddComponent<Animator>();
+	GameObject& hammerPivot = player.CreateChild(Vector3::zero(), Vector3::zero(), Vector3::one());
+	hammerPivot.SetTag(Tag::HammerPivot);
 
+	GameObject& hummer = hammerPivot.CreateChild(Hammer::BasePos, Hammer::BaseRota, Vector3(0.2f, 0.2f, 0.2f));
+	hummer.SetTag(Tag::Hammer);
+	hummer.AddComponent<MeshFilter>(ModelTag::Hammer_3);
+	hummer.AddComponent<MeshRenderer>();
 }
 
 void SceneTitle::CreateCanvas()
@@ -138,19 +152,38 @@ void SceneTitle::CreateTitleManager()
 	manager.AddComponent<TitleManager>();
 }
 
+void SceneTitle::CreateObject()
+{
+	World& w = GetWorld();
+	go1 = &Prefab::Instantiate(w, PrefabId::SagaraDoll, Vector3(-4.7f, -50.f, 1.f), Vector3(0.f, 45.f, 0.f), Vector3(4.f, 4.f, 4.f));
+	World& u = GetWorld();
+	go2 = &Prefab::Instantiate(u, PrefabId::Ufo, Vector3(-4.7f, 0.f, 1.f), Vector3(0.f, 20.f, -10.f), Vector3(2.f, 2.f, 2.f));
+	World& v = GetWorld();
+	go3 = &Prefab::Instantiate(v, PrefabId::Swing, Vector3(15.f, 0.f, 1.f), Vector3(0.f, -20.f, 10.f), Vector3(3.f, 3.f, 3.f));
+
+}
+
 void SceneTitle::Update()
 {
 	//if (!m_breakButton) return;
 
-	if (!m_isStarting && InputKeyboard::GetKeyDown(VK_SPACE))
+	// タイトルBGM再生
+	if (!CheckTitleSound)
+	{
+		SoundManager::SoundPlay(TitleBGM, 0.6f);
+		CheckTitleSound = true;
+	}
+
+	if (!m_isStarting && ( InputKeyboard::GetKeyDown(VK_SPACE) || InputGamepad::GetButtonDown(XINPUT_GAMEPAD_X)))
 	{
 		m_isStarting = true;
 		m_zoomTimer = 0.0f;
 		
 		// ★ 保存しておいた m_player を使う
-		if (m_player) {
+		if (m_player)
+		{
 			auto* pState = m_player->GetComponent<PlayerState>();
-			if (pState) pState->actionedThisFrame[ToIndex(ActionId::SpinAttack)] = true;
+			//if (pState) pState->wantUseAction[ToIndex(ActionId::SpinAttack)] = true;
 		}
 	}
 
@@ -180,6 +213,7 @@ void SceneTitle::Update()
 		{
 			m_isStarting = false;
 			break_->Play();
+			SoundManager::SoundPlay(TitleStartSE, 1.0f);
 		}
 	}
 	if(!m_isStarting)
@@ -212,4 +246,65 @@ void SceneTitle::UpdateTitleAnimations()
 		float yOffset = std::sin(m_animTimer * 1.5f) * 0.3f; // 1.5fが速さ、0.3fが振幅
 		trans->SetPosition(Vector3(2.f, yOffset, 15.f));
 	}
+	if (go2)
+	{
+		auto* trans = go2->GetComponent<Transform>();
+
+		// 静的変数で状態を保持
+		static float moveX = 0.0f;
+		static float direction = 1.0f; // 1.0なら右、-1.0なら左
+		const float speed = 0.05f;     // 移動速度
+		const float limitX = 18.0f;    // 画面端のしきい値（消えない範囲に調整）
+
+		// 1. 移動計算
+		moveX += speed * direction;
+
+		// 2. 端に到達したら反転
+		if (moveX > limitX) {
+			moveX = limitX;
+			direction = -1.0f;
+		}
+		else if (moveX < -limitX) {
+			moveX = -limitX;
+			direction = 1.0f;
+		}
+
+		// 3. 座標の設定（上下の揺れは継続）
+		float y = std::sin(m_animTimer * 2.0f) * 0.5f;
+		trans->SetPosition(Vector3(moveX, y + 2.0f, 30.0f));
+
+		// 4. 【おまけ】進行方向に向きを変える
+		// モデルの初期の向きに合わせて Vector3 の値を調整してください
+		if (direction > 0) {
+			trans->SetRotation(Vector3(0.f, 20.f, -10.f)); // 右向き
+		}
+		else {
+			trans->SetRotation(Vector3(0.f, 200.f, 10.f)); // 左向き（180度くらい回す）
+		}
+	}
+	// オブジェクトごとの動きを計算するラムダ関数
+	// 引数：(対象, 元の座標, 移動の幅, 揺れの速さ, 位相のズレ)
+	auto ApplySpaceFloat = [&](GameObject* obj, Vector3 basePos, float range, float speed, float offset) {
+		if (!obj) return;
+		auto* trans = obj->GetComponent<Transform>();
+
+		// 1. 座標の計算 (XとYで周期を変えて「8の字」や「円」を描くようにする)
+		float x = basePos.x + std::sin(m_animTimer * speed + offset) * range;
+		float y = basePos.y + std::cos(m_animTimer * (speed * 0.7f) + offset) * (range * 0.8f);
+		float z = basePos.z + std::sin(m_animTimer * (speed * 0.5f) + offset) * (range * 0.5f);
+		trans->SetPosition(Vector3(x, y, z));
+
+		// 2. 回転の計算 (ここが宇宙っぽさのキモ)
+		// 常に同じ軸で回るのではなく、ゆらゆらと傾かせる
+		float rotX = std::sin(m_animTimer * (speed * 0.4f) + offset) * 10.0f;
+		float rotY = m_animTimer * 5.0f + offset; // ゆっくり自転させる
+		float rotZ = std::cos(m_animTimer * (speed * 0.3f) + offset) * 5.0f;
+		trans->SetRotation(Vector3(rotX, rotY, rotZ));
+		};
+
+	// 各オブジェクトに宇宙漂流アニメーションを適用
+	// 位相(最後の引数)をバラバラにすることで、別々の動きに見えるようになります
+	ApplySpaceFloat(go1, Vector3(15.f, -8.f, 30.f), 2.0f, 0.5f, 0.0f);   // 人形
+	ApplySpaceFloat(go3, Vector3(-15.f, -15.f, 30.f), 3.0f, 0.4f, 5.0f); // スイング
 }
+

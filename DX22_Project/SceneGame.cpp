@@ -10,13 +10,12 @@
 #include "GameState.h"
 #include "DebugLog.h"
 #include "InputKeyboard.h"
+#include "InputGamepad.h"
 #include "SceneManager.h"
 #include "SceneStageSelect.h"
 #include "SceneResult.h"
 #include "SceneOption.h"
-#include "RenderSystem.h"
-#include "DirectX.h"
-
+#include "SoundManager.h"
 
 void SceneGame::Load()
 {
@@ -24,15 +23,69 @@ void SceneGame::Load()
 	std::vector<LoadTask> tasks;
 	BuildLoadTasks(tasks);
 	for (auto& t : tasks) t();
+	CheckStartSE = false;
+	CheckGameSound = false;
 }
 
 void SceneGame::Unload()
 {
 	SceneManager::ReleaseFadeAnimations();
 	TextureManager::Clear();
-	ModelManager::Clear();
-	SetSceneColorRT(nullptr);
-	SAFE_DELETE(m_sceneColorRT);
+
+	//modelの解放
+	StageId stage = GetCurrentStage();
+	switch (stage)
+	{
+	case StageId::Stage1:
+		ModelManager::Unload(ModelTag::Isu);
+		ModelManager::Unload(ModelTag::Reizouko);
+		ModelManager::Unload(ModelTag::Eiseii);
+		break;
+	case StageId::Stage2:
+		ModelManager::Unload(ModelTag::Kuukiseizyouki);
+		ModelManager::Unload(ModelTag::SagaraDoll);
+		ModelManager::Unload(ModelTag::Jihanki);
+		ModelManager::Unload(ModelTag::Star);
+		ModelManager::Unload(ModelTag::Warp);
+		break;
+	case StageId::Stage3a:
+		ModelManager::Unload(ModelTag::Akican);
+		ModelManager::Unload(ModelTag::Isu);
+		ModelManager::Unload(ModelTag::Jihanki);
+		ModelManager::Unload(ModelTag::Reizouko);
+		ModelManager::Unload(ModelTag::Eiseii);
+		ModelManager::Unload(ModelTag::Star);
+		ModelManager::Unload(ModelTag::Warp);
+		break;
+	case StageId::Stage3b:
+		ModelManager::Unload(ModelTag::Kuukiseizyouki);
+		ModelManager::Unload(ModelTag::SagaraDoll);
+		ModelManager::Unload(ModelTag::Jihanki);
+		ModelManager::Unload(ModelTag::Reizouko);
+		ModelManager::Unload(ModelTag::Eiseii);
+		ModelManager::Unload(ModelTag::Star);
+		ModelManager::Unload(ModelTag::Warp);
+		break;
+	case StageId::Stage3c:
+		ModelManager::Unload(ModelTag::Akican);
+		ModelManager::Unload(ModelTag::Isu);
+		ModelManager::Unload(ModelTag::Jihanki);
+		ModelManager::Unload(ModelTag::Reizouko);
+		ModelManager::Unload(ModelTag::Eiseii);
+		ModelManager::Unload(ModelTag::Star);
+		ModelManager::Unload(ModelTag::Warp);
+		break;
+	default:
+		break;
+	}
+
+	if (CheckGameSound)
+	{
+		SoundManager::StopSound(SceneGameBGM1);
+		SoundManager::StopSound(SceneGameBGM2);
+		CheckGameSound = false;
+	}
+
 }
 
 void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
@@ -50,47 +103,49 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	switch (stage)
 	{
 	case StageId::Stage1:
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Isu); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Reizouko); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Eiseii); });
 		break;
 	case StageId::Stage2:
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Kuukiseizyouki); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::SagaraDoll); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Jihanki); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Star); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Warp); });
 		break;
 	case StageId::Stage3a:
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Akican); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Isu); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Jihanki); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Reizouko); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Eiseii); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Star); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Warp); });
 		break;
 	case StageId::Stage3b:
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Kuukiseizyouki); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::SagaraDoll); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Jihanki); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Reizouko); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Eiseii); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Star); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Warp); });
 		break;
 	case StageId::Stage3c:
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Akican); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Isu); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Jihanki); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Reizouko); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Eiseii); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Star); });
+		outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Warp); });
 		break;
 	default:
 		assert(false && "不正なステージID");
 		break;
 
 	}
-
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Swing); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Akican); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Desktop); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Gomibukuro); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Isu); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Kuukiseizyouki); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Ningixyou); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::SagaraDoll); });
-
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Benti); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Aircon); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Jihanki); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Reizouko); });
-
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Ufo); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Eiseii); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Star); });
-
-	//outTasks.emplace_back([this] { ModelManager::Load(ModelTag::ProtPlay); });
-	//outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player2); });
-	//outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_1); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_2); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_3); });
-	//outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Fence); });
 
 	// テクスチャーロード
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_Sky); });
@@ -115,12 +170,34 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_GlassShard); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Finish); });
 
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Tutorial_UI_Task); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Tutorial_Road); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Tutorial_Targetlocation); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Option_BG); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Back); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font1); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font1_Back); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font1_OK); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font2); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font2_Back); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font2_OK); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font3); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font3_Back); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font3_OK); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font4); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font4_OK); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font5); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font5_OK); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font1_Break); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font2_Break); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font3_Break); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font4_screen); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_translucent); });
+	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Start); });
+
+	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Tutorial_UI_Task); });
+	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Tutorial_Road); });
+	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Tutorial_Targetlocation); });
 
 	// プレイハブ設定
-	outTasks.emplace_back([this] { RegisterAllPrefabs(); });
+	//outTasks.emplace_back([this] { RegisterAllPrefabs(); });
 
 	// ゲームオブジェクト生成
 	outTasks.emplace_back([this] { CreateManagers(); });
@@ -133,6 +210,7 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { CreateTimerUI(); });
 	outTasks.emplace_back([this] { CreateScoreUI(); });
 	outTasks.emplace_back([this] { CreateActionUI(); });
+	outTasks.emplace_back([this] { CreateStartUI(); });
 
 	//ギミック
 	outTasks.emplace_back([this] { CreateGlassObjectSpawner(); });
@@ -143,34 +221,6 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 
 	outTasks.emplace_back([this] { SceneManager::CreateFadeAnimations(this); });
 
-	outTasks.emplace_back([this]
-		{
-			// SceneColorRT (屈折用に画面をコピーする先) を作る
-			if (m_sceneColorRT)
-			{
-				return;
-			}
-
-			RenderTarget* bb = GetDefaultRTV();
-			if (!bb)
-			{
-				return;
-			}
-
-			m_sceneColorRT = new RenderTarget();
-
-			// ここは「CreateFromScreen」ではなく「Create」を使う（SRV付きのRTを作るため）
-			HRESULT hr = m_sceneColorRT->Create(DXGI_FORMAT_R8G8B8A8_UNORM, bb->GetWidth(), bb->GetHeight());
-			if (FAILED(hr) || m_sceneColorRT->GetView() == nullptr || m_sceneColorRT->GetResource() == nullptr)
-			{
-				SAFE_DELETE(m_sceneColorRT);
-				SetSceneColorRT(nullptr);
-				return;
-			}
-
-			// RenderSystem.h の保持領域へ登録
-			SetSceneColorRT(m_sceneColorRT);
-		});
 
 	// 最後に Start を流す
 	outTasks.emplace_back([this] 
@@ -231,23 +281,25 @@ void SceneGame::CreateCameraAndPlayer()
 	GameObject& player = w.CreateGameObject(KPlayerInitPos[ToIndex(GetCurrentStage())], Vector3(0.f, 90.f, 0.f));
  
 	player.SetTag(Tag::Player);
-	player.AddComponent<MeshFilter>(ModelTag::Player2);
+	player.AddComponent<MeshFilter>(ModelTag::Player);
 	player.AddComponent<MeshRenderer>();
 	player.AddComponent<Rigidbody>();
-	player.AddComponent<BoxCollider>(false, Vector3(0.f, 0.5f, 0.f));
+	player.AddComponent<BoxCollider>(false, Vector3(0.f, 0.5f, -0.1f), Vector3(0.7f, 1.f, 0.7f));
 	player.AddComponent<PlayerState>();
 	player.AddComponent<PlayerMove>();
 	player.AddComponent<PlayerAction>();
 	player.AddComponent<Animator>();
 	player.AddComponent<PlayerAnimation>();
 
-	GameObject& hummer = player.CreateChild(Hammer::BasePos, Hammer::BaseRota, Vector3(0.2f, 0.2f, 0.2f));
+	GameObject& hammerPivot = player.CreateChild(Vector3::zero(), Vector3::zero(), Vector3::one());
+	hammerPivot.SetTag(Tag::HammerPivot);
+
+	GameObject& hummer = hammerPivot.CreateChild(Hammer::BasePos, Hammer::BaseRota, Vector3(0.2f, 0.2f, 0.2f));
 	hummer.SetTag(Tag::Hammer);
 	hummer.AddComponent<MeshFilter>(ModelTag::Hammer_1);
 	hummer.AddComponent<MeshRenderer>();
 	hummer.AddComponent<BoxCollider>(false, Vector3(-3.f, 2.f, -3.f), Vector3(5.f, 5.f, 2.f));
 	hummer.AddComponent<Hammer>();
-	//hummer.AddComponent<Animator>();
 	hummer.AddComponent<HammerEffects>();
 
 
@@ -285,6 +337,7 @@ void SceneGame::CreateStage()
 	}
 }
 
+// ステージ１生成
 void SceneGame::CreateStage1()
 {
 	World& w = GetWorld();
@@ -301,60 +354,153 @@ void SceneGame::CreateStage1()
 	BoxCollider& collider = floor.AddComponent<BoxCollider>();
 	collider.layer = Layer::Ground;
 
-
 	//壁
-	GameObject& wT = w.CreateGameObject(Vector3(0.f, 1.f, OFFSET), Vector3(90.f, 0.f, 0.f), Vector3(SIZE, 1.f, 4.f));
-	MeshFilter& mfT = wT.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mfT.boundsRadius = 0.f;
-	wT.AddComponent<GroundRenderer>();
-	BoxCollider& bcT = wT.AddComponent<BoxCollider>(); bcT.layer = Layer::Ground;
-	wT.AddComponent<StageWall>();
-
-	GameObject& wB = w.CreateGameObject(Vector3(0.f, 1.f, -OFFSET), Vector3(90.f, 0.f, 0.f), Vector3(SIZE, 1.f, 4.0f));
-	MeshFilter& mfB = wB.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mfB.boundsRadius = 0.f;
-	wB.AddComponent<GroundRenderer>();
-	BoxCollider& bcB = wB.AddComponent<BoxCollider>(); bcB.layer = Layer::Ground;
-	wB.AddComponent<StageWall>();
-
-	GameObject& wR = w.CreateGameObject(Vector3(OFFSET, 1.f, 0.f), Vector3(0.f, 0.f, 90.f), Vector3(4.0f, 1.f, SIZE));
-	MeshFilter& mfR = wR.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mfR.boundsRadius = 0.f;
-	wR.AddComponent<GroundRenderer>();
-	BoxCollider& bcR = wR.AddComponent<BoxCollider>(); bcR.layer = Layer::Ground;
-	wR.AddComponent<StageWall>();
-
-	GameObject& wL = w.CreateGameObject(Vector3(-OFFSET, 1.f, 0.f), Vector3(0.f, 0.f, 90.f), Vector3(4.0f, 1.f, SIZE));
-	MeshFilter& mfL = wL.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mfL.boundsRadius = 0.f;
-	wL.AddComponent<GroundRenderer>();
-	BoxCollider& bcL = wL.AddComponent<BoxCollider>(); bcL.layer = Layer::Ground;
-	wL.AddComponent<StageWall>();
+	//GameObject& wT = w.CreateGameObject(Vector3(0.f, 1.f, OFFSET), Vector3(90.f, 0.f, 0.f), Vector3(SIZE, 1.f, 4.f));
+	//MeshFilter& mfT = wT.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mfT.boundsRadius = 0.f;
+	//wT.AddComponent<GroundRenderer>();
+	//BoxCollider& bcT = wT.AddComponent<BoxCollider>(); bcT.layer = Layer::Ground;
+	//wT.AddComponent<StageWall>();
+	//
+	//GameObject& wB = w.CreateGameObject(Vector3(0.f, 1.f, -OFFSET), Vector3(90.f, 0.f, 0.f), Vector3(SIZE, 1.f, 4.0f));
+	//MeshFilter& mfB = wB.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mfB.boundsRadius = 0.f;
+	//wB.AddComponent<GroundRenderer>();
+	//BoxCollider& bcB = wB.AddComponent<BoxCollider>(); bcB.layer = Layer::Ground;
+	//wB.AddComponent<StageWall>();
+	//
+	//GameObject& wR = w.CreateGameObject(Vector3(OFFSET, 1.f, 0.f), Vector3(0.f, 0.f, 90.f), Vector3(4.0f, 1.f, SIZE));
+	//MeshFilter& mfR = wR.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mfR.boundsRadius = 0.f;
+	//wR.AddComponent<GroundRenderer>();
+	//BoxCollider& bcR = wR.AddComponent<BoxCollider>(); bcR.layer = Layer::Ground;
+	//wR.AddComponent<StageWall>();
+	//
+	//GameObject& wL = w.CreateGameObject(Vector3(-OFFSET, 1.f, 0.f), Vector3(0.f, 0.f, 90.f), Vector3(4.0f, 1.f, SIZE));
+	//MeshFilter& mfL = wL.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mfL.boundsRadius = 0.f;
+	//wL.AddComponent<GroundRenderer>();
+	//BoxCollider& bcL = wL.AddComponent<BoxCollider>(); bcL.layer = Layer::Ground;
+	//wL.AddComponent<StageWall>();
 
 	CreateStageFromCSV("CSV/StageData_Grade1.csv");
 	CreateStageFromCSV("CSV/StageData_Grade2.csv");
 	CreateStageFromCSV("CSV/StageData_Grade3.csv");
 
-	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-5.f, -0.8f, -20.f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	CreateStage1Wall();
 
 	return;
 }
 
-void SceneGame::CreateStage2()
+// ステージ１の壁生成
+void SceneGame::CreateStage1Wall()
 {
+	World& w = GetWorld();
+	// 初期位置からみて前の壁
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-37.99f, -0.75f, -39.8f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-34.0f, -0.75f, -39.8f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-30.01f, -0.75f, -39.8f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-26.02f, -0.75f, -39.8f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-22.03f, -0.75f, -39.8f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-18.04f, -0.75f, -39.8f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-14.05f, -0.75f, -39.8f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-10.06f, -0.75f, -39.8f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-6.07f, -0.75f, -39.8f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-2.08f, -0.75f, -39.8f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(1.91f, -0.75f, -39.8f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(5.90f, -0.75f, -39.8f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(9.89f, -0.75f, -39.8f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(13.88f, -0.75f, -39.8f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(17.87f, -0.75f, -39.8f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(21.86f, -0.75f, -39.8f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(25.85f, -0.75f, -39.8f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(29.84f, -0.75f, -39.8f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(33.84f, -0.75f, -39.8f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(37.82f, -0.75f, -39.8f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+
+	// 初期位置から見て後ろの壁
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-37.99f, -0.75f, 39.8), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-34.0f, -0.75f, 39.8f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-30.01f, -0.75f, 39.8f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-26.02f, -0.75f, 39.8f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-22.03f, -0.75f, 39.8f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-18.04f, -0.75f, 39.8f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-14.05f, -0.75f, 39.8f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-10.06f, -0.75f, 39.8f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-6.07f, -0.75f, 39.8f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-2.08f, -0.75f, 39.8f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(1.91f, -0.75f, 39.8f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(5.90f, -0.75f, 39.8f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(9.89f, -0.75f, 39.8f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(13.88f, -0.75f, 39.8f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(17.87f, -0.75f, 39.8f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(21.86f, -0.75f, 39.8f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(25.85f, -0.75f, 39.8f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(29.84f, -0.75f, 39.8f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(33.84f, -0.75f, 39.8f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(37.82f, -0.75f, 39.8f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+
+	// 左の横壁
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(39.77f, -0.75f, 37.5f), Vector3(0.f, 90.0f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(39.77f, -0.75f, 33.5f), Vector3(0.f, 90.0f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(39.77f, -0.75f, 29.5f), Vector3(0.f, 90.0f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(39.77f, -0.75f, 25.5f), Vector3(0.f, 90.0f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(39.77f, -0.75f, 21.5f), Vector3(0.f, 90.0f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(39.77f, -0.75f, 17.5f), Vector3(0.f, 90.0f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(39.77f, -0.75f, 13.5f), Vector3(0.f, 90.0f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(39.77f, -0.75f, 9.5f), Vector3(0.f, 90.0f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(39.77f, -0.75f, 5.5f), Vector3(0.f, 90.0f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(39.77f, -0.75f, 1.5f), Vector3(0.f, 90.0f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(39.77f, -0.75f, -2.5f), Vector3(0.f, 90.0f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(39.77f, -0.75f, -6.5f), Vector3(0.f, 90.0f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(39.77f, -0.75f, -10.5f), Vector3(0.f, 90.0f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(39.77f, -0.75f, -14.5f), Vector3(0.f, 90.0f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(39.77f, -0.75f, -18.5f), Vector3(0.f, 90.0f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(39.77f, -0.75f, -22.5f), Vector3(0.f, 90.0f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(39.77f, -0.75f, -26.5f), Vector3(0.f, 90.0f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(39.77f, -0.75f, -30.5f), Vector3(0.f, 90.0f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(39.77f, -0.75f, -34.5f), Vector3(0.f, 90.0f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(39.77f, -0.75f, -37.88f), Vector3(0.f, 90.0f, 0.f), Vector3(0.3f, 0.4f, 1.0f));
+
+	// 右の横壁
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-39.77f, -0.75f, 37.5f), Vector3(0.f, 90.0f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-39.77f, -0.75f, 33.5f), Vector3(0.f, 90.0f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-39.77f, -0.75f, 29.5f), Vector3(0.f, 90.0f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-39.77f, -0.75f, 25.5f), Vector3(0.f, 90.0f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-39.77f, -0.75f, 21.5f), Vector3(0.f, 90.0f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-39.77f, -0.75f, 17.5f), Vector3(0.f, 90.0f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-39.77f, -0.75f, 13.5f), Vector3(0.f, 90.0f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-39.77f, -0.75f, 9.5f), Vector3(0.f, 90.0f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-39.77f, -0.75f, 5.5f), Vector3(0.f, 90.0f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-39.77f, -0.75f, 1.5f), Vector3(0.f, 90.0f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-39.77f, -0.75f, -2.5f), Vector3(0.f, 90.0f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-39.77f, -0.75f, -6.5f), Vector3(0.f, 90.0f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-39.77f, -0.75f, -10.5f), Vector3(0.f, 90.0f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-39.77f, -0.75f, -14.5f), Vector3(0.f, 90.0f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-39.77f, -0.75f, -18.5f), Vector3(0.f, 90.0f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-39.77f, -0.75f, -22.5f), Vector3(0.f, 90.0f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-39.77f, -0.75f, -26.5f), Vector3(0.f, 90.0f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-39.77f, -0.75f, -30.5f), Vector3(0.f, 90.0f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-39.77f, -0.75f, -34.5f), Vector3(0.f, 90.0f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-39.77f, -0.75f, -37.88f), Vector3(0.f, 90.0f, 0.f), Vector3(0.33f, 0.4f, 1.0f));
+}
+
+// ステージ２生成
+void SceneGame::CreateStage2(){
 	World& w = GetWorld();
 
 	//80 * 50 フィールド1
-	GameObject& floor1 = w.CreateGameObject(Vector3(0.f, -1.f, 0.f), Vector3::zero(), Vector3(85.f, 0.1f, 55.f));
-	MeshFilter& mf1 = floor1.AddComponent<MeshFilter>(PrimitiveMeshTag::Plane); mf1.boundsRadius = 0.f;
+	GameObject& floor1 = w.CreateGameObject(Vector3(0.f, -2.5f, 0.f), Vector3::zero(), Vector3(85.f, 3.1f, 55.f));
+	MeshFilter& mf1 = floor1.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mf1.boundsRadius = 0.f;
 	floor1.AddComponent<GroundRenderer>();
 	BoxCollider& collider1 = floor1.AddComponent<BoxCollider>();
 	collider1.layer = Layer::Ground;
 
 	//80 * 50 フィールド1
-	GameObject& floor2 = w.CreateGameObject(Vector3(90.f, -1.f, 0.f), Vector3::zero(), Vector3(85.f, 0.1f, 55.f));
-	MeshFilter& mf2 = floor2.AddComponent<MeshFilter>(PrimitiveMeshTag::Plane); mf2.boundsRadius = 0.f;
+	GameObject& floor2 = w.CreateGameObject(Vector3(90.f, -2.5f, 0.f), Vector3::zero(), Vector3(85.f, 3.1f, 55.f));
+	MeshFilter& mf2 = floor2.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mf2.boundsRadius = 0.f;
 	floor2.AddComponent<GroundRenderer>();
 	BoxCollider& collider2 = floor2.AddComponent<BoxCollider>();
 	collider2.layer = Layer::Ground;
 
-	CreateWarp();
+	CreateWarpStage2();
+	CreateStage2Wall();
 
 	CreateStageFromCSV("CSV/Stage2LeftData_Grade1.csv");
 	CreateStageFromCSV("CSV/Stage2LeftData_Grade2.csv");
@@ -363,32 +509,194 @@ void SceneGame::CreateStage2()
 	CreateStageFromCSV("CSV/Stage2RightData_Grade3.csv");
 }
 
+// ステージ２の壁生成
+void SceneGame::CreateStage2Wall()
+{
+	World& w = GetWorld();
+	// hidariのステージのmaeの壁
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(41.f, -0.75f, 27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(37.f, -0.75f, 27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(33.f, -0.75f, 27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(29.f, -0.75f, 27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(25.f, -0.75f, 27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(21.f, -0.75f, 27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(17.f, -0.75f, 27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(13.f, -0.75f, 27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(9.f, -0.75f, 27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(5.f, -0.75f, 27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(1.f, -0.75f, 27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-3.f, -0.75f, 27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-7.f, -0.75f, 27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-11.f, -0.75f, 27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-15.f, -0.75f, 27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-19.f, -0.75f, 27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-23.f, -0.75f, 27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-27.f, -0.75f, 27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-31.f, -0.75f, 27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-35.f, -0.75f, 27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-39.7f, -0.75f, 27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.52f, 0.4f, 1.0f));
+
+	// hidariのステージのusiroの壁
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(41.f, -0.75f, -27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(37.f, -0.75f, -27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(33.f, -0.75f, -27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(29.f, -0.75f, -27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(25.f, -0.75f, -27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(21.f, -0.75f, -27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(17.f, -0.75f, -27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(13.f, -0.75f, -27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(9.f, -0.75f, -27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(5.f, -0.75f, -27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(1.f, -0.75f, -27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-3.f, -0.75f, -27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-7.f, -0.75f, -27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-11.f, -0.75f, -27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-15.f, -0.75f, -27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-19.f, -0.75f, -27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-23.f, -0.75f, -27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-27.f, -0.75f, -27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-31.f, -0.75f, -27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-35.f, -0.75f, -27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-39.7f, -0.75f, -27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.52f, 0.4f, 1.0f));
+
+	// 左ステージの右壁
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(42.8f, -0.75f, -25.5f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(42.8f, -0.75f, -21.5f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(42.8f, -0.75f, -17.5f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(42.8f, -0.75f, -13.5f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(42.8f, -0.75f, -9.5f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(42.8f, -0.75f, -5.5f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(42.8f, -0.75f, -1.f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(42.8f, -0.75f, 3.5f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(42.8f, -0.75f, 7.5f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(42.8f, -0.75f, 11.5f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(42.8f, -0.75f, 15.5f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(42.8f, -0.75f, 19.5f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(42.8f, -0.75f, 23.5f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(42.8f, -0.75f, 26.3f), Vector3(0.f, 90.f, 0.f), Vector3(0.2f, 0.4f, 1.0f));
+
+	// hidariのステージの左壁
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-42.6f, -0.75f, -25.5f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-42.6f, -0.75f, -21.5f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-42.6f, -0.75f, -17.5f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-42.6f, -0.75f, -13.5f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-42.6f, -0.75f, -9.5f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-42.6f, -0.75f, -5.5f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-42.6f, -0.75f, -1.f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));//
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-42.6f, -0.75f, 3.5f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-42.6f, -0.75f, 7.5f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-42.6f, -0.75f, 11.5f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-42.6f, -0.75f, 15.5f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-42.6f, -0.75f, 19.5f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-42.6f, -0.75f, 23.5f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-42.6f, -0.75f, 26.3f), Vector3(0.f, 90.f, 0.f), Vector3(0.2f, 0.4f, 1.0f));
+
+	// migiのステージのusiroの壁
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(50.f, -0.75f, -27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(54.f, -0.75f, -27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(58.f, -0.75f, -27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(62.f, -0.75f, -27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(66.f, -0.75f, -27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(70.f, -0.75f, -27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(74.f, -0.75f, -27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(78.f, -0.75f, -27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(82.f, -0.75f, -27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(86.f, -0.75f, -27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(90.f, -0.75f, -27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(94.f, -0.75f, -27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(98.f, -0.75f, -27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(102.f, -0.75f, -27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(106.f, -0.75f, -27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(110.f, -0.75f, -27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(114.f, -0.75f, -27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(118.f, -0.75f, -27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(122.f, -0.75f, -27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(126.f, -0.75f, -27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(130.f, -0.75f, -27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+
+	// migiのステージのmaeの壁
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(50.f, -0.75f, 27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(54.f, -0.75f, 27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(58.f, -0.75f, 27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(62.f, -0.75f, 27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(66.f, -0.75f, 27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(70.f, -0.75f, 27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(74.f, -0.75f, 27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(78.f, -0.75f, 27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(82.f, -0.75f, 27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(86.f, -0.75f, 27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(90.f, -0.75f, 27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(94.f, -0.75f, 27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(98.f, -0.75f, 27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(102.f, -0.75f, 27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(106.f, -0.75f, 27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(110.f, -0.75f, 27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(114.f, -0.75f, 27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(118.f, -0.75f, 27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(122.f, -0.75f, 27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(126.f, -0.75f, 27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(130.f, -0.75f, 27.5f), Vector3(0.f, 0.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+
+	// migiのステージのhidariの壁
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(47.6f, -0.75f, -25.8f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(47.6f, -0.75f, -21.8f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(47.6f, -0.75f, -17.8f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(47.6f, -0.75f, -13.8f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(47.6f, -0.75f, -9.8f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(47.6f, -0.75f, -5.8f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(47.6f, -0.75f, -1.45f), Vector3(0.f, 90.f, 0.f), Vector3(0.48f, 0.4f, 1.0f));//
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(47.6f, -0.75f, 2.8f), Vector3(0.f, 90.f, 0.f), Vector3(0.45f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(47.6f, -0.75f, 6.8f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(47.6f, -0.75f, 10.8f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(47.6f, -0.75f, 14.8f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(47.6f, -0.75f, 18.8f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(47.6f, -0.75f, 22.8f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(47.6f, -0.75f, 26.2f), Vector3(0.f, 90.f, 0.f), Vector3(0.3f, 0.4f, 1.0f));
+
+	// migiのステージのmigiの壁
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(132.6f, -0.75f, -25.8f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(132.6f, -0.75f, -21.8f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(132.6f, -0.75f, -17.8f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(132.6f, -0.75f, -13.8f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(132.6f, -0.75f, -9.8f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(132.6f, -0.75f, -5.8f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(132.6f, -0.75f, -1.45f), Vector3(0.f, 90.f, 0.f), Vector3(0.48f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(132.6f, -0.75f, 2.8f), Vector3(0.f, 90.f, 0.f), Vector3(0.45f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(132.6f, -0.75f, 6.8f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(132.6f, -0.75f, 10.8f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(132.6f, -0.75f, 14.8f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(132.6f, -0.75f, 18.8f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(132.6f, -0.75f, 22.8f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(132.6f, -0.75f, 26.2f), Vector3(0.f, 90.f, 0.f), Vector3(0.3f, 0.4f, 1.0f));
+}
+
+// ステージ3の作成
 void SceneGame::CreateStage3()
 {
 	World& w = GetWorld();
 
 	//80 * 50 フィールド
-	GameObject& floor1 = w.CreateGameObject(Vector3(0.f, -1.f, 0.f), Vector3::zero(), Vector3(80.f, 0.1f, 80.f));
-	MeshFilter& mf1 = floor1.AddComponent<MeshFilter>(PrimitiveMeshTag::Plane); mf1.boundsRadius = 0.f;
+	GameObject& floor1 = w.CreateGameObject(Vector3(0.f, -3.5f, 0.f), Vector3::zero(), Vector3(80.f, 5.1f, 80.f));
+	MeshFilter& mf1 = floor1.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mf1.boundsRadius = 0.f;
 	floor1.AddComponent<GroundRenderer>();
 	BoxCollider& collider1 = floor1.AddComponent<BoxCollider>();
 	collider1.layer = Layer::Ground;
 
-
-
 	//50 * 50 フィールド1
-	GameObject& floor2 = w.CreateGameObject(Vector3(0.f, -1.f, 70.f), Vector3::zero(), Vector3(80.f, 0.1f, 60.f));
-	MeshFilter& mf2 = floor2.AddComponent<MeshFilter>(PrimitiveMeshTag::Plane); mf2.boundsRadius = 0.f;
+	GameObject& floor2 = w.CreateGameObject(Vector3(0.f, -3.5f, 70.f), Vector3::zero(), Vector3(80.f, 5.1f, 60.f));
+	MeshFilter& mf2 = floor2.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mf2.boundsRadius = 0.f;
 	floor2.AddComponent<GroundRenderer>();
 	BoxCollider& collider2 = floor2.AddComponent<BoxCollider>();
 	collider2.layer = Layer::Ground;
 
 	//50 * 50 フィールド2
-	GameObject& floor3 = w.CreateGameObject(Vector3(100.f, -1.f, 0.f), Vector3::zero(), Vector3(60.f, 0.1f, 60.f));
-	MeshFilter& mf3 = floor3.AddComponent<MeshFilter>(PrimitiveMeshTag::Plane); mf3.boundsRadius = 0.f;
+	GameObject& floor3 = w.CreateGameObject(Vector3(100.f, -3.5f, 0.f), Vector3::zero(), Vector3(60.f, 5.1f, 60.f));
+	MeshFilter& mf3 = floor3.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mf3.boundsRadius = 0.f;
 	floor3.AddComponent<GroundRenderer>();
 	BoxCollider& collider3 = floor3.AddComponent<BoxCollider>();
-	collider3.layer = Layer::Ground;
+
+	CreateWarpStage3();
+	CreateStage3Wall();
 
 	StageId stage = GetCurrentStage();
 
@@ -434,12 +742,170 @@ void SceneGame::CreateStage3()
 
 }
 
+// ステージ3の壁の作成
+void SceneGame::CreateStage3Wall()
+{
+	World& w = GetWorld();
+	//後ろの壁
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(40.f, -0.75f, 97.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(40.f, -0.75f, 92.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(40.f, -0.75f, 87.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(40.f, -0.75f, 82.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(40.f, -0.75f, 77.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(40.f, -0.75f, 72.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(40.f, -0.75f, 67.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(40.f, -0.75f, 62.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(40.f, -0.75f, 57.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(40.f, -0.75f, 52.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(40.f, -0.75f, 47.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(40.f, -0.75f, 42.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(40.f, -0.75f, 37.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(40.f, -0.75f, 32.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(40.f, -0.75f, 27.5f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f)); //14
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(40.f, -0.75f, 23.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(40.f, -0.75f, 18.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(40.f, -0.75f, 13.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(40.f, -0.75f, 8.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(40.f, -0.75f, 3.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(40.f, -0.75f, -2.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(40.f, -0.75f, -7.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(40.f, -0.75f, -12.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(40.f, -0.75f, -17.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(40.f, -0.75f, -22.3f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(40.f, -0.75f, -27.3f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(40.f, -0.75f, -32.3f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(40.f, -0.75f, -37.3f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+
+	//ステージの前の壁
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-40.f, -0.75f, 97.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-40.f, -0.75f, 92.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-40.f, -0.75f, 87.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-40.f, -0.75f, 82.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-40.f, -0.75f, 77.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-40.f, -0.75f, 72.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-40.f, -0.75f, 67.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-40.f, -0.75f, 62.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-40.f, -0.75f, 57.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-40.f, -0.75f, 52.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-40.f, -0.75f, 47.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-40.f, -0.75f, 42.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-40.f, -0.75f, 37.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-40.f, -0.75f, 32.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-40.f, -0.75f, 27.5f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f)); //14
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-40.f, -0.75f, 23.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-40.f, -0.75f, 18.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-40.f, -0.75f, 13.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-40.f, -0.75f, 8.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-40.f, -0.75f, 3.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-40.f, -0.75f, -2.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-40.f, -0.75f, -7.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-40.f, -0.75f, -12.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-40.f, -0.75f, -17.0f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-40.f, -0.75f, -22.3f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-40.f, -0.75f, -27.3f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-40.f, -0.75f, -32.3f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-40.f, -0.75f, -37.3f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+
+
+	//ステージの左壁
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-37.5f, -0.75f, -40.f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-32.5f, -0.75f, -40.f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-27.5f, -0.75f, -40.f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-22.5f, -0.75f, -40.f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-17.5f, -0.75f, -40.f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-12.5f, -0.75f, -40.f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-7.5f, -0.75f, -40.f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-2.5f, -0.75f, -40.f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(2.5f, -0.75f, -40.f), Vector3(0.f, 0.f, 0.f), Vector3(0.48f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(7.5f, -0.75f, -40.f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(12.5f, -0.75f, -40.f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(17.5f, -0.75f, -40.f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(22.5f, -0.75f, -40.f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(27.5f, -0.75f, -40.f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(32.5f, -0.75f, -40.f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(37.5f, -0.75f, -40.f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+
+	// ステージの右壁
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-37.5f, -0.75f, 100.f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-32.5f, -0.75f, 100.f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-27.5f, -0.75f, 100.f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-22.5f, -0.75f, 100.f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-17.5f, -0.75f, 100.f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-12.5f, -0.75f, 100.f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-7.5f, -0.75f, 100.f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-2.5f, -0.75f, 100.f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(2.5f, -0.75f, 100.f), Vector3(0.f, 0.f, 0.f), Vector3(0.48f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(7.5f, -0.75f, 100.f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(12.5f, -0.75f, 100.f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(17.5f, -0.75f, 100.f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(22.5f, -0.75f, 100.f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(27.5f, -0.75f, 100.f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(32.5f, -0.75f, 100.f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(37.5f, -0.75f, 100.f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+
+	// 上のステージの後ろの壁
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(70.f, -0.75f, -28.f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(70.f, -0.75f, -23.f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(70.f, -0.75f, -18.f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(70.f, -0.75f, -13.f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(70.f, -0.75f, -8.f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(70.f, -0.75f, -3.f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(70.f, -0.75f, 2.f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(70.f, -0.75f, 7.f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(70.f, -0.75f, 12.f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(70.f, -0.75f, 17.f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(70.f, -0.75f, 22.f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(70.f, -0.75f, 27.f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+
+	// 上のステージのueの壁
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(130.f, -0.75f, -28.f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(130.f, -0.75f, -23.f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(130.f, -0.75f, -18.f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(130.f, -0.75f, -13.f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(130.f, -0.75f, -8.f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(130.f, -0.75f, -3.f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(130.f, -0.75f, 2.f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(130.f, -0.75f, 7.f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(130.f, -0.75f, 12.f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(130.f, -0.75f, 17.f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(130.f, -0.75f, 22.f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(130.f, -0.75f, 27.f), Vector3(0.f, 90.f, 0.f), Vector3(0.55f, 0.4f, 1.0f));
+
+	// 上ステージの右壁
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(127.3f, -0.75f, -30.2f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(122.3f, -0.75f, -30.2f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(117.3f, -0.75f, -30.2f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(112.3f, -0.75f, -30.2f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(107.3f, -0.75f, -30.2f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(102.3f, -0.75f, -30.2f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(97.3f, -0.75f, -30.2f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(92.3f, -0.75f, -30.2f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(87.3f, -0.75f, -30.2f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(82.3f, -0.75f, -30.2f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(77.3f, -0.75f, -30.2f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(72.5f, -0.75f, -30.2f), Vector3(0.f, 0.f, 0.f), Vector3(0.45f, 0.4f, 1.0f));
+
+	// 上ステージnohidari壁
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(127.3f, -0.75f, 30.f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(122.3f, -0.75f, 30.f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(117.3f, -0.75f, 30.f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(112.3f, -0.75f, 30.f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(107.3f, -0.75f, 30.f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(102.3f, -0.75f, 30.f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(97.3f, -0.75f, 30.f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(92.3f, -0.75f, 30.f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(87.3f, -0.75f, 30.f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(82.3f, -0.75f, 30.f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(77.3f, -0.75f, 30.f), Vector3(0.f, 0.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(72.5f, -0.75f, 30.f), Vector3(0.f, 0.f, 0.f), Vector3(0.45f, 0.4f, 1.0f));
+}
+
 void SceneGame::CreateUi()
 {
 	World& w = GetWorld();
-
 	GameObject& canvas = w.CreateGameObject();
 	canvas.AddComponent<Canvas>();
+
 }
 
 void SceneGame::CreateGaugeUI()
@@ -480,6 +946,18 @@ void SceneGame::CreateActionUI()
 	actionManager.AddComponent<ActionUI>();
 }
 
+void SceneGame::CreateStartUI()
+{
+	World& w = GetWorld();
+
+	GameObject& startObj = w.CreateGameObject();
+	//uiStart_ = &startObj.AddComponent<UiSpriteRenderer>(TextureTag::Game_UI_Start, Vector2(0.f, -20.f), Vector2(1280.f, 720.f));
+	//uiStart_->SetVisible(false);
+
+	waitTimer_.Start();
+	SetGameLock(true);
+}
+
 void SceneGame::CreateTutorialWall()
 {
 	if (IsEndTutorial()) return;
@@ -498,29 +976,40 @@ void SceneGame::CreateGlassObjectSpawner()
 
 	GameObject& glassObjectSpawner = w.CreateGameObject();
 	glassObjectSpawner.AddComponent<GlassObjectSpawner>();
-
-
-	//if (IsEndTutorial()) return;
-	//GameObject& tutorial = w.CreateGameObject();
-	//tutorial.AddComponent<TutorialManager>();
 }
 
-void SceneGame::CreateWarp()
+void SceneGame::CreateWarpStage2()
 {
 	World& w = GetWorld();
 
 	GameObject& warpA = w.CreateGameObject(Vector3(37.f, 0.f, 0.f), Vector3::zero(), Vector3::one());
-	warpA.AddComponent< MeshFilter > (PrimitiveMeshTag::Sphere);
+	warpA.AddComponent< MeshFilter >(ModelTag::Warp);
 	warpA.AddComponent<MeshRenderer>();
 	BoxCollider& bcA = warpA.AddComponent<BoxCollider>(true); bcA.isTrigger = true;
 	warpA.AddComponent<WarpPoint>(Point::AtoB);
 
 	GameObject& warpB = w.CreateGameObject(Vector3(53.f, 0.f, 0.f), Vector3::zero(), Vector3::one());
-	warpB.AddComponent< MeshFilter >(PrimitiveMeshTag::Sphere);
+	warpB.AddComponent< MeshFilter >(ModelTag::Warp);
 	warpB.AddComponent<MeshRenderer>();
 	BoxCollider& bcB = warpB.AddComponent<BoxCollider>(true); bcB.isTrigger = true;
 	warpB.AddComponent<WarpPoint>(Point::BtoA);
+}
 
+void SceneGame::CreateWarpStage3()
+{
+	World& w = GetWorld();
+
+	GameObject& warpC = w.CreateGameObject(Vector3(37.f, 0.f, 0.f), Vector3::zero(), Vector3::one());
+	warpC.AddComponent< MeshFilter >(ModelTag::Warp);
+	warpC.AddComponent<MeshRenderer>();
+	BoxCollider& bcC = warpC.AddComponent<BoxCollider>(true); bcC.isTrigger = true;
+	warpC.AddComponent<WarpPoint>(Point::CtoD);
+
+	GameObject& warpD = w.CreateGameObject(Vector3(73.f, 0.f, 0.f), Vector3::zero(), Vector3::one());
+	warpD.AddComponent< MeshFilter >(ModelTag::Warp);
+	warpD.AddComponent<MeshRenderer>();
+	BoxCollider& bcD = warpD.AddComponent<BoxCollider>(true); bcD.isTrigger = true;
+	warpD.AddComponent<WarpPoint>(Point::DtoC);
 }
 
 void SceneGame::InitSkyDome()
@@ -564,8 +1053,6 @@ void SceneGame::InitSkyDome()
 	{
 		m_pDepthNoWrite = nullptr;
 	}
-
-
 }
 
 void SceneGame::SkyDomeDorw()
@@ -619,16 +1106,57 @@ void SceneGame::SkyDomeDorw()
 	}
 }
 
+
 void SceneGame::Update()
 {
-	// 強制敵にステージセレクトへ戻る
-	if (InputKeyboard::GetKey(VK_SPACE) && InputKeyboard::GetKeyDown('Q'))
+	
+	if (IsGameLocked()) {
+
+		if (waitTimer_.ElapsedRawSeconds() < WAIT_TIME) return;
+
+		if(!CheckStartSE)
+		{
+			SoundManager::SoundPlay(GameStartSE,1.0f);
+			CheckStartSE = true;
+		}
+
+		// スタートUIアニメーション
+		if (m_animationTime < 1.0f)
+		{
+			uiStart_->SetVisible(true);
+			m_animationTime += 1.0f / 80.0f; // 約1.3秒
+			if (m_animationTime > 1.0f) m_animationTime = 1.0f;
+
+			float bounce = Easing::EaseOutBounce(m_animationTime);
+			float yPos = -800.0f + (800.0f * bounce);
+			uiStart_->SetOffset({ 30.0f, yPos });
+		}
+		else
+		{
+			uiStart_->SetVisible(false);
+			SetGameLock(false);
+		}
+		return;
+	}
+
+	if (!CheckGameSound)
 	{
-		SceneManager::ChangeSceneAsync<SceneStageSelect>();
+//		SoundManager::SoundPlay(SceneGameBGM, 0.4f);
+		int GameBGM = rand() % 2;
+		switch (GameBGM)
+		{
+		case 0:
+			SoundManager::SoundPlay(SceneGameBGM1,0.4f);
+			break;
+		case 1:
+			SoundManager::SoundPlay(SceneGameBGM2, 0.5f);
+			break;
+		}
+		CheckGameSound = true;
 	}
 
 	// オプション画面へ
-	if (InputKeyboard::GetKeyDown('O'))
+	if (InputKeyboard::GetKeyDown('O') || InputGamepad::GetButtonDown(XINPUT_GAMEPAD_START))
 	{
 		SceneManager::PushScene<SceneOption>();
 	}
@@ -777,4 +1305,3 @@ PrefabId SceneGame::GetPrefabIdFromString(const std::string& rawname)
 	// とりあえず無効な値を返すか、Swing等をデフォルトにする
 	return PrefabId::Swing;
 }
-
