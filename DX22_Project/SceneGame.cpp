@@ -190,7 +190,7 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font3_Break); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Font4_screen); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_translucent); });
-	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Start); });
+	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Start); });
 
 	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Tutorial_UI_Task); });
 	//outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Tutorial_Road); });
@@ -951,8 +951,8 @@ void SceneGame::CreateStartUI()
 	World& w = GetWorld();
 
 	GameObject& startObj = w.CreateGameObject();
-	uiStart_ = &startObj.AddComponent<UiSpriteRenderer>(TextureTag::Game_UI_Start, Vector2(0.f, -20.f), Vector2(1280.f, 720.f));
-	uiStart_->SetVisible(false);
+	//uiStart_ = &startObj.AddComponent<UiSpriteRenderer>(TextureTag::Game_UI_Start, Vector2(0.f, -20.f), Vector2(1280.f, 720.f));
+	//uiStart_->SetVisible(false);
 
 	waitTimer_.Start();
 	SetGameLock(true);
