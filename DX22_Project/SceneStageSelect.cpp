@@ -7,6 +7,7 @@
 #include "stageLevel.h"
 #include "StageSentaku.h"
 #include "StageClearRank.h"
+#include "SoundManager.h"
 
 void SceneStageSelect::Load()
 {
@@ -14,6 +15,7 @@ void SceneStageSelect::Load()
 	std::vector<LoadTask> tasks;
 	BuildLoadTasks(tasks);
 	for (auto& t : tasks) t();
+	CheckStageSelectBGM = false;
 }
 
 void SceneStageSelect::BuildLoadTasks(std::vector<LoadTask>& outTasks)
@@ -151,6 +153,7 @@ void SceneStageSelect::CreateStageClearRank()
 
 void SceneStageSelect::Unload()
 {
+	SoundManager::StopSound(StageSelectBGM);
 	SceneManager::ReleaseFadeAnimations();
 	TextureManager::Clear();
 }
@@ -158,6 +161,11 @@ void SceneStageSelect::Unload()
 
 void SceneStageSelect::Update()
 {
+	if(!CheckStageSelectBGM)
+	{
+		SoundManager::SoundPlay(StageSelectBGM, 0.7f);
+		CheckStageSelectBGM = true;
+	}
 }
 
 void SceneStageSelect::Draw()
