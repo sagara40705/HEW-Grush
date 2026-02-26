@@ -16,6 +16,8 @@
 #include "SceneResult.h"
 #include "SceneOption.h"
 #include "SoundManager.h"
+#include "RenderSystem.h"
+#include "DirectX.h"
 
 void SceneGame::Load()
 {
@@ -85,6 +87,9 @@ void SceneGame::Unload()
 		SoundManager::StopSound(SceneGameBGM2);
 		CheckGameSound = false;
 	}
+
+	SetSceneColorRT(nullptr);
+	SAFE_DELETE(m_sceneColorRT);
 
 }
 
@@ -220,6 +225,33 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { InitSkyDome(); });
 
 	outTasks.emplace_back([this] { SceneManager::CreateFadeAnimations(this); });
+
+	outTasks.emplace_back([this]
+		{
+			// SceneColorRT
+			if (m_sceneColorRT)
+			{
+				return;
+			}
+
+			RenderTarget* bb = GetDefaultRTV();
+			if (!bb)
+			{
+				return;
+			}
+
+			m_sceneColorRT = new RenderTarget();
+			HRESULT hr = m_sceneColorRT->Create(DXGI_FORMAT_R8G8B8A8_UNORM, bb->GetWidth(), bb->GetHeight());
+			if (FAILED(hr) || m_sceneColorRT->GetView() == nullptr || m_sceneColorRT->GetResource() == nullptr)
+			{
+				SAFE_DELETE(m_sceneColorRT);
+				SetSceneColorRT(nullptr);
+				return;
+			}
+
+			// RenderSystem.h 
+			SetSceneColorRT(m_sceneColorRT);
+		});
 
 
 	// 最後に Start を流す
@@ -1123,17 +1155,17 @@ void SceneGame::Update()
 		// スタートUIアニメーション
 		if (m_animationTime < 1.0f)
 		{
-			uiStart_->SetVisible(true);
+			//uiStart_->SetVisible(true);
 			m_animationTime += 1.0f / 80.0f; // 約1.3秒
 			if (m_animationTime > 1.0f) m_animationTime = 1.0f;
 
 			float bounce = Easing::EaseOutBounce(m_animationTime);
 			float yPos = -800.0f + (800.0f * bounce);
-			uiStart_->SetOffset({ 30.0f, yPos });
+			//uiStart_->SetOffset({ 30.0f, yPos });
 		}
 		else
 		{
-			uiStart_->SetVisible(false);
+			//uiStart_->SetVisible(false);
 			SetGameLock(false);
 		}
 		return;

@@ -70,6 +70,8 @@ private:
 	float m_animationTime = 0.0f; // アニメーションの経過時間
 	Timer waitTimer_;
 	const float WAIT_TIME = 4.0f;
+private:
+	RenderTarget* m_sceneColorRT = nullptr;
 };
 
 #endif // __SCENE_GAME_H__
