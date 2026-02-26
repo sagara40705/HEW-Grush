@@ -139,7 +139,7 @@ void RegisterAllPrefabs()
             auto& bc = go.AddComponent<BoxCollider>(
                 true,
                 DirectX::XMFLOAT3{ 0.f, 1.2f,  0.f },
-                DirectX::XMFLOAT3{ 3.6f, 1.8f, 1.6f });
+                DirectX::XMFLOAT3{ 3.4f, 1.6f, 1.4f });
             (void)bc;
             auto& gs = go.AddComponent<GlassObject>(GlassGrade::Grade_2); (void)gs;
         });
@@ -213,8 +213,8 @@ void RegisterAllPrefabs()
             auto& mr = go.AddComponent<MeshRenderer>(); (void)mr;
             auto& bc = go.AddComponent<BoxCollider>(
                 true,
-                DirectX::XMFLOAT3{ 0, 0.f, 0 },
-                DirectX::XMFLOAT3{ 7.5f, 5.5f, 5.5f });
+                DirectX::XMFLOAT3{ 0, 2.f, 0 },
+                DirectX::XMFLOAT3{ 7.f, 5.f, 5.f });
             (void)bc;
             auto& gs = go.AddComponent<GlassObject>(GlassGrade::Grade_3); (void)gs;
         });

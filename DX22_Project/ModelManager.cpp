@@ -15,19 +15,19 @@ std::array<float, static_cast<size_t>(ModelTag::Count)> ModelManager::modelBound
 const ModelLoadData ModelManager::kModelData[static_cast<size_t>(ModelTag::Count)] =
 {
     /*0 - 7 */
-    {"Assets/Model/Grade_1/MD_actionkomuSwing_251221_test2.fbx",              0.01f, Model::Flip::ZFlip}, 
-    {"Assets/Model/Grade_1/MD_akican/MD_akican.fbx",                          0.01f, Model::Flip::ZFlip}, 
-    {"Assets/Model/Grade_1/MD_desktop/MD_desktop.fbx",                        0.2f,  Model::Flip::ZFlip}, 
-    {"Assets/Model/Grade_1/MD_gomibukuro/MD_gomibukuro_260126.fbx",           0.01f, Model::Flip::ZFlip},
-    {"Assets/Model/Grade_1/MD_isu/MD_isu_20251207.fbx",                       0.01f, Model::Flip::ZFlip},
-    {"Assets/Model/Grade_1/MD_kuukseizixyoukii/MD_kuukseizixyoukii.fbx",      0.15f, Model::Flip::ZFlip},
-    {"Assets/Model/Grade_1/MD_ningixyou/MD_ningixyou.fbx",                    0.15f, Model::Flip::ZFlip},
-    {"Assets/Model/Grade_1/MD_SagaraDoll/MD_SagaraDoll_260126.fbx",           0.001f, Model::Flip::ZFlip},
+	{"Assets/Model/Grade_1/MD_actionkomuSwing_251221_test2.fbx",              0.01f, Model::Flip::ZFlip}, //0
+	{"Assets/Model/Grade_1/MD_akican/MD_akican.fbx",                          0.01f, Model::Flip::ZFlip}, //1
+	{"Assets/Model/Grade_1/MD_desktop/MD_desktop.fbx",                        0.2f,  Model::Flip::ZFlip}, //2
+	{"Assets/Model/Grade_1/MD_gomibukuro/MD_gomibukuro_260126.fbx",           0.01f, Model::Flip::ZFlip}, //3
+	{"Assets/Model/Grade_1/MD_isu/MD_isu_20251207.fbx",                       0.01f, Model::Flip::ZFlip}, //4
+	{"Assets/Model/Grade_1/MD_kuukseizixyoukii/MD_kuukseizixyoukii.fbx",      0.01f, Model::Flip::ZFlip}, //5
+	{"Assets/Model/Grade_1/MD_ningixyou/MD_ningixyou.fbx",                    0.15f, Model::Flip::ZFlip}, //6
+	{"Assets/Model/Grade_1/MD_SagaraDoll/MD_SagaraDoll_260126.fbx",           0.01f, Model::Flip::ZFlip},  //7
 
     /*8 - 11*/
     {"Assets/Model/Grade_2/MD_benti/MD_benti_20251118.fbx",                   0.01f, Model::Flip::ZFlip}, //8
     {"Assets/Model/Grade_2/MD_aircon/MD_aircon.fbx",                          0.01f, Model::Flip::ZFlip}, //9
-    {"Assets/Model/Grade_2/MD_ziihannki/MD_ziihannki.fbx",                    0.01f,Model::Flip::ZFlip}, //10
+    {"Assets/Model/Grade_2/MD_ziihannki/MD_ziihannki.fbx",                    0.012f,Model::Flip::ZFlip}, //10
     {"Assets/Model/Grade_2/MD_fridge/MD_fridge.fbx",                          0.015f,Model::Flip::ZFlip}, //11
      
     /*12 - 14*/
@@ -45,7 +45,7 @@ const ModelLoadData ModelManager::kModelData[static_cast<size_t>(ModelTag::Count
 
     /*19 - 20*/
     {"Assets/Model/Stage/MD_fence_260118.fbx",                                0.04f, Model::Flip::ZFlip}, //23
-    {"Assets/Model/Stage/MD_warp_260118.fbx",                                 0.01f, Model::Flip::ZFlip }, //24
+    {"Assets/Model/Stage/warp.fbx",                                           0.30f, Model::Flip::ZFlip }, //24
 };
 
 bool ModelManager::Load(ModelTag tag)
