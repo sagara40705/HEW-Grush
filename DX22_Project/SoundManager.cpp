@@ -30,8 +30,8 @@ void SoundManager::Load()
 	s_sounds[SoundTag::GlassCrackSE]		= LoadSound("Assets/Sound/glasscrack.mp3", false);
 	s_sounds[SoundTag::GameFinishSE]		= LoadSound("Assets/Sound/Finish.wav", false);
 	s_sounds[SoundTag::ResultGaugeUpSE]		= LoadSound("Assets/Sound/gage_up2.wav", false);
-	s_sounds[SoundTag::FeverGaugeSE]        = LoadSound("Assets/Sound/maru.wav", true);
-	s_sounds[SoundTag::GameStartSE]			= LoadSound("Assets/Sound/gauge_down.wav", false);
+	s_sounds[SoundTag::FeverGaugeSE]        = LoadSound("Assets/Sound/FeverSE.mp3", false);
+	s_sounds[SoundTag::GameStartSE]			= LoadSound("Assets/Sound/GameStartSE.mp3", false);
 }
 
 void SoundManager::Unload()

@@ -51,7 +51,6 @@ void GlassGaugeManager::Update()
 			hammer_->LimitBreakEnd();
 			changeLimitBreak = true;
 			DebugLog::Output("ŒÀŠE“Ë”jI—¹");
-			SoundManager::StopSound(FeverGaugeSE);
 		}
 		return;
 	}
