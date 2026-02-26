@@ -66,7 +66,7 @@ enum class TextureTag : uint8_t
     Game_UI_Gaug_Lv3 = 46,	 // (Š®) Lv3‚ÌƒKƒ‰ƒXƒQ[ƒWSS
 	Game_GlassShard = 47,			 // ƒKƒ‰ƒX‚Ì”j•Ğ
 	Game_UI_Finish = 48,
-    _SpareSlot_13 = 49,
+    Game_UI_Start = 49,
     _SpareSlot_14 = 50,
     _SpareSlot_15 = 51,
     _SpareSlot_16 = 52,
