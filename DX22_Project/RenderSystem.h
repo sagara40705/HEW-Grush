@@ -87,6 +87,21 @@ inline void CopyBackBufferToSceneRT(RenderTarget* sceneRT)
 }
 inline void Render(const World& w)
 {
+    {
+        RenderTarget* bbRT = GetDefaultRTV();
+        DepthStencil* bbDS = GetDefaultDSV();
+
+        // 念のため null チェック
+        if (bbRT && bbDS)
+        {
+            RenderTarget* rts[1] = { bbRT };
+
+            // SetRenderTargets() の中で Viewport が RT サイズに設定される
+            // -> これを毎フレーム最初に呼ぶことで「四角く切り取られる」事故を潰す
+            SetRenderTargets(1, rts, bbDS);
+        }
+    }
+
     auto isPending = [&w](ObjectId id)
         {
             return std::find(w.toDestroy.begin(), w.toDestroy.end(), id) != w.toDestroy.end();
@@ -96,7 +111,7 @@ inline void Render(const World& w)
 
     // --- 1) Opaque パス（ZWrite ON） ---
     SetDepthTest(true);
-	SetCullingMode(D3D11_CULL_NONE);
+    SetCullingMode(D3D11_CULL_NONE);
 
     std::vector<Sprite3DRenderer*> transparentSprites;
 

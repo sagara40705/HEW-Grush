@@ -19,9 +19,9 @@ void SceneTitle::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { ModelManager::Clear(); });	// モデルマネージャー初期化
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_3); });
-	//outTasks.emplace_back([this] { ModelManager::Load(ModelTag::SagaraDoll); });
-	//outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Ufo); });
-	//outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Swing); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::SagaraDoll); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Ufo); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Swing); });
 
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Title_BG); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Title_Text); });
@@ -53,7 +53,10 @@ void SceneTitle::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 
 void SceneTitle::Load()
 {
-	// 従来の同期ロードが必要なら、タスクを構築して全部回す
+	m_sceneColorRT = new RenderTarget();
+	m_sceneColorRT->CreateFromScreen(); // 画面と同じサイズ/形式にしてくれる想定
+	SetSceneColorRT(m_sceneColorRT);
+	
 	std::vector<LoadTask> tasks;
 	BuildLoadTasks(tasks);
 	for (auto& t : tasks) t();
@@ -61,7 +64,16 @@ void SceneTitle::Load()
 
 void SceneTitle::Unload()
 {
-	SceneManager::ReleaseFadeAnimations();  // フェードアニメーション解放
+	// 先にグローバル参照を切る（ここ重要）
+	SetSceneColorRT(nullptr);
+
+	if (m_sceneColorRT)
+	{
+		delete m_sceneColorRT;
+		m_sceneColorRT = nullptr;
+	}
+
+	SceneManager::ReleaseFadeAnimations();
 	TextureManager::Clear();
 	ModelManager::Clear();
 	SoundManager::StopSound(TitleBGM);

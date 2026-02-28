@@ -10,7 +10,6 @@
 #include "LoadingScene.h"
 #include "SoundManager.h"
 #include <memory>
-
 bool Game::CheckTitleSound = false;
 
 void Game::Init()

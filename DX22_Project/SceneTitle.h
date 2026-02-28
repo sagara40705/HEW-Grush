@@ -20,7 +20,7 @@ public:
 //#include "BreakUiRenderer.h"
 #include "Prefab.h"
 #include "PrefabSet.h"
-
+#include "RenderSystem.h"
 
 //前方宣言
 enum class PrefabId : std::uint8_t;
@@ -72,5 +72,7 @@ private:
     Vector3 m_camEndPos = Vector3(0.f, 0.5f, 1.f); // 最終的なカメラ座標（プレイヤーの目の前）
 
     bool CheckTitleSound = false;
+
+    RenderTarget* m_sceneColorRT = nullptr;
 };
 
