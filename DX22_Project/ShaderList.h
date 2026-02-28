@@ -28,6 +28,7 @@ public:
         PS_SPRITE,
         PS_GLASS,
         PS_GLASS_SHARD,
+        PS_GLASS_TITLE,
         PS_RAINBOW,
         PS_KIND_MAX
     };
@@ -70,6 +71,9 @@ private:
     static void MakeFogPS();
     static void MakeSpritePS();
     static void MakeGlassPS();
+
+	static void MakeGlassTitlePS();
+
     static void MakeGlassShardPS();
     static void MakeRainbowPS();
 

@@ -25,6 +25,7 @@ void ShaderList::Init()
 	MakeFogPS();
 	MakeSpritePS();
 	MakeGlassPS();
+	MakeGlassTitlePS();
 	MakeGlassShardPS();
 	MakeRainbowPS();
 
@@ -124,6 +125,7 @@ void ShaderList::SetCameraPos(const DirectX::XMFLOAT3 pos)
 	m_pPS[PS_TOON]->WriteBuffer(2, param);
 	m_pPS[PS_GLASS]->WriteBuffer(2, param);
 	m_pPS[PS_GLASS_SHARD]->WriteBuffer(2, param);
+	m_pPS[PS_GLASS_TITLE]->WriteBuffer(2, param);
 }
 void ShaderList::SetFog(DirectX::XMFLOAT4 color, float start, float range)
 {
@@ -146,6 +148,7 @@ void ShaderList::SetGlassParam(const DirectX::XMFLOAT4& tint, float fresnelPower
 	// b3 に書き込む
 	m_pPS[PS_GLASS]->WriteBuffer(3, param);
 	m_pPS[PS_GLASS_SHARD]->WriteBuffer(3, param);
+	m_pPS[PS_GLASS_TITLE]->WriteBuffer(3, param);
 }
 
 void ShaderList::SetGlassSceneTexture(RenderTarget* sceneColorRT)
@@ -942,6 +945,106 @@ float4 main(PS_IN pin) : SV_TARGET
 
 	m_pPS[PS_GLASS] = new PixelShader();
 	m_pPS[PS_GLASS]->Compile(code);
+}
+
+void ShaderList::MakeGlassTitlePS()
+{
+    const char* code = R"EOT(
+
+struct PS_IN
+{
+    float4 pos    : SV_POSITION;
+    float3 normal : NORMAL0;
+    float2 uv     : TEXCOORD0;
+    float4 color  : COLOR0;
+    float4 wPos   : POSITION0;
+};
+
+cbuffer Material : register(b0)
+{
+    float4 objDiffuse;   // rgb=拡散色, a=opacity
+    float4 objAmbient;   // rgb=環境光, a=hasTextureFlag(>=1でテクスチャ有り)
+    float4 objSpecular;  // rgb=鏡面色, a=gloss
+};
+
+cbuffer Light : register(b1)
+{
+    float4 lightDiffuse;
+    float4 lightDir;     // xyz
+};
+
+cbuffer Camera : register(b2)
+{
+    float4 cameraPos;
+};
+
+// ガラス固有（既存の SetGlassParam が b3 に書く想定）
+cbuffer GlassParam : register(b3)
+{
+    float4 glassTint;    // rgb=色, a=透明度
+    float4 glassParams;  // x=fresnelPower, y=reflectionStrength, z=transmissionStrength, w=tintStrength
+};
+
+Texture2D tex : register(t0);
+SamplerState samp : register(s0);
+
+float4 main(PS_IN pin) : SV_TARGET
+{
+    float3 N = normalize(pin.normal);
+    float3 V = normalize(cameraPos.xyz - pin.wPos.xyz);
+    float3 L = normalize(-lightDir.xyz);
+
+    // テクスチャ有無
+    bool hasTexture = (objAmbient.a >= 1.0f);
+
+    float4 albedo = float4(1,1,1,1);
+    if (hasTexture)
+    {
+        albedo = tex.Sample(samp, pin.uv);
+    }
+
+    // ベース色（元の色を維持）
+    float3 baseAlbedo = hasTexture ? albedo.rgb : objDiffuse.rgb;
+
+    // 簡易ライティング（暗くしすぎない）
+    float ndl = saturate(dot(N, L));
+    float3 ambient = objAmbient.rgb * lightDiffuse.rgb;
+    float3 diffuse = objDiffuse.rgb * lightDiffuse.rgb * ndl;
+    float3 baseLit = baseAlbedo * (ambient + diffuse);
+
+    // Fresnel（反射の縁を作る）
+    float fresnelPower = max(glassParams.x, 1.0f);
+    float dotNV = saturate(dot(N, V));
+    float fresnel = pow(1.0f - dotNV, fresnelPower);
+
+    // 反射を強める（ここが“反射のみ付けたい”の中心）
+    float reflectionStrength = saturate(glassParams.y);
+
+    // 反射最大量（上げるほど反射が強くなる）
+    const float kReflMax = 0.55f;
+
+    float refl = fresnel * reflectionStrength * kReflMax;
+
+    // 簡易反射色（ライト色ベース）
+    float3 reflectionColor = lightDiffuse.rgb;
+
+    float3 finalRGB = baseLit + reflectionColor * refl;
+
+    // 透明度（タイトルで破綻しにくくするため下限あり）
+    float alpha = saturate(glassTint.a);
+    alpha = max(alpha, 0.55f);
+
+    // 縁を少し濃く
+    alpha = saturate(alpha + fresnel * 0.15f);
+
+    return float4(saturate(finalRGB), alpha);
+}
+
+)EOT";
+
+    m_pPS[PS_GLASS_TITLE] = new PixelShader();
+    m_pPS[PS_GLASS_TITLE]->Compile(code);
+
 }
 
 void ShaderList::MakeGlassShardPS()
