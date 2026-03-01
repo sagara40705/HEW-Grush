@@ -27,4 +27,10 @@ public:
 private:
 	void PrimitiveRender();
 	void ModelRender();
+public://追加点
+	// ピクセルシェーダだけ上書きしたいとき用
+	void SetPixelShaderKind(int ps);  // ← 型はあなたのpsKindに合わせて後で直す
+private:
+	bool usePSOverride_ = false;
+	int  psKind_ = 0; // ← 型と初期値はMeshRenderer.cppのpsKindに合わせる
 };

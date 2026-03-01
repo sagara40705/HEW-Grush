@@ -172,7 +172,18 @@ void SceneTitle::CreateObject()
 	go2 = &Prefab::Instantiate(u, PrefabId::Ufo, Vector3(-4.7f, 0.f, 1.f), Vector3(0.f, 20.f, -10.f), Vector3(2.f, 2.f, 2.f));
 	World& v = GetWorld();
 	go3 = &Prefab::Instantiate(v, PrefabId::Swing, Vector3(15.f, 0.f, 1.f), Vector3(0.f, -20.f, 10.f), Vector3(3.f, 3.f, 3.f));
+	auto ApplyTitleGlassPS = [](GameObject* obj)
+		{
+			if (!obj) return;
 
+			auto* mr = obj->GetComponent<MeshRenderer>();
+			if (!mr) return;
+
+			mr->SetPixelShaderKind(static_cast<int>(ShaderList::PS_GLASS_TITLE));
+		};
+	ApplyTitleGlassPS(go1);
+	ApplyTitleGlassPS(go2);
+	ApplyTitleGlassPS(go3);
 }
 
 void SceneTitle::Update()

@@ -42,15 +42,25 @@ void MeshRenderer::Start()
     }
 
     glass = gameObject->GetComponent<GlassObject>();
-    if (glass)
+    if (!usePSOverride_)
     {
-        psKind = ShaderList::PS_GLASS;
+        if (glass)
+        {
+            psKind = ShaderList::PS_GLASS;
+        }
     }
+
+    // Apply PS override if set (Title scene etc.)
+    if (usePSOverride_)
+    {
+        psKind = static_cast<ShaderList::PSKind>(psKind_);
+    }
+
     shard = gameObject->GetComponent<GlassShard>();
     if (shard)
     {
         vsKind = ShaderList::VS_SHARD;
-		psKind = ShaderList::PS_GLASS_SHARD;
+        psKind = ShaderList::PS_GLASS_SHARD;
     }
 }
 
@@ -198,4 +208,10 @@ void MeshRenderer::ModelRender()
 
         model->Draw(i);
     }
+}
+
+void MeshRenderer::SetPixelShaderKind(int ps)
+{
+    psKind_ = ps;
+    usePSOverride_ = true;
 }
