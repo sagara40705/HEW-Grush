@@ -3,6 +3,8 @@
 #include "PlayerState.h"
 #include "Animator.h"
 #include "ModelManager.h"
+#include "Hammer.h"
+#include "DebugLog.h"
 #include <cassert>
 
 /*
@@ -12,8 +14,14 @@ void PlayerAnimation::Start()
 {
 	state_ = gameObject->GetComponent<PlayerState>();
 	anime_ = gameObject->GetComponent<Animator>();
-	AddAllAnimations();
-	anime_->Play(animation_[Type::Move], false, 1.f);
+
+	GameObject* hammerObj = gameObject->FindWithTag(Tag::Hammer);
+	hammer_ = hammerObj ? hammerObj->GetComponent<Hammer>() : nullptr;
+	assert(hammer_ && "PlayerAnimation で ハンマーが見つかりませんでした");
+
+	//AddAllAnimations();
+	InitAllAnimations();
+	anime_->Play(allAnimations_[0][Type::Idle], false, 1.f);
 	anime_->SetTimeSeconds(4.8f);
 
 	assert(state_ && anime_ && "PlayerAnimation	で プレイヤーの <PlayerState> か <Animator> が nullptr です");
@@ -31,25 +39,40 @@ void PlayerAnimation::OnDestroy()
 */
 void PlayerAnimation::Update()
 {
+	grade_ = GetNowGrade();
+	
+	if (grade_ == -1)
+	{
+		return;
+	}
+
+	if (grade_ == 1)
+	{
+		//DebugLog::OutputValue("PlayerAnimation Update, grade:", grade_);
+	}
+	
+
 	// ノックバック優先処理
 	
-	if (isKnockback_)
-	{
-		const float dt = 1.0f / 60.0f;
-		knockbackTimer_ += dt;
+	//if (isKnockback_)
+	//{
+	//	const float dt = 1.0f / 60.0f;
+	//	knockbackTimer_ += dt;
 
-		if (knockbackTimer_ >= knockbackDuration_)
-		{
-			isKnockback_ = false; currentType_ = Type::Move;
-			anime_->Play(animation_[Type::Move], false, 1.0f);
+	//	if (knockbackTimer_ >= knockbackDuration_)
+	//	{
+	//		isKnockback_ = false; currentType_ = Type::Move;
+	//		anime_->Play(animation_[Type::Move], false, 1.0f);
 
-		} // ノックバック中は他のアニメ判定を行わない
-	}
+	//	} // ノックバック中は他のアニメ判定を行わない
+	//}
+
 	//移動を先に判定
 	CheckMoveAnime();
-	CheckNormalAttackAnime();
-	CheckSpinAttackAnime();
-	CheckDashAttackAnime();
+
+	//CheckNormalAttackAnime();
+	//CheckSpinAttackAnime();
+	//CheckDashAttackAnime();
 	
 }
 
@@ -84,6 +107,12 @@ void PlayerAnimation::CheckNockBackAnime(float duration)
 
 }
 
+void PlayerAnimation::Restart()
+{
+	anime_->Play(allAnimations_[0][Type::Move], false, 1.f);
+	anime_->SetTimeSeconds(4.8f);
+}
+
 /*
 * @brief 移動アニメーションの制御
 */
@@ -116,7 +145,8 @@ void PlayerAnimation::CheckMoveAnime()
 		if (state_->moveStartedThisFrame)
 		{
 			currentType_ = Type::Move;
-			anime_->Play(animation_[Type::Move], false, 1.f);
+			//anime_->Play(animation_[Type::Move], false, 1.f);
+			anime_->Play(allAnimations_[0][Type::Move], false, 1.f);
 			anime_->SetTimeSeconds(0.3f);
 		}
 	}
@@ -218,17 +248,41 @@ void PlayerAnimation::AddAllAnimations()
 	if (!model) return;
 
 	//待機
-	animation_[Type::Idle] = model->AddAnimation("Assets/Animation/taiki/body_taiki.fbx");
+	animation_[Type::Idle] = model->AddAnimation("Assets/Player/Animation/playerchara_hammer_taiki.fbx");
 	//移動
-	animation_[Type::Move] = model->AddAnimation("Assets/Animation/hashiru/body_hashiru.fbx");
+	animation_[Type::Move] = model->AddAnimation("Assets/Player/Animation/playerchara_hammer_hashiru.fbx");
 	// 通常攻撃
-	animation_[Type::NormalAttack] = model->AddAnimation("Assets/Animation/rotateattack/animation_rotateattack2.fbx");
+	animation_[Type::NormalAttack] = model->AddAnimation("Assets/Player/Animation/playerchara_hammer_rotateattack.fbx");
 	// 回転攻撃
-	animation_[Type::SpinAttack] = model->AddAnimation("Assets/Animation/rotateattack/body_rotateattack.fbx");
+	animation_[Type::SpinAttack] = model->AddAnimation("Assets/Player/Animation/playerchara_hammer_rotateattack.fbx");
 	//突進攻撃
-	animation_[Type::DashAttack] = model->AddAnimation("Assets/Animation/dashattack/body_dashattack.fbx");
+	animation_[Type::DashAttack] = model->AddAnimation("Assets/Player/Animation/playerchara_hammer_dashattack.fbx");
 	//ノックバック
-	animation_[Type::NockBack] = model->AddAnimation("Assets/Animation/knockback/body_knockback.fbx");
+	animation_[Type::NockBack] = model->AddAnimation("Assets/Player/Animation/playerchara_hammer_taiki.fbx");
+}
+
+void PlayerAnimation::InitAllAnimations()
+{
+	constexpr ModelTag modelTag[3] = { ModelTag::Player_1, ModelTag::Player_2, ModelTag::Player_3 };
+
+	for (int i = 0; i < 3; ++i)
+	{
+		Model* model = ModelManager::Get(modelTag[i]);
+		if (!model) continue;
+
+		//待機
+		allAnimations_[i][Type::Idle] = model->AddAnimation("Assets/Player/Animation/playerchara_hammer_taiki.fbx");
+		//移動
+		allAnimations_[i][Type::Move] = model->AddAnimation("Assets/Player/Animation/playerchara_hammer_hashiru.fbx");
+		// 通常攻撃
+		allAnimations_[i][Type::NormalAttack] = model->AddAnimation("Assets/Player/Animation/playerchara_hammer_rotateattack.fbx");
+		// 回転攻撃
+		allAnimations_[i][Type::SpinAttack] = model->AddAnimation("Assets/Player/Animation/playerchara_hammer_rotateattack.fbx");
+		//突進攻撃
+		allAnimations_[i][Type::DashAttack] = model->AddAnimation("Assets/Player/Animation/playerchara_hammer_dashattack.fbx");
+		//ノックバック
+		allAnimations_[i][Type::NockBack] = model->AddAnimation("Assets/Player/Animation/playerchara_hammer_taiki.fbx");
+	}
 }
 
 /*
@@ -239,45 +293,21 @@ PlayerAnimation::Type PlayerAnimation::DecideNextTypeFromState() const
 	return Type::None;
 }
 
-/*
-* @brief 次のアニメーションへ遷移する
-* @param[from] no 現在のアニメーション Type
-* @param[from] no 次のアニメーション Type
-*/
-void PlayerAnimation::ChangeState()
-{
 
+
+int PlayerAnimation::GetNowGrade() const
+{
+	//TODO: プレイヤーの現在のグレードを返す処理を実装
+	if (!hammer_)
+	{
+		return -1;
+	}
+
+	HammerGrade grade = hammer_->GetGrade();
+
+	return static_cast<int>(grade);
 }
 
-/*
-* @brief 現在アニメーションの更新処理
-*/
-void PlayerAnimation::UpdateCurrentState()
-{
 
-}
-
-void PlayerAnimation::AddHammerAllAnimations()
-{
-	GameObject* hummer = gameObject->FindChildWithTag(Tag::Hammer);
-	if (!hummer) return;
-	
-	hummerAnime_ = hummer->GetComponent<Animator>();
-
-	Model* model = ModelManager::Get(ModelTag::Hammer_1);
-
-	//待機
-	hummerAnimation_[Type::Idle] = model->AddAnimation("Assets/Animation/taiki/hammer_taiki.fbx");
-	//移動
-	hummerAnimation_[Type::Move] = model->AddAnimation("Assets/Animation/hashiru/hammer_hashiru.fbx");
-	// 通常攻撃
-	hummerAnimation_[Type::NormalAttack] = model->AddAnimation("Assets/Animation/rotateattack/hammer_rotateattack.fbx");
-	// 回転攻撃
-	hummerAnimation_[Type::SpinAttack] = model->AddAnimation("Assets/Animation/rotateattack/hammer_rotateattack.fbx");
-	//突進攻撃
-	hummerAnimation_[Type::DashAttack] = model->AddAnimation("Assets/Animation/dashattack/hammer_dashattack.fbx");
-	//ノックバック
-	hummerAnimation_[Type::NockBack] = model->AddAnimation("Assets/Animation/knockback/hammer_knockback.fbx");
-}
 
 

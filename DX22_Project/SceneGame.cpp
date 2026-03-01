@@ -313,7 +313,7 @@ void SceneGame::CreateCameraAndPlayer()
 	GameObject& player = w.CreateGameObject(KPlayerInitPos[ToIndex(GetCurrentStage())], Vector3(0.f, 90.f, 0.f));
  
 	player.SetTag(Tag::Player);
-	player.AddComponent<MeshFilter>(ModelTag::Player);
+	player.AddComponent<MeshFilter>(ModelTag::Player_1);
 	player.AddComponent<MeshRenderer>();
 	player.AddComponent<Rigidbody>();
 	player.AddComponent<BoxCollider>(false, Vector3(0.f, 0.5f, -0.1f), Vector3(0.7f, 1.f, 0.7f));
@@ -328,7 +328,7 @@ void SceneGame::CreateCameraAndPlayer()
 
 	GameObject& hummer = hammerPivot.CreateChild(Hammer::BasePos, Hammer::BaseRota, Vector3(0.2f, 0.2f, 0.2f));
 	hummer.SetTag(Tag::Hammer);
-	hummer.AddComponent<MeshFilter>(ModelTag::Hammer_1);
+	hummer.AddComponent<MeshFilter>(ModelTag::Hammer_3);
 	hummer.AddComponent<MeshRenderer>();
 	hummer.AddComponent<BoxCollider>(false, Vector3(-3.f, 2.f, -3.f), Vector3(5.f, 5.f, 2.f));
 	hummer.AddComponent<Hammer>();
@@ -349,7 +349,7 @@ void SceneGame::CreateStage()
 	StageId stage = GetCurrentStage();
 
 	// デバック用
-	//stage = StageId::Stage1;
+	stage = StageId::Stage1;
 
 	switch (stage)
 	{

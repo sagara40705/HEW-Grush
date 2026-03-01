@@ -52,6 +52,8 @@ private:
 	PlayerAnimation* playerAnim_ = nullptr;
 	HammerEffects* effects_ = nullptr;
 	Transform* pivotTf_ = nullptr;
+	MeshFilter* playerMf_ = nullptr;
+	Animator* playerAnime_ = nullptr;
 public:
 	void Start() override;
 	void Update() override;

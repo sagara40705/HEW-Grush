@@ -18,6 +18,7 @@ public:
     void SetTimeSeconds(float time);
     float GetCurrentAnimeTime() const;
 
+    void UpdateModel();
 
     Model::AnimeNo GetCurrentAnime() const { return currentAnime_; }
     bool           IsLoop()          const { return loopFlag; }

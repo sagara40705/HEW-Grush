@@ -35,7 +35,11 @@ enum class ModelTag : uint8_t
 	Hammer_3,
 
 	Fence, //19
-	Warp,
+	Warp,//20
+
+	Player_1, //21
+	Player_2, //22
+	Player_3, //23
 
 	Count
 };

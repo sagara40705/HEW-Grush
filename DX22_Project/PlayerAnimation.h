@@ -4,6 +4,7 @@
 #include <cstdint>
 
 class PlayerState;
+class Hammer;
 
 /*
 * プレイヤーのアニメーション制御
@@ -32,6 +33,7 @@ public:
 	void OnDestroy() override;		// 終了処理
 	void Update()  override;		// 更新処理
 	void CheckNockBackAnime(float duration );	//ノックバックアニメーションのチェック
+	void Restart();
 private:
 	Model::AnimeNo animation_[Type::Count]; //アニメーションナンバーの格納先
 	Type currentType_ = Type::None; // 現在のアニメーション
@@ -55,6 +57,7 @@ private:
 	* @brief animation_にAnimeNoを格納
 	*/
 	void AddAllAnimations();
+	void InitAllAnimations();
 	
 	/*
 	* @brief プレイヤーのステートから次のアニメーションをSetする
@@ -62,20 +65,12 @@ private:
 	*/
 	PlayerAnimation::Type DecideNextTypeFromState() const;
 
-	/*
-	* @brief 次のアニメーションへ遷移する
-	*/
-	void ChangeState();
-
-	/*
-	* @brief 現在アニメーションの更新処理
-	*/
-	void UpdateCurrentState();
+private:
+	// 全用
+	Model::AnimeNo allAnimations_[3][Type::Count]{}; 
+	Hammer* hammer_ = nullptr; // ハンマーのグレードによってアニメーションを変えるために必要
+	int GetNowGrade() const;
+	int grade_ = 0; // ハンマーのグレード
 
 private:
-	// ハンマー用
-	Model::AnimeNo hummerAnimation_[Type::Count]; //アニメーションナンバーの格納先
-	Animator* hummerAnime_ = nullptr;		//アニメーター
-private:
-	void AddHammerAllAnimations();
 };

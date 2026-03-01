@@ -36,12 +36,13 @@ void Animator::Start()
 //---------------------------------------------------------
 void Animator::Play(Model::AnimeNo animeNo, bool loop, float spd)
 {
-    if (!model_)
+    if (!model_ )
     {
-        meshFilter = gameObject->GetComponent<MeshFilter>();
+        //meshFilter = gameObject->GetComponent<MeshFilter>();
         model_ = meshFilter->GetModel();
 		assert(model_ && "Animator::Play, meshFilte‚Ìmodel‚ªnullptr‚Å‚·");
     }
+
 
     if (animeNo == Model::ANIME_NONE) return;
     isPlaying_ = true;
@@ -86,6 +87,11 @@ float Animator::GetCurrentAnimeTime() const
 
     const auto* info = model_->GetPlayAnimeInfo();
     return info ? info->nowTime : 0.0f;
+}
+
+void Animator::UpdateModel()
+{
+    model_ = meshFilter->GetModel();
 }
 
 //---------------------------------------------------------

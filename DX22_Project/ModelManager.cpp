@@ -9,7 +9,8 @@ std::array<float, static_cast<size_t>(ModelTag::Count)> ModelManager::modelBound
 	2.4f, 3.f, 3.f,  /*12 - 14*/
 	0.f, //15
     0.0f,0.f,0.f,   /*16 - 18*/
-    0.f,0.f   /*19 - 20*/
+    0.f,0.f,   /*19 - 20*/
+	0.f, 0.f, 0.f /*21 - 23*/
 };
 
 const ModelLoadData ModelManager::kModelData[static_cast<size_t>(ModelTag::Count)] =
@@ -41,12 +42,17 @@ const ModelLoadData ModelManager::kModelData[static_cast<size_t>(ModelTag::Count
     /*16 - 18*/
     //{"Assets/Model/Hammer/Grade_1/new_hammer_grade1_2.fbx",                   0.08f, Model::Flip::ZFlip}, //20
     {"Assets/Player/Model/hammer_1.fbx",                                      0.08f, Model::Flip::ZFlip}, //20
-    {"Assets/Model/Hammer/Grade_2/hammer_grade2.fbx",                         0.08f, Model::Flip::ZFlip}, //21
-    {"Assets/Model/Hammer/Grade_3/hammer_grade3.fbx",                         0.08f, Model::Flip::ZFlip}, //22
+    {"Assets/Player/Model/playerchara_hammer_2.fbx",                          0.08f, Model::Flip::ZFlip}, //21
+    {"Assets/Player/Model/playerchara_hammer_3.fbx",                          0.08f, Model::Flip::ZFlip}, //22
 
     /*19 - 20*/
     {"Assets/Model/Stage/MD_fence_260118.fbx",                                0.04f, Model::Flip::ZFlip}, //23
     {"Assets/Model/Stage/warp.fbx",                                           0.30f, Model::Flip::ZFlip }, //24
+
+    /*21 - 23*/
+	{"Assets/Player/Model2/player_grade_1.fbx",                                0.01f, Model::Flip::ZFlip}, //25
+	{"Assets/Player/Model2/player_grade_2.fbx",                                0.01f, Model::Flip::ZFlip}, //26
+	{"Assets/Player/Model2/player_grade_3.fbx",                                0.01f, Model::Flip::ZFlip}, //27
 };
 
 bool ModelManager::Load(ModelTag tag)

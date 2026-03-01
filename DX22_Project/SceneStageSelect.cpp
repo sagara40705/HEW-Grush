@@ -30,8 +30,11 @@ void SceneStageSelect::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	// ÉÇÉfÉãÉçÅ[Éh
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_1); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_2); });
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_3); });
+	//outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_2); });
+	//outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_3); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player_1); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player_2); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player_3); });
 
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Swing); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Gomibukuro); });
@@ -109,7 +112,7 @@ void SceneStageSelect::CreatePlayer()
 	GameObject& playerObj = world.CreateGameObject(Vector3(-5.f, 0.f, 0.f));
 	playerObj.SetTag(Tag::Player);
 
-	playerObj.AddComponent<MeshFilter>(ModelTag::Player);
+	playerObj.AddComponent<MeshFilter>(ModelTag::Player_2);
 	playerObj.AddComponent<MeshRenderer>();
 	playerObj.AddComponent<SelectPlayerControl>();
 	

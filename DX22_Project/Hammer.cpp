@@ -12,6 +12,7 @@
 #include "HammerEffects.h"
 #include "GlassObject.h"
 #include "DebugLog.h"
+#include "Animator.h"
 #include <cmath>
 
 void Hammer::Start()
@@ -20,7 +21,6 @@ void Hammer::Start()
 	bc_ = gameObject->GetComponent<BoxCollider>();
 	mf_ = gameObject->GetComponent<MeshFilter>();
 	renderer_ = gameObject->GetComponent<MeshRenderer>();
-	playerAnim_ = gameObject->GetComponent<PlayerAnimation>();
 	effects_ = gameObject->GetComponent<HammerEffects>();
 
 	GameObject* camera = gameObject->FindWithTag(Tag::MainCamera);
@@ -40,6 +40,12 @@ void Hammer::Start()
 
 	GameObject* pivot = gameObject->FindWithTag(Tag::HammerPivot);
 	pivotTf_ = pivot->GetComponent<Transform>();
+
+	GameObject* player = gameObject->FindWithTag(Tag::Player);
+	playerMf_ = player->GetComponent<MeshFilter>();
+	playerAnime_ = player->GetComponent<Animator>();
+	playerAnim_ = player->GetComponent<PlayerAnimation>();
+
 
 	//SetModel();
 }
@@ -99,9 +105,12 @@ void Hammer::SetScale()
 
 void Hammer::SetModel()
 {
-	constexpr ModelTag models[ToIndex(HammerGrade::Count)] = { ModelTag::Hammer_1, ModelTag::Hammer_2, ModelTag::Hammer_3 };
+	constexpr ModelTag models[ToIndex(HammerGrade::Count)] = { ModelTag::Player_1, ModelTag::Player_2, ModelTag::Player_1 };
 
-	mf_->SetModel(models[ToIndex(grade_)]);
+	playerMf_->SetModel(models[ToIndex(grade_)]);
+	playerAnime_->UpdateModel();
+	playerAnime_->Stop();
+	playerAnim_->Restart();
 }
 
 void Hammer::UpdateNormalAttack(float r)
