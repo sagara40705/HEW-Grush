@@ -39,7 +39,8 @@ const ModelLoadData ModelManager::kModelData[static_cast<size_t>(ModelTag::Count
     {"Assets/Model/Player/playerchara_20260114.fbx",                          0.01f, Model::Flip::ZFlip}, 
 
     /*16 - 18*/
-    {"Assets/Model/Hammer/Grade_1/new_hammer_grade1_2.fbx",                   0.08f, Model::Flip::ZFlip}, //20
+    //{"Assets/Model/Hammer/Grade_1/new_hammer_grade1_2.fbx",                   0.08f, Model::Flip::ZFlip}, //20
+    {"Assets/Player/Model/hammer_1.fbx",                                      0.08f, Model::Flip::ZFlip}, //20
     {"Assets/Model/Hammer/Grade_2/hammer_grade2.fbx",                         0.08f, Model::Flip::ZFlip}, //21
     {"Assets/Model/Hammer/Grade_3/hammer_grade3.fbx",                         0.08f, Model::Flip::ZFlip}, //22
 
