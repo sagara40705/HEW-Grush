@@ -54,6 +54,7 @@ private:
 	Transform* pivotTf_ = nullptr;
 	MeshFilter* playerMf_ = nullptr;
 	Animator* playerAnime_ = nullptr;
+	MeshRenderer* playerRenderer_ = nullptr;
 public:
 	void Start() override;
 	void Update() override;

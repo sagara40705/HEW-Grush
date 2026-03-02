@@ -34,6 +34,9 @@ void GlassGaugeUI::Update()
 	if (manager_->changeLimitBreak)
 	{
 		fever_->SetEnabled(manager_->GetIsLimitBreak());
+		em_->SetEnabled(!manager_->GetIsLimitBreak());
+		max_->SetEnabled(!manager_->GetIsLimitBreak());
+		manager_->changeLimitBreak = false;
 	}
 
 	if (!manager_->dirty_) return;

@@ -45,6 +45,7 @@ void Hammer::Start()
 	playerMf_ = player->GetComponent<MeshFilter>();
 	playerAnime_ = player->GetComponent<Animator>();
 	playerAnim_ = player->GetComponent<PlayerAnimation>();
+	playerRenderer_ = player->GetComponent<MeshRenderer>();
 
 
 	//SetModel();
@@ -209,11 +210,13 @@ bool Hammer::CanBrake(GlassGrade glass)
 
 void Hammer::LimitBreakStart()
 {
+	playerRenderer_->psKind = ShaderList::PS_RAINBOW;
 	renderer_->psKind = ShaderList::PS_RAINBOW;
 }
 
 void Hammer::LimitBreakEnd()
 {
+	playerRenderer_->psKind = ShaderList::PS_LAMBERT;
 	renderer_->psKind = ShaderList::PS_LAMBERT;
 }
 
