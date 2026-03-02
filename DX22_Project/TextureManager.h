@@ -81,7 +81,7 @@ enum class TextureTag : uint8_t
     Result_Time_Colon = 59,	 // タイムのコロン
 
     Result_Gauge_Bar = 60,	 // ゲージのバー
-    Result_Gauge_Frame = 61,	 // ゲージのフレーム
+    Result_Gauge_Frame = 61, // ゲージのフレーム
     Result_Next_Text = 62,	 // 次へテキスト
 
     Result_Rank_S = 63,		 // ランク

@@ -18,6 +18,8 @@ private:
 	UiSpriteRenderer* uiFrame_ = nullptr;
 	UiSpriteRenderer* uiJob_ = nullptr;
 	UiSpriteRenderer* uiJobFlash_ = nullptr;
+	UiSpriteRenderer* uiframe_ = nullptr;
+	UiSpriteRenderer* uiframeFlash_ = nullptr;
 private:
 	int currentGauge_ = 0;	// 現在のゲージ値
 	int finalGauge_ = 0;	// 最終のゲージ値
@@ -35,6 +37,8 @@ private:
 	static constexpr int GAUGE_UP_SPEED = 1; // ゲージ上昇速度
 	void UpdateGauge();
 	void ChangeJobUI();
+	void ChangeFrameUI();
+
 	void SetGaugeBarPercent(float percent);
 	
 };

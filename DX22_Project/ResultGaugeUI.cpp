@@ -21,15 +21,25 @@ void ResultGaugeUI::Awake()
 	uiFrame_ = &Frame.AddComponent<UiSpriteRenderer>
 		(TextureTag::Result_Gauge_Frame, Vector2::zero(), Vector2(1280.f, 720.f));
 
+	GameObject& frameFlash = gameObject->CreateChild();
+	uiframeFlash_ = &frameFlash.AddComponent<UiSpriteRenderer>
+		(TextureTag::Result_Gauge_Frame, Vector2::zero(), Vector2(1280.f, 720.f));
+
 	GameObject& job = gameObject->CreateChild();
 	uiJob_ = &job.AddComponent<UiSpriteRenderer>(TextureTag::Result_Job_Pikapika, Vector2(650.f, 450.f), Vector2(600.f, 70.f));
 
 	GameObject& jobFlash = gameObject->CreateChild();
 	uiJobFlash_ = &jobFlash.AddComponent<UiSpriteRenderer>(TextureTag::Result_Job_Pikapika, Vector2(650.f, 450.f), Vector2(600.f, 70.f));
 
+
 	// 最初は透明にしておく
+	if (!uiJobFlash_) return;
 	uiJobFlash_->SetColor({ 2.0f, 2.0f, 2.0f, 0.0f });
 	uiJobFlash_->SetVisible(false);
+
+	if (!uiframeFlash_) return;
+	uiframeFlash_->SetColor({ 2.0f, 2.0f, 2.0f, 0.0f });
+	uiframeFlash_->SetVisible(false);
 }
 
 void ResultGaugeUI::Start()
@@ -81,10 +91,17 @@ void ResultGaugeUI::Update()
 			// 明るい白（輝度2.0〜3.0）で、透明度だけをふわっと変える
 			uiJobFlash_->SetColor({ 4.f, 4.f, 4.f, alpha });
 		}
+		if (uiframeFlash_)
+		{
+			uiframeFlash_->SetVisible(true);
+			// 明るい白（輝度2.0〜3.0）で、透明度だけをふわっと変える
+			uiframeFlash_->SetColor({ 4.f, 4.f, 4.f, alpha });
+		}
 	}
 	else
 	{
 		if (uiJobFlash_) uiJobFlash_->SetVisible(false);
+		if (uiframeFlash_) uiframeFlash_->SetVisible(false);
 	}
 
 }
@@ -95,6 +112,8 @@ void ResultGaugeUI::OnDestroy()
 	uiGauge_ = nullptr;
 	uiJob_ = nullptr;
 	uiJobFlash_ = nullptr;
+	uiframe_ = nullptr;
+	uiframeFlash_ = nullptr;
 }
 
 void ResultGaugeUI::CalcFinalGauge()
