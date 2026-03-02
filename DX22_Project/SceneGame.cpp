@@ -1155,17 +1155,17 @@ void SceneGame::Update()
 		// スタートUIアニメーション
 		if (m_animationTime < 1.0f)
 		{
-			//uiStart_->SetVisible(true);
+			uiStart_->SetVisible(true);
 			m_animationTime += 1.0f / 80.0f; // 約1.3秒
 			if (m_animationTime > 1.0f) m_animationTime = 1.0f;
 
 			float bounce = Easing::EaseOutBounce(m_animationTime);
 			float yPos = -800.0f + (800.0f * bounce);
-			//uiStart_->SetOffset({ 30.0f, yPos });
+			uiStart_->SetOffset({ 30.0f, yPos });
 		}
 		else
 		{
-			//uiStart_->SetVisible(false);
+			uiStart_->SetVisible(false);
 			SetGameLock(false);
 		}
 		return;

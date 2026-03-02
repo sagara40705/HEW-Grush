@@ -105,7 +105,7 @@ void Hammer::SetScale()
 
 void Hammer::SetModel()
 {
-	constexpr ModelTag models[ToIndex(HammerGrade::Count)] = { ModelTag::Player_1, ModelTag::Player_2, ModelTag::Player_1 };
+	constexpr ModelTag models[ToIndex(HammerGrade::Count)] = { ModelTag::Player_1, ModelTag::Player_2, ModelTag::Player_3 };
 
 	playerMf_->SetModel(models[ToIndex(grade_)]);
 	playerAnime_->UpdateModel();

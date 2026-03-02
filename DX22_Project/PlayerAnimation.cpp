@@ -22,7 +22,7 @@ void PlayerAnimation::Start()
 	//AddAllAnimations();
 	InitAllAnimations();
 	anime_->Play(allAnimations_[0][Type::Idle], false, 1.f);
-	anime_->SetTimeSeconds(4.8f);
+	anime_->SetTimeSeconds(0.0f);
 
 	assert(state_ && anime_ && "PlayerAnimation	で プレイヤーの <PlayerState> か <Animator> が nullptr です");
 }
@@ -46,33 +46,30 @@ void PlayerAnimation::Update()
 		return;
 	}
 
-	if (grade_ == 1)
-	{
-		//DebugLog::OutputValue("PlayerAnimation Update, grade:", grade_);
-	}
-	
-
 	// ノックバック優先処理
 	
-	//if (isKnockback_)
-	//{
-	//	const float dt = 1.0f / 60.0f;
-	//	knockbackTimer_ += dt;
+	if (isKnockback_)
+	{
+		const float dt = 1.0f / 60.0f;
+		knockbackTimer_ += dt;
 
-	//	if (knockbackTimer_ >= knockbackDuration_)
-	//	{
-	//		isKnockback_ = false; currentType_ = Type::Move;
-	//		anime_->Play(animation_[Type::Move], false, 1.0f);
+		if (knockbackTimer_ >= knockbackDuration_)
+		{
+			isKnockback_ = false; currentType_ = Type::Move;
+			anime_->Play(allAnimations_[0][Type::Move], false, 1.0f);
+			anime_->SetTimeSeconds(4.8f);
 
-	//	} // ノックバック中は他のアニメ判定を行わない
-	//}
+			return;
+
+		} // ノックバック中は他のアニメ判定を行わない
+	}
 
 	//移動を先に判定
 	CheckMoveAnime();
 
-	//CheckNormalAttackAnime();
-	//CheckSpinAttackAnime();
-	//CheckDashAttackAnime();
+	CheckNormalAttackAnime();
+	CheckSpinAttackAnime();
+	CheckDashAttackAnime();
 	
 }
 
@@ -83,7 +80,7 @@ void PlayerAnimation::CheckNockBackAnime(float duration)
 
 	knockbackDuration_ = duration;
 
-	anime_->Play(animation_[Type::NockBack], false, 1.0f);
+	anime_->Play(allAnimations_[grade_][Type::NockBack], false, 1.0f);
 	if (currentType_ == Type::NormalAttack)
 	{
 		// 通常攻撃中に吹っ飛んだら、少しのけぞりが大きいところから
@@ -146,7 +143,7 @@ void PlayerAnimation::CheckMoveAnime()
 		{
 			currentType_ = Type::Move;
 			//anime_->Play(animation_[Type::Move], false, 1.f);
-			anime_->Play(allAnimations_[0][Type::Move], false, 1.f);
+			anime_->Play(allAnimations_[grade_][Type::Move], false, 1.f);
 			anime_->SetTimeSeconds(0.3f);
 		}
 	}
@@ -161,10 +158,10 @@ void PlayerAnimation::CheckNormalAttackAnime()
 		const float t = anime_->GetCurrentAnimeTime();
 
 		//アニメーション終了したら待機アニメーションへ
-		if (t > 2.5f)
+		if (t > 1.5f)
 		{
 			currentType_ = Type::Move;
-			anime_->Play(animation_[Type::Move], false, 1.f);
+			anime_->Play(allAnimations_[grade_][Type::Move], false, 1.f);
 			anime_->SetTimeSeconds(4.8f);
 		}
 	}
@@ -173,7 +170,7 @@ void PlayerAnimation::CheckNormalAttackAnime()
 		if (state_->actionedThisFrame[ToIndex(ActionId::NormalAttack)])
 		{
 			currentType_ = Type::NormalAttack;
-			anime_->Play(animation_[Type::NormalAttack], false, 4.0f);
+			anime_->Play(allAnimations_[grade_][Type::NormalAttack], false, 0.6f);
 			anime_->SetTimeSeconds(1.3f);
 		}
 
@@ -192,7 +189,7 @@ void PlayerAnimation::CheckSpinAttackAnime()
 		if (t > 2.1f)
 		{
 			currentType_ = Type::Move;
-			anime_->Play(animation_[Type::Move], false, 1.0f);
+			anime_->Play(allAnimations_[grade_][Type::Move], false, 1.0f);
 			anime_->SetTimeSeconds(4.8f);
 		}
 	}
@@ -202,7 +199,7 @@ void PlayerAnimation::CheckSpinAttackAnime()
 		if (state_->actionedThisFrame[ToIndex(ActionId::SpinAttack)])
 		{
 			currentType_ = Type::SpinAttack;
-			anime_->Play(animation_[Type::SpinAttack], false, 1.0f);
+			anime_->Play(allAnimations_[grade_][Type::SpinAttack], false, 1.0f);
 			anime_->SetTimeSeconds(1.3f);
 		}
 
@@ -222,7 +219,7 @@ void PlayerAnimation::CheckDashAttackAnime()
 		if (t > 3.0)
 		{
 			currentType_ = Type::Move;
-			anime_->Play(animation_[Type::Move], false, 1.f);
+			anime_->Play(allAnimations_[grade_][Type::Move], false, 1.f);
 			anime_->SetTimeSeconds(4.8f);
 		}
 	}
@@ -232,7 +229,7 @@ void PlayerAnimation::CheckDashAttackAnime()
 		if (state_->actionedThisFrame[ToIndex(ActionId::DashAttack)])
 		{
 			currentType_ = Type::DashAttack;
-			anime_->Play(animation_[Type::DashAttack], false, 1.0f);
+			anime_->Play(allAnimations_[grade_][Type::DashAttack], false, 1.0f);
 			anime_->SetTimeSeconds(1.5f);
 		}
 	}

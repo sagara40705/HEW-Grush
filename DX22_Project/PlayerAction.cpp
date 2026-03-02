@@ -12,7 +12,7 @@
 #include "GameState.h"
 #include <cassert>
 
-constexpr float kActionTime[ToIndex(ActionId::Count)] = { 0.3f, 0.8f, 1.5f };
+constexpr float kActionTime[ToIndex(ActionId::Count)] = { 0.15f, 0.8f, 1.5f };
 constexpr float kCoolDown[ToIndex(ActionId::Count)]  = { 0.1f, 5.f, 5.f };
 
 void PlayerAction::Start()
