@@ -349,7 +349,7 @@ void SceneGame::CreateStage()
 	StageId stage = GetCurrentStage();
 
 	// デバック用
-	stage = StageId::Stage1;
+	//stage = StageId::Stage1;
 
 	switch (stage)
 	{
