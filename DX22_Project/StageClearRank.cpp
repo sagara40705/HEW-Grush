@@ -21,7 +21,6 @@ void StageClearRank::Awake()
 
 		isStageRank_ = true;
 	}
-	
 }
 
 void StageClearRank::Start()
