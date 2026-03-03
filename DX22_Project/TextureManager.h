@@ -67,7 +67,7 @@ enum class TextureTag : uint8_t
 	Game_GlassShard = 47,			 // ƒKƒ‰ƒX‚Ì”j•Ð
 	Game_UI_Finish = 48,
     Game_UI_Start = 49,
-    _SpareSlot_14 = 50,
+    Game_Shadow = 50,
     _SpareSlot_15 = 51,
     _SpareSlot_16 = 52,
     _SpareSlot_17 = 53,

@@ -174,6 +174,7 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Gaug_Lv3); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_GlassShard); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_UI_Finish); });
+	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Game_Shadow); });
 
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::Option_BG); });
 	outTasks.emplace_back([this] { TextureManager::Load(TextureTag::option_Back); });
@@ -333,6 +334,9 @@ void SceneGame::CreateCameraAndPlayer()
 	hummer.AddComponent<BoxCollider>(false, Vector3(-3.f, 2.f, -3.f), Vector3(5.f, 5.f, 2.f));
 	hummer.AddComponent<Hammer>();
 	hummer.AddComponent<HammerEffects>();
+
+	GameObject& shadow = player.CreateChild(Vector3::zero(), Vector3::zero(), Vector3::one());
+	shadow.AddComponent<Sprite3DRenderer>(TextureTag::Game_Shadow, Vector2::zero(), Vector2(100.f, 100.f));
 
 
 	GameObject& glassShardPool = w.CreateGameObject();
