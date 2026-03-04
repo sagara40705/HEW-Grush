@@ -112,8 +112,8 @@ void SceneStageSelect::CreatePlayer()
 	GameObject& playerObj = world.CreateGameObject(Vector3(-5.f, 0.f, 0.f));
 	playerObj.SetTag(Tag::Player);
 
-	playerObj.AddComponent<MeshFilter>(ModelTag::Player_2);
-	playerObj.AddComponent<MeshRenderer>();
+	//playerObj.AddComponent<MeshFilter>(ModelTag::Player_2);
+	//playerObj.AddComponent<MeshRenderer>();
 	playerObj.AddComponent<SelectPlayerControl>();
 	playerObj.AddComponent<UiSpriteRenderer>(TextureTag::StageSelect_PlayerIcon, Vector2(1000.f, 580.f), Vector2(100.f, 100.f));
 }
