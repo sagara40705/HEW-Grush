@@ -115,7 +115,7 @@ void SceneStageSelect::CreatePlayer()
 	playerObj.AddComponent<MeshFilter>(ModelTag::Player_2);
 	playerObj.AddComponent<MeshRenderer>();
 	playerObj.AddComponent<SelectPlayerControl>();
-	
+	playerObj.AddComponent<UiSpriteRenderer>(TextureTag::StageSelect_PlayerIcon, Vector2(160.f, 360.f), Vector2(100.f, 100.f));
 }
 
 void SceneStageSelect::CreateGround()
