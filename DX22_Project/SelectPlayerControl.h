@@ -18,6 +18,7 @@ private:
     StageMap* stageMap = nullptr;
     StagePoint* currentStagePoint = nullptr;
     Transform* tf = nullptr;
+	UiSpriteRenderer* ui = nullptr;
 
     // 目標（外部/入力でセットされる）
     StagePoint* nextStagePoint = nullptr;
@@ -29,6 +30,8 @@ private:
     Vector3 moveStartPos{};
     Vector3 moveEndPos{};
     StagePoint* moveTargetPoint = nullptr;
+	Vector2 moveStartUiPos{};
+	Vector2 moveEndUiPos{};
 
 public:
     void Start() override;

@@ -1,6 +1,7 @@
 #pragma once
 #include "GameState.h"
 #include "Vector3.h"
+#include "Vector2.h"
 #include "StageMap.h"
 #include <vector>
 
@@ -26,6 +27,7 @@ struct StagePoint
 {
 	StageId stageId;							 //ステージID
 	Vector3 position;							 //ステージポイントの位置
+	Vector2 uiPosition;							 //UI上の位置
 	std::vector<ConnectedStage> connectedStages; //繋がっているステージの情報
 	//Stagelevel level;                 //ステージレベル
 };

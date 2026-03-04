@@ -9,6 +9,7 @@
 #include "DebugLog.h"
 #include "GameState.h"
 #include "SoundManager.h"
+#include "UiSpriteRenderer.h"
 
 #include <assert.h>
 #include <algorithm>
@@ -32,9 +33,12 @@ void SelectPlayerControl::Start()
     tf = gameObject->GetComponent<Transform>();
     assert(tf && "SelectPlayerControl::Start tf is null");
 
+	ui = gameObject->GetComponent<UiSpriteRenderer>();
+
     if (currentStagePoint)
     {
         tf->SetPosition(currentStagePoint->position);
+		ui->SetOffset(currentStagePoint->uiPosition);
     }
 
     isMoving = false;
@@ -67,6 +71,7 @@ void SelectPlayerControl::OnDestroy()
     currentStagePoint = nullptr;
     stageMap = nullptr;
     tf = nullptr;
+	ui = nullptr;
 }
 
 void SelectPlayerControl::UpdateIdle()
@@ -192,6 +197,9 @@ void SelectPlayerControl::BeginMove(StagePoint* goal)
     moveStartPos = tf->GetPosition();
     moveEndPos = goal->position;
 
+	moveStartUiPos = currentStagePoint->uiPosition;
+	moveEndUiPos = goal->uiPosition;
+
     moveElapsed = 0.0f;
     isMoving = true;
 }
@@ -238,11 +246,13 @@ void SelectPlayerControl::MoveToStagePoint()
     const float t = std::clamp(moveElapsed / denom, 0.0f, 1.0f);
 
     tf->SetPosition(Vector3::Lerp(moveStartPos, moveEndPos, t));
+    ui->SetOffset(Vector2::Lerp(moveStartUiPos, moveEndUiPos, t));
 
     // Š®—¹iŠ®—¹‚Ü‚Å currentState ‚Í Moving ‚Ì‚Ü‚Üj
     if (t >= 1.0f)
     {
         tf->SetPosition(moveEndPos);
+		ui->SetOffset(moveEndUiPos);
 
         currentStagePoint = nextStagePoint;
         DebugLog::OutputValue("Player move stage point id = %d", static_cast<int>(currentStagePoint->stageId));

@@ -84,9 +84,44 @@ struct PS_IN
 Texture2D    tex  : register(t0);
 SamplerState samp : register(s0);
 
+// タイルID(整数)から擬似乱数を作る簡易ハッシュ
+uint Hash2(uint2 v)
+{
+    // 2D -> 1D
+    uint n = v.x * 73856093u ^ v.y * 19349663u;
+    // avalanche
+    n = (n << 13) ^ n;
+    return n * (n * n * 15731u + 789221u) + 1376312589u;
+}
+
+// 0/90/180/270 度回転（タイル内ローカルUV[0..1)を回す）
+float2 RotateTileUV(float2 f, uint rot)
+{
+    // rot: 0..3
+    if (rot == 0u) return f;
+    if (rot == 1u) return float2(f.y, 1.0f - f.x);
+    if (rot == 2u) return float2(1.0f - f.x, 1.0f - f.y);
+    return float2(1.0f - f.y, f.x);
+}
+
 float4 main(PS_IN pin) : SV_TARGET
 {
-    float4 col = tex.Sample(samp, pin.uv);
+    float2 uv = pin.uv;
+
+    // 1タイルを [tileId + frac] とみなす
+    uint2  tileId = (uint2)floor(uv);
+    float2 fracUV = frac(uv);
+
+    // タイルごとに回転を決定
+    uint h   = Hash2(tileId);
+    uint rot = h & 3u; // 0..3
+
+    float2 rotated = RotateTileUV(fracUV, rot);
+
+    // タイル内で回転したUVでサンプル
+    float2 finalUV = (float2)tileId + rotated;
+
+    float4 col = tex.Sample(samp, finalUV);
     return col;
 }
 )EOT";
