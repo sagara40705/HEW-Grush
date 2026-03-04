@@ -25,4 +25,8 @@ private:
 	void UpdateDashAttack();
 public:
 	void StopNormalAttack();
+private:
+	bool stopAction = false;
+public:
+	void StopAction() { stopAction = true; }
 };

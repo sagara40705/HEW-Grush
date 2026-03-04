@@ -9,10 +9,12 @@
 #include "GlassGaugeManager.h"
 #include "ScoreManager.h"
 #include "PlayerAnimation.h"
+#include "PlayerAction.h"
 #include "HammerEffects.h"
 #include "GlassObject.h"
 #include "DebugLog.h"
 #include "Animator.h"
+
 #include <cmath>
 
 void Hammer::Start()
@@ -46,7 +48,7 @@ void Hammer::Start()
 	playerAnime_ = player->GetComponent<Animator>();
 	playerAnim_ = player->GetComponent<PlayerAnimation>();
 	playerRenderer_ = player->GetComponent<MeshRenderer>();
-
+	action_ = player->GetComponent<PlayerAction>();
 
 	//SetModel();
 }
@@ -189,7 +191,13 @@ void Hammer::Attack(GameObject* go)
 	if (ToIndex(glass->GetGrade()) > ToIndex(grade_))
 	{
 		if (playerAnim_)
+		{
 			playerAnim_->CheckNockBackAnime(0.5f);
+		}
+		if (action_)
+		{
+			action_->StopAction();
+		}
 	}
 
 	//if (CanBrake(glass->GetGrade()))

@@ -84,7 +84,7 @@ void GlassGaugeManager::Update()
 		constexpr float kGaugeDecayValue = 0.1f;
 		gauge_ -= kGaugeDecayValue;
 
-		if (gauge_ < 40.f)
+		if (gauge_ < 100.f)
 		{
 			if (!m_checkGaugeDownSound)
 			{
@@ -107,7 +107,7 @@ void GlassGaugeManager::Update()
 	else
 	{
 		// 減衰までの時間を計る
-		constexpr float kGaugeDecayDelayTime = 2.0f; //ゲージ減衰までの時間
+		constexpr float kGaugeDecayDelayTime = 5.0f; //ゲージ減衰までの時間
 		gaugeDecayDelayTimer += DT;
 		if (gaugeDecayDelayTimer >=  kGaugeDecayDelayTime)
 		{

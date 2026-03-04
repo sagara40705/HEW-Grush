@@ -93,7 +93,7 @@ void GlassObject::SpawnShards()
 
 	const size_t kSpawnNum = 4 + ToIndex(grade_) * 8;
 
-	constexpr float kSize[ToIndex(GlassGrade::Count)] = { 0.6f, 0.9f, 1.2f };
+	constexpr float kSize[ToIndex(GlassGrade::Count)] = { 0.6f, 0.8f, 1.0f };
 
 	for (int i = 0; i < kSpawnNum; ++i)
 	{
@@ -109,7 +109,7 @@ void GlassObject::SpawnShardMini()
 
 	const size_t kSpawnNum = ToIndex(grade_) * 6;
 
-	constexpr float kSize[ToIndex(GlassGrade::Count)] = { 0.2f, 0.4f, 0.6f };
+	constexpr float kSize[ToIndex(GlassGrade::Count)] = { 0.2f, 0.35f, 0.5f };
 
 	for (int i = 0; i < kSpawnNum; ++i)
 	{

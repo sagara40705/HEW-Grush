@@ -29,6 +29,7 @@ class GlassObject; enum class GlassGrade : std::uint8_t;
 class GlassGaugeManager; class ScoreManager;
 class HammerEffects; 
 class PlayerAnimation;
+class PlayerAction;
 
 class Hammer : public MonoBehaviour, public TriggerListener
 {
@@ -50,6 +51,7 @@ private:
 	GlassGaugeManager* gauge_ = nullptr;
 	ScoreManager* score_ = nullptr;
 	PlayerAnimation* playerAnim_ = nullptr;
+	PlayerAction* action_ = nullptr;
 	HammerEffects* effects_ = nullptr;
 	Transform* pivotTf_ = nullptr;
 	MeshFilter* playerMf_ = nullptr;

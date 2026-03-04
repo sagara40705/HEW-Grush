@@ -37,7 +37,7 @@ private:
 	const float kLimitBreakTime = 5.f; // ŒÀŠE“Ë”j‚·‚é‚Ü‚Å‚ÌŠÔ
 	float limitBreakTimer_ = 0.f;		// ŒÀŠE“Ë”j‚·‚é‚Ü‚Å‚Ìƒ^ƒCƒ}[
 
-	const float kLimitBreakDuration = 5.f; // ŒÀŠE“Ë”j‚Ì‘±ŠÔ
+	const float kLimitBreakDuration = 10.f; // ŒÀŠE“Ë”j‚Ì‘±ŠÔ
 	float limitBreakDurationTimer_ = 0.f;  // ŒÀŠE“Ë”j‚Ì‘±ŠÔƒ^ƒCƒ}[
 
 	bool IsMaxGauge(); //ƒQ[ƒW‚ªÅ‘å’l‚©H

@@ -144,9 +144,9 @@ float GlassShardPool::MakeImpulsePower()
 {
 	float r = RandRange(0.0f, 1.0f);
 	float impulsePower =
-		(r < 0.25f) ? RandRange(3.0f, 6.0f) :
-		(r < 0.6f) ? RandRange(7.0f, 13.0f) :
-		RandRange(15.0f, 20.0f);
+		(r < 0.25f) ? RandRange(3.0f, 7.0f) :
+		(r < 0.6f) ? RandRange(7.0f, 14.0f) :
+		RandRange(14.0f, 21.0f);
 
 	return impulsePower;
 }

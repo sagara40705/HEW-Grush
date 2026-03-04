@@ -131,7 +131,7 @@ void PlayerAnimation::CheckMoveAnime()
 		//移動停止したら終了位置まで再生
 		if (state_->moveStoppedThisFrame)
 		{
-			anime_->SetTimeSeconds(4.8f);
+			anime_->SetTimeSeconds(5.8f);
 			//currentType_ = Type::Idle;
 			//anime_->Play(animation_[Type::Idle], true, 1.f);
 		}
@@ -158,7 +158,7 @@ void PlayerAnimation::CheckNormalAttackAnime()
 		const float t = anime_->GetCurrentAnimeTime();
 
 		//アニメーション終了したら待機アニメーションへ
-		if (t > 1.5f)
+		if (t > 1.443f)
 		{
 			currentType_ = Type::Move;
 			anime_->Play(allAnimations_[grade_][Type::Move], false, 1.f);
@@ -170,7 +170,7 @@ void PlayerAnimation::CheckNormalAttackAnime()
 		if (state_->actionedThisFrame[ToIndex(ActionId::NormalAttack)])
 		{
 			currentType_ = Type::NormalAttack;
-			anime_->Play(allAnimations_[grade_][Type::NormalAttack], false, 0.6f);
+			anime_->Play(allAnimations_[grade_][Type::NormalAttack], false, 0.7f);
 			anime_->SetTimeSeconds(1.3f);
 		}
 
@@ -216,11 +216,11 @@ void PlayerAnimation::CheckDashAttackAnime()
 		const float t = anime_->GetCurrentAnimeTime();
 
 		//アニメーション終了したら待機アニメーションへ
-		if (t > 3.0)
+		if (t > 2.5)
 		{
 			currentType_ = Type::Move;
-			anime_->Play(allAnimations_[grade_][Type::Move], false, 1.f);
-			anime_->SetTimeSeconds(4.8f);
+			anime_->Play(allAnimations_[grade_][Type::Move], false, 1.0f);
+			anime_->SetTimeSeconds(5.0f);
 		}
 	}
 	else
@@ -230,7 +230,7 @@ void PlayerAnimation::CheckDashAttackAnime()
 		{
 			currentType_ = Type::DashAttack;
 			anime_->Play(allAnimations_[grade_][Type::DashAttack], false, 1.0f);
-			anime_->SetTimeSeconds(1.5f);
+			anime_->SetTimeSeconds(1.0f);
 		}
 	}
 }

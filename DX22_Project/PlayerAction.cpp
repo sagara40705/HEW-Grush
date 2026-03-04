@@ -12,7 +12,7 @@
 #include "GameState.h"
 #include <cassert>
 
-constexpr float kActionTime[ToIndex(ActionId::Count)] = { 0.15f, 0.8f, 1.5f };
+constexpr float kActionTime[ToIndex(ActionId::Count)] = { 0.1f, 0.8f, 1.5f };
 constexpr float kCoolDown[ToIndex(ActionId::Count)]  = { 0.1f, 5.f, 5.f };
 
 void PlayerAction::Start()
@@ -142,10 +142,11 @@ void PlayerAction::UpdateAction()
 	state_->actionTimer[ToIndex(action)] += DT;
 
 	// アクション時間を超えたら終了 + CoolTime設定
-	if (state_->actionTimer[ToIndex(action)]
-		>= kActionTime[ToIndex(action)])
+	// StopAction() が呼ばれたら強制終了
+	if (state_->actionTimer[ToIndex(action)] >= kActionTime[ToIndex(action)] || stopAction)
 	{
 		DebugLog::Output("アクション終了");
+		stopAction = false;
 		SetHammerActive(false);
 		hammer_->ResetPos();
 		state_->cooltime[ToIndex(action)] = kCoolDown[ToIndex(action)];
