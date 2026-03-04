@@ -46,7 +46,7 @@ void GlassShard::Start()
 
 void GlassShard::Update()
 {
-    constexpr float LIFE = 1.f;
+    constexpr float LIFE = 2.f;
     gameObject->transform->AddRotate(-dir_);
 
     if (timer_.ElapsedSeconds() >= LIFE)

@@ -151,7 +151,7 @@ inline void Render(const World& w)
     }
 
     // --- 2) デバッグ線など ---
-    w.DebugDrawColliders();
+    //w.DebugDrawColliders();
     //if(Camera::Main()) Camera::Main()->DebugDrawFrustum();
     //w.DebugDrawBounds();
     //LineManager::Draw(LineManager::LineGroup::General);

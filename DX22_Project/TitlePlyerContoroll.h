@@ -18,7 +18,7 @@ private:
 	Model::AnimeNo idleAnimeNo_;
 	Model::AnimeNo spinAnimeNo_;
 	Timer animationTimer_;
-	static constexpr float kAnimationTime = 0.9f;
+	static constexpr float kAnimationTime = 2.0f;
 private:
 	void AddAnimation();
 private:

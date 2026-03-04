@@ -17,7 +17,7 @@ void SceneTitle::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 		});
 
 	outTasks.emplace_back([this] { ModelManager::Clear(); });	// モデルマネージャー初期化
-	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player); });
+	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Player_3); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Hammer_3); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::SagaraDoll); });
 	outTasks.emplace_back([this] { ModelManager::Load(ModelTag::Ufo); });
@@ -96,7 +96,7 @@ void SceneTitle::CreateCameraAndPlayer()
 
 	// プレイヤー
 	GameObject& player = w.CreateGameObject(Vector3(0.f, 0.f, 0.f), Vector3(0.f, 0.f, 0.f), Vector3(2.f, 2.f, 2.f));
-	player.AddComponent<MeshFilter>(ModelTag::Player);
+	player.AddComponent<MeshFilter>(ModelTag::Player_3);
 	player.AddComponent<MeshRenderer>();
 	//player.AddComponent<PlayerState>();
 	player.AddComponent<Animator>();
@@ -112,7 +112,7 @@ void SceneTitle::CreateCameraAndPlayer()
 	GameObject& hummer = hammerPivot.CreateChild(Hammer::BasePos, Hammer::BaseRota, Vector3(0.2f, 0.2f, 0.2f));
 	hummer.SetTag(Tag::Hammer);
 	hummer.AddComponent<MeshFilter>(ModelTag::Hammer_3);
-	hummer.AddComponent<MeshRenderer>();
+	//hummer.AddComponent<MeshRenderer>();
 }
 
 void SceneTitle::CreateCanvas()
@@ -130,6 +130,9 @@ void SceneTitle::CreateBackGround()
 	//3Dオブジェクトとして描画
 	GameObject& backGround = w.CreateGameObject(Vector3(0.f, 0.f, 50.f));
 	backGround.AddComponent<Sprite3DRenderer>(TextureTag::Title_BG, Vector2(0.f, -10.f), Vector2(115.0f, 60.0f));
+
+	GameObject& backGround02 = w.CreateGameObject(Vector3(0.f, 0.f, 51.f));
+	backGround02.AddComponent<Sprite3DRenderer>(TextureTag::Title_BG, Vector2(0.f, -10.f), Vector2(115.0f, 60.0f));
 }
 
 void SceneTitle::CreateTitleFont()
@@ -214,7 +217,7 @@ void SceneTitle::Update()
 	{
 		m_zoomTimer += (1.0f / 60.0f);
 		float t = m_zoomTimer / ZOOM_DURATION;
-		if (t > 1.0f) t = 1.0f;
+		if (t > 1.8f) t = 1.8f;
 
 		float easeT = t * t * t;
 
@@ -232,7 +235,7 @@ void SceneTitle::Update()
 			}
 		}
 
-		if (t >= 1.0f)
+		if (t >= 1.8f)
 		{
 			m_isStarting = false;
 			break_->Play();

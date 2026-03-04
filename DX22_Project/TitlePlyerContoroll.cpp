@@ -21,9 +21,10 @@ void TitlePlyerContoroll::Start()
 	}
 
 	anime_ = gameObject->GetComponent<Animator>();
+	anime_->Start();
 	AddAnimation();
 	anime_->Play(idleAnimeNo_, false, 1.0f);
-	anime_->SetTimeSeconds(4.0f);
+	anime_->SetTimeSeconds(0.0f);
 	isAnimation_ = false;
 }
 
@@ -37,6 +38,10 @@ void TitlePlyerContoroll::Update()
 	}
 	else
 	{
+		if (anime_->GetCurrentAnimeTime() >= 4.0f)
+		{
+			anime_->SetTimeSeconds(0.1f);
+		}
 		UpdateInput();
 	}
 }
@@ -49,11 +54,11 @@ void TitlePlyerContoroll::OnDestroy()
 
 void TitlePlyerContoroll::AddAnimation()
 {
-	Model* model = ModelManager::Get(ModelTag::Player);
+	Model* model = ModelManager::Get(ModelTag::Player_3);
 	if (!model) return;
 
-	idleAnimeNo_ = model->AddAnimation("Assets/Animation/hashiru/body_hashiru.fbx");
-	spinAnimeNo_ = model->AddAnimation("Assets/Animation/rotateattack/body_rotateattack.fbx");
+	idleAnimeNo_ = model->AddAnimation("Assets/Player/Animation/playerchara_hammer_taiki.fbx");
+	spinAnimeNo_ = model->AddAnimation("Assets/Player/Animation/playerchara_hammer_rotateattack.fbx");
 }
 
 void TitlePlyerContoroll::UpdateAnimation()
@@ -89,8 +94,8 @@ void TitlePlyerContoroll::UpdateInput()
 	{
 		isAnimation_ = true;
 		animationTimer_.Start();
-		anime_->Play(spinAnimeNo_, false, 1.0f);
-		anime_->SetTimeSeconds(1.3f);
+		anime_->Play(spinAnimeNo_, false, 1.5f);
+		anime_->SetTimeSeconds(0.0f);
 
 		constexpr Vector3 POS = { -0.5f, 0.0f, -1.5f };
 		constexpr Vector3 ROTATE = { 0.f, -90.f, -45.f };
