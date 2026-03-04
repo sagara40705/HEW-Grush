@@ -91,7 +91,7 @@ void GlassObject::SpawnShards()
 	GlassShardPool* pool = GlassShardPool::GetInstanse();
 	Vector3 pos = tf_->GetPosition();
 
-	const size_t kSpawnNum = 8 + ToIndex(grade_) * 8;
+	const size_t kSpawnNum = 12+ ToIndex(grade_) * 12;
 
 	constexpr float kSize[ToIndex(GlassGrade::Count)] = { 0.6f, 0.8f, 1.0f };
 

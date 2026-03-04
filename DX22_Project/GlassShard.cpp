@@ -13,7 +13,7 @@
 DirectX::XMFLOAT4 MakeShardRandParam()
 {
     static thread_local std::mt19937 rng{ std::random_device{}() };
-    static thread_local std::uniform_real_distribution<float> dist(1.0f, 1.0f);
+    static thread_local std::uniform_real_distribution<float> dist(- 3.0f, 3.0f);
 
     return DirectX::XMFLOAT4{
         dist(rng),
@@ -47,7 +47,7 @@ void GlassShard::Start()
 void GlassShard::Update()
 {
     constexpr float LIFE = 1.f;
-    gameObject->transform->AddRotate(dir_ * 10.f);
+    gameObject->transform->AddRotate(-dir_);
 
     if (timer_.ElapsedSeconds() >= LIFE)
     {
@@ -75,6 +75,7 @@ void GlassShard::OnActive(const Vector3& pos)
 
 void GlassShard::AddForce(const Vector3& dir, float impulsePower)
 {
+	dir_ = dir;
     rb_->AddForce(dir * impulsePower);
 }
 
