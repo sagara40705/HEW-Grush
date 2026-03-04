@@ -390,6 +390,10 @@
     <ClCompile Include="StageClearRank.cpp">
       <Filter>Game\Components\StageSelect</Filter>
     </ClCompile>
+    <ClCompile Include="TitlePlyerContoroll.cpp" />
+    <ClCompile Include="KeepOutTapeRenderer.cpp">
+      <Filter>Game\Components\Environment</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Main.h">
@@ -691,6 +695,11 @@
     </ClInclude>
     <ClInclude Include="ResultRankUI.h">
       <Filter>Game\Components\Result</Filter>
+    </ClInclude>
+    <ClInclude Include="Easing.h" />
+    <ClInclude Include="TitlePlyerContoroll.h" />
+    <ClInclude Include="KeepOutTapeRenderer.h">
+      <Filter>Game\Components\Environment</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

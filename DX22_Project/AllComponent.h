@@ -47,6 +47,7 @@
 #include "ScoreUI.h"
 
 #include "UIFrostRenderer.h"
+#include "KeepOutTapeRenderer.h"
 
 //ローディング画面
 #include "LoadingGauge.h"

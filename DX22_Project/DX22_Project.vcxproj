@@ -171,6 +171,7 @@
     <ClCompile Include="GroundRenderer.cpp" />
     <ClCompile Include="Hammer.cpp" />
     <ClCompile Include="JumpSki.cpp" />
+    <ClCompile Include="KeepOutTapeRenderer.cpp" />
     <ClCompile Include="LoadingCharacterAnimation.cpp" />
     <ClCompile Include="LoadingGauge.cpp" />
     <ClCompile Include="Model_anime.cpp" />
@@ -287,6 +288,7 @@
     <ClInclude Include="InputKeyboard.h" />
     <ClInclude Include="InputMouse.h" />
     <ClInclude Include="JumpSki.h" />
+    <ClInclude Include="KeepOutTapeRenderer.h" />
     <ClInclude Include="Layer.h" />
     <ClInclude Include="LineManager.h" />
     <ClInclude Include="LoadingCharacterAnimation.h" />
