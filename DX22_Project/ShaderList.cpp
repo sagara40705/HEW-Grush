@@ -1099,8 +1099,6 @@ float4 main(PS_IN pin) : SV_TARGET
 
     float4 texColor = tex.Sample(samp, pin.uv);
 
-	
-
     float3 N = normalize(pin.normal);
     float3 L = normalize(-lightDir.xyz);
     float3 V = normalize(cameraPos.xyz - pin.wPos.xyz);

@@ -336,7 +336,7 @@ void SceneGame::CreateCameraAndPlayer()
 	hummer.AddComponent<Hammer>();
 	hummer.AddComponent<HammerEffects>();
 
-	GameObject& shadow = player.CreateChild(Vector3::zero(), Vector3(90.f, 0.f, 0.f), Vector3::one());
+	GameObject& shadow = player.CreateChild(Vector3(0.f, 0.1f, 0.f), Vector3(90.f, 0.f, 0.f), Vector3::one());
 	shadow.AddComponent<Sprite3DRenderer>(TextureTag::Game_Shadow, Vector2::zero(), Vector2(2.f, 4.f));
 
 	GameObject& sample = w.CreateGameObject(Vector3(0.f, 2.f, 4.f), Vector3(0.f, 0.f, 0.f));
@@ -388,7 +388,7 @@ void SceneGame::CreateStage1()
 	constexpr float OFFSET = HALF + 0.5f;
 	
 	//80フィールド
-	GameObject& floor = w.CreateGameObject(Vector3(0.f, -1.f, 0.f), Vector3::zero(), Vector3(80.f, 0.1f, 80.f));
+	GameObject& floor = w.CreateGameObject(Vector3(0.f, -1.0f, 0.f), Vector3::zero(), Vector3(80.f, 0.1f, 80.f));
 	MeshFilter& mf = floor.AddComponent<MeshFilter>(PrimitiveMeshTag::Plane); mf.boundsRadius = 0.f;
 	floor.AddComponent<GroundRenderer>();
 	BoxCollider& collider = floor.AddComponent<BoxCollider>();
@@ -526,14 +526,14 @@ void SceneGame::CreateStage2(){
 	World& w = GetWorld();
 
 	//80 * 50 フィールド1
-	GameObject& floor1 = w.CreateGameObject(Vector3(0.f, -2.5f, 0.f), Vector3::zero(), Vector3(85.f, 3.1f, 55.f));
+	GameObject& floor1 = w.CreateGameObject(Vector3(0.f, -2.5f, 0.f), Vector3::zero(), Vector3(85.f, 3.0f, 55.f));
 	MeshFilter& mf1 = floor1.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mf1.boundsRadius = 0.f;
 	floor1.AddComponent<GroundRenderer>();
 	BoxCollider& collider1 = floor1.AddComponent<BoxCollider>();
 	collider1.layer = Layer::Ground;
 
 	//80 * 50 フィールド1
-	GameObject& floor2 = w.CreateGameObject(Vector3(90.f, -2.5f, 0.f), Vector3::zero(), Vector3(85.f, 3.1f, 55.f));
+	GameObject& floor2 = w.CreateGameObject(Vector3(90.f, -2.5f, 0.f), Vector3::zero(), Vector3(85.f, 3.0f, 55.f));
 	MeshFilter& mf2 = floor2.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mf2.boundsRadius = 0.f;
 	floor2.AddComponent<GroundRenderer>();
 	BoxCollider& collider2 = floor2.AddComponent<BoxCollider>();

@@ -103,9 +103,9 @@ void GlassShard::SetShardParamVS()
 void GlassShard::SetGlassParamPS()
 {
     DirectX::XMFLOAT4 Tint[ToIndex(GlassGrade::Count)] = {
-       {0.2f, 0.5f, 0.9f, 0.7f},
-       {0.2f, 0.9f, 0.4f, 0.7f},
-       {0.9f, 0.2f, 0.2f, 0.7f}
+       {0.0f, 0.0f, 1.0f, 1.0f},
+       {0.0f, 1.0f, 0.0f, 1.0f},
+       {1.0f, 0.0f, 0.0f, 1.0f}
     };
 
     ShaderList::SetGlassParam(Tint[ToIndex(grade_)], 5.0f, 3.0f, 1.0f, 1.0f);
