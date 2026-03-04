@@ -120,6 +120,7 @@ void GroundRenderer::OnDestroy()
 
 void GroundRenderer::Start()
 {
+	tilingPerUnit_ = 0.05f; 
     EnsureShader();
 
     // “¯‚¶ GameObject ã‚Ì MeshFilter ‚ğæ“¾
