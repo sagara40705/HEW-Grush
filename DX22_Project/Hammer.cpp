@@ -84,7 +84,7 @@ void Hammer::GradeUp()
 {
 	grade_ = NextGrade(grade_);
 	SetModel();
-	effects_->Play(HammerEffects::GradeUp, tf_->GetWorldPosition());
+	//effects_->Play(HammerEffects::GradeUp, tf_->GetWorldPosition());
 	DebugLog::OutputValue("Hammer::GradeUp, Grade", static_cast<int>(grade_) + 1);
 }
 
@@ -181,7 +181,7 @@ void Hammer::Attack(GameObject* go)
 
 	DebugLog::OutputValue("Hammer Attack Glass Object, ID", go->id);
 	glass->TakeDamage(kDamage[ToIndex(grade_)]);
-	effects_->Play(HammerEffects::Hit, tf_->GetWorldPosition());
+	//effects_->Play(HammerEffects::Hit, tf_->GetWorldPosition());
 
 	if (!shake_) return;
 	shake_->Play(ShakeType::LEVEL_1);
@@ -234,7 +234,7 @@ void Hammer::DebugCommand()
 	if (InputKeyboard::GetKeyDown('U') && InputKeyboard::GetKey('G'))
 	{
 		if (!effects_) return;
-		effects_->Play(HammerEffects::GradeUp, tf_->GetWorldPosition());
+		//effects_->Play(HammerEffects::GradeUp, tf_->GetWorldPosition());
 		DebugLog::Output("DebugCommand PlayHammerEffects::GradeUp");
 	}
 

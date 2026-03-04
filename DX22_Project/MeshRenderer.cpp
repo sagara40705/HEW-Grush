@@ -122,6 +122,7 @@ void MeshRenderer::PrimitiveRender()
     {
         shard->SetGlassParamPS();
         shard->SetShardParamVS();
+        SetCullingMode(D3D11_CULL_NONE);
     }
 
     MeshBuffer* mesh = mf->GetPrimitive();
