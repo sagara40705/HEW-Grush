@@ -912,16 +912,16 @@ float4 main(PS_IN pin) : SV_TARGET
     // 透けすぎ防止（ガラスの厚み感）
     // 0.15～0.30 で調整
     //////////////////////////////////////////////////////////
-    float solidity = 0.20f;
+    float solidity = 0.60f;
     tintedScene = lerp(tintedScene, baseCol, solidity);
 
     //////////////////////////////////////////////////////////
     // Fresnel反射
     //////////////////////////////////////////////////////////
     float reflStrength = saturate(glassParams.y);
-	float reflectionScale = 0.60f; // ここを調整する
+	float reflectionScale = 0.80f; // ここを調整する
     float3 reflection =
-        lightDiffuse.rgb * baseCol * fresnel * reflStrength * 0.25f;
+        lightDiffuse.rgb * baseCol * fresnel * reflStrength * 1.2f;
 
     float3 finalRGB = tintedScene + reflection;
 
@@ -936,7 +936,7 @@ float4 main(PS_IN pin) : SV_TARGET
     // ・最低不透明度を保証
     //////////////////////////////////////////////////////////
     float alpha = glassTint.a * lerp(1.0f, texCol.a, hasTex);
-    alpha = max(alpha, 0.55f);            // 透明すぎ防止
+    alpha = max(alpha, 0.60f);            // 透明すぎ防止
     alpha = saturate(alpha + fresnel * 0.2f); // 縁を少し濃く
 
     return float4(saturate(finalRGB), alpha);
