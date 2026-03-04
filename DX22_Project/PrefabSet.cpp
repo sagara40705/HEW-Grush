@@ -21,6 +21,7 @@ void RegisterAllPrefabs()
                 true,
                 DirectX::XMFLOAT3{ 0, 0.7f, 0.2f },
                 DirectX::XMFLOAT3{ 1.2f, 1.2f, 1.2f });
+            bc.layer = Layer::Glass;
             (void)bc;
             auto& gs = go.AddComponent<GlassObject>(GlassGrade::Grade_1);
             (void)gs;
@@ -36,6 +37,7 @@ void RegisterAllPrefabs()
                 true,
                 DirectX::XMFLOAT3{ 0.f, 0.5f, 0.f },
                 DirectX::XMFLOAT3{ 0.7f, 1.0f, 0.7f });
+            bc.layer = Layer::Glass;
             (void)bc;
             auto& gs = go.AddComponent<GlassObject>(GlassGrade::Grade_1);
             (void)gs;
@@ -51,6 +53,7 @@ void RegisterAllPrefabs()
                 true,
                 DirectX::XMFLOAT3{ -0.3f, 0.65f, 0.6f },
                 DirectX::XMFLOAT3{ 2.f, 1.3f, 1.f });
+            bc.layer = Layer::Glass;
             (void)bc;
             auto& gs = go.AddComponent<GlassObject>(GlassGrade::Grade_1);
             (void)gs;
@@ -66,6 +69,7 @@ void RegisterAllPrefabs()
                 true,
                 DirectX::XMFLOAT3{ 0, 0.8f, 0.f },
                 DirectX::XMFLOAT3{ 0.9f, 1.4f, 0.9f });
+            bc.layer = Layer::Glass;
             (void)bc;
             auto& gs = go.AddComponent<GlassObject>(GlassGrade::Grade_1);
             (void)gs;
@@ -81,6 +85,7 @@ void RegisterAllPrefabs()
                 true,
                 DirectX::XMFLOAT3{ 0, 0.9f, 0.f },
                 DirectX::XMFLOAT3{ 1.3f, 1.8f, 1.3f });
+            bc.layer = Layer::Glass;
             (void)bc;
             auto& gs = go.AddComponent<GlassObject>(GlassGrade::Grade_1);
             (void)gs;
@@ -96,6 +101,7 @@ void RegisterAllPrefabs()
                 true,
                 DirectX::XMFLOAT3{ 0.f, 1.0f, 0.f },
                 DirectX::XMFLOAT3{ 1.0f, 2.0f, 0.8f });
+            bc.layer = Layer::Glass;
             (void)bc;
             auto& gs = go.AddComponent<GlassObject>(GlassGrade::Grade_1);
             (void)gs;
@@ -111,6 +117,7 @@ void RegisterAllPrefabs()
                 true,
                 DirectX::XMFLOAT3{ 0, 0.9f, 0.f },
                 DirectX::XMFLOAT3{ 0.6f, 1.8f, 0.6f });
+            bc.layer = Layer::Glass;
             (void)bc;
             auto& gs = go.AddComponent<GlassObject>(GlassGrade::Grade_1);
             (void)gs;
@@ -126,6 +133,7 @@ void RegisterAllPrefabs()
                 true,
                 DirectX::XMFLOAT3{ 0, 0.5f, -0.2f },
                 DirectX::XMFLOAT3{ 0.8f, 1.4f, 1.0f });
+            bc.layer = Layer::Glass;
             (void)bc;
             auto& gs = go.AddComponent<GlassObject>(GlassGrade::Grade_1);
             (void)gs;
@@ -140,6 +148,7 @@ void RegisterAllPrefabs()
                 true,
                 DirectX::XMFLOAT3{ 0.f, 1.2f,  0.f },
                 DirectX::XMFLOAT3{ 3.4f, 1.6f, 1.4f });
+            bc.layer = Layer::Glass;
             (void)bc;
             auto& gs = go.AddComponent<GlassObject>(GlassGrade::Grade_2); (void)gs;
         });
@@ -152,6 +161,7 @@ void RegisterAllPrefabs()
                 true,
                 DirectX::XMFLOAT3{ 0.f, 1.1f, 0.f },
                 DirectX::XMFLOAT3{ 4.f, 2.2f, 1.6f });
+            bc.layer = Layer::Glass;
             (void)bc;
             auto& gs = go.AddComponent<GlassObject>(GlassGrade::Grade_2); (void)gs;
         });
@@ -164,6 +174,7 @@ void RegisterAllPrefabs()
                 true,
                 DirectX::XMFLOAT3{ 0.f, 1.8f, 0.f },
                 DirectX::XMFLOAT3{ 1.8f, 3.6f, 1.4f });
+            bc.layer = Layer::Glass;
             (void)bc;
             auto& gs = go.AddComponent<GlassObject>(GlassGrade::Grade_2); (void)gs;
         });
@@ -176,6 +187,7 @@ void RegisterAllPrefabs()
                 true,
                 DirectX::XMFLOAT3{ 0.f, 1.5, 0.f },
                 DirectX::XMFLOAT3{ 2.f, 3.f, 2.f });
+            bc.layer = Layer::Glass;
             (void)bc;
             auto& gs = go.AddComponent<GlassObject>(GlassGrade::Grade_2); (void)gs;
         });
@@ -190,6 +202,7 @@ void RegisterAllPrefabs()
                 true,
                 DirectX::XMFLOAT3{ 0.f, 1.5f, 0.f },
                 DirectX::XMFLOAT3{ 5.0f, 3.f, 5.0f });
+            bc.layer = Layer::Glass;
             (void)bc;
             auto& gs = go.AddComponent<GlassObject>(GlassGrade::Grade_3); (void)gs;
         });
@@ -202,6 +215,7 @@ void RegisterAllPrefabs()
                 true,
                 DirectX::XMFLOAT3{ 0, 1.8f, 0 },
                 DirectX::XMFLOAT3{ 12.f, 3.2f, 2.4f });
+            bc.layer = Layer::Glass;
             (void)bc;
             auto& gs = go.AddComponent<GlassObject>(GlassGrade::Grade_3); (void)gs;
         });
@@ -215,6 +229,7 @@ void RegisterAllPrefabs()
                 true,
                 DirectX::XMFLOAT3{ 0, 2.f, 0 },
                 DirectX::XMFLOAT3{ 7.f, 5.f, 5.f });
+            bc.layer = Layer::Glass;
             (void)bc;
             auto& gs = go.AddComponent<GlassObject>(GlassGrade::Grade_3); (void)gs;
         });
@@ -223,11 +238,11 @@ void RegisterAllPrefabs()
         [](GameObject& go) {
             auto& mf = go.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube);                 (void)mf;
             auto& mr = go.AddComponent<MeshRenderer>();                                     (void)mr;
-            //auto& bc = go.AddComponent<BoxCollider>(
-            //    false,
-            //    DirectX::XMFLOAT3{ 0.f, 0.5f, 0.f },
-            //    DirectX::XMFLOAT3{ 0.6f, 1.0f, 0.2f });
-            //bc.SetMask(ToBit(Layer::Ground));                                               (void)bc;
+            auto& bc = go.AddComponent<BoxCollider>(
+                false,
+                DirectX::XMFLOAT3{ 0.f, 0.5f, 0.f },
+                DirectX::XMFLOAT3{ 0.6f, 1.0f, 0.2f });
+            bc.SetMask(ToBit(Layer::Glass));                                               (void)bc;
             auto& rb = go.AddComponent<Rigidbody>();                                        (void)rb;
             auto& shard = go.AddComponent<GlassShard>();                                    (void)shard;
         });

@@ -8,9 +8,8 @@ enum class Layer : uint8_t
     Default = 0,
     Player,
     Ground,
-    Enemy,
-    Weapon,
     Glass,
+	Shard,
     UI,
 };
 

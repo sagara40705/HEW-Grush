@@ -45,7 +45,7 @@ void GlassShard::Start()
 
 void GlassShard::Update()
 {
-    constexpr float LIFE = 1.f;
+    constexpr float LIFE = 2.f;
     constexpr float DT = 1.f / 60.f;
 
     lifeTimer += DT;
