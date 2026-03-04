@@ -234,13 +234,13 @@ void RegisterAllPrefabs()
 
     Prefab::Register(P::StageWall,
         [](GameObject& go) {
-			auto& sp = go.AddComponent<KeepOutTapeRenderer>(TextureTag::Game_KeepOut, Vector2(0.f, 1.5f), Vector2(10.f, 10.f)); (void)sp;
+			auto& sp = go.AddComponent<KeepOutTapeRenderer>(TextureTag::Game_KeepOut, Vector2(0.f, 0.8f), Vector2(10.f, 8.f)); (void)sp;
             //auto& mf = go.AddComponent<MeshFilter>(ModelTag::Fence); mf.SetBoundsOffset({ -0.2f, 0.8f, 0.f });     (void)mf;
             //auto& mr = go.AddComponent<MeshRenderer>(); (void)mr;
             auto& bc = go.AddComponent<BoxCollider>(
                 true,
                 DirectX::XMFLOAT3{ 0.f, 3, 0 },
-                DirectX::XMFLOAT3{ 9, 6, 1 });
+                DirectX::XMFLOAT3{ 10, 6, 1 });
             (void)bc;
             //auto& gs = go.AddComponent<GlassObject>(GlassGrade::Grade_1); (void)gs;
  

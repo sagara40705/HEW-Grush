@@ -1,82 +1,389 @@
 [Debug Log Started]
-[04:07:59] Model::Load, material.pTexture: 000002794636DCD0
-[04:07:59] Model::Load, material.pTexture: 000002794636D430
-[04:07:59] Model::Load, material.pTexture: 000002794636CDD0
-[04:07:59] Model::Load, material.pTexture: 0000027948D155A0
-[04:08:00] Model::Load, material.pTexture: 0000027948D0C7E0
-[04:08:00] Model::Load, material.pTexture: 0000027948D0BE80
-[04:08:00] Model::Load, material.pTexture: 0000027948D0C120
-[04:08:00] Model::Load, material.pTexture: 0000027948D0C2A0
-[04:08:01] Model::Load, material.pTexture: 0000027948D2BAA0
-[04:08:01] Model::Load, material.pTexture: 0000027948D2B1A0
-[04:08:01] Model::Load, material.pTexture: 0000027948D2B9E0
-[04:08:01] Model::Load, material.pTexture: 0000027948D2AA80
-[04:08:02] Model::Load, material.pTexture: 0000027948A330E0
-[04:08:02] Model::Load, material.pTexture: 0000027948A32C60
-[04:08:02] Model::Load, material.pTexture: 0000027948A31D60
-[04:08:02] Model::Load, material.pTexture: 0000027948A319A0
-[04:08:02] Model::Load, material.pTexture: 0000027948A327E0
-[04:08:02] Model::Load, material.pTexture: 0000027948A35480
-[04:08:02] Model::Load, material.pTexture: 0000027948A37D00
-[04:08:02] Model::Load, material.pTexture: 0000027948A3BFC0
-[04:08:02] Model::Load, material.pTexture: 0000027948A401C0
-[04:08:02] Model::Load, material.pTexture: 0000027948A42380
-[04:08:05] Animation End OneLoop
-[04:08:10] Input Direction dir = %d: 3
-[04:08:11] Player move stage point id = %d: 1
-[04:08:13] Model::Load, material.pTexture: 0000027948A46760
-[04:08:13] Model::Load, material.pTexture: 0000027948A29600
-[04:08:13] Model::Load, material.pTexture: 0000027948A2C0C0
-[04:08:13] Model::Load, material.pTexture: 0000027948A2F720
-[04:08:13] Model::Load, material.pTexture: 0000027948A2F120
-[04:08:15] Start Player Animation
-[04:08:30] [GlassObjectSpawner] Start()
-[04:08:30] GlassGauge Ratio: 0
-[04:08:32] Animation End OneLoop
-[04:08:33] moveStartedThisFrame
-[04:08:38] moveStoppedThisFrame
-[04:08:39] moveStartedThisFrame
-[04:08:39] moveStoppedThisFrame
-[04:08:39] moveStartedThisFrame
-[04:08:39] moveStoppedThisFrame
-[04:08:40] moveStartedThisFrame
-[04:08:40] moveStoppedThisFrame
-[04:08:42] moveStartedThisFrame
-[04:08:43] moveStoppedThisFrame
-[04:08:44] moveStartedThisFrame
-[04:08:44] moveStoppedThisFrame
-[04:08:44] moveStartedThisFrame
-[04:08:45] NormalAttack 入力受付
-[04:08:45] アクション実行
-[04:08:45] Hammer Attack Glass Object, ID: 218
-[04:08:45] GlassShardPool::Instantiate: 0
-[04:08:45] GlassShardPool::Instantiate: 1
-[04:08:45] GlassShardPool::Instantiate: 2
-[04:08:45] GlassShardPool::Instantiate: 3
-[04:08:45] GlassShardPool::Instantiate: 4
-[04:08:45] GlassShardPool::Instantiate: 5
-[04:08:45] CameraShake::Play, type: 0
-[04:08:45] アクション終了
-[04:08:45] CameraShake::Stop
-[04:08:45] アクションCT終了
-[04:08:48] DashAttack 入力受付
-[04:08:48] アクション実行
-[04:08:50] アクション終了
-[04:08:50] moveStoppedThisFrame
-[04:08:50] moveStartedThisFrame
-[04:08:50] moveStoppedThisFrame
-[04:08:51] moveStartedThisFrame
-[04:08:54] DashAttack 入力受付
-[04:08:55] アクションCT終了
-[04:08:57] DashAttack 入力受付
-[04:08:57] アクション実行
-[04:08:59] アクション終了
-[04:09:01] moveStoppedThisFrame
-[04:09:02] moveStartedThisFrame
-[04:09:04] アクションCT終了
-[04:09:06] moveStoppedThisFrame
-[04:09:10] moveStartedThisFrame
-[04:09:14] moveStoppedThisFrame
-[04:09:14] moveStartedThisFrame
-[04:09:16] moveStoppedThisFrame
-[Debug Log End]
+[04:57:46] Model::Load, material.pTexture: 00000296B9258D40
+[04:57:46] Model::Load, material.pTexture: 00000296B9257BA0
+[04:57:46] Model::Load, material.pTexture: 00000296B92590A0
+[04:57:46] Model::Load, material.pTexture: 00000296B8FAD150
+[04:57:47] Model::Load, material.pTexture: 00000296B8FA4A50
+[04:57:47] Model::Load, material.pTexture: 00000296B8FA4630
+[04:57:47] Model::Load, material.pTexture: 00000296B8FA4810
+[04:57:47] Model::Load, material.pTexture: 00000296B8FA44B0
+[04:57:47] Model::Load, material.pTexture: 00000296B8FC3E30
+[04:57:47] Model::Load, material.pTexture: 00000296B8FC48B0
+[04:57:47] Model::Load, material.pTexture: 00000296B8FC3D70
+[04:57:47] Model::Load, material.pTexture: 00000296B8FC4CD0
+[04:57:48] Model::Load, material.pTexture: 00000296BC5CA200
+[04:57:48] Model::Load, material.pTexture: 00000296BC5CA980
+[04:57:48] Model::Load, material.pTexture: 00000296BC5CA560
+[04:57:48] Model::Load, material.pTexture: 00000296BC5CAF80
+[04:57:48] Model::Load, material.pTexture: 00000296BC5CA260
+[04:57:49] Model::Load, material.pTexture: 00000296BC5CDB00
+[04:57:49] Model::Load, material.pTexture: 00000296BC5D0260
+[04:57:49] Model::Load, material.pTexture: 00000296BC5B31C0
+[04:57:49] Model::Load, material.pTexture: 00000296BC5B7F00
+[04:57:49] Model::Load, material.pTexture: 00000296BC5B9C40
+[04:57:52] Input Direction dir = %d: 1
+[04:57:52] Animation End OneLoop
+[04:57:52] Input Direction dir = %d: 3
+[04:57:52] Player move stage point id = %d: 1
+[04:57:52] Input Direction dir = %d: 3
+[04:57:53] Player move stage point id = %d: 3
+[04:57:53] Input Direction dir = %d: 0
+[04:57:53] Player move stage point id = %d: 2
+[04:57:56] Model::Load, material.pTexture: 00000296BC5BCA60
+[04:57:56] Model::Load, material.pTexture: 00000296BC5C1B00
+[04:57:56] Model::Load, material.pTexture: 00000296BC5C5820
+[04:57:56] Model::Load, material.pTexture: 00000296BC5C7AA0
+[04:57:56] Model::Load, material.pTexture: 00000296BC5CC000
+[04:57:56] Model::Load, material.pTexture: 00000296BC5D1460
+[04:57:56] Model::Load, material.pTexture: 00000296BC5D1580
+[04:57:58] Start Player Animation
+[04:58:12] [GlassObjectSpawner] Start()
+[04:58:12] GlassGauge Ratio: 0
+[04:58:15] Animation End OneLoop
+[04:58:18] moveStartedThisFrame
+[04:58:20] DashAttack 入力受付
+[04:58:20] アクション実行
+[04:58:21] Hammer Attack Glass Object, ID: 49
+[04:58:21] GlassGaugeManager::BrakeGlass, Gauhe: 10
+[04:58:21] Up Score: 697
+[04:58:21] GlassShardPool::Instantiate: 0
+[04:58:21] GlassShardPool::Instantiate: 1
+[04:58:21] GlassShardPool::Instantiate: 2
+[04:58:21] GlassShardPool::Instantiate: 3
+[04:58:21] GlassObject Destory, ID: 49
+[04:58:21] CameraShake::Play, type: 0
+[04:58:21] GlassGauge Effect Play
+[04:58:21] GlassGauge Ratio: 0.1
+[04:58:21] CameraShake::Stop
+[04:58:21] アクション終了
+[04:58:21] moveStoppedThisFrame
+[04:58:22] moveStartedThisFrame
+[04:58:22] Animation End OneLoop
+[04:58:22] moveStoppedThisFrame
+[04:58:23] ゲージ減衰開始
+[04:58:23] GlassGauge Ratio: 0.099
+[04:58:23] GlassGauge Ratio: 0.098
+[04:58:23] GlassGauge Ratio: 0.097
+[04:58:23] GlassGauge Ratio: 0.096
+[04:58:23] GlassGauge Ratio: 0.095
+[04:58:23] GlassGauge Ratio: 0.094
+[04:58:23] GlassGauge Ratio: 0.093
+[04:58:23] GlassGauge Ratio: 0.092
+[04:58:23] GlassGauge Ratio: 0.091
+[04:58:23] GlassGauge Ratio: 0.09
+[04:58:23] GlassGauge Ratio: 0.089
+[04:58:23] GlassGauge Ratio: 0.088
+[04:58:23] GlassGauge Ratio: 0.087
+[04:58:23] moveStartedThisFrame
+[04:58:23] GlassGauge Ratio: 0.0859999
+[04:58:23] GlassGauge Ratio: 0.0849999
+[04:58:23] GlassGauge Ratio: 0.0839999
+[04:58:23] GlassGauge Ratio: 0.0829999
+[04:58:23] GlassGauge Ratio: 0.0819999
+[04:58:23] GlassGauge Ratio: 0.0809999
+[04:58:23] GlassGauge Ratio: 0.0799999
+[04:58:23] GlassGauge Ratio: 0.0789999
+[04:58:23] GlassGauge Ratio: 0.0779999
+[04:58:23] GlassGauge Ratio: 0.0769999
+[04:58:23] GlassGauge Ratio: 0.0759999
+[04:58:23] GlassGauge Ratio: 0.0749999
+[04:58:23] GlassGauge Ratio: 0.0739999
+[04:58:23] GlassGauge Ratio: 0.0729999
+[04:58:23] GlassGauge Ratio: 0.0719999
+[04:58:23] GlassGauge Ratio: 0.0709999
+[04:58:23] GlassGauge Ratio: 0.0699999
+[04:58:23] GlassGauge Ratio: 0.0689999
+[04:58:23] GlassGauge Ratio: 0.0679999
+[04:58:23] GlassGauge Ratio: 0.0669999
+[04:58:23] GlassGauge Ratio: 0.0659999
+[04:58:23] GlassGauge Ratio: 0.0649999
+[04:58:23] GlassGauge Ratio: 0.0639999
+[04:58:23] GlassGauge Ratio: 0.0629999
+[04:58:23] GlassGauge Ratio: 0.0619999
+[04:58:23] GlassGauge Ratio: 0.0609999
+[04:58:23] GlassGauge Ratio: 0.0599999
+[04:58:23] GlassGauge Ratio: 0.0589999
+[04:58:23] GlassGauge Ratio: 0.0579999
+[04:58:23] GlassGauge Ratio: 0.057
+[04:58:23] GlassGauge Ratio: 0.0559999
+[04:58:23] GlassGauge Ratio: 0.055
+[04:58:23] GlassGauge Ratio: 0.054
+[04:58:23] GlassGauge Ratio: 0.053
+[04:58:23] GlassGauge Ratio: 0.052
+[04:58:23] GlassGauge Ratio: 0.051
+[04:58:23] GlassGauge Ratio: 0.05
+[04:58:24] GlassGauge Ratio: 0.049
+[04:58:24] GlassGauge Ratio: 0.048
+[04:58:24] GlassGauge Ratio: 0.047
+[04:58:24] GlassGauge Ratio: 0.046
+[04:58:24] GlassGauge Ratio: 0.045
+[04:58:24] GlassGauge Ratio: 0.044
+[04:58:24] GlassGauge Ratio: 0.043
+[04:58:24] GlassGauge Ratio: 0.042
+[04:58:24] GlassGauge Ratio: 0.041
+[04:58:24] GlassGauge Ratio: 0.04
+[04:58:24] GlassGauge Ratio: 0.039
+[04:58:24] GlassGauge Ratio: 0.038
+[04:58:24] GlassGauge Ratio: 0.037
+[04:58:24] moveStoppedThisFrame
+[04:58:24] GlassGauge Ratio: 0.036
+[04:58:24] GlassGauge Ratio: 0.035
+[04:58:24] GlassGauge Ratio: 0.034
+[04:58:24] GlassGauge Ratio: 0.033
+[04:58:24] GlassGauge Ratio: 0.032
+[04:58:24] GlassGauge Ratio: 0.031
+[04:58:24] GlassGauge Ratio: 0.03
+[04:58:24] GlassGauge Ratio: 0.029
+[04:58:24] GlassGauge Ratio: 0.028
+[04:58:24] GlassGauge Ratio: 0.027
+[04:58:24] GlassGauge Ratio: 0.026
+[04:58:24] GlassGauge Ratio: 0.025
+[04:58:24] GlassGauge Ratio: 0.024
+[04:58:24] GlassGauge Ratio: 0.023
+[04:58:24] GlassGauge Ratio: 0.022
+[04:58:24] GlassGauge Ratio: 0.021
+[04:58:24] GlassGauge Ratio: 0.02
+[04:58:24] GlassGauge Ratio: 0.019
+[04:58:24] GlassGauge Ratio: 0.018
+[04:58:24] GlassGauge Ratio: 0.017
+[04:58:24] GlassGauge Ratio: 0.016
+[04:58:24] moveStartedThisFrame
+[04:58:24] GlassGauge Ratio: 0.015
+[04:58:24] GlassGauge Ratio: 0.014
+[04:58:24] GlassGauge Ratio: 0.013
+[04:58:24] GlassGauge Ratio: 0.012
+[04:58:24] GlassGauge Ratio: 0.011
+[04:58:24] GlassGauge Ratio: 0.00999998
+[04:58:24] GlassGauge Ratio: 0.00899998
+[04:58:24] GlassGauge Ratio: 0.00799998
+[04:58:24] GlassGauge Ratio: 0.00699998
+[04:58:24] GlassGauge Ratio: 0.00599998
+[04:58:24] GlassGauge Ratio: 0.00499998
+[04:58:24] GlassGauge Ratio: 0.00399998
+[04:58:24] GlassGauge Ratio: 0.00299998
+[04:58:24] GlassGauge Ratio: 0.00199998
+[04:58:24] GlassGauge Ratio: 0.000999981
+[04:58:24] GlassGauge, is Empty
+[04:58:24] GlassGauge Ratio: 0
+[04:58:25] ワープ起動, 番号: 2
+[04:58:25] moveStoppedThisFrame
+[04:58:25] moveStartedThisFrame
+[04:58:26] DashAttack 入力受付
+[04:58:26] アクションCT終了
+[04:58:29] moveStoppedThisFrame
+[04:58:30] moveStartedThisFrame
+[04:58:32] NormalAttack 入力受付
+[04:58:32] アクション実行
+[04:58:32] Hammer Attack Glass Object, ID: 212
+[04:58:32] GlassGaugeManager::BrakeGlass, Gauhe: 10
+[04:58:32] Up Score: 694
+[04:58:32] GlassShardPool::Instantiate: 0
+[04:58:32] GlassShardPool::Instantiate: 1
+[04:58:32] GlassShardPool::Instantiate: 2
+[04:58:32] GlassShardPool::Instantiate: 3
+[04:58:32] GlassObject Destory, ID: 212
+[04:58:32] CameraShake::Play, type: 0
+[04:58:32] GlassGauge Effect Play
+[04:58:32] GlassGauge Ratio: 0.1
+[04:58:32] アクション終了
+[04:58:33] アクションCT終了
+[04:58:33] CameraShake::Stop
+[04:58:34] Animation End OneLoop
+[04:58:34] ゲージ減衰開始
+[04:58:34] GlassGauge Ratio: 0.099
+[04:58:34] GlassGauge Ratio: 0.098
+[04:58:34] GlassGauge Ratio: 0.097
+[04:58:34] GlassGauge Ratio: 0.096
+[04:58:34] GlassGauge Ratio: 0.095
+[04:58:34] GlassGauge Ratio: 0.094
+[04:58:34] GlassGauge Ratio: 0.093
+[04:58:34] GlassGauge Ratio: 0.092
+[04:58:35] GlassGauge Ratio: 0.091
+[04:58:35] GlassGauge Ratio: 0.09
+[04:58:35] GlassGauge Ratio: 0.089
+[04:58:35] ワープ起動, 番号: 3
+[04:58:35] moveStoppedThisFrame
+[04:58:35] GlassGauge Ratio: 0.088
+[04:58:35] GlassGauge Ratio: 0.087
+[04:58:35] GlassGauge Ratio: 0.0859999
+[04:58:35] GlassGauge Ratio: 0.0849999
+[04:58:35] GlassGauge Ratio: 0.0839999
+[04:58:35] GlassGauge Ratio: 0.0829999
+[04:58:35] GlassGauge Ratio: 0.0819999
+[04:58:35] GlassGauge Ratio: 0.0809999
+[04:58:35] GlassGauge Ratio: 0.0799999
+[04:58:35] GlassGauge Ratio: 0.0789999
+[04:58:35] GlassGauge Ratio: 0.0779999
+[04:58:35] GlassGauge Ratio: 0.0769999
+[04:58:35] GlassGauge Ratio: 0.0759999
+[04:58:35] GlassGauge Ratio: 0.0749999
+[04:58:35] GlassGauge Ratio: 0.0739999
+[04:58:35] GlassGauge Ratio: 0.0729999
+[04:58:35] GlassGauge Ratio: 0.0719999
+[04:58:35] GlassGauge Ratio: 0.0709999
+[04:58:35] GlassGauge Ratio: 0.0699999
+[04:58:35] moveStartedThisFrame
+[04:58:35] GlassGauge Ratio: 0.0689999
+[04:58:35] GlassGauge Ratio: 0.0679999
+[04:58:35] GlassGauge Ratio: 0.0669999
+[04:58:35] GlassGauge Ratio: 0.0659999
+[04:58:35] GlassGauge Ratio: 0.0649999
+[04:58:35] GlassGauge Ratio: 0.0639999
+[04:58:35] GlassGauge Ratio: 0.0629999
+[04:58:35] GlassGauge Ratio: 0.0619999
+[04:58:35] GlassGauge Ratio: 0.0609999
+[04:58:35] GlassGauge Ratio: 0.0599999
+[04:58:35] GlassGauge Ratio: 0.0589999
+[04:58:35] GlassGauge Ratio: 0.0579999
+[04:58:35] GlassGauge Ratio: 0.057
+[04:58:35] GlassGauge Ratio: 0.0559999
+[04:58:35] GlassGauge Ratio: 0.055
+[04:58:35] GlassGauge Ratio: 0.054
+[04:58:35] GlassGauge Ratio: 0.053
+[04:58:35] GlassGauge Ratio: 0.052
+[04:58:35] GlassGauge Ratio: 0.051
+[04:58:35] GlassGauge Ratio: 0.05
+[04:58:35] GlassGauge Ratio: 0.049
+[04:58:35] GlassGauge Ratio: 0.048
+[04:58:35] GlassGauge Ratio: 0.047
+[04:58:35] GlassGauge Ratio: 0.046
+[04:58:35] GlassGauge Ratio: 0.045
+[04:58:35] GlassGauge Ratio: 0.044
+[04:58:35] GlassGauge Ratio: 0.043
+[04:58:35] GlassGauge Ratio: 0.042
+[04:58:35] GlassGauge Ratio: 0.041
+[04:58:35] GlassGauge Ratio: 0.04
+[04:58:35] GlassGauge Ratio: 0.039
+[04:58:35] GlassGauge Ratio: 0.038
+[04:58:35] GlassGauge Ratio: 0.037
+[04:58:35] GlassGauge Ratio: 0.036
+[04:58:35] GlassGauge Ratio: 0.035
+[04:58:35] GlassGauge Ratio: 0.034
+[04:58:35] GlassGauge Ratio: 0.033
+[04:58:36] GlassGauge Ratio: 0.032
+[04:58:36] GlassGauge Ratio: 0.031
+[04:58:36] GlassGauge Ratio: 0.03
+[04:58:36] GlassGauge Ratio: 0.029
+[04:58:36] GlassGauge Ratio: 0.028
+[04:58:36] GlassGauge Ratio: 0.027
+[04:58:36] GlassGauge Ratio: 0.026
+[04:58:36] GlassGauge Ratio: 0.025
+[04:58:36] GlassGauge Ratio: 0.024
+[04:58:36] GlassGauge Ratio: 0.023
+[04:58:36] GlassGauge Ratio: 0.022
+[04:58:36] GlassGauge Ratio: 0.021
+[04:58:36] GlassGauge Ratio: 0.02
+[04:58:36] GlassGauge Ratio: 0.019
+[04:58:36] GlassGauge Ratio: 0.018
+[04:58:36] GlassGauge Ratio: 0.017
+[04:58:36] GlassGauge Ratio: 0.016
+[04:58:36] GlassGauge Ratio: 0.015
+[04:58:36] GlassGauge Ratio: 0.014
+[04:58:36] GlassGauge Ratio: 0.013
+[04:58:36] GlassGauge Ratio: 0.012
+[04:58:36] GlassGauge Ratio: 0.011
+[04:58:36] GlassGauge Ratio: 0.00999998
+[04:58:36] GlassGauge Ratio: 0.00899998
+[04:58:36] GlassGauge Ratio: 0.00799998
+[04:58:36] GlassGauge Ratio: 0.00699998
+[04:58:36] GlassGauge Ratio: 0.00599998
+[04:58:36] GlassGauge Ratio: 0.00499998
+[04:58:36] GlassGauge Ratio: 0.00399998
+[04:58:36] GlassGauge Ratio: 0.00299998
+[04:58:36] GlassGauge Ratio: 0.00199998
+[04:58:36] GlassGauge Ratio: 0.000999981
+[04:58:36] GlassGauge, is Empty
+[04:58:36] GlassGauge Ratio: 0
+[04:58:37] DashAttack 入力受付
+[04:58:37] アクション実行
+[04:58:38] アクション終了
+[04:58:40] moveStoppedThisFrame
+[04:58:41] Canvas already exists.
+[04:58:44] OptionUI: Selected ステージ選択に戻る
+[04:58:44] OptionUI: Triggering operation after delay
+[04:58:49] Input Direction dir = %d: 2
+[04:58:49] Player move stage point id = %d: 1
+[04:58:49] Input Direction dir = %d: 2
+[04:58:49] Player move stage point id = %d: 0
+[04:58:50] Animation End OneLoop
+[04:58:54] Model::Load, material.pTexture: 00000296BC5CF540
+[04:58:54] Model::Load, material.pTexture: 00000296BC5D2AE0
+[04:58:54] Model::Load, material.pTexture: 00000296BC5B6460
+[04:58:56] Start Player Animation
+[04:59:10] [GlassObjectSpawner] Start()
+[04:59:10] GlassGauge Ratio: 0
+[04:59:12] Animation End OneLoop
+[04:59:12] moveStartedThisFrame
+[04:59:13] moveStoppedThisFrame
+[04:59:14] moveStartedThisFrame
+[04:59:17] moveStoppedThisFrame
+[04:59:17] moveStartedThisFrame
+[04:59:17] moveStoppedThisFrame
+[04:59:17] moveStartedThisFrame
+[04:59:18] moveStoppedThisFrame
+[04:59:18] Canvas already exists.
+[04:59:19] OptionUI: Selected ステージ選択に戻る
+[04:59:19] OptionUI: Triggering operation after delay
+[04:59:24] Input Direction dir = %d: 3
+[04:59:24] Player move stage point id = %d: 1
+[04:59:25] Input Direction dir = %d: 3
+[04:59:25] Player move stage point id = %d: 3
+[04:59:25] Animation End OneLoop
+[04:59:25] Input Direction dir = %d: 0
+[04:59:25] Player move stage point id = %d: 2
+[04:59:26] Input Direction dir = %d: 1
+[04:59:26] Player move stage point id = %d: 3
+[04:59:26] Input Direction dir = %d: 2
+[04:59:26] Player move stage point id = %d: 1
+[04:59:26] Input Direction dir = %d: 0
+[04:59:27] Player move stage point id = %d: 2
+[04:59:27] Input Direction dir = %d: 1
+[04:59:28] Player move stage point id = %d: 3
+[04:59:28] Input Direction dir = %d: 2
+[04:59:28] Player move stage point id = %d: 1
+[04:59:28] Input Direction dir = %d: 1
+[04:59:28] Player move stage point id = %d: 4
+[04:59:29] Input Direction dir = %d: 0
+[04:59:29] Player move stage point id = %d: 3
+[04:59:29] Input Direction dir = %d: 0
+[04:59:29] Player move stage point id = %d: 2
+[04:59:30] Input Direction dir = %d: 1
+[04:59:30] Player move stage point id = %d: 3
+[04:59:30] Input Direction dir = %d: 2
+[04:59:30] Player move stage point id = %d: 1
+[04:59:30] Input Direction dir = %d: 3
+[04:59:31] Player move stage point id = %d: 3
+[04:59:31] Input Direction dir = %d: 0
+[04:59:31] Player move stage point id = %d: 2
+[04:59:31] Input Direction dir = %d: 1
+[04:59:31] Player move stage point id = %d: 3
+[04:59:32] Input Direction dir = %d: 2
+[04:59:32] Player move stage point id = %d: 1
+[04:59:32] Input Direction dir = %d: 3
+[04:59:32] Player move stage point id = %d: 3
+[04:59:32] Input Direction dir = %d: 0
+[04:59:33] Player move stage point id = %d: 2
+[04:59:33] Input Direction dir = %d: 1
+[04:59:33] Player move stage point id = %d: 3
+[04:59:33] Input Direction dir = %d: 2
+[04:59:33] Player move stage point id = %d: 1
+[04:59:33] Input Direction dir = %d: 2
+[04:59:34] Player move stage point id = %d: 0
+[04:59:34] Input Direction dir = %d: 3
+[04:59:34] Player move stage point id = %d: 1
+[04:59:34] Input Direction dir = %d: 3
+[04:59:34] Player move stage point id = %d: 3
+[04:59:34] Input Direction dir = %d: 0
+[04:59:35] Player move stage point id = %d: 2
+[04:59:35] Input Direction dir = %d: 1
+[04:59:35] Player move stage point id = %d: 3
+[04:59:35] Input Direction dir = %d: 2
+[04:59:35] Player move stage point id = %d: 1
+[04:59:35] Input Direction dir = %d: 2
+[04:59:36] Player move stage point id = %d: 0
+[04:59:36] Input Direction dir = %d: 3
+[04:59:36] Player move stage point id = %d: 1
+[04:59:36] Input Direction dir = %d: 2
+[04:59:37] Player move stage point id = %d: 0
+[04:59:37] Input Direction dir = %d: 3
+[04:59:37] Player move stage point id = %d: 1
