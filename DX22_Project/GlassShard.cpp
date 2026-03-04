@@ -4,6 +4,7 @@
 #include "Rigidbody.h"
 #include "DirectX.h"
 #include "TextureManager.h"
+#include "Time/Time.h"
 
 #include <cmath>
 #include <cassert>
@@ -12,7 +13,7 @@
 DirectX::XMFLOAT4 MakeShardRandParam()
 {
     static thread_local std::mt19937 rng{ std::random_device{}() };
-    static thread_local std::uniform_real_distribution<float> dist(-4.0f, 1.5f);
+    static thread_local std::uniform_real_distribution<float> dist(1.0f, 1.0f);
 
     return DirectX::XMFLOAT4{
         dist(rng),
@@ -45,16 +46,13 @@ void GlassShard::Start()
 
 void GlassShard::Update()
 {
-    constexpr float LIFE = 2.f;
-    constexpr float DT = 1.f / 60.f;
+    constexpr float LIFE = 1.f;
+    gameObject->transform->AddRotate(dir_ * 10.f);
 
-    lifeTimer += DT;
-    gameObject->transform->AddRotate(dir_);
-
-    if (lifeTimer >= LIFE)
+    if (timer_.ElapsedSeconds() >= LIFE)
     {
         gameObject->SetActive(false);
-        lifeTimer = 0.f;
+		timer_.Stop();
     }
 }
 
@@ -71,6 +69,7 @@ void GlassShard::OnActive(const Vector3& pos)
 
     gameObject->transform->SetPosition(pos);
     rb_->velocity = Vector3::zero();
+    timer_.Start();
 	//AddForce(dir_);
 }
 
@@ -82,7 +81,6 @@ void GlassShard::AddForce(const Vector3& dir, float impulsePower)
 void GlassShard::SetGlassGrade(GlassGrade g)
 {
 	grade_ = g;
-
 }
 
 void GlassShard::SetGlassScale(float s)

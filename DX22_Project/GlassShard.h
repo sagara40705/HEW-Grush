@@ -1,11 +1,12 @@
 #pragma once
 #include "Component.h"
 #include "GlassObject.h"
+#include "Time/Timer.h"
 
 class GlassShard : public MonoBehaviour
 {
 private:
-	float lifeTimer = 0.f;
+	Timer timer_;
 	GlassGrade grade_ = GlassGrade::Grade_1;
 	Vector3 dir_;
 	DirectX::XMFLOAT4 randParam_;

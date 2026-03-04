@@ -2,7 +2,7 @@
 #include "Component.h"
 #include "Vector3.h"
 
-constexpr int MAX = 256;
+constexpr int MAX = 128;
 
 enum class GlassGrade : std::uint8_t;
 
