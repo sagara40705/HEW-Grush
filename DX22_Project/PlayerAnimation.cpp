@@ -131,7 +131,7 @@ void PlayerAnimation::CheckMoveAnime()
 		//ˆÚ“®’âŽ~‚µ‚½‚çI—¹ˆÊ’u‚Ü‚ÅÄ¶
 		if (state_->moveStoppedThisFrame)
 		{
-			anime_->SetTimeSeconds(5.8f);
+			anime_->SetTimeSeconds(10.f);
 			//currentType_ = Type::Idle;
 			//anime_->Play(animation_[Type::Idle], true, 1.f);
 		}

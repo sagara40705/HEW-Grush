@@ -526,14 +526,14 @@ void SceneGame::CreateStage2(){
 	World& w = GetWorld();
 
 	//80 * 50 フィールド1
-	GameObject& floor1 = w.CreateGameObject(Vector3(0.f, -2.5f, 1.f), Vector3::zero(), Vector3(85.f, 3.0f, 55.f));
+	GameObject& floor1 = w.CreateGameObject(Vector3(1.f, -2.5f, 1.f), Vector3::zero(), Vector3(85.f, 3.0f, 60.f));
 	MeshFilter& mf1 = floor1.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mf1.boundsRadius = 0.f;
 	floor1.AddComponent<GroundRenderer>();
 	BoxCollider& collider1 = floor1.AddComponent<BoxCollider>();
 	collider1.layer = Layer::Ground;
 
 	//80 * 50 フィールド1
-	GameObject& floor2 = w.CreateGameObject(Vector3(90.f, -2.5f, 0.f), Vector3::zero(), Vector3(85.f, 3.0f, 55.f));
+	GameObject& floor2 = w.CreateGameObject(Vector3(90.f, -2.5f, 0.f), Vector3::zero(), Vector3(85.f, 3.0f, 60.f));
 	MeshFilter& mf2 = floor2.AddComponent<MeshFilter>(PrimitiveMeshTag::Cube); mf2.boundsRadius = 0.f;
 	floor2.AddComponent<GroundRenderer>();
 	BoxCollider& collider2 = floor2.AddComponent<BoxCollider>();
@@ -607,7 +607,7 @@ void SceneGame::CreateStage2Wall()
 	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(43.0f, -0.75f, -9.5f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
 	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(43.0f, -0.75f, -5.5f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
 	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(43.0f, -0.75f, -1.5f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));//
-	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(43.0f, -0.75f, 3.5f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(43.0f, -0.75f, 3.5f), Vector3(0.f, 90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));
 	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(43.0f, -0.75f, 7.5f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
 	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(43.0f, -0.75f, 11.5f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
 	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(43.0f, -0.75f, 15.5f), Vector3(0.f, 90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
@@ -622,7 +622,7 @@ void SceneGame::CreateStage2Wall()
 	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-41.0f, -0.75f, -13.5f), Vector3(0.f, -90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
 	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-41.0f, -0.75f, -9.5f), Vector3(0.f, -90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
 	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-41.0f, -0.75f, -5.5f), Vector3(0.f, -90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
-	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-41.0f, -0.75f, -1.5f),  Vector3(0.f, -90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));//
+	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-41.0f, -0.75f, -1.0f),  Vector3(0.f, -90.f, 0.f), Vector3(0.5f, 0.4f, 1.0f));//
 	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-41.0f, -0.75f, 3.5f), Vector3(0.f, -90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
 	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-41.0f, -0.75f, 7.5f), Vector3(0.f, -90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
 	Prefab::Instantiate(w, PrefabId::StageWall, Vector3(-41.0f, -0.75f, 11.5f), Vector3(0.f, -90.f, 0.f), Vector3(0.4f, 0.4f, 1.0f));
