@@ -2,109 +2,93 @@
 #include <Windows.h>
 #undef max
 #undef min
+
 #include <Xinput.h>
+#include <dinput.h>
 
-//============================================================
-// XInput ゲームパッド生入力クラス（1P 専用）
-//
-// ・毎フレーム Update() を呼ぶ
-// ・「操作用コントローラーは 1 機のみ」を前提に 0 番パッドだけ見る
-// ・ボタン押下 / 押した瞬間 / 離した瞬間
-// ・左右スティック / トリガを [-1,1], [0,1] で返す（デッドゾーン込み）
-//
-// 長押しリピートやコンボ判定などは、ここでは一切やらない。
-//============================================================
-
-/*============================================================
-    XINPUT_GAMEPAD_A
-    XINPUT_GAMEPAD_B
-    XINPUT_GAMEPAD_X
-    XINPUT_GAMEPAD_Y
-
-    XINPUT_GAMEPAD_DPAD_UP
-    XINPUT_GAMEPAD_DPAD_DOWN
-    XINPUT_GAMEPAD_DPAD_LEFT
-    XINPUT_GAMEPAD_DPAD_RIGHT
-
-    XINPUT_GAMEPAD_START
-    XINPUT_GAMEPAD_BACK
-
-    XINPUT_GAMEPAD_LEFT_SHOULDER
-    XINPUT_GAMEPAD_RIGHT_SHOULDER
-
-    XINPUT_GAMEPAD_LEFT_THUMB   // 左スティック押し込み
-    XINPUT_GAMEPAD_RIGHT_THUMB  // 右スティック押し込み
-============================================================*/
+// ライブラリ
+#pragma comment(lib, "Xinput.lib")
+#pragma comment(lib, "dinput8.lib")
+#pragma comment(lib, "dxguid.lib")
 
 class InputGamepad
 {
 public:
-    // 初期化／終了
-    static void Init();
+    static void Init(HWND hwnd);
     static void Uninit();
-
-    // 毎フレームの更新
     static void Update();
 
-    //==================== 接続状態 ====================
-
-    // 操作用パッド（0 番）が接続されているか
     static bool IsConnected();
 
-    //==================== ボタン ======================
-
-    // 押されている間 true
     static bool GetButton(WORD button);
-
-    // 押した瞬間だけ true（立ち上がりエッジ）
     static bool GetButtonDown(WORD button);
-
-    // 離した瞬間だけ true（立ち下がりエッジ）
     static bool GetButtonUp(WORD button);
 
-    //==================== スティック ==================
-
-    // 左スティック X, Y [-1,1]
     static float GetLStickX();
     static float GetLStickY();
-
-    // 右スティック X, Y [-1,1]
     static float GetRStickX();
     static float GetRStickY();
 
-    //==================== トリガ ======================
-
-    // 左トリガ [0,1]
     static float GetLTrigger();
     static float GetRTrigger();
 
-    //==================== ユーティリティ =============
-
-    // このフレーム「何らかの入力」があったか？
-    //  - 何かボタンが押されている
-    //  - スティックがデッドゾーンを超えた
-    //  - トリガがデッドゾーンを超えた
     static bool AnyInputThisFrame();
 
-    // デッドゾーン設定（必要なら変更）
-    //  - ls, rs : 左右スティックの deadzone
-    //  - lt, rt : 左右トリガの deadzone
-    static void SetDeadZone(
-        SHORT ls, SHORT rs,
-        BYTE  lt, BYTE  rt);
-private:
-    // 操作用（0 番）パッドの現在/前フレーム状態
-    static XINPUT_STATE s_curr;
-    static XINPUT_STATE s_prev;
-    static bool         s_connected;
+    static void SetDeadZone(SHORT ls, SHORT rs, BYTE lt, BYTE rt);
 
-    // デッドゾーン設定
+private:
+    enum class Backend
+    {
+        None,
+        XInput,
+        DirectInput
+    };
+
+    struct CommonState
+    {
+        WORD  buttons = 0;
+        SHORT lx = 0;
+        SHORT ly = 0;
+        SHORT rx = 0;
+        SHORT ry = 0;
+        BYTE  lt = 0;
+        BYTE  rt = 0;
+    };
+
+private:
+    static Backend s_backend;
+    static bool    s_connected;
+
+    static CommonState s_curr;
+    static CommonState s_prev;
+
     static SHORT s_lStickDead;
     static SHORT s_rStickDead;
     static BYTE  s_lTriggerDead;
     static BYTE  s_rTriggerDead;
 
-    // 内部ヘルパ
+private:
+    // XInput
+    static bool UpdateXInput();
+
+    // DirectInput
+    static HWND s_hwnd;
+    static IDirectInput8* s_di;
+    static IDirectInputDevice8* s_diDevice;
+    static GUID                  s_diGuid;
+    static bool                  s_diFound;
+
+    static bool InitDirectInput(HWND hwnd);
+    static void UninitDirectInput();
+    static bool FindDirectInputGamepad();
+    static bool CreateDirectInputDevice();
+
+    static BOOL CALLBACK EnumGamepadsCallback(const DIDEVICEINSTANCE* instance, VOID* context);
+    static bool UpdateDirectInput();
+
+    // helper
     static float NormalizeStick(SHORT v, SHORT dead);
     static float NormalizeTrigger(BYTE v, BYTE dead);
+    static SHORT ToSignedAxis(LONG v);
+    static WORD  MapDirectInputButtons(const DIJOYSTATE2& js);
 };

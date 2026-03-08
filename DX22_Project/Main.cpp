@@ -30,7 +30,7 @@ HRESULT Init(HWND hWnd, UINT width, UINT height)
 	PrimitiveMeshManager::Init();
 	Sprite::Init();
 	InputKeyboard::Init();
-	InputGamepad::Init();
+	InputGamepad::Init(hWnd);
 	ShaderList::Init();
 	LineManager::Init();
 	SoundManager::Load();

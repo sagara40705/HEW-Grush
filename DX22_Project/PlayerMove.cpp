@@ -12,6 +12,7 @@
 #include <cmath>
 #include "DebugLog.h"
 
+
 /*
 * @brief 初期化処理
 */
@@ -90,12 +91,18 @@ void PlayerMove::Jump()
 
 	if (!state_->isGrounded) return;
 
-	if (InputKeyboard::GetKeyDown(JumpKey))
+	bool jumpPressed = InputKeyboard::GetKeyDown(JumpKey);
+
+	if (InputGamepad::IsConnected())
+	{
+		jumpPressed = jumpPressed || InputGamepad::GetButtonDown(XINPUT_GAMEPAD_A);
+	}
+
+	if (jumpPressed)
 	{
 		rb_->AddForce(Vector3(0.f, JumpForce, 0.f));
 	}
 }
-
 /*
 * @brief 移動の入力を判定する
 */
@@ -112,12 +119,15 @@ void PlayerMove::InputMoveAxis()
 	// --- ゲームパッド左スティック ---
 	if (InputGamepad::IsConnected())
 	{
-		float lx = InputGamepad::GetLStickX();  // [-1,1]
-		float ly = InputGamepad::GetLStickY();  // [-1,1]
+		float lx = InputGamepad::GetLStickX();
+		float ly = InputGamepad::GetLStickY();
 
-		// スティックは「上が正」で操作したいので Y を反転（一般的なゲーム操作感）
+		const float deadZone = 0.2f;
+		if (std::fabs(lx) < deadZone) lx = 0.0f;
+		if (std::fabs(ly) < deadZone) ly = 0.0f;
+
 		axis.x += lx;
-		axis.y += ly;   // or axis.y -= ly; ※操作感に合わせて
+		axis.y += ly;
 	}
 
 	// 長さ 1 を超えたら正規化

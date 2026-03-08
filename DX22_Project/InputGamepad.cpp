@@ -1,85 +1,240 @@
 #include "InputGamepad.h"
-#include <cstring> // std::memset
-#include <cmath>   // std::abs
+#include <cstring>
+#include <cmath>
 
-#pragma comment(lib, "Xinput.lib")
+//==================================================
+// static member
+//==================================================
 
-//================ Static メンバ定義 ==================
+InputGamepad::Backend InputGamepad::s_backend = InputGamepad::Backend::None;
+bool InputGamepad::s_connected = false;
 
-XINPUT_STATE InputGamepad::s_curr = {};
-XINPUT_STATE InputGamepad::s_prev = {};
-bool         InputGamepad::s_connected = false;
+InputGamepad::CommonState InputGamepad::s_curr = {};
+InputGamepad::CommonState InputGamepad::s_prev = {};
 
-// デフォルトは XInput 推奨値を採用
-SHORT InputGamepad::s_lStickDead = XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE;   // 7849
-SHORT InputGamepad::s_rStickDead = XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE;  // 8689
-BYTE  InputGamepad::s_lTriggerDead = XINPUT_GAMEPAD_TRIGGER_THRESHOLD;     // 30
-BYTE  InputGamepad::s_rTriggerDead = XINPUT_GAMEPAD_TRIGGER_THRESHOLD;     // 30
+SHORT InputGamepad::s_lStickDead = XINPUT_GAMEPAD_LEFT_THUMB_DEADZONE;
+SHORT InputGamepad::s_rStickDead = XINPUT_GAMEPAD_RIGHT_THUMB_DEADZONE;
+BYTE  InputGamepad::s_lTriggerDead = XINPUT_GAMEPAD_TRIGGER_THRESHOLD;
+BYTE  InputGamepad::s_rTriggerDead = XINPUT_GAMEPAD_TRIGGER_THRESHOLD;
 
-//================ 内部ヘルパ ========================
+HWND InputGamepad::s_hwnd = nullptr;
+IDirectInput8* InputGamepad::s_di = nullptr;
+IDirectInputDevice8* InputGamepad::s_diDevice = nullptr;
+GUID                 InputGamepad::s_diGuid = GUID{};
+bool                 InputGamepad::s_diFound = false;
 
-// SHORT [-32768,32767] を [-1,1] に正規化。dead 内は 0。
+//==================================================
+// helper
+//==================================================
+
 float InputGamepad::NormalizeStick(SHORT v, SHORT dead)
 {
-    //const SHORT av = static_cast<SHORT>(std::abs(static_cast<int>(v)));
     const int av = std::abs(static_cast<int>(v));
     if (av <= dead) return 0.0f;
 
     const float sign = (v >= 0) ? 1.0f : -1.0f;
     const float range = 32767.0f - static_cast<float>(dead);
+
     float f = (static_cast<float>(av) - static_cast<float>(dead)) / range;
     if (f < 0.0f) f = 0.0f;
     if (f > 1.0f) f = 1.0f;
+
     return f * sign;
 }
 
-// BYTE [0,255] を [0,1] に正規化。dead 内は 0。
 float InputGamepad::NormalizeTrigger(BYTE v, BYTE dead)
 {
     if (v <= dead) return 0.0f;
+
     float f = (static_cast<float>(v) - static_cast<float>(dead)) /
         (255.0f - static_cast<float>(dead));
+
     if (f < 0.0f) f = 0.0f;
     if (f > 1.0f) f = 1.0f;
+
     return f;
 }
 
-//================ 公開 API ==========================
-
-void InputGamepad::Init()
+// DirectInput の 0～65535 を XInput 風の -32768～32767 へ
+SHORT InputGamepad::ToSignedAxis(LONG v)
 {
-    s_connected = false;
-    std::memset(&s_curr, 0, sizeof(XINPUT_STATE));
-    std::memset(&s_prev, 0, sizeof(XINPUT_STATE));
+    LONG centered = v - 32767;
+    if (centered < -32768) centered = -32768;
+    if (centered > 32767) centered = 32767;
+    return static_cast<SHORT>(centered);
+}
 
-    // とりあえず一度 Update しておく
+//==================================================
+// DirectInput enum callback
+//==================================================
+
+BOOL CALLBACK InputGamepad::EnumGamepadsCallback(const DIDEVICEINSTANCE* instance, VOID* context)
+{
+    (void)context;
+    s_diGuid = instance->guidInstance;
+    s_diFound = true;
+    return DIENUM_STOP;
+}
+
+//==================================================
+// DirectInput init / uninit
+//==================================================
+
+bool InputGamepad::InitDirectInput(HWND hwnd)
+{
+    s_hwnd = hwnd;
+
+    HINSTANCE hInst = GetModuleHandle(nullptr);
+    HRESULT hr = DirectInput8Create(
+        hInst,
+        DIRECTINPUT_VERSION,
+        IID_IDirectInput8,
+        reinterpret_cast<void**>(&s_di),
+        nullptr);
+
+    if (FAILED(hr))
+    {
+        s_di = nullptr;
+        return false;
+    }
+
+    return true;
+}
+
+void InputGamepad::UninitDirectInput()
+{
+    if (s_diDevice)
+    {
+        s_diDevice->Unacquire();
+        s_diDevice->Release();
+        s_diDevice = nullptr;
+    }
+
+    if (s_di)
+    {
+        s_di->Release();
+        s_di = nullptr;
+    }
+
+    s_diFound = false;
+    s_diGuid = GUID{};
+}
+
+bool InputGamepad::FindDirectInputGamepad()
+{
+    if (!s_di) return false;
+
+    s_diFound = false;
+    s_diGuid = GUID{};
+
+    HRESULT hr = s_di->EnumDevices(
+        DI8DEVCLASS_GAMECTRL,
+        EnumGamepadsCallback,
+        nullptr,
+        DIEDFL_ATTACHEDONLY);
+
+    if (FAILED(hr) || !s_diFound)
+    {
+        return false;
+    }
+
+    return true;
+}
+
+bool InputGamepad::CreateDirectInputDevice()
+{
+    if (!s_di || !s_diFound) return false;
+
+    if (s_diDevice)
+    {
+        s_diDevice->Unacquire();
+        s_diDevice->Release();
+        s_diDevice = nullptr;
+    }
+
+    HRESULT hr = s_di->CreateDevice(s_diGuid, &s_diDevice, nullptr);
+    if (FAILED(hr) || !s_diDevice) return false;
+
+    hr = s_diDevice->SetDataFormat(&c_dfDIJoystick2);
+    if (FAILED(hr)) return false;
+
+    hr = s_diDevice->SetCooperativeLevel(
+        s_hwnd,
+        DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
+    if (FAILED(hr)) return false;
+
+    // 軸レンジを 0～65535 にそろえる
+    DIPROPRANGE diprg{};
+    diprg.diph.dwSize = sizeof(DIPROPRANGE);
+    diprg.diph.dwHeaderSize = sizeof(DIPROPHEADER);
+    diprg.diph.dwHow = DIPH_BYOFFSET;
+    diprg.lMin = 0;
+    diprg.lMax = 65535;
+
+    const DWORD offsets[] =
+    {
+        DIJOFS_X, DIJOFS_Y, DIJOFS_Z,
+        DIJOFS_RX, DIJOFS_RY, DIJOFS_RZ
+    };
+
+    for (DWORD ofs : offsets)
+    {
+        diprg.diph.dwObj = ofs;
+        s_diDevice->SetProperty(DIPROP_RANGE, &diprg.diph);
+    }
+
+    s_diDevice->Acquire();
+    return true;
+}
+
+//==================================================
+// public
+//==================================================
+
+void InputGamepad::Init(HWND hwnd)
+{
+    s_backend = Backend::None;
+    s_connected = false;
+    std::memset(&s_curr, 0, sizeof(s_curr));
+    std::memset(&s_prev, 0, sizeof(s_prev));
+
+    InitDirectInput(hwnd);
     Update();
 }
 
 void InputGamepad::Uninit()
 {
-    // 現状は何も必要ない
+    UninitDirectInput();
+
+    s_backend = Backend::None;
+    s_connected = false;
+    std::memset(&s_curr, 0, sizeof(s_curr));
+    std::memset(&s_prev, 0, sizeof(s_prev));
 }
 
 void InputGamepad::Update()
 {
-    // 前フレーム退避
     s_prev = s_curr;
+    s_curr = {};
 
-    // 常に「操作用パッド = 0 番」を見る
-    XINPUT_STATE st{};
-    DWORD result = XInputGetState(0, &st);
-    if (result == ERROR_SUCCESS)
+    // 1. Xbox / XInput を優先
+    if (UpdateXInput())
     {
-        s_curr = st;
+        s_backend = Backend::XInput;
         s_connected = true;
+        return;
     }
-    else
+
+    // 2. なければ DirectInput
+    if (UpdateDirectInput())
     {
-        // 未接続 or エラー → 入力なし扱い
-        std::memset(&s_curr, 0, sizeof(XINPUT_STATE));
-        s_connected = false;
+        s_backend = Backend::DirectInput;
+        s_connected = true;
+        return;
     }
+
+    s_backend = Backend::None;
+    s_connected = false;
 }
 
 bool InputGamepad::IsConnected()
@@ -87,93 +242,218 @@ bool InputGamepad::IsConnected()
     return s_connected;
 }
 
-//================ ボタン ============================
+//==================================================
+// XInput
+//==================================================
+
+bool InputGamepad::UpdateXInput()
+{
+    XINPUT_STATE st{};
+    DWORD result = XInputGetState(0, &st);
+    if (result != ERROR_SUCCESS)
+    {
+        return false;
+    }
+
+    s_curr.buttons = st.Gamepad.wButtons;
+    s_curr.lx = st.Gamepad.sThumbLX;
+    s_curr.ly = st.Gamepad.sThumbLY;
+    s_curr.rx = st.Gamepad.sThumbRX;
+    s_curr.ry = st.Gamepad.sThumbRY;
+    s_curr.lt = st.Gamepad.bLeftTrigger;
+    s_curr.rt = st.Gamepad.bRightTrigger;
+
+    return true;
+}
+
+//==================================================
+// DirectInput
+//==================================================
+
+WORD InputGamepad::MapDirectInputButtons(const DIJOYSTATE2& js)
+{
+    WORD buttons = 0;
+
+    auto pressed = [&](int index) -> bool
+        {
+            if (index < 0 || index >= 128) return false;
+            return (js.rgbButtons[index] & 0x80) != 0;
+        };
+
+    // DualSense でよくある並び
+    // 0:□ 1:× 2:○ 3:△
+    if (pressed(1)) buttons |= XINPUT_GAMEPAD_A; // ×
+    if (pressed(2)) buttons |= XINPUT_GAMEPAD_B; // ○
+    if (pressed(0)) buttons |= XINPUT_GAMEPAD_X; // □
+    if (pressed(3)) buttons |= XINPUT_GAMEPAD_Y; // △
+
+    if (pressed(4))  buttons |= XINPUT_GAMEPAD_LEFT_SHOULDER;
+    if (pressed(5))  buttons |= XINPUT_GAMEPAD_RIGHT_SHOULDER;
+    if (pressed(10)) buttons |= XINPUT_GAMEPAD_LEFT_THUMB;
+    if (pressed(11)) buttons |= XINPUT_GAMEPAD_RIGHT_THUMB;
+    if (pressed(8))  buttons |= XINPUT_GAMEPAD_BACK;   // Create / Share
+    if (pressed(9))  buttons |= XINPUT_GAMEPAD_START;  // Options
+
+    // 十字キーは POV
+    DWORD pov = js.rgdwPOV[0];
+    if (LOWORD(pov) != 0xFFFF)
+    {
+        if (pov == 0 || pov == 4500 || pov == 31500)
+            buttons |= XINPUT_GAMEPAD_DPAD_UP;
+        if (pov == 9000 || pov == 4500 || pov == 13500)
+            buttons |= XINPUT_GAMEPAD_DPAD_RIGHT;
+        if (pov == 18000 || pov == 13500 || pov == 22500)
+            buttons |= XINPUT_GAMEPAD_DPAD_DOWN;
+        if (pov == 27000 || pov == 22500 || pov == 31500)
+            buttons |= XINPUT_GAMEPAD_DPAD_LEFT;
+    }
+
+    return buttons;
+}
+
+bool InputGamepad::UpdateDirectInput()
+{
+    if (!s_di) return false;
+
+    if (!s_diDevice)
+    {
+        if (!FindDirectInputGamepad()) return false;
+        if (!CreateDirectInputDevice()) return false;
+    }
+
+    HRESULT hr = s_diDevice->Poll();
+    if (FAILED(hr))
+    {
+        hr = s_diDevice->Acquire();
+        while (hr == DIERR_INPUTLOST)
+        {
+            hr = s_diDevice->Acquire();
+        }
+
+        if (FAILED(hr))
+        {
+            s_diDevice->Release();
+            s_diDevice = nullptr;
+            return false;
+        }
+
+        hr = s_diDevice->Poll();
+        if (FAILED(hr))
+        {
+            return false;
+        }
+    }
+
+    DIJOYSTATE2 js{};
+    hr = s_diDevice->GetDeviceState(sizeof(DIJOYSTATE2), &js);
+    if (FAILED(hr))
+    {
+        s_diDevice->Release();
+        s_diDevice = nullptr;
+        return false;
+    }
+
+    s_curr.buttons = MapDirectInputButtons(js);
+
+    // 左スティック
+    s_curr.lx = ToSignedAxis(js.lX);
+    s_curr.ly = -ToSignedAxis(js.lY);
+
+    // 右スティック
+    // DualSense は環境によって Z/Rz または Rx/Ry を使うことがある
+    // まず Rx/Ry を優先し、無反応なら Z/Rz へ切り替えてください
+    s_curr.rx = ToSignedAxis(js.lRx);
+    s_curr.ry = -ToSignedAxis(js.lRy);
+
+    // DirectInput ではトリガが独立しない場合が多いので一旦 0
+    s_curr.lt = 0;
+    s_curr.rt = 0;
+
+    return true;
+}
+
+//==================================================
+// button
+//==================================================
 
 bool InputGamepad::GetButton(WORD button)
 {
     if (!s_connected) return false;
-    return (s_curr.Gamepad.wButtons & button) != 0;
+    return (s_curr.buttons & button) != 0;
 }
 
 bool InputGamepad::GetButtonDown(WORD button)
 {
     if (!s_connected) return false;
-
-    WORD now = s_curr.Gamepad.wButtons;
-    WORD prev = s_prev.Gamepad.wButtons;
-    return ((now & button) != 0) && ((prev & button) == 0);
+    return ((s_curr.buttons & button) != 0) && ((s_prev.buttons & button) == 0);
 }
 
 bool InputGamepad::GetButtonUp(WORD button)
 {
     if (!s_connected) return false;
-
-    WORD now = s_curr.Gamepad.wButtons;
-    WORD prev = s_prev.Gamepad.wButtons;
-    return ((now & button) == 0) && ((prev & button) != 0);
+    return ((s_curr.buttons & button) == 0) && ((s_prev.buttons & button) != 0);
 }
 
-//================ スティック ========================
+//==================================================
+// stick
+//==================================================
 
 float InputGamepad::GetLStickX()
 {
     if (!s_connected) return 0.0f;
-    return NormalizeStick(s_curr.Gamepad.sThumbLX, s_lStickDead);
+    return NormalizeStick(s_curr.lx, s_lStickDead);
 }
 
 float InputGamepad::GetLStickY()
 {
     if (!s_connected) return 0.0f;
-    // 上方向を + にするか - にするかはゲーム側の座標系に合わせて変更可
-    return NormalizeStick(s_curr.Gamepad.sThumbLY, s_lStickDead);
+    return NormalizeStick(s_curr.ly, s_lStickDead);
 }
 
 float InputGamepad::GetRStickX()
 {
     if (!s_connected) return 0.0f;
-    return NormalizeStick(s_curr.Gamepad.sThumbRX, s_rStickDead);
+    return NormalizeStick(s_curr.rx, s_rStickDead);
 }
 
 float InputGamepad::GetRStickY()
 {
     if (!s_connected) return 0.0f;
-    return NormalizeStick(s_curr.Gamepad.sThumbRY, s_rStickDead);
+    return NormalizeStick(s_curr.ry, s_rStickDead);
 }
 
-//================ トリガ =============================
+//==================================================
+// trigger
+//==================================================
 
 float InputGamepad::GetLTrigger()
 {
     if (!s_connected) return 0.0f;
-    return NormalizeTrigger(s_curr.Gamepad.bLeftTrigger, s_lTriggerDead);
+    return NormalizeTrigger(s_curr.lt, s_lTriggerDead);
 }
 
 float InputGamepad::GetRTrigger()
 {
     if (!s_connected) return 0.0f;
-    return NormalizeTrigger(s_curr.Gamepad.bRightTrigger, s_rTriggerDead);
+    return NormalizeTrigger(s_curr.rt, s_rTriggerDead);
 }
 
-//================ ユーティリティ ====================
+//==================================================
+// utility
+//==================================================
 
 bool InputGamepad::AnyInputThisFrame()
 {
     if (!s_connected) return false;
 
-    const XINPUT_GAMEPAD& gp = s_curr.Gamepad;
+    if (s_curr.buttons != 0) return true;
 
-    // 1) 何かボタンが押されている
-    if (gp.wButtons != 0) return true;
-
-    // 2) スティック
-    if (NormalizeStick(gp.sThumbLX, s_lStickDead) != 0.0f) return true;
-    if (NormalizeStick(gp.sThumbLY, s_lStickDead) != 0.0f) return true;
-    if (NormalizeStick(gp.sThumbRX, s_rStickDead) != 0.0f) return true;
-    if (NormalizeStick(gp.sThumbRY, s_rStickDead) != 0.0f) return true;
-
-    // 3) トリガ
-    if (NormalizeTrigger(gp.bLeftTrigger, s_lTriggerDead) != 0.0f) return true;
-    if (NormalizeTrigger(gp.bRightTrigger, s_rTriggerDead) != 0.0f) return true;
+    if (NormalizeStick(s_curr.lx, s_lStickDead) != 0.0f) return true;
+    if (NormalizeStick(s_curr.ly, s_lStickDead) != 0.0f) return true;
+    if (NormalizeStick(s_curr.rx, s_rStickDead) != 0.0f) return true;
+    if (NormalizeStick(s_curr.ry, s_rStickDead) != 0.0f) return true;
+    if (NormalizeTrigger(s_curr.lt, s_lTriggerDead) != 0.0f) return true;
+    if (NormalizeTrigger(s_curr.rt, s_rTriggerDead) != 0.0f) return true;
 
     return false;
 }
@@ -182,6 +462,6 @@ void InputGamepad::SetDeadZone(SHORT ls, SHORT rs, BYTE lt, BYTE rt)
 {
     if (ls >= 0) s_lStickDead = ls;
     if (rs >= 0) s_rStickDead = rs;
-    if (lt >= 0) s_lTriggerDead = lt;
-    if (rt >= 0) s_rTriggerDead = rt;
+    s_lTriggerDead = lt;
+    s_rTriggerDead = rt;
 }
