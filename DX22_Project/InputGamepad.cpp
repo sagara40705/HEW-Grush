@@ -1,6 +1,7 @@
 #include "InputGamepad.h"
 #include <cstring>
 #include <cmath>
+#include <stdio.h>
 
 //==================================================
 // static member
@@ -55,7 +56,6 @@ float InputGamepad::NormalizeTrigger(BYTE v, BYTE dead)
     return f;
 }
 
-// DirectInput の 0～65535 を XInput 風の -32768～32767 へ
 SHORT InputGamepad::ToSignedAxis(LONG v)
 {
     LONG centered = v - 32767;
@@ -163,7 +163,7 @@ bool InputGamepad::CreateDirectInputDevice()
         DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
     if (FAILED(hr)) return false;
 
-    // 軸レンジを 0～65535 にそろえる
+
     DIPROPRANGE diprg{};
     diprg.diph.dwSize = sizeof(DIPROPRANGE);
     diprg.diph.dwHeaderSize = sizeof(DIPROPHEADER);
@@ -197,6 +197,12 @@ void InputGamepad::Init(HWND hwnd)
     s_connected = false;
     std::memset(&s_curr, 0, sizeof(s_curr));
     std::memset(&s_prev, 0, sizeof(s_prev));
+
+    // DirectInput用にデッドゾーンを拡大
+    s_lStickDead = 8000; 
+    s_rStickDead = 9000;  
+    s_lTriggerDead = XINPUT_GAMEPAD_TRIGGER_THRESHOLD;
+    s_rTriggerDead = XINPUT_GAMEPAD_TRIGGER_THRESHOLD;
 
     InitDirectInput(hwnd);
     Update();
@@ -294,7 +300,7 @@ WORD InputGamepad::MapDirectInputButtons(const DIJOYSTATE2& js)
     if (pressed(8))  buttons |= XINPUT_GAMEPAD_BACK;   // Create / Share
     if (pressed(9))  buttons |= XINPUT_GAMEPAD_START;  // Options
 
-    // 十字キーは POV
+   
     DWORD pov = js.rgdwPOV[0];
     if (LOWORD(pov) != 0xFFFF)
     {
@@ -359,13 +365,40 @@ bool InputGamepad::UpdateDirectInput()
     s_curr.lx = ToSignedAxis(js.lX);
     s_curr.ly = -ToSignedAxis(js.lY);
 
-    // 右スティック
-    // DualSense は環境によって Z/Rz または Rx/Ry を使うことがある
-    // まず Rx/Ry を優先し、無反応なら Z/Rz へ切り替えてください
-    s_curr.rx = ToSignedAxis(js.lRx);
-    s_curr.ry = -ToSignedAxis(js.lRy);
+    // 中心補正
+    if (std::abs(s_curr.lx) < 2000) s_curr.lx = 0;
+    if (std::abs(s_curr.ly) < 2000) s_curr.ly = 0;
 
-    // DirectInput ではトリガが独立しない場合が多いので一旦 0
+    SHORT rx_candidate = ToSignedAxis(js.lRx);
+    SHORT ry_candidate = -ToSignedAxis(js.lRy);
+    
+    // Rx/Ryが中心付近なら、Z/Rzを使う
+    if (std::abs(rx_candidate) > 30000 && std::abs(ry_candidate) > 30000)
+    {
+        s_curr.rx = ToSignedAxis(js.lZ);
+        s_curr.ry = -ToSignedAxis(js.lRz);
+    }
+    else
+    {
+        // Rx/Ryが有効
+        s_curr.rx = rx_candidate;
+        s_curr.ry = ry_candidate;
+    }
+
+    // 中心補正
+    if (std::abs(s_curr.rx) < 2000) s_curr.rx = 0;
+    if (std::abs(s_curr.ry) < 2000) s_curr.ry = 0;
+
+    // デバッグ出力
+    static int debugCounter = 0;
+    if (++debugCounter % 60 == 0)
+    {
+        char buf[512];
+        sprintf_s(buf, "RStick: X=%d Y=%d | raw: Rx=%d Ry=%d Z=%d Rz=%d\n", 
+                  s_curr.rx, s_curr.ry, js.lRx, js.lRy, js.lZ, js.lRz);
+        OutputDebugStringA(buf);
+    }
+
     s_curr.lt = 0;
     s_curr.rt = 0;
 
