@@ -1,76 +1,137 @@
 [Debug Log Started]
-[09:04:34] Model::Load, material.pTexture: 000001DF5FFF54D0
-[09:04:34] Model::Load, material.pTexture: 000001DF5FFF57D0
-[09:04:34] Model::Load, material.pTexture: 000001DF5FFF5950
-[09:04:35] Model::Load, material.pTexture: 000001DF6291FBD0
-[09:04:35] Model::Load, material.pTexture: 000001DF629204D0
-[09:04:35] Model::Load, material.pTexture: 000001DF6291FAB0
-[09:04:35] Model::Load, material.pTexture: 000001DF6291F7B0
-[09:04:35] Model::Load, material.pTexture: 000001DF62919690
-[09:04:35] Model::Load, material.pTexture: 000001DF6291A0B0
-[09:04:35] Model::Load, material.pTexture: 000001DF62920770
-[09:04:36] Model::Load, material.pTexture: 000001DF62901E10
-[09:04:37] Start Player Animation
-[09:04:41] Animation End OneLoop
-[09:04:49] Animation End OneLoop
-[09:04:50] Model::Load, material.pTexture: 000001DF6338FAD0
-[09:04:50] Model::Load, material.pTexture: 000001DF633903D0
-[09:04:50] Model::Load, material.pTexture: 000001DF6338FE90
-[09:04:51] Model::Load, material.pTexture: 000001DF6338FC50
-[09:04:51] Model::Load, material.pTexture: 000001DF6338A6D0
-[09:04:51] Model::Load, material.pTexture: 000001DF6338A790
-[09:04:51] Model::Load, material.pTexture: 000001DF6338A670
-[09:04:51] Model::Load, material.pTexture: 000001DF6338A3D0
-[09:04:52] Model::Load, material.pTexture: 000001DF699C8EC0
-[09:04:52] Model::Load, material.pTexture: 000001DF699C8A40
-[09:04:52] Model::Load, material.pTexture: 000001DF699C9880
-[09:04:52] Model::Load, material.pTexture: 000001DF699C8F20
-[09:04:53] Model::Load, material.pTexture: 000001DF624EC300
-[09:04:53] Model::Load, material.pTexture: 000001DF624EBFA0
-[09:04:53] Model::Load, material.pTexture: 000001DF624ECA80
-[09:04:53] Model::Load, material.pTexture: 000001DF624EC180
-[09:04:53] Model::Load, material.pTexture: 000001DF624EC5A0
-[09:04:53] Model::Load, material.pTexture: 000001DF624EFF00
-[09:04:53] Model::Load, material.pTexture: 000001DF624F1A00
-[09:04:53] Model::Load, material.pTexture: 000001DF624D4360
-[09:04:53] Model::Load, material.pTexture: 000001DF624D8920
-[09:04:53] Model::Load, material.pTexture: 000001DF624DC820
-[09:04:57] Input Direction dir = %d: 1
-[09:04:57] Animation End OneLoop
-[09:04:57] Input Direction dir = %d: 3
-[09:04:57] Player move stage point id = %d: 1
-[09:05:00] Model::Load, material.pTexture: 000001DF624DF700
-[09:05:00] Model::Load, material.pTexture: 000001DF624E37E0
-[09:05:00] Model::Load, material.pTexture: 000001DF624E5DC0
-[09:05:00] Model::Load, material.pTexture: 000001DF624E9FC0
-[09:05:00] Model::Load, material.pTexture: 000001DF624E96C0
-[09:05:02] Start Player Animation
-[09:05:16] [GlassObjectSpawner] Start()
-[09:05:16] GlassGauge Ratio: 0
-[09:05:17] moveStartedThisFrame
-[09:05:18] Animation End OneLoop
-[09:05:19] DashAttack 入力受付
-[09:05:19] アクション実行
-[09:05:20] Hammer Attack Glass Object, ID: 220
-[09:05:20] GlassShardPool::Instantiate: 0
-[09:05:20] GlassShardPool::Instantiate: 1
-[09:05:20] GlassShardPool::Instantiate: 2
-[09:05:20] GlassShardPool::Instantiate: 3
-[09:05:20] CameraShake::Play, type: 0
-[09:05:20] Hammer Attack Glass Object, ID: 909
-[09:05:20] GlassShardPool::Instantiate: 4
-[09:05:20] GlassShardPool::Instantiate: 5
-[09:05:20] GlassShardPool::Instantiate: 6
-[09:05:20] GlassShardPool::Instantiate: 7
-[09:05:20] CameraShake::Play, type: 0
-[09:05:20] アクション終了
-[09:05:20] CameraShake::Stop
-[09:05:23] ワープ起動, 番号: 1
-[09:05:25] アクションCT終了
-[09:05:27] moveStoppedThisFrame
-[09:05:27] moveStartedThisFrame
-[09:05:28] DashAttack 入力受付
-[09:05:28] アクション実行
-[09:05:30] アクション終了
-[09:05:32] moveStoppedThisFrame
+[09:49:14] Model::Load, material.pTexture: 000001DA37245700
+[09:49:14] Model::Load, material.pTexture: 000001DA372457C0
+[09:49:14] Model::Load, material.pTexture: 000001DA37245A00
+[09:49:16] Model::Load, material.pTexture: 000001DA36FB2670
+[09:49:16] Model::Load, material.pTexture: 000001DA36FB28B0
+[09:49:16] Model::Load, material.pTexture: 000001DA36FB1E30
+[09:49:16] Model::Load, material.pTexture: 000001DA36FB1BF0
+[09:49:17] Model::Load, material.pTexture: 000001DA36FABB90
+[09:49:17] Model::Load, material.pTexture: 000001DA36FACE50
+[09:49:17] Model::Load, material.pTexture: 000001DA36F93230
+[09:49:17] Model::Load, material.pTexture: 000001DA36F95750
+[09:49:18] Start Player Animation
+[09:49:22] Animation End OneLoop
+[09:49:26] Animation End OneLoop
+[09:49:27] Model::Load, material.pTexture: 000001DA36F9CBF0
+[09:49:27] Model::Load, material.pTexture: 000001DA36F9CC50
+[09:49:27] Model::Load, material.pTexture: 000001DA36F9DA30
+[09:49:28] Model::Load, material.pTexture: 000001DA3A2866F0
+[09:49:28] Model::Load, material.pTexture: 000001DA36F9EC90
+[09:49:28] Model::Load, material.pTexture: 000001DA36F9E570
+[09:49:28] Model::Load, material.pTexture: 000001DA36F9F8F0
+[09:49:28] Model::Load, material.pTexture: 000001DA36F9F7D0
+[09:49:29] Model::Load, material.pTexture: 000001DA3A277510
+[09:49:29] Model::Load, material.pTexture: 000001DA3A277150
+[09:49:29] Model::Load, material.pTexture: 000001DA3A277090
+[09:49:29] Model::Load, material.pTexture: 000001DA3A276EB0
+[09:49:30] Model::Load, material.pTexture: 000001DA40B7FD10
+[09:49:30] Model::Load, material.pTexture: 000001DA40B80A30
+[09:49:30] Model::Load, material.pTexture: 000001DA40B80190
+[09:49:30] Model::Load, material.pTexture: 000001DA40B802B0
+[09:49:30] Model::Load, material.pTexture: 000001DA40B7D4F0
+[09:49:30] Model::Load, material.pTexture: 000001DA40B80430
+[09:49:30] Model::Load, material.pTexture: 000001DA40B833D0
+[09:49:30] Model::Load, material.pTexture: 000001DA40B85A70
+[09:49:30] Model::Load, material.pTexture: 000001DA40B8A1B0
+[09:49:30] Model::Load, material.pTexture: 000001DA40B8D7B0
+[09:49:34] Animation End OneLoop
+[09:49:36] Model::Load, material.pTexture: 000001DA40B918F0
+[09:49:36] Model::Load, material.pTexture: 000001DA40B93450
+[09:49:36] Model::Load, material.pTexture: 000001DA40B98C10
+[09:49:39] Start Player Animation
+[09:49:54] [GlassObjectSpawner] Start()
+[09:49:54] GlassGauge Ratio: 0
+[09:49:58] moveStartedThisFrame
+[09:49:58] Animation End OneLoop
+[09:49:59] NormalAttack 入力受付
+[09:49:59] アクション実行
+[09:49:59] Hammer Attack Glass Object, ID: 43
+[09:49:59] GlassGaugeManager::BrakeGlass, Gauhe: 10
+[09:49:59] Up Score: 497
+[09:49:59] GlassShardPool::Instantiate: 0
+[09:49:59] GlassShardPool::Instantiate: 1
+[09:49:59] GlassShardPool::Instantiate: 2
+[09:49:59] GlassShardPool::Instantiate: 3
+[09:49:59] GlassShardPool::Instantiate: 4
+[09:49:59] GlassShardPool::Instantiate: 5
+[09:49:59] GlassShardPool::Instantiate: 6
+[09:49:59] GlassShardPool::Instantiate: 7
+[09:49:59] GlassShardPool::Instantiate: 8
+[09:49:59] GlassShardPool::Instantiate: 9
+[09:49:59] GlassShardPool::Instantiate: 10
+[09:49:59] GlassShardPool::Instantiate: 11
+[09:49:59] GlassObject Destory, ID: 43
+[09:49:59] CameraShake::Play, type: 0
+[09:49:59] GlassGauge Effect Play
+[09:49:59] GlassGauge Ratio: 0.1
+[09:49:59] アクション終了
+[09:50:00] moveStoppedThisFrame
+[09:50:00] アクションCT終了
+[09:50:00] CameraShake::Stop
+[09:50:00] Canvas already exists.
+[09:50:09] OptionUI: Selected タイトルへ
+[09:50:09] OptionUI: Triggering operation after delay
+[09:50:10] OptionUI: Selected タイトルへ
+[09:50:10] OptionUI: Triggering operation after delay
+[09:50:12] Model::Load, material.pTexture: 000001DA3A273BB0
+[09:50:12] Model::Load, material.pTexture: 000001DA3A2745D0
+[09:50:13] Model::Load, material.pTexture: 000001DA3A273D30
+[09:50:13] Model::Load, material.pTexture: 000001DA3A274C90
+[09:50:13] Model::Load, material.pTexture: 000001DA39E37FB0
+[09:50:13] Model::Load, material.pTexture: 000001DA39E3A4D0
+[09:50:13] Model::Load, material.pTexture: 000001DA39E3E850
+[09:50:13] Model::Load, material.pTexture: 000001DA39E20FD0
+[09:50:14] Start Player Animation
+[09:50:18] Animation End OneLoop
+[09:50:21] Animation End OneLoop
+[09:50:22] Model::Load, material.pTexture: 000001DA39E25110
+[09:50:22] Model::Load, material.pTexture: 000001DA39E24B70
+[09:50:22] Model::Load, material.pTexture: 000001DA39E24F30
+[09:50:23] Model::Load, material.pTexture: 000001DA3A276FD0
+[09:50:23] Model::Load, material.pTexture: 000001DA39E23970
+[09:50:23] Model::Load, material.pTexture: 000001DA39E22950
+[09:50:23] Model::Load, material.pTexture: 000001DA39E23010
+[09:50:23] Model::Load, material.pTexture: 000001DA39E22F50
+[09:50:24] Model::Load, material.pTexture: 000001DA39FCB500
+[09:50:24] Model::Load, material.pTexture: 000001DA39FC9FA0
+[09:50:24] Model::Load, material.pTexture: 000001DA39FCA5A0
+[09:50:24] Model::Load, material.pTexture: 000001DA39FCAB40
+[09:50:25] Model::Load, material.pTexture: 000001DA36FA1B10
+[09:50:25] Model::Load, material.pTexture: 000001DA36FA13F0
+[09:50:25] Model::Load, material.pTexture: 000001DA36FA1E70
+[09:50:25] Model::Load, material.pTexture: 000001DA36FA1870
+[09:50:25] Model::Load, material.pTexture: 000001DA36FA11B0
+[09:50:25] Model::Load, material.pTexture: 000001DA36FA45D0
+[09:50:25] Model::Load, material.pTexture: 000001DA36FA8110
+[09:50:25] Model::Load, material.pTexture: 000001DA36FAAB70
+[09:50:25] Model::Load, material.pTexture: 000001DA36FAEFB0
+[09:50:25] Model::Load, material.pTexture: 000001DA36F93590
+[09:50:28] Input Direction dir = %d: 3
+[09:50:28] Player move stage point id = %d: 1
+[09:50:29] Animation End OneLoop
+[09:50:34] Model::Load, material.pTexture: 000001DA36F95990
+[09:50:34] Model::Load, material.pTexture: 000001DA36F9A430
+[09:50:34] Model::Load, material.pTexture: 000001DA36F9CF50
+[09:50:34] Model::Load, material.pTexture: 000001DA36F9FD10
+[09:50:34] Model::Load, material.pTexture: 000001DA36F9F950
+[09:50:36] Start Player Animation
+[09:50:50] [GlassObjectSpawner] Start()
+[09:50:50] GlassGauge Ratio: 0
+[09:50:53] Animation End OneLoop
+[09:50:53] Canvas already exists.
+[09:50:58] OptionUI: Selected タイトルへ
+[09:50:58] OptionUI: Triggering operation after delay
+[09:50:59] OptionUI: Selected タイトルへ
+[09:50:59] OptionUI: Triggering operation after delay
+[09:51:01] Model::Load, material.pTexture: 000001DA36F9B1B0
+[09:51:01] Model::Load, material.pTexture: 000001DA36F9BB10
+[09:51:01] Model::Load, material.pTexture: 000001DA36F9B270
+[09:51:01] Model::Load, material.pTexture: 000001DA36F9B810
+[09:51:02] Model::Load, material.pTexture: 000001DA39E365D0
+[09:51:02] Model::Load, material.pTexture: 000001DA39E38B50
+[09:51:02] Model::Load, material.pTexture: 000001DA39E3C3F0
+[09:51:02] Model::Load, material.pTexture: 000001DA39E1E510
+[09:51:03] Start Player Animation
+[09:51:07] Animation End OneLoop
 [Debug Log End]

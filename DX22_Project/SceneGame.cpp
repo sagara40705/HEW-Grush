@@ -253,6 +253,8 @@ void SceneGame::BuildLoadTasks(std::vector<LoadTask>& outTasks)
 
 			// RenderSystem.h 
 			SetSceneColorRT(m_sceneColorRT);
+
+			//waitTimer_.Start();
 		});
 
 
@@ -1155,7 +1157,14 @@ void SceneGame::Update()
 	
 	if (IsGameLocked()) {
 
-		if (waitTimer_.ElapsedRawSeconds() < WAIT_TIME) return;
+		//if (waitTimer_.ElapsedRawSeconds() > 4.0f)
+		//{
+		//	waitTimer_.Stop();
+		//}
+		//else
+		//{
+		//	return;
+		//}
 
 		if(!CheckStartSE)
 		{
