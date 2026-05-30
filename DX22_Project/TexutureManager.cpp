@@ -133,6 +133,11 @@ const char* TextureManager::kTexturePath[static_cast<size_t>(TextureTag::Count)]
     "Assets/Texture/StageSelect/Number2.png",
     "Assets/Texture/StageSelect/Number3.png",
     "Assets/Texture/StageSelect/bou2.png",
+
+    "Assets/Texture/Story/story_01.png",
+    "Assets/Texture/Story/story_02.png",
+    "Assets/Texture/Story/story_03.png",
+    "Assets/Texture/Story/story_04.png",
    // "Assets/Texture/StageSelect/bou2.png",
 
 };

@@ -11,6 +11,7 @@
 #include "TextureManager.h"
 #include "SceneStageSelect.h"
 #include "InputGamepad.h"
+#include "SceneStory.h"
 
 //FadeOutê∂ê¨
 void TitleManager::Awake()
@@ -68,5 +69,5 @@ void TitleManager::GoNext()
 	if (isLoadNext) return;
 
 	isLoadNext = true;
-	SceneManager::ChangeSceneAsync<SceneStageSelect>();
+	SceneManager::ChangeSceneAsync<SceneStory>();
 }

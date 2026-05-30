@@ -132,6 +132,12 @@ enum class TextureTag : uint8_t
 	Number2 = 103,
 	Number3 = 104,
 	bou2 = 105,
+
+   Sotry_Intro1,
+   Sotry_Intro2,
+   Sotry_Intro3,
+   Sotry_Intro4,
+
     Count,
 };
 

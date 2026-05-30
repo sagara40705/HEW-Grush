@@ -216,6 +216,7 @@
     <ClCompile Include="SceneResult.cpp" />
     <ClCompile Include="SceneSample.cpp" />
     <ClCompile Include="SceneStageSelect.cpp" />
+    <ClCompile Include="SceneStory.cpp" />
     <ClCompile Include="ScoreManager.cpp" />
     <ClCompile Include="ScoreUI.cpp" />
     <ClCompile Include="SelectPlayerControl.cpp" />
@@ -317,6 +318,7 @@
     <ClInclude Include="SceneResult.h" />
     <ClInclude Include="SceneSmaple.h" />
     <ClInclude Include="SceneStageSelect.h" />
+    <ClInclude Include="SceneStory.h" />
     <ClInclude Include="ScoreManager.h" />
     <ClInclude Include="ScoreUI.h" />
     <ClInclude Include="SelectPlayerControl.h" />
