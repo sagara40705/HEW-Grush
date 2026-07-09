@@ -11,7 +11,6 @@ struct CollisionInfo
     float penetration = 0.0f;
 };
 
-// MonoBehaviour îhê∂
 class CollisionListener
 {
 public:
