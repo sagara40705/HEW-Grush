@@ -1,6 +1,62 @@
 #include "DirectX.h"
 #include "Texture.h"
 #include "DebugLog.h"
+#include <strsafe.h>
+
+namespace
+{
+	void ShowDirectXInitError(HWND hWnd, const wchar_t* step, HRESULT hr)
+	{
+		wchar_t systemMessage[512] = {};
+		FormatMessageW(
+			FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+			nullptr,
+			static_cast<DWORD>(hr),
+			MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
+			systemMessage,
+			ARRAYSIZE(systemMessage),
+			nullptr);
+
+		const wchar_t* hint = L"";
+		if (hr == DXGI_ERROR_SDK_COMPONENT_MISSING)
+		{
+			hint =
+				L"\nHint: The DirectX debug layer is not installed. "
+				L"Install Graphics Tools or disable D3D11_CREATE_DEVICE_DEBUG.";
+		}
+		else if (hr == E_INVALIDARG)
+		{
+			hint =
+				L"\nHint: A parameter or requested feature level may not be "
+				L"supported on this environment.";
+		}
+
+		wchar_t message[1024] = {};
+		StringCchPrintfW(
+			message,
+			ARRAYSIZE(message),
+			L"DirectX initialization failed.\n\n"
+			L"Step: %ls\n"
+			L"HRESULT: 0x%08X\n"
+			L"Details: %ls%ls",
+			step,
+			static_cast<unsigned int>(hr),
+			systemMessage[0] ? systemMessage : L"No system error description is available.",
+			hint);
+
+		MessageBoxW(
+			hWnd,
+			message,
+			L"DirectX Initialization Error",
+			MB_OK | MB_ICONERROR);
+	}
+
+	HRESULT FailDirectXInit(HWND hWnd, const wchar_t* step, HRESULT hr)
+	{
+		ShowDirectXInitError(hWnd, step, hr);
+		return hr;
+	}
+}
 
 //--- グローバル変数
 ID3D11Device*				g_pDevice;
@@ -101,16 +157,19 @@ HRESULT InitDirectX(HWND hWnd, UINT width, UINT height, bool fullscreen)
 		}
 	}
 	if (FAILED(hr)) {
-		return hr;
+		return FailDirectXInit(
+			hWnd,
+			L"D3D11CreateDeviceAndSwapChain (Hardware / WARP / Reference)",
+			hr);
 	}
 
 	//--- レンダーターゲット設定
 	g_pRTV = new RenderTarget();
 	if (FAILED(hr = g_pRTV->CreateFromScreen()))
-		return hr;
+		return FailDirectXInit(hWnd, L"RenderTarget::CreateFromScreen", hr);
 	g_pDSV = new DepthStencil();
 	if (FAILED(hr = g_pDSV->Create(g_pRTV->GetWidth(), g_pRTV->GetHeight(), false)))
-		return hr;
+		return FailDirectXInit(hWnd, L"DepthStencil::Create", hr);
 	SetRenderTargets(1, &g_pRTV, g_pDSV);
 
 	//--- カリング設定
@@ -120,13 +179,20 @@ HRESULT InitDirectX(HWND hWnd, UINT width, UINT height, bool fullscreen)
 		D3D11_CULL_FRONT,
 		D3D11_CULL_BACK
 	};
+	const wchar_t* rasterizerSteps[] = {
+		L"CreateRasterizerState (CULL_NONE)",
+		L"CreateRasterizerState (CULL_FRONT)",
+		L"CreateRasterizerState (CULL_BACK)"
+	};
 	rasterizer.FillMode = D3D11_FILL_SOLID;
 	rasterizer.FrontCounterClockwise = false;
 	for (int i = 0; i < 3; ++i)
 	{
 		rasterizer.CullMode = cull[i];
 		hr = g_pDevice->CreateRasterizerState(&rasterizer, &g_pRasterizerState[i]);
-		if (FAILED(hr)) { return hr; }
+		if (FAILED(hr)) {
+			return FailDirectXInit(hWnd, rasterizerSteps[i], hr);
+		}
 	}
 	//SetCullingMode(D3D11_CULL_BACK);
 	SetCullingMode(D3D11_CULL_NONE);
@@ -151,9 +217,21 @@ HRESULT InitDirectX(HWND hWnd, UINT width, UINT height, bool fullscreen)
 	dsDesc.BackFace = dsDesc.FrontFace;
 	dsDesc.BackFace.StencilFailOp = D3D11_STENCIL_OP_DECR;
 	// create state
-	g_pDevice->CreateDepthStencilState(&dsDesc, &g_pDepthStencilState[0]);
+	hr = g_pDevice->CreateDepthStencilState(&dsDesc, &g_pDepthStencilState[0]);
+	if (FAILED(hr)) {
+		return FailDirectXInit(
+			hWnd,
+			L"CreateDepthStencilState (depth enabled)",
+			hr);
+	}
 	dsDesc.DepthEnable = false;
-	g_pDevice->CreateDepthStencilState(&dsDesc, &g_pDepthStencilState[1]);
+	hr = g_pDevice->CreateDepthStencilState(&dsDesc, &g_pDepthStencilState[1]);
+	if (FAILED(hr)) {
+		return FailDirectXInit(
+			hWnd,
+			L"CreateDepthStencilState (depth disabled)",
+			hr);
+	}
 	SetDepthTest(false);
 
 	//--- アルファブレンディング
@@ -175,12 +253,22 @@ HRESULT InitDirectX(HWND hWnd, UINT width, UINT height, bool fullscreen)
 		{D3D11_BLEND_ZERO, D3D11_BLEND_INV_SRC_COLOR},
 		{D3D11_BLEND_INV_DEST_COLOR, D3D11_BLEND_ONE},
 	};
+	const wchar_t* blendSteps[BLEND_MAX] = {
+		L"CreateBlendState (BLEND_NONE)",
+		L"CreateBlendState (BLEND_ALPHA)",
+		L"CreateBlendState (BLEND_ADD)",
+		L"CreateBlendState (BLEND_ADDALPHA)",
+		L"CreateBlendState (BLEND_SUB)",
+		L"CreateBlendState (BLEND_SCREEN)"
+	};
 	for (int i = 0; i < BLEND_MAX; ++i)
 	{
 		blendDesc.RenderTarget[0].SrcBlend = blend[i][0];
 		blendDesc.RenderTarget[0].DestBlend = blend[i][1];
 		hr = g_pDevice->CreateBlendState(&blendDesc, &g_pBlendState[i]);
-		if (FAILED(hr)) { return hr; }
+		if (FAILED(hr)) {
+			return FailDirectXInit(hWnd, blendSteps[i], hr);
+		}
 	}
 	SetBlendMode(BLEND_ALPHA);
 
@@ -190,6 +278,10 @@ HRESULT InitDirectX(HWND hWnd, UINT width, UINT height, bool fullscreen)
 		D3D11_FILTER_MIN_MAG_MIP_LINEAR,
 		D3D11_FILTER_MIN_MAG_MIP_POINT,
 	};
+	const wchar_t* samplerSteps[SAMPLER_MAX] = {
+		L"CreateSamplerState (SAMPLER_LINEAR)",
+		L"CreateSamplerState (SAMPLER_POINT)"
+	};
 	samplerDesc.AddressU = D3D11_TEXTURE_ADDRESS_WRAP;
 	samplerDesc.AddressV = D3D11_TEXTURE_ADDRESS_WRAP;
 	samplerDesc.AddressW = D3D11_TEXTURE_ADDRESS_WRAP;
@@ -197,7 +289,9 @@ HRESULT InitDirectX(HWND hWnd, UINT width, UINT height, bool fullscreen)
 	{
 		samplerDesc.Filter = filter[i];
 		hr = g_pDevice->CreateSamplerState(&samplerDesc, &g_pSamplerState[i]);
-		if (FAILED(hr)) { return hr; }
+		if (FAILED(hr)) {
+			return FailDirectXInit(hWnd, samplerSteps[i], hr);
+		}
 	}
 	SetSamplerState(SAMPLER_LINEAR);
 
