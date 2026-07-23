@@ -31,7 +31,7 @@ namespace
 				L"supported on this environment.";
 		}
 
-		wchar_t message[1024] = {};
+		wchar_t message[2048] = {};
 		StringCchPrintfW(
 			message,
 			ARRAYSIZE(message),
@@ -118,7 +118,9 @@ HRESULT InitDirectX(HWND hWnd, UINT width, UINT height, bool fullscreen)
 	UINT numDriverTypes = ARRAYSIZE(driverTypes);
 
 	UINT createDeviceFlags = 0;
+#if defined(_DEBUG)
 	createDeviceFlags |= D3D11_CREATE_DEVICE_DEBUG;
+#endif
 
 	// 機能レベル
 	D3D_FEATURE_LEVEL featureLevels[] =
@@ -135,32 +137,121 @@ HRESULT InitDirectX(HWND hWnd, UINT width, UINT height, bool fullscreen)
 
 	D3D_DRIVER_TYPE driverType;
 	D3D_FEATURE_LEVEL featureLevel;
+	HRESULT driverResults[] = { E_FAIL, E_FAIL, E_FAIL };
+
+	auto createDeviceAndSwapChain =
+		[&](D3D_DRIVER_TYPE type) -> HRESULT
+		{
+			return D3D11CreateDeviceAndSwapChain(
+				NULL,					// ディスプレイデバイスのアダプタ（NULLの場合最初に見つかったアダプタ）
+				type,					// デバイスドライバのタイプ
+				NULL,					// ソフトウェアラスタライザを使用する場合に指定する
+				createDeviceFlags,		// デバイスフラグ
+				featureLevels,			// 機能レベル
+				numFeatureLevels,		// 機能レベル数
+				D3D11_SDK_VERSION,		//
+				&sd,					// スワップチェインの設定
+				&g_pSwapChain,			// IDXGIDwapChainインタフェース
+				&g_pDevice,				// ID3D11Deviceインタフェース
+				&featureLevel,			// サポートされている機能レベル
+				&g_pContext);			// デバイスコンテキスト
+		};
 
 	for (UINT driverTypeIndex = 0; driverTypeIndex < numDriverTypes; ++driverTypeIndex)
 	{
 		driverType = driverTypes[driverTypeIndex];
-		hr = D3D11CreateDeviceAndSwapChain(
-			NULL,					// ディスプレイデバイスのアダプタ（NULLの場合最初に見つかったアダプタ）
-			driverType,				// デバイスドライバのタイプ
-			NULL,					// ソフトウェアラスタライザを使用する場合に指定する
-			createDeviceFlags,		// デバイスフラグ
-			featureLevels,			// 機能レベル
-			numFeatureLevels,		// 機能レベル数
-			D3D11_SDK_VERSION,		// 
-			&sd,					// スワップチェインの設定
-			&g_pSwapChain,			// IDXGIDwapChainインタフェース	
-			&g_pDevice,				// ID3D11Deviceインタフェース
-			&featureLevel,		// サポートされている機能レベル
-			&g_pContext);		// デバイスコンテキスト
+		hr = createDeviceAndSwapChain(driverType);
+
+#if defined(_DEBUG)
+		// Graphics Tools がない環境ではデバッグレイヤーを外して再試行する。
+		if (hr == DXGI_ERROR_SDK_COMPONENT_MISSING &&
+			(createDeviceFlags & D3D11_CREATE_DEVICE_DEBUG) != 0)
+		{
+			createDeviceFlags &= ~D3D11_CREATE_DEVICE_DEBUG;
+			hr = createDeviceAndSwapChain(driverType);
+		}
+#endif
+
+		driverResults[driverTypeIndex] = hr;
 		if (SUCCEEDED(hr)) {
 			break;
 		}
 	}
 	if (FAILED(hr)) {
-		return FailDirectXInit(
-			hWnd,
-			L"D3D11CreateDeviceAndSwapChain (Hardware / WARP / Reference)",
-			hr);
+		// デバイス単体でも失敗するのか、スワップチェイン生成だけが
+		// 失敗するのかを切り分けるための診断。
+		HRESULT deviceOnlyResults[] = { E_FAIL, E_FAIL, E_FAIL };
+		D3D_FEATURE_LEVEL diagnosticFeatureLevels[] = {
+			static_cast<D3D_FEATURE_LEVEL>(0),
+			static_cast<D3D_FEATURE_LEVEL>(0),
+			static_cast<D3D_FEATURE_LEVEL>(0)
+		};
+
+		for (UINT driverTypeIndex = 0;
+			driverTypeIndex < numDriverTypes;
+			++driverTypeIndex)
+		{
+			ID3D11Device* diagnosticDevice = nullptr;
+			ID3D11DeviceContext* diagnosticContext = nullptr;
+			deviceOnlyResults[driverTypeIndex] = D3D11CreateDevice(
+				nullptr,
+				driverTypes[driverTypeIndex],
+				nullptr,
+				createDeviceFlags,
+				featureLevels,
+				numFeatureLevels,
+				D3D11_SDK_VERSION,
+				&diagnosticDevice,
+				&diagnosticFeatureLevels[driverTypeIndex],
+				&diagnosticContext);
+			SAFE_RELEASE(diagnosticContext);
+			SAFE_RELEASE(diagnosticDevice);
+		}
+
+		const bool deviceOnlySucceeded =
+			SUCCEEDED(deviceOnlyResults[0]) ||
+			SUCCEEDED(deviceOnlyResults[1]) ||
+			SUCCEEDED(deviceOnlyResults[2]);
+		const wchar_t* diagnosis = deviceOnlySucceeded
+			? L"Device-only creation succeeded. The failure is narrowed to "
+			  L"swap-chain creation. Check OutputWindow and display settings; "
+			  L"the requested refresh rate is shown below."
+			: L"Device-only creation also failed. The cause is in the D3D "
+			  L"device, driver, debug layer, or requested feature levels.";
+
+		wchar_t detailedStep[1200] = {};
+		StringCchPrintfW(
+			detailedStep,
+			ARRAYSIZE(detailedStep),
+			L"D3D11CreateDeviceAndSwapChain\n\n"
+			L"Combined device + swap-chain results:\n"
+			L"  Hardware:  0x%08X\n"
+			L"  WARP:      0x%08X\n"
+			L"  Reference: 0x%08X\n\n"
+			L"Device-only diagnostic results:\n"
+			L"  Hardware:  0x%08X (feature level 0x%04X)\n"
+			L"  WARP:      0x%08X (feature level 0x%04X)\n"
+			L"  Reference: 0x%08X (feature level 0x%04X)\n\n"
+			L"Swap chain: %u x %u, %ls, refresh rate %u/%u Hz\n"
+			L"Diagnosis: %ls",
+			static_cast<unsigned int>(driverResults[0]),
+			static_cast<unsigned int>(driverResults[1]),
+			static_cast<unsigned int>(driverResults[2]),
+			static_cast<unsigned int>(deviceOnlyResults[0]),
+			static_cast<unsigned int>(diagnosticFeatureLevels[0]),
+			static_cast<unsigned int>(deviceOnlyResults[1]),
+			static_cast<unsigned int>(diagnosticFeatureLevels[1]),
+			static_cast<unsigned int>(deviceOnlyResults[2]),
+			static_cast<unsigned int>(diagnosticFeatureLevels[2]),
+			width,
+			height,
+			fullscreen ? L"Fullscreen" : L"Windowed",
+			sd.BufferDesc.RefreshRate.Numerator,
+			sd.BufferDesc.RefreshRate.Denominator,
+			diagnosis);
+
+		// Hardware の結果を代表HRESULTとして、システム説明にも使用する。
+		return FailDirectXInit(hWnd, detailedStep, driverResults[0]);
 	}
 
 	//--- レンダーターゲット設定
